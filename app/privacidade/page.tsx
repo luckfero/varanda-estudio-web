@@ -4,6 +4,9 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Política de Privacidade",
   description: "Como a Varanda Estúdio Web trata os dados enviados pelo formulário de contato.",
+  alternates: {
+    canonical: "/privacidade",
+  },
 };
 
 export default function PrivacyPage() {
