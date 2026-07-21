@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
+import AccessibilityEnhancements from "./accessibility-enhancements";
+import { siteDescription, siteName, siteUrl } from "./site-config";
 import "./globals.css";
+import "./accessibility.css";
 
 const geist = Geist({
   variable: "--font-sans",
@@ -8,12 +11,12 @@ const geist = Geist({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
-    default: "Varanda Estúdio Web | Sites para pequenos negócios",
-    template: "%s | Varanda Estúdio Web",
+    default: `${siteName} | Sites para pequenos negócios`,
+    template: `%s | ${siteName}`,
   },
-  description:
-    "Sites profissionais, próximos e bem pensados para pequenos negócios brasileiros. Design, conteúdo e desenvolvimento com atendimento direto.",
+  description: siteDescription,
   keywords: [
     "criação de sites",
     "site para pequeno negócio",
@@ -22,15 +25,34 @@ export const metadata: Metadata = {
     "São Paulo",
   ],
   authors: [{ name: "Lucca Oliveira" }],
-  creator: "Varanda Estúdio Web",
+  creator: siteName,
+  publisher: siteName,
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   openGraph: {
-    title: "Varanda Estúdio Web",
+    title: siteName,
     description: "Sites que dão espaço para o seu negócio crescer.",
+    url: siteUrl,
+    siteName,
     locale: "pt_BR",
     type: "website",
   },
-  other: {
-    "codex-preview": "development",
+  twitter: {
+    card: "summary",
+    title: siteName,
+    description: "Sites que dão espaço para o seu negócio crescer.",
   },
   icons: {
     icon: "/favicon.svg",
@@ -46,7 +68,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-BR">
-      <body className={geist.variable}>{children}</body>
+      <body className={geist.variable}>
+        <AccessibilityEnhancements />
+        {children}
+      </body>
     </html>
   );
 }
