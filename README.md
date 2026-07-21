@@ -17,6 +17,9 @@ npm ci
 npm run dev
 ```
 
+A imagem principal do projeto é recomposta automaticamente a partir dos
+fragmentos versionados em `assets/source` antes do desenvolvimento e do build.
+
 ## Validação
 
 ```bash
@@ -50,6 +53,7 @@ npm run publish:cloudflare
 
 - `app/`: páginas, conteúdo e estilos
 - `public/`: imagens e ícones
+- `assets/source/`: fragmentos versionados dos arquivos binários recompostos no build
 - `worker/`: entrada do Cloudflare Worker
 - `tests/`: verificações automatizadas
 - `wrangler.jsonc`: configuração-base do Worker
