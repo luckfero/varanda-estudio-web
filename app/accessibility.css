@@ -1,0 +1,47 @@
+@media (max-width: 860px) {
+  #menu-principal[aria-hidden="true"] {
+    visibility: hidden;
+  }
+
+  #menu-principal[aria-hidden="false"] {
+    visibility: visible;
+  }
+}
+
+.contact-form input:not([type="checkbox"]):focus-visible,
+.contact-form select:focus-visible,
+.contact-form textarea:focus-visible {
+  outline: 3px solid var(--ochre);
+  outline-offset: 3px;
+  border-color: var(--terracotta);
+}
+
+.carousel-dots button {
+  position: relative;
+  min-width: 28px;
+  min-height: 28px;
+  background: transparent;
+}
+
+.carousel-dots button::before {
+  content: "";
+  position: absolute;
+  inset: 50% 0 auto;
+  height: 5px;
+  transform: translateY(-50%);
+  background: rgba(33, 77, 59, .28);
+  transition: width .25s ease, background .25s ease;
+}
+
+.carousel-dots button.is-active::before {
+  background: var(--green-dark);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+}
