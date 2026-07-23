@@ -126,7 +126,7 @@ const projects = [
     ],
     image: "/images/brasa-do-vale-hero.png",
     imageAlt: "Imagem de churrasco usada na página inicial do projeto Brasa do Vale",
-    url: "https://brasa-do-vale.devlucca.chatgpt.site",
+    url: "https://brasa-do-vale.luccaoliveira123.workers.dev/",
     domain: "brasadovale.com.br",
   },
   {
