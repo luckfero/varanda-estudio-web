@@ -460,12 +460,6 @@ img {
   font-weight: 750;
 }
 
-.text-link--dark {
-  margin-top: 1.5rem;
-  color: var(--paper);
-  border-color: rgba(255,255,255,.35);
-}
-
 .hero-footnote {
   margin-top: 3.8rem;
   padding-top: 1rem;
@@ -870,9 +864,11 @@ img {
 
 .project-slide {
   min-width: 100%;
+  display: flex;
 }
 
 .project {
+  width: 100%;
   margin-top: 0;
   display: grid;
   grid-template-columns: 1.35fr .65fr;
@@ -996,6 +992,7 @@ img {
   font-size: clamp(2.6rem, 4vw, 4.8rem);
   font-weight: 400;
   letter-spacing: -.05em;
+  line-height: .92;
 }
 
 .project-info > p:not(.project-label) {
