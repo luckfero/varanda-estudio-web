@@ -198,14 +198,6 @@ function ArrowDownRightIcon() {
   );
 }
 
-function ExternalLinkIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M8 6h10v10M18 6 6 18" />
-    </svg>
-  );
-}
-
 function CarouselArrow({ direction }: { direction: "previous" | "next" }) {
   return (
     <svg className={direction === "previous" ? "is-previous" : ""} viewBox="0 0 24 24" aria-hidden="true">
@@ -520,7 +512,6 @@ export default function Home() {
                           <span /><span /><span />
                           <small>{project.domain}</small>
                         </div>
-                        <div className="project-stamp"><span>ver site</span><ExternalLinkIcon /></div>
                       </a>
                     ) : (
                       <div className={`project-visual project-visual--placeholder project-visual--placeholder-${index + 1}`} role="img" aria-label="Espaço reservado para um próximo projeto">
@@ -543,18 +534,7 @@ export default function Home() {
                       <ul aria-label={project.placeholder ? "Características previstas" : "Entregas do projeto"}>
                         {project.features.map((feature) => <li key={feature}>{feature}</li>)}
                       </ul>
-                      {project.url ? (
-                        <a
-                          className="text-link text-link--dark"
-                          href={project.url}
-                          target="_blank"
-                          rel="noreferrer"
-                          aria-label={`Visitar projeto ${project.name} em uma nova aba`}
-                          tabIndex={currentProject === index ? 0 : -1}
-                        >
-                          Visitar projeto <ExternalLinkIcon />
-                        </a>
-                      ) : (
+                      {!project.url && (
                         <span className="project-soon">Novos trabalhos serão adicionados aqui.</span>
                       )}
                     </div>
