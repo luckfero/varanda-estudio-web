@@ -996,6 +996,7 @@ img {
 }
 
 .project-info > p:not(.project-label) {
+  margin: clamp(1.6rem, 2.2vw, 2.15rem) 0 0;
   color: #cfc7bb;
   line-height: 1.75;
 }
