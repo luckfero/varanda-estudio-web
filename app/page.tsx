@@ -128,48 +128,24 @@ const projects = [
     imageAlt: "Imagem de churrasco usada na página inicial do projeto Brasa do Vale",
     url: "https://brasa-do-vale.luccaoliveira123.workers.dev/",
     domain: "brasadovale.com.br",
+    placeholder: false,
   },
   {
-    name: "Próximo projeto",
-    label: "Portfólio em expansão · Em breve",
+    name: "Nívora Construções",
+    label: "Projeto conceitual · Construção civil",
     description:
-      "Este espaço receberá o próximo site criado pela Varanda, com uma apresentação clara do desafio, das escolhas de projeto e do resultado.",
+      "Um site institucional trilíngue para uma construtora contemporânea, com portfólio de obras, serviços, processo construtivo e pré-diagnóstico de orçamento em uma experiência visual técnica e imersiva.",
     features: [
-      "Novo segmento",
-      "Identidade própria",
-      "Experiência responsiva",
-      "Desenvolvimento completo",
-    ],
-    placeholder: true,
-    domain: "proximo-projeto.com.br",
-  },
-  {
-    name: "Projeto reservado 02",
-    label: "Espaço reservado · Em breve",
-    description:
-      "Espaço preparado para apresentar um novo trabalho com contexto, solução adotada, principais entregas e acesso à demonstração.",
-    features: [
-      "Apresentação do desafio",
+      "Estratégia trilíngue",
+      "Arquitetura da informação",
       "Direção visual",
-      "Solução responsiva",
-      "Link para demonstração",
+      "Desenvolvimento responsivo",
     ],
-    placeholder: true,
-    domain: "novo-trabalho.com.br",
-  },
-  {
-    name: "Projeto reservado 03",
-    label: "Espaço reservado · Em breve",
-    description:
-      "Outra posição reservada para ampliar o portfólio à medida que novos projetos forem concluídos, sem antecipar clientes ou resultados.",
-    features: [
-      "Novo segmento",
-      "Identidade personalizada",
-      "Experiência responsiva",
-      "Desenvolvimento completo",
-    ],
-    placeholder: true,
-    domain: "proxima-historia.com.br",
+    image: "https://nivora-construcoes.luccaoliveira123.workers.dev/images/casa-patio-alto.webp",
+    imageAlt: "Casa contemporânea apresentada na página inicial do projeto Nívora Construções",
+    url: "https://nivora-construcoes.luccaoliveira123.workers.dev/",
+    domain: "nivoraconstrucoes.com.br",
+    placeholder: false,
   },
 ];
 
