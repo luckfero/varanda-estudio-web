@@ -13,13 +13,13 @@ const geist = Geist({
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: `${siteName} | Sites para pequenos negócios`,
+    default: `${siteName} | Sites para negócios brasileiros`,
     template: `%s | ${siteName}`,
   },
   description: siteDescription,
   keywords: [
     "criação de sites",
-    "site para pequeno negócio",
+    "site para negócio",
     "desenvolvimento web",
     "landing page",
     "São Paulo",
