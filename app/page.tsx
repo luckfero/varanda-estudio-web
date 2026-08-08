@@ -147,6 +147,23 @@ const projects = [
     domain: "nivoraconstrucoes.com.br",
     placeholder: false,
   },
+  {
+    name: "Nascente",
+    label: "Projeto conceitual · Perfumaria",
+    description:
+      "Uma loja de perfumaria autoral com catálogo filtrável por coleção e intensidade, guia olfativo em etapas e fluxo de compra completo, da descoberta da fragrância à confirmação do pedido.",
+    features: [
+      "Identidade visual",
+      "Catálogo e filtros",
+      "Guia olfativo",
+      "Fluxo de compra",
+    ],
+    image: "https://nascente-casa-olfativa.luccaoliveira123.workers.dev/images/hq/hero-central-nascente.webp",
+    imageAlt: "Frasco de perfume em vidro âmbar entre folhas escuras, na página inicial do projeto Nascente",
+    url: "https://nascente-casa-olfativa.luccaoliveira123.workers.dev/",
+    domain: "nascentecasa.com.br",
+    placeholder: false,
+  },
 ];
 
 const faqs = [
