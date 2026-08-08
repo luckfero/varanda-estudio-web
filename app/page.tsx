@@ -127,7 +127,6 @@ const projects = [
     image: "/images/brasa-do-vale-hero.png",
     imageAlt: "Imagem de churrasco usada na página inicial do projeto Brasa do Vale",
     url: "https://brasa-do-vale.luccaoliveira123.workers.dev/",
-    domain: "brasadovale.com.br",
     placeholder: false,
   },
   {
@@ -144,7 +143,6 @@ const projects = [
     image: "https://nivora-construcoes.luccaoliveira123.workers.dev/images/casa-patio-alto.webp",
     imageAlt: "Casa contemporânea apresentada na página inicial do projeto Nívora Construções",
     url: "https://nivora-construcoes.luccaoliveira123.workers.dev/",
-    domain: "nivoraconstrucoes.com.br",
     placeholder: false,
   },
   {
@@ -161,7 +159,6 @@ const projects = [
     image: "https://nascente-casa-olfativa.luccaoliveira123.workers.dev/images/hq/hero-central-nascente.webp",
     imageAlt: "Frasco de perfume em vidro âmbar entre folhas escuras, na página inicial do projeto Nascente",
     url: "https://nascente-casa-olfativa.luccaoliveira123.workers.dev/",
-    domain: "nascentecasa.com.br",
     placeholder: false,
   },
 ];
@@ -242,13 +239,16 @@ export default function Home() {
 
   useEffect(() => {
     const revealItems = document.querySelectorAll<HTMLElement>("[data-reveal]");
-    if (!("IntersectionObserver" in window)) {
-      revealItems.forEach((item) => item.classList.add("is-visible"));
-      return;
-    }
+    if (!("IntersectionObserver" in window)) return;
 
+    /* Só agora o CSS passa a esconder: até aqui a página está inteira na
+       tela. Se este efeito nunca rodar, nada some. */
+    document.body.classList.add("reveal-ready");
+
+    let heardFromObserver = false;
     const observer = new IntersectionObserver(
       (entries) => {
+        heardFromObserver = true;
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("is-visible");
@@ -260,7 +260,21 @@ export default function Home() {
     );
 
     revealItems.forEach((item) => observer.observe(item));
-    return () => observer.disconnect();
+
+    /* Rede de segurança. Um observer saudável responde quase de imediato;
+       silêncio significa que este ambiente não entrega esses eventos (aba
+       que nunca pintou, motor sem suporte real). Nesse caso mostra tudo e
+       desiste da animação. */
+    const failsafe = window.setTimeout(() => {
+      if (heardFromObserver) return;
+      revealItems.forEach((item) => item.classList.add("is-visible"));
+      observer.disconnect();
+    }, 1000);
+
+    return () => {
+      window.clearTimeout(failsafe);
+      observer.disconnect();
+    };
   }, []);
 
   useEffect(() => {
@@ -525,16 +539,14 @@ export default function Home() {
                           loading="lazy"
                           decoding="async"
                         />
-                        <div className="project-browser">
+                        <div className="project-browser" aria-hidden="true">
                           <span /><span /><span />
-                          <small>{project.domain}</small>
                         </div>
                       </a>
                     ) : (
                       <div className={`project-visual project-visual--placeholder project-visual--placeholder-${index + 1}`} role="img" aria-label="Espaço reservado para um próximo projeto">
-                        <div className="project-browser">
+                        <div className="project-browser" aria-hidden="true">
                           <span /><span /><span />
-                          <small>{project.domain}</small>
                         </div>
                         <div className="project-placeholder-content" aria-hidden="true">
                           <span>{String(index + 1).padStart(2, "0")}</span>

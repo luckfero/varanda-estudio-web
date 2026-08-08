@@ -82,7 +82,12 @@ img {
   top: 1rem;
 }
 
-[data-reveal] {
+/* A revelação só começa a esconder depois que o JavaScript avisa que está
+   vivo, marcando `.reveal-ready`. Sem essa trava a página nascia com o
+   conteúdo em `opacity: 0` e dependia do script para aparecer: se ele
+   falhasse, demorasse ou fosse bloqueado, o visitante via uma página em
+   branco. Animação nunca pode custar o conteúdo. */
+.reveal-ready [data-reveal] {
   opacity: 0;
   transform: translate3d(0, 34px, 0) scale(.992);
   filter: blur(2px);
@@ -92,7 +97,7 @@ img {
     filter 0.7s ease var(--reveal-delay, 0ms);
 }
 
-[data-reveal].is-visible {
+.reveal-ready [data-reveal].is-visible {
   opacity: 1;
   transform: translate3d(0, 0, 0) scale(1);
   filter: blur(0);
@@ -923,7 +928,6 @@ img {
 
 .project-browser span:nth-child(2) { background: var(--ochre); }
 .project-browser span:nth-child(3) { background: var(--green); }
-.project-browser small { margin-left: auto; font-size: .55rem; }
 
 .project-stamp {
   position: absolute;
@@ -1793,7 +1797,7 @@ img {
 }
 
 @media (min-width: 861px) {
-  [data-reveal] {
+  .reveal-ready [data-reveal] {
     transform: translate3d(var(--reveal-x, 0), 58px, 0) scale(.985);
   }
 
@@ -1974,12 +1978,12 @@ img {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
-  [data-reveal] {
+  .reveal-ready [data-reveal] {
     opacity: 0;
     transform: none;
     filter: none;
     transition: opacity .3s linear !important;
   }
-  [data-reveal].is-visible { opacity: 1; }
+  .reveal-ready [data-reveal].is-visible { opacity: 1; }
   .project-track { transition: none; }
 }
