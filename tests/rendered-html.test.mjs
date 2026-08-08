@@ -40,7 +40,7 @@ test("renders the homepage with production metadata and security headers", async
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   assertSecurityHeaders(response);
-  assert.match(html, /<title>Varanda Estúdio Web \| Sites para pequenos negócios<\/title>/i);
+  assert.match(html, /<title>Varanda Estúdio Web \| Sites para negócios brasileiros<\/title>/i);
   assert.match(html, /rel=["']canonical["'][^>]*href=["']https:\/\/varanda-estudio-web\.luccaoliveira123\.workers\.dev\/?["']/i);
   assert.match(html, /href=["']\/privacidade["']/i);
   assert.doesNotMatch(html, /codex-preview/i);

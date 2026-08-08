@@ -1,14 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Geist } from "next/font/google";
 import AccessibilityEnhancements from "./accessibility-enhancements";
 import { siteDescription, siteName, siteUrl } from "./site-config";
+import "./fonts.css";
 import "./globals.css";
 import "./accessibility.css";
-
-const geist = Geist({
-  variable: "--font-sans",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -68,7 +63,19 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-BR">
-      <body className={geist.variable}>
+      <head>
+        {/* Sem isto a fonte só é descoberta depois que o CSS é lido, o que
+            atrasa o texto final em uma ida e volta de rede. Só a faixa
+            latina: é a única que uma página em português usa de fato. */}
+        <link
+          rel="preload"
+          href="/fonts/geist/geist-latin.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+      </head>
+      <body>
         <AccessibilityEnhancements />
         {children}
       </body>

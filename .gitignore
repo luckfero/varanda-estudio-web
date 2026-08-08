@@ -43,3 +43,7 @@ next-env.d.ts
 
 # Recreated from versioned source chunks before development and builds.
 /public/images/brasa-do-vale-hero.png
+
+# Cache de build do vinext. Foi versionado por engano e trazia
+# caminhos absolutos da máquina que gerou o build.
+/.vinext/
