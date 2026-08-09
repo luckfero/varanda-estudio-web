@@ -187,9 +187,9 @@ img {
 .brand small {
   margin-top: 0.25rem;
   color: var(--charcoal);
-  font-size: 0.57rem;
+  font-size: 0.64rem;
   font-weight: 750;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 
@@ -660,7 +660,7 @@ img {
 .floating-note--bottom small {
   display: block;
   font-family: var(--font-sans), sans-serif;
-  font-size: 0.58rem;
+  font-size: 0.64rem;
   font-weight: 800;
   letter-spacing: .1em;
   text-transform: uppercase;
@@ -1747,8 +1747,11 @@ img {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 1rem;
-  color: #746d66;
-  font-size: .62rem;
+  /* Era .62rem (9,9px) em caixa alta. Aqui vivem a área de atendimento, o
+     link de privacidade e o aviso de direitos — conteúdo que alguém pode
+     precisar ler, não ornamento de rodapé. */
+  color: #6b645d;
+  font-size: .7rem;
   letter-spacing: .05em;
   text-transform: uppercase;
 }
