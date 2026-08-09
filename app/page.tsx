@@ -232,7 +232,10 @@ function LeafMark({ small = false }: { small?: boolean }) {
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [formStatus, setFormStatus] = useState<"idle" | "success">("idle");
+  const [formStatus, setFormStatus] = useState<"idle" | "success" | "blocked">("idle");
+  /* Guardado para o caso de a aba ser bloqueada: aí o link vira algo
+     clicável na própria página, em vez de um beco sem saída. */
+  const [whatsappLink, setWhatsappLink] = useState("");
   const [currentProject, setCurrentProject] = useState(0);
   const touchStartX = useRef<number | null>(null);
   const scrollAnimationFrame = useRef<number | null>(null);
@@ -360,19 +363,35 @@ export default function Home() {
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const texto = (campo: string) => String(data.get(campo) ?? "").trim();
     const message = [
       "Olá, Lucca! Vim pelo site da Varanda Estúdio Web.",
       "",
-      `Meu nome: ${data.get("name")}`,
-      `Negócio: ${data.get("business")}`,
-      `E-mail: ${data.get("email")}`,
-      `WhatsApp: ${data.get("phone")}`,
-      `Tipo de site: ${data.get("siteType")}`,
-      `Sobre o projeto: ${data.get("summary")}`,
+      `Meu nome: ${texto("name")}`,
+      `Negócio: ${texto("business")}`,
+      `E-mail: ${texto("email")}`,
+      `WhatsApp: ${texto("phone")}`,
+      `Tipo de site: ${texto("siteType")}`,
+      "",
+      "Sobre o projeto:",
+      texto("summary"),
     ].join("\n");
 
-    setFormStatus("success");
-    window.open(`${whatsappUrl}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+    const link = `${whatsappUrl}?text=${encodeURIComponent(message)}`;
+    setWhatsappLink(link);
+
+    /* `window.open` devolve `null` quando o navegador bloqueia a aba — é
+       assim que se detecta o bloqueio. Antes o estado ia para "success" de
+       qualquer jeito: quem tinha bloqueador via "mensagem preparada" e nada
+       acontecia, sem nada para clicar.
+
+       O `noopener` **não** pode ir na string de opções: com ele a chamada
+       devolve `null` mesmo quando a aba abre, por especificação, e todo
+       envio bem-sucedido seria reportado como bloqueado. Cortar o `opener`
+       na mão dá o mesmo isolamento e ainda deixa a referência para testar. */
+    const aba = window.open(link, "_blank");
+    if (aba) aba.opener = null;
+    setFormStatus(aba ? "success" : "blocked");
   }
 
   return (
@@ -803,7 +822,19 @@ export default function Home() {
             </button>
             <p className="form-hint">Ao continuar, o WhatsApp abrirá uma mensagem com as informações preenchidas. Nada é armazenado em um banco de dados deste site.</p>
             {formStatus === "success" && (
-              <p className="form-success" role="status">Mensagem preparada. Se o WhatsApp não abrir, verifique se o navegador bloqueou a nova aba e tente novamente.</p>
+              <p className="form-success" role="status">
+                Mensagem preparada e aberta no WhatsApp. Confira e toque em enviar
+                para que ela chegue até mim.
+              </p>
+            )}
+            {formStatus === "blocked" && (
+              <p className="form-success" role="status">
+                O navegador bloqueou a nova aba.{" "}
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                  Abrir a mensagem no WhatsApp
+                </a>{" "}
+                — os dados já preenchidos vão junto.
+              </p>
             )}
           </form>
         </section>
