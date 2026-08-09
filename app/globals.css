@@ -18,6 +18,11 @@
   box-sizing: border-box;
 }
 
+/* `picture` sai do fluxo para que o `img` continue sendo o filho que as
+   regras de layout esperam. Sem isso ele é `inline` e a caixa dele briga
+   com as proporções escritas para o `img`. */
+picture { display: contents; }
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 88px;
@@ -903,14 +908,14 @@ img {
   background: linear-gradient(110deg, rgba(17,18,15,.08), rgba(17,18,15,.32));
 }
 
-.project-visual > img {
+.project-visual img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform .7s ease;
 }
 
-.project-visual:hover > img { transform: scale(1.025); }
+.project-visual:hover img { transform: scale(1.025); }
 
 .project-browser {
   position: absolute;

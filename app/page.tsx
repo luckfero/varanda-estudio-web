@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, MouseEvent, TouchEvent, useEffect, useRef, useState } from "react";
+import Picture from "./picture";
 
 const whatsappUrl = "https://wa.me/5511942263007";
 
@@ -124,7 +125,7 @@ const projects = [
       "Design responsivo",
       "Desenvolvimento",
     ],
-    image: "/images/brasa-do-vale-hero.png",
+    image: "brasa-do-vale-hero",
     imageAlt: "Imagem de churrasco usada na página inicial do projeto Brasa do Vale",
     url: "https://brasa-do-vale.luccaoliveira123.workers.dev/",
     placeholder: false,
@@ -140,7 +141,7 @@ const projects = [
       "Direção visual",
       "Desenvolvimento responsivo",
     ],
-    image: "https://nivora-construcoes.luccaoliveira123.workers.dev/images/casa-patio-alto.webp",
+    image: "nivora-casa-patio-alto",
     imageAlt: "Casa contemporânea apresentada na página inicial do projeto Nívora Construções",
     url: "https://nivora-construcoes.luccaoliveira123.workers.dev/",
     placeholder: false,
@@ -156,7 +157,7 @@ const projects = [
       "Guia olfativo",
       "Fluxo de compra",
     ],
-    image: "https://nascente-casa-olfativa.luccaoliveira123.workers.dev/images/hq/hero-central-nascente.webp",
+    image: "nascente-hero-central",
     imageAlt: "Frasco de perfume em vidro âmbar entre folhas escuras, na página inicial do projeto Nascente",
     url: "https://nascente-casa-olfativa.luccaoliveira123.workers.dev/",
     placeholder: false,
@@ -548,15 +549,19 @@ export default function Home() {
                         aria-label={`Abrir demonstração do projeto ${project.name} em uma nova aba`}
                         tabIndex={currentProject === index ? 0 : -1}
                       >
-                        {/* This portfolio image is below the fold and intentionally uses native lazy loading. */}
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={project.image}
+                        {/* Abaixo da dobra: carregamento preguiçoso de propósito.
+
+                            O `sizes` não é a largura da caixa. A foto entra
+                            com `object-fit: cover` numa caixa de proporção
+                            diferente, então quem determina o recorte é a
+                            altura — e a largura de imagem necessária passa
+                            da largura visível. Medido em cada faixa: 152vw
+                            no celular, 103vw em 768, 91vw em 1024, 79vw em
+                            1280, 68vw em 1440 e 61vw em 1920. */}
+                        <Picture
+                          name={project.image}
                           alt={project.imageAlt}
-                          width={1584}
-                          height={990}
-                          loading="lazy"
-                          decoding="async"
+                          sizes="(max-width: 700px) 155vw, (max-width: 900px) 103vw, (max-width: 1100px) 91vw, (max-width: 1350px) 79vw, (max-width: 1600px) 68vw, 61vw"
                         />
                         <div className="project-browser" aria-hidden="true">
                           <span /><span /><span />
