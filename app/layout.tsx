@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import AccessibilityEnhancements from "./accessibility-enhancements";
+import StructuredData from "./structured-data";
 import { siteDescription, siteName, siteUrl } from "./site-config";
 import "./fonts.css";
 import "./globals.css";
@@ -76,6 +77,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
       </head>
       <body>
+        <StructuredData />
         <AccessibilityEnhancements />
         {children}
       </body>

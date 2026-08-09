@@ -98,3 +98,29 @@ test("renders the privacy route with its own canonical URL", async () => {
   assert.equal(canonicalDe(html), `${SITE}/privacidade`);
   assert.doesNotMatch(html, /codex-preview/i);
 });
+
+test("a home publica dados estruturados válidos e sem dado inventado", async () => {
+  const response = await fetchRoute("/");
+  const html = await response.text();
+
+  const bloco = html.match(
+    /<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/i,
+  );
+  assert.ok(bloco, "nenhum bloco JSON-LD na página");
+
+  /* Se o JSON estiver malformado o Google descarta tudo em silêncio, então
+     o teste precisa fazer o parse, não só procurar a string. */
+  const dados = JSON.parse(bloco[1]);
+  assert.equal(dados["@context"], "https://schema.org");
+  assert.equal(dados["@type"], "ProfessionalService");
+  assert.equal(dados.name, "Varanda Estúdio Web");
+  assert.equal(dados.url, "https://varandaestudioweb.com");
+  assert.ok(Array.isArray(dados.serviceType) && dados.serviceType.length > 0);
+  assert.equal(dados.hasOfferCatalog.itemListElement.length, 3);
+
+  /* O protocolo proíbe inventar dado comercial. Estes campos só poderiam
+     ser preenchidos com número que ninguém confirmou. */
+  for (const campo of ["aggregateRating", "review", "priceRange", "foundingDate", "address", "taxID"]) {
+    assert.equal(dados[campo], undefined, `${campo} não pode ser inventado`);
+  }
+});
