@@ -21,6 +21,7 @@ test("worker defines the expected baseline security headers", () => {
     "X-Frame-Options",
     "Referrer-Policy",
     "Permissions-Policy",
+    "Strict-Transport-Security",
   ]) {
     assert.match(worker, new RegExp(header, "i"));
   }
