@@ -329,12 +329,27 @@
   background: var(--ochre);
 }
 
+/* Esta seção corre sobre a faixa ochre, e ochre é um fundo exigente: só tom
+   escuro passa sobre ele. Creme mede 2,25:1 e branco 2,58:1 — os dois abaixo
+   do mínimo até para texto grande. */
+
+.portfolio-intro .section-index {
+  /* O global usa --green, que sobre o ochre dá 3,57:1. O --green-dark, que o
+     h2 aqui do lado já usa, dá 4,96:1 — e os dois verdes são quase o mesmo a
+     olho nu. Escopado à faixa: nas outras seções o --green está sobre creme
+     e mede 8,37:1, não há o que corrigir lá. */
+  color: var(--green-dark);
+}
+
 .portfolio-intro h2 {
   color: var(--green-dark);
 }
 
 .portfolio-intro h2 em {
-  color: var(--cream);
+  /* Era --cream, com 2,25:1. A ênfase não dependia da cor clara: continua
+     no itálico e na serifada, que é o que marca o destaque. Em carvão o
+     contraponto passa a ser por profundidade, com 6,02:1. */
+  color: var(--charcoal);
   font-weight: 400;
 }
 
