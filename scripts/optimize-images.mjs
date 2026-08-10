@@ -27,8 +27,16 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SOURCE_DIR = join(root, "assets", "originais");
 const OUT_DIR = join(root, "public", "images", "r");
 
-/** Larguras alvo. Imagem menor que a largura nunca é ampliada. */
-const WIDTHS = [480, 800, 1200, 1600];
+/** Larguras alvo. Imagem menor que a largura nunca é ampliada.
+ *
+ * O 2200 existe por causa de um salto medido em produção. A foto do
+ * Nascente tem 3344px de origem e, sem nada entre 1600 e 3344, o celular era
+ * obrigado a baixar os 3344 — 317 KB para exibir algo que precisa de ~2050.
+ * Um celular de 360px com DPR 3 exige 2052px de origem para não perder
+ * nitidez (altura da caixa × proporção × DPR); 2200 cobre isso com folga e
+ * é o teto real da faixa móvel. As outras duas fotos têm origem menor que
+ * 2200 e simplesmente não ganham esta variante. */
+const WIDTHS = [480, 800, 1200, 1600, 2200];
 
 /* Qualidade de codificação.
  *

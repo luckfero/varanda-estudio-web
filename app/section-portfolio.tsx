@@ -74,15 +74,28 @@ export default function SectionPortfolio() {
 
                           O `sizes` não é a largura da caixa. A foto entra
                           com `object-fit: cover` numa caixa de proporção
-                          diferente, então quem determina o recorte é a
-                          altura — e a largura de imagem necessária passa
-                          da largura visível. Medido em cada faixa: 152vw
-                          no celular, 103vw em 768, 91vw em 1024, 79vw em
-                          1280, 68vw em 1440 e 61vw em 1920. */}
+                          diferente, então quem manda no recorte é a altura,
+                          e a largura de origem necessária é `altura da
+                          caixa × proporção da foto` — maior que a largura
+                          visível.
+
+                          Em **pixels**, e não em `vw`: a exigência nasce da
+                          altura da caixa, que é fixa por faixa (`min-height`
+                          de 360px abaixo de 600 e 480px acima), então ela
+                          quase não acompanha a largura da tela. Escrita em
+                          `vw`, a mesma medida acertava num ponto e errava
+                          nos outros — em 360px pedia 155vw = 558px onde o
+                          necessário eram 666px, e a foto saía 20% abaixo do
+                          ideal justamente no celular mais estreito.
+
+                          Medido no site publicado; cada valor cobre o pior
+                          caso da sua faixa: 666px em 360, 622px até 599,
+                          792px até 860, 930px até 1100, 1006px até 1600 e
+                          1179px acima disso. */}
                       <Picture
                         name={project.image}
                         alt={project.imageAlt}
-                        sizes="(max-width: 700px) 155vw, (max-width: 900px) 103vw, (max-width: 1100px) 91vw, (max-width: 1350px) 79vw, (max-width: 1600px) 68vw, 61vw"
+                        sizes="(max-width: 374px) 670px, (max-width: 599px) 630px, (max-width: 860px) 800px, (max-width: 1100px) 935px, (max-width: 1600px) 1010px, 1185px"
                       />
                       <div className="project-browser" aria-hidden="true">
                         <span /><span /><span />
