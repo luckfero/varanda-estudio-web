@@ -1,0 +1,57 @@
+# Varredura dos quatro sites no WebKit, o motor do Safari.
+#
+# Existe aqui, e não na máquina do Lucca, porque o WebKit do Playwright não
+# sobe no Windows dele: o Smart App Control recusa os DLLs do pacote por
+# assinatura, e desligar essa política é irreversível no Windows 11. Em Linux
+# não há essa restrição.
+#
+# Repositório público: os executores padrão do GitHub são gratuitos e sem
+# limite de minutos. Esta varredura leva cerca de quatro.
+name: Safari (WebKit)
+
+on:
+  # Botão manual em Actions → Safari (WebKit) → Run workflow.
+  workflow_dispatch:
+  # Segunda-feira, 09:00 UTC (06:00 em Brasília).
+  schedule:
+    - cron: "0 9 * * 1"
+
+# Só uma execução por vez: duas varreduras simultâneas contra os mesmos
+# endereços de produção não somam informação.
+concurrency:
+  group: safari
+  cancel-in-progress: false
+
+jobs:
+  webkit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Sem `npm ci`: a varredura bate em produção e não precisa das
+      # dependências do site, só do Playwright.
+      - name: Instalar Playwright
+        run: npm install --no-save playwright@1
+
+      - name: Baixar o WebKit
+        run: npx playwright install --with-deps webkit chromium
+
+      - name: Varrer
+        run: node scripts/varredura-webkit.mjs
+
+      # As capturas só são geradas onde houve achado — é o que se olha
+      # primeiro quando o job falha.
+      - name: Guardar capturas
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: capturas-safari
+          path: capturas/
+          if-no-files-found: ignore
+          retention-days: 14
