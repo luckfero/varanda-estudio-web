@@ -121,7 +121,8 @@
 
 .signature span {
   margin-left: .5rem;
-  color: #7d756e;
+  /* #7d756e media 4,24:1; --ink-muted da 7,00:1. */
+  color: var(--ink-muted);
   font-family: var(--font-sans), sans-serif;
   font-size: .67rem;
   font-style: normal;
@@ -214,7 +215,7 @@
 }
 
 .faq-list summary::-webkit-details-marker { display: none; }
-.faq-list summary span { color: var(--terracotta); font-family: var(--font-sans), sans-serif; font-size: .65rem; font-weight: 750; }
+.faq-list summary span { color: var(--terracotta-dark); font-family: var(--font-sans), sans-serif; font-size: .65rem; font-weight: 750; }
 
 .faq-list summary i,
 .faq-list summary i::after {

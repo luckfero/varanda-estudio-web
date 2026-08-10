@@ -44,7 +44,8 @@
 .process-list article:last-child { border-bottom: 1px solid var(--line); }
 
 .process-list article > span {
-  color: var(--terracotta);
+  /* --terracotta media 3,88:1 sobre o creme; o tom escuro da 5,74:1. */
+  color: var(--terracotta-dark);
   font-family: var(--serif);
   font-size: 1.3rem;
   font-style: italic;
@@ -185,7 +186,7 @@
   max-width: 880px;
 }
 
-.care-heading h2 em { color: var(--ochre); font-weight: 400; }
+.care-heading h2 em { color: var(--ochre-light); font-weight: 400; }
 .care-heading > p { max-width: 600px; margin-top: 2.35rem; color: var(--paper); line-height: 1.7; }
 
 .care-grid {

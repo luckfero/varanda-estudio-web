@@ -624,7 +624,10 @@
 }
 
 .carousel-status > span:not(.sr-only) {
-  color: rgba(33,77,59,.62);
+  /* O verde a 62% de opacidade media 3,16:1 sobre o ochre. Solido nao
+     bastava (4,22:1); o carvao resolve sem mudar o peso visual do "/ 03",
+     que ja e discreto pelo tamanho. */
+  color: var(--charcoal);
   font-size: .67rem;
   font-weight: 750;
 }
