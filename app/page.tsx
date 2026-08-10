@@ -1,5 +1,4 @@
-"use client";
-
+import Reveal from "./reveal";
 import SectionAbertura from "./section-abertura";
 import SectionContato from "./section-contato";
 import SectionOferta from "./section-oferta";
@@ -7,7 +6,6 @@ import SectionPortfolio from "./section-portfolio";
 import SectionSobre from "./section-sobre";
 import SiteFooter from "./site-footer";
 import SiteHeader from "./site-header";
-import { useReveal } from "./use-reveal";
 
 /**
  * Monta a página única.
@@ -17,12 +15,17 @@ import { useReveal } from "./use-reveal";
  * `data.ts`, os ícones para `icons.tsx`, e cada estado passou a morar na
  * seção que o usa — o menu no cabeçalho, o carrossel no portfólio, o envio
  * no contato. Nada aqui precisa saber de nenhum dos três.
+ *
+ * Este arquivo é **componente de servidor**: não tem `"use client"`. Era
+ * cliente só porque chamava `useReveal` aqui dentro, e isso arrastava os 476
+ * elementos da página para a hidratação. O gancho foi para `<Reveal />`, uma
+ * casca que não renderiza nada, e agora cada seção decide sozinha se precisa
+ * de JavaScript no navegador.
  */
 export default function Home() {
-  useReveal();
-
   return (
     <>
+      <Reveal />
       <a className="skip-link" href="#conteudo">
         Pular para o conteúdo
       </a>
