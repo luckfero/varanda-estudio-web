@@ -48,3 +48,6 @@ next-env.d.ts
 # Cache de build do vinext. Foi versionado por engano e trazia
 # caminhos absolutos da máquina que gerou o build.
 /.vinext/
+
+# Cache incremental do TypeScript — regra 9.1: cache de build não se versiona.
+*.tsbuildinfo
