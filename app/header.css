@@ -1,0 +1,167 @@
+/**
+ * Cabecalho: marca, folha, navegacao e o botao de menu.
+ */
+
+.site-header {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  right: 0;
+  min-height: 82px;
+  padding: 0.85rem clamp(1.25rem, 4vw, 4.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(244, 239, 230, 0.91);
+  border-bottom: 1px solid rgba(40, 35, 31, 0.09);
+  backdrop-filter: blur(14px);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.72rem;
+  min-width: max-content;
+}
+
+.brand > span:last-child {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.brand strong {
+  color: var(--green);
+  font-family: var(--serif);
+  font-size: 1.45rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.brand small {
+  margin-top: 0.25rem;
+  color: var(--charcoal);
+  font-size: 0.64rem;
+  font-weight: 750;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.leaf-mark {
+  position: relative;
+  display: inline-block;
+  width: 88px;
+  height: 88px;
+  border: 1px solid rgba(33, 77, 59, 0.25);
+  border-radius: 50%;
+}
+
+.leaf-mark::after {
+  content: "";
+  position: absolute;
+  left: 43px;
+  top: 20px;
+  width: 1px;
+  height: 49px;
+  background: var(--green);
+  transform: rotate(8deg);
+  transform-origin: bottom;
+}
+
+.leaf-mark i {
+  position: absolute;
+  width: 18px;
+  height: 10px;
+  border: 1px solid var(--green);
+  border-radius: 100% 0 100% 0;
+  transform: rotate(-23deg);
+}
+
+.leaf-mark i:nth-child(1) { left: 27px; top: 32px; }
+.leaf-mark i:nth-child(2) { left: 42px; top: 42px; transform: scaleX(-1) rotate(-23deg); }
+.leaf-mark i:nth-child(3) { left: 28px; top: 51px; }
+
+.leaf-mark--small {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  background: var(--green);
+}
+
+.leaf-mark--small::after {
+  left: 20px;
+  top: 8px;
+  height: 26px;
+  background: var(--cream);
+}
+
+.leaf-mark--small i {
+  width: 9px;
+  height: 5px;
+  border-color: var(--cream);
+}
+
+.leaf-mark--small i:nth-child(1) { left: 12px; top: 15px; }
+.leaf-mark--small i:nth-child(2) { left: 20px; top: 20px; }
+.leaf-mark--small i:nth-child(3) { left: 13px; top: 25px; }
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.1rem, 2.4vw, 2.4rem);
+  color: #49423c;
+  font-size: 0.8rem;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+}
+
+.nav > a:not(.nav-cta) {
+  position: relative;
+  padding: 0.6rem 0;
+}
+
+.nav > a:not(.nav-cta)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: 0.25rem;
+  height: 1px;
+  background: var(--terracotta);
+  transition: right 0.25s ease;
+}
+
+.nav > a:not(.nav-cta):hover::after {
+  right: 0;
+}
+
+.nav-cta {
+  padding: 0.85rem 1.2rem;
+  background: var(--green);
+  color: white;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.nav-cta:hover {
+  background: var(--green-dark);
+  transform: translateY(-2px);
+}
+
+.menu-toggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line);
+  background: transparent;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.menu-toggle span {
+  width: 20px;
+  height: 1px;
+  background: var(--charcoal);
+}

@@ -1,0 +1,219 @@
+/**
+ * Processo de trabalho, planos e manutencao.
+ */
+
+.process {
+  display: grid;
+  grid-template-columns: .82fr 1.18fr;
+  gap: 8vw;
+  background: var(--paper);
+}
+
+.process-heading {
+  position: sticky;
+  top: 120px;
+  align-self: start;
+}
+
+.process-heading h2 {
+  margin: 1.5rem 0 0;
+  color: var(--green-dark);
+  font-family: var(--serif);
+  font-size: clamp(3rem, 4.6vw, 5rem);
+  font-weight: 400;
+  letter-spacing: -.05em;
+  line-height: .96;
+}
+
+.process-heading > p {
+  max-width: 380px;
+  margin-top: 1.8rem;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+
+.process-list article {
+  min-height: 180px;
+  padding: 2rem 0;
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 1.2rem;
+  border-top: 1px solid var(--line);
+}
+
+.process-list article:last-child { border-bottom: 1px solid var(--line); }
+
+.process-list article > span {
+  color: var(--terracotta);
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-style: italic;
+}
+
+.process-list h3 {
+  margin: 0;
+  color: var(--green);
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 2.7vw, 2.8rem);
+  font-weight: 400;
+}
+
+.process-list p {
+  max-width: 550px;
+  margin: .85rem 0 0;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+
+.pricing {
+  background: var(--cream);
+}
+
+.pricing-heading h2 { color: var(--green-dark); }
+
+.pricing-heading > p {
+  max-width: 350px;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+
+.pricing-grid {
+  margin-top: 4.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: stretch;
+  gap: 1rem;
+}
+
+.price-card {
+  padding: 2.2rem;
+  border: 1px solid var(--line);
+  background: rgba(251,248,242,.5);
+}
+
+.price-card.is-featured {
+  background: var(--green);
+  color: var(--paper);
+  border-color: var(--green);
+  transform: translateY(-16px);
+}
+
+.price-eyebrow {
+  margin: 0;
+  color: var(--terracotta);
+  font-size: .65rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.is-featured .price-eyebrow { color: var(--ochre); }
+
+.price-card h3 {
+  margin: 1.1rem 0 0;
+  font-family: var(--serif);
+  font-size: 2.6rem;
+  font-weight: 400;
+}
+
+.price-description {
+  min-height: 55px;
+  color: var(--ink-soft);
+  font-size: .88rem;
+  line-height: 1.6;
+}
+
+.is-featured .price-description { color: #cfc7bb; }
+
+.price {
+  margin-top: 2rem;
+  display: flex;
+  align-items: baseline;
+  gap: .35rem;
+}
+
+.price small { font-size: .8rem; }
+.price strong { font-family: var(--serif); font-size: clamp(3.1rem, 4.5vw, 5rem); font-weight: 400; letter-spacing: -.05em; }
+.price span { color: var(--ink-soft); font-size: .68rem; }
+.is-featured .price span { color: #cfc7bb; }
+
+.future-price {
+  margin: -.35rem 0 1.8rem;
+  color: #7f776f;
+  font-size: .7rem;
+}
+
+.is-featured .future-price { color: #afa79c; }
+
+.price-card ul {
+  margin: 2rem 0 0;
+  padding: 1.6rem 0 0;
+  border-top: 1px solid var(--line);
+  list-style: none;
+  display: grid;
+  gap: .85rem;
+  color: var(--ink-soft);
+  font-size: .79rem;
+}
+
+.is-featured ul { border-color: rgba(255,255,255,.2); color: #d8d0c4; }
+.price-card li::before { content: "✓"; margin-right: .65rem; color: var(--terracotta); font-weight: 800; }
+.is-featured li::before { color: var(--ochre); }
+
+.launch-note {
+  max-width: 760px;
+  margin: 2rem auto 0;
+  color: #766f68;
+  font-size: .72rem;
+  line-height: 1.65;
+  text-align: center;
+}
+
+.care {
+  background: var(--terracotta);
+  color: var(--paper);
+}
+
+.care-heading {
+  max-width: 880px;
+}
+
+.care-heading h2 em { color: var(--ochre); font-weight: 400; }
+.care-heading > p { max-width: 600px; margin-top: 2.35rem; color: #f0d9ce; line-height: 1.7; }
+
+.care-grid {
+  margin-top: 4rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid rgba(255,255,255,.25);
+  border-bottom: 1px solid rgba(255,255,255,.25);
+}
+
+.care-grid article {
+  padding: 2.2rem clamp(1.2rem, 3vw, 3rem);
+  border-right: 1px solid rgba(255,255,255,.25);
+}
+
+.care-grid article:last-child { border-right: 0; }
+.care-grid h3 { margin: 0; font-family: var(--serif); font-size: 2rem; font-weight: 400; }
+
+.care-price { margin: 1.3rem 0; display: flex; align-items: baseline; gap: .25rem; }
+.care-price strong { font-family: var(--serif); font-size: 3.5rem; font-weight: 400; }
+.care-price small, .care-price span { color: #f1d6ca; font-size: .72rem; }
+.care-grid p {
+  margin: .65rem 0;
+  color: var(--paper);
+  font-size: .87rem;
+  font-weight: 650;
+  line-height: 1.5;
+}
+
+.care-notes {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  color: #f0d9ce;
+  font-size: .7rem;
+  line-height: 1.6;
+}

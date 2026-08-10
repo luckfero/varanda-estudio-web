@@ -3,7 +3,17 @@ import AccessibilityEnhancements from "./accessibility-enhancements";
 import StructuredData from "./structured-data";
 import { siteDescription, siteName, siteUrl } from "./site-config";
 import "./fonts.css";
-import "./globals.css";
+/* A ordem destes imports E a cascata. Foram partidos em intervalos
+   contiguos do arquivo original justamente para que ela permanecesse
+   identica — o responsivo por ultimo, que e quem sobrescreve. */
+import "./base.css";
+import "./header.css";
+import "./hero.css";
+import "./portfolio.css";
+import "./process.css";
+import "./about.css";
+import "./contact.css";
+import "./responsive.css";
 import "./accessibility.css";
 
 export const metadata: Metadata = {

@@ -1,0 +1,93 @@
+/**
+ * Formulario de contato e rodape.
+ */
+
+.consent {
+  margin: .6rem 0 1.4rem;
+  display: flex;
+  align-items: flex-start;
+  gap: .7rem;
+  color: #6e6760;
+  font-size: .69rem;
+  line-height: 1.55;
+}
+
+/* 16px é o padrão do sistema e fica apertado para o dedo. `flex-shrink: 0`
+   impede que a caixa achate ao lado do texto longo do consentimento. */
+.consent input {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  accent-color: var(--green);
+}
+.consent a { color: var(--green); text-decoration: underline; }
+.contact-form .button { width: 100%; }
+.form-hint { margin: 1.15rem 0 0; color: #777068; font-size: .65rem; line-height: 1.5; text-align: center; }
+.form-success { padding: .8rem; background: rgba(33,77,59,.1); color: var(--green-dark); font-size: .75rem; text-align: center; }
+
+.footer {
+  padding: 3.2rem clamp(1.25rem, 5vw, 5.5rem) 2rem;
+  background: var(--cream);
+}
+
+.footer-top {
+  padding-bottom: 2.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand--footer { justify-self: start; }
+.footer-top > p { margin: 0; color: var(--green); font-family: var(--serif); font-size: 1.2rem; font-style: italic; text-align: center; }
+/* `padding-block` para o alvo chegar aos 24px mínimos: o link media
+   18px de altura. */
+.back-top { justify-self: end; padding-block: 5px; color: var(--green); font-size: .75rem; font-weight: 700; }
+
+.footer-bottom {
+  padding-top: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  /* Era .62rem (9,9px) em caixa alta. Aqui vivem a área de atendimento, o
+     link de privacidade e o aviso de direitos — conteúdo que alguém pode
+     precisar ler, não ornamento de rodapé. */
+  color: #6b645d;
+  font-size: .7rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.footer-location { justify-self: start; }
+.footer-bottom a { justify-self: center; display: inline-block; padding-block: 5px; color: var(--green); }
+.footer-copyright { justify-self: end; text-align: right; }
+
+.legal-page {
+  min-height: 100vh;
+  padding: 3rem clamp(1.25rem, 8vw, 9rem) 5rem;
+  background:
+    radial-gradient(circle at 92% 5%, rgba(199,154,67,.25) 0 9%, transparent 9.2%),
+    var(--cream);
+}
+
+.legal-page > article {
+  max-width: 820px;
+  margin: 6rem auto 2.5rem;
+}
+
+.legal-page h1 {
+  margin: 0;
+  color: var(--green-dark);
+  font-family: var(--serif);
+  font-size: clamp(3.2rem, 7vw, 6.5rem);
+  font-weight: 400;
+  letter-spacing: -.055em;
+}
+
+.legal-updated { margin: 1rem 0 3rem; color: #756e66; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; }
+.legal-page h2 { margin: 2.4rem 0 .7rem; color: var(--green); font-family: var(--serif); font-size: 1.65rem; font-weight: 500; }
+.legal-page article p:not(.kicker) { color: var(--ink-soft); line-height: 1.8; }
+.legal-page article a { color: var(--terracotta-dark); text-decoration: underline; }
+.legal-back { margin: 0 auto; display: flex; width: max-content; }
