@@ -92,7 +92,10 @@
 }
 
 .price-card.is-featured {
-  background: var(--green);
+  /* Verde escuro em vez do verde médio: o rótulo em ochre deste cartão
+     media 3,71:1 sobre o --green e passa a 4,96:1 sobre o --green-dark.
+     Foi o único jeito de manter o ochre, que é o acento do cartão. */
+  background: var(--green-dark);
   color: var(--paper);
   border-color: var(--green);
   transform: translateY(-16px);
@@ -100,7 +103,9 @@
 
 .price-eyebrow {
   margin: 0;
-  color: var(--terracotta);
+  /* --terracotta sobre o creme do cartão dá 3,67:1; o tom escuro dá 5,35:1
+     e é a mesma família de cor. */
+  color: var(--terracotta-dark);
   font-size: .65rem;
   font-weight: 800;
   letter-spacing: .14em;
@@ -139,7 +144,7 @@
 
 .future-price {
   margin: -.35rem 0 1.8rem;
-  color: #7f776f;
+  color: var(--ink-muted);
   font-size: .7rem;
 }
 
@@ -163,14 +168,16 @@
 .launch-note {
   max-width: 760px;
   margin: 2rem auto 0;
-  color: #766f68;
+  color: var(--ink-muted);
   font-size: .72rem;
   line-height: 1.65;
   text-align: center;
 }
 
 .care {
-  background: var(--terracotta);
+  /* Mesma razão do botão: sobre --terracotta puro os textos de apoio desta
+     seção mediam 3,17:1 e 3,23:1. */
+  background: var(--terracotta-dark);
   color: var(--paper);
 }
 
@@ -179,7 +186,7 @@
 }
 
 .care-heading h2 em { color: var(--ochre); font-weight: 400; }
-.care-heading > p { max-width: 600px; margin-top: 2.35rem; color: #f0d9ce; line-height: 1.7; }
+.care-heading > p { max-width: 600px; margin-top: 2.35rem; color: var(--paper); line-height: 1.7; }
 
 .care-grid {
   margin-top: 4rem;
@@ -199,7 +206,7 @@
 
 .care-price { margin: 1.3rem 0; display: flex; align-items: baseline; gap: .25rem; }
 .care-price strong { font-family: var(--serif); font-size: 3.5rem; font-weight: 400; }
-.care-price small, .care-price span { color: #f1d6ca; font-size: .72rem; }
+.care-price small, .care-price span { color: var(--paper); font-size: .72rem; }
 .care-grid p {
   margin: .65rem 0;
   color: var(--paper);

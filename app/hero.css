@@ -120,12 +120,14 @@
 }
 
 .button--terracotta {
-  background: var(--terracotta);
+  /* --terracotta puro deixava o texto claro em 4,12:1, abaixo do mínimo de
+     4,5. O tom escuro já estava na paleta e leva a 5,78:1. */
+  background: var(--terracotta-dark);
   color: var(--paper);
 }
 
 .button--terracotta:hover {
-  background: var(--terracotta-dark);
+  background: var(--terracotta-deep);
 }
 
 .button--outline {
@@ -163,7 +165,7 @@
   justify-content: space-between;
   gap: 1rem;
   border-top: 1px solid var(--line);
-  color: #756e67;
+  color: var(--ink-muted);
   font-size: 0.7rem;
   font-weight: 650;
   letter-spacing: 0.05em;

@@ -176,7 +176,7 @@
 .extras-list div:nth-child(odd) { padding-right: 2rem; }
 .extras-list div:nth-child(even) { padding-left: 2rem; border-left: 1px solid rgba(40,35,31,.28); }
 .extras-list strong { color: var(--green); font-weight: 750; text-align: right; }
-.extras-note { margin: 2.1rem 0 0; color: #6b645e; font-size: .7rem; line-height: 1.6; }
+.extras-note { margin: 2.1rem 0 0; color: var(--ink-muted); font-size: .7rem; line-height: 1.6; }
 
 .faq {
   display: grid;

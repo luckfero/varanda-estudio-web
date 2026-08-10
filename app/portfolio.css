@@ -114,7 +114,9 @@
 .floating-note--top {
   right: 0;
   top: 97px;
-  background: var(--terracotta);
+  /* Branco sobre --terracotta dava 4,37:1, logo abaixo do mínimo. Sobre o
+     tom escuro vai a 6,12:1. */
+  background: var(--terracotta-dark);
   color: white;
   transform: rotate(4deg);
 }

@@ -23,7 +23,7 @@
 }
 .consent a { color: var(--green); text-decoration: underline; }
 .contact-form .button { width: 100%; }
-.form-hint { margin: 1.15rem 0 0; color: #777068; font-size: .65rem; line-height: 1.5; text-align: center; }
+.form-hint { margin: 1.15rem 0 0; color: var(--ink-muted); font-size: .65rem; line-height: 1.5; text-align: center; }
 .form-success { padding: .8rem; background: rgba(33,77,59,.1); color: var(--green-dark); font-size: .75rem; text-align: center; }
 
 .footer {
