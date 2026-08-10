@@ -3,7 +3,28 @@
 import { TouchEvent, useRef, useState } from "react";
 import { projects } from "./data";
 import { CarouselArrow } from "./icons";
-import Picture from "./picture";
+import Picture, { sizesPelaAltura } from "./picture";
+
+/**
+ * Altura da caixa do carrossel por faixa de tela, em px CSS.
+ *
+ * Medida no site publicado, não deduzida do CSS: a altura sai de um
+ * `min-height` (360px abaixo de 600, 480px acima) somado ao que o conteúdo
+ * empurra, então o valor real não está escrito em lugar nenhum. Cada entrada
+ * é o **maior** valor observado dentro da sua faixa.
+ *
+ * Se o layout do carrossel mudar, estes números precisam ser medidos de
+ * novo — é o que garante que nenhuma tela receba foto abaixo do necessário.
+ */
+const ALTURAS_DA_CAIXA: Array<[string | null, number]> = [
+  ["(max-width: 374px)", 415],
+  ["(max-width: 599px)", 388],
+  ["(max-width: 860px)", 494],
+  ["(max-width: 1100px)", 580],
+  ["(max-width: 1350px)", 629],
+  ["(max-width: 1600px)", 614],
+  [null, 736],
+];
 
 /**
  * Carrossel de trabalhos.
@@ -72,30 +93,13 @@ export default function SectionPortfolio() {
                     >
                       {/* Abaixo da dobra: carregamento preguiçoso de propósito.
 
-                          O `sizes` não é a largura da caixa. A foto entra
-                          com `object-fit: cover` numa caixa de proporção
-                          diferente, então quem manda no recorte é a altura,
-                          e a largura de origem necessária é `altura da
-                          caixa × proporção da foto` — maior que a largura
-                          visível.
-
-                          Em **pixels**, e não em `vw`: a exigência nasce da
-                          altura da caixa, que é fixa por faixa (`min-height`
-                          de 360px abaixo de 600 e 480px acima), então ela
-                          quase não acompanha a largura da tela. Escrita em
-                          `vw`, a mesma medida acertava num ponto e errava
-                          nos outros — em 360px pedia 155vw = 558px onde o
-                          necessário eram 666px, e a foto saía 20% abaixo do
-                          ideal justamente no celular mais estreito.
-
-                          Medido no site publicado; cada valor cobre o pior
-                          caso da sua faixa: 666px em 360, 622px até 599,
-                          792px até 860, 930px até 1100, 1006px até 1600 e
-                          1179px acima disso. */}
+                          O `sizes` sai de `ALTURAS_DA_CAIXA` multiplicado
+                          pela proporção de cada foto — o porquê está em
+                          `sizesPelaAltura`, em picture.tsx. */}
                       <Picture
                         name={project.image}
                         alt={project.imageAlt}
-                        sizes="(max-width: 374px) 670px, (max-width: 599px) 630px, (max-width: 860px) 800px, (max-width: 1100px) 935px, (max-width: 1600px) 1010px, 1185px"
+                        sizes={sizesPelaAltura(project.image, ALTURAS_DA_CAIXA)}
                       />
                       <div className="project-browser" aria-hidden="true">
                         <span /><span /><span />

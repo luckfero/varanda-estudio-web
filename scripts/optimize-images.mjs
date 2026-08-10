@@ -29,14 +29,20 @@ const OUT_DIR = join(root, "public", "images", "r");
 
 /** Larguras alvo. Imagem menor que a largura nunca é ampliada.
  *
- * O 2200 existe por causa de um salto medido em produção. A foto do
+ * 2000 e 2400 existem por causa de um salto medido em produção. A foto do
  * Nascente tem 3344px de origem e, sem nada entre 1600 e 3344, o celular era
- * obrigado a baixar os 3344 — 317 KB para exibir algo que precisa de ~2050.
- * Um celular de 360px com DPR 3 exige 2052px de origem para não perder
- * nitidez (altura da caixa × proporção × DPR); 2200 cobre isso com folga e
- * é o teto real da faixa móvel. As outras duas fotos têm origem menor que
- * 2200 e simplesmente não ganham esta variante. */
-const WIDTHS = [480, 800, 1200, 1600, 2200];
+ * obrigado a baixar os 3344 — 316 KB para exibir algo que precisa de ~2000.
+ *
+ * Os dois degraus, e não um só, porque a exigência muda com o aparelho:
+ * um tablet de 768px com DPR 2 pede 1756px de origem, e um celular com DPR 3
+ * pede 2070px (393px de tela) ou 2214px (360px, onde a caixa é mais alta).
+ * O 2000 atende o tablet e o 2250 cobre os dois celulares com 1,6% de folga.
+ *
+ * Os números são justos de propósito. Um degrau único em 2400 faria o
+ * aparelho mais comum baixar 16% a mais do que precisa; um único em 2000
+ * deixaria o celular de 360px abaixo do ideal. As outras duas fotos têm
+ * origem menor que 2000 e simplesmente não ganham estas variantes. */
+const WIDTHS = [480, 800, 1200, 1600, 2000, 2250];
 
 /* Qualidade de codificação.
  *
@@ -63,14 +69,20 @@ async function main() {
 
   /* Quais larguras existem de fato para cada imagem. Sem isto o `srcset`
      acabaria citando arquivos que nunca foram gerados — imagem menor que
-     uma largura alvo não é ampliada, então nem toda foto tem as quatro. */
+     uma largura alvo não é ampliada, então nem toda foto tem as quatro.
+
+     A proporção vai junto porque o `sizes` do carrossel depende dela: a foto
+     entra com `object-fit: cover` numa caixa de altura fixa, então a largura
+     de origem necessária é `altura da caixa × proporção`. Três fotos com
+     proporções diferentes exigem larguras diferentes na mesma caixa. */
   const manifesto = {};
+  const proporcoes = {};
 
   for (const file of files) {
     const source = join(SOURCE_DIR, file);
     const { name } = parse(file);
     const entrada = sharp(source);
-    const { width: larguraOrigem } = await entrada.metadata();
+    const { width: larguraOrigem, height: alturaOrigem } = await entrada.metadata();
     const tamanhoOrigem = (await stat(source)).size;
     origemTotal += tamanhoOrigem;
 
@@ -103,6 +115,7 @@ async function main() {
     }
 
     manifesto[name] = disponiveis;
+    proporcoes[name] = Number((larguraOrigem / alturaOrigem).toFixed(4));
     if (menorAvif !== null) menorTotal += menorAvif;
     console.log(
       `· ${name.padEnd(28)} ${String(larguraOrigem).padStart(4)}px  ` +
@@ -116,11 +129,18 @@ async function main() {
   const linhas = Object.entries(manifesto)
     .map(([nome, larguras]) => `  ${JSON.stringify(nome)}: [${larguras.join(", ")}],`)
     .join("\n");
+  const linhasProporcao = Object.entries(proporcoes)
+    .map(([nome, prop]) => `  ${JSON.stringify(nome)}: ${prop},`)
+    .join("\n");
   await writeFile(
     join(root, "app", "image-manifest.ts"),
-    `/* Gerado por scripts/optimize-images.mjs. Não editar à mão.\n` +
-      ` * Larguras que existem de fato para cada imagem em public/images/r/. */\n` +
-      `export const imageWidths: Record<string, number[]> = {\n${linhas}\n};\n`,
+    `/* Gerado por scripts/optimize-images.mjs. Não editar à mão. */\n\n` +
+      `/** Larguras que existem de fato para cada imagem em public/images/r/. */\n` +
+      `export const imageWidths: Record<string, number[]> = {\n${linhas}\n};\n\n` +
+      `/** Largura ÷ altura do original. O \`sizes\` do carrossel depende disto:\n` +
+      ` *  a foto entra com \`object-fit: cover\` numa caixa de altura fixa, então\n` +
+      ` *  a largura de origem necessária é \`altura da caixa × proporção\`. */\n` +
+      `export const imageAspect: Record<string, number> = {\n${linhasProporcao}\n};\n`,
   );
 
   console.log(

@@ -1,4 +1,4 @@
-import { imageWidths } from "./image-manifest";
+import { imageAspect, imageWidths } from "./image-manifest";
 
 /**
  * Imagem responsiva do carrossel de projetos.
@@ -21,6 +21,34 @@ function baseName(src: string): string {
 function srcSet(name: string, format: "avif" | "webp"): string {
   return (larguras[name] ?? [])
     .map((w) => `/images/r/${name}-${w}.${format} ${w}w`)
+    .join(", ");
+}
+
+/**
+ * Monta o `sizes` a partir da altura da caixa, e não da largura da tela.
+ *
+ * A foto entra com `object-fit: cover` numa caixa cuja altura é fixa por
+ * faixa. Quem manda no recorte é a altura, então a largura de origem que o
+ * navegador precisa é `altura da caixa × proporção da foto` — e como as três
+ * fotos do portfólio têm proporções diferentes (1,60 · 1,78 · 2,11), um
+ * `sizes` único serviria demais para uma e de menos para outra.
+ *
+ * Antes isto era um literal em `vw`, o que estava errado por construção: a
+ * altura da caixa quase não acompanha a largura da tela, então a mesma
+ * porcentagem acertava num ponto e errava nos outros. Num celular de 360px a
+ * conta pedia 155vw = 558px onde o necessário eram 666px, e a foto saía 20%
+ * abaixo do ideal justamente na tela mais estreita.
+ *
+ * `faixas` são pares `[consulta de mídia | null, altura da caixa em px]`,
+ * medidos no site publicado. A última entrada é o padrão, sem consulta.
+ */
+export function sizesPelaAltura(name: string, faixas: Array<[string | null, number]>): string {
+  const proporcao = imageAspect[name] ?? 1;
+  return faixas
+    .map(([consulta, altura]) => {
+      const largura = Math.ceil(altura * proporcao);
+      return consulta ? `${consulta} ${largura}px` : `${largura}px`;
+    })
     .join(", ");
 }
 
