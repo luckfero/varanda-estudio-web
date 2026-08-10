@@ -28,9 +28,9 @@ jobs:
     timeout-minutes: 20
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
 
@@ -49,7 +49,10 @@ jobs:
       # primeiro quando o job falha.
       - name: Guardar capturas
         if: always()
-        uses: actions/upload-artifact@v4
+        # v6, e não v5: o v5 do upload-artifact ainda roda em Node 20, que é
+        # justamente o que o GitHub está aposentando. Subir os três para v5
+        # em bloco deixaria o aviso de pé.
+        uses: actions/upload-artifact@v6
         with:
           name: capturas-safari
           path: capturas/
