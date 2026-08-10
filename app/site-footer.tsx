@@ -13,13 +13,13 @@ export default function SiteFooter() {
           <LeafMark small />
           <span><strong>Varanda</strong><small>Estúdio Web</small></span>
         </a>
-        <p>Sites brasileiros, próximos e bem pensados.</p>
+        <p>Sites próximos, bem pensados e feitos do zero.</p>
         <a className="back-top" href="#inicio" onClick={(event) => handleNavClick(event, "#inicio")}>Voltar ao topo ↑</a>
       </div>
       <div className="footer-bottom">
-        <span className="footer-location">São Paulo · Atendimento em todo o Brasil</span>
+        <span className="footer-location">São Paulo, Brasil · Atendimento remoto</span>
         <a href="/privacidade">Privacidade</a>
-        <span className="footer-copyright">© 2026 Varanda Estúdio Web · Lucca Oliveira</span>
+        <span className="footer-copyright">© 2026 Varanda Estúdio Web</span>
       </div>
     </footer>
   );

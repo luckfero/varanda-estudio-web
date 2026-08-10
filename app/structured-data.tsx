@@ -18,9 +18,12 @@ import { siteDescription, siteName, siteUrl } from "./site-config";
  * site não entra aqui.
  */
 
-/* Os mesmos contatos que a página de contato usa. Mantidos aqui como
-   constantes para não divergirem em silêncio. */
-const EMAIL = "luccaassoc@gmail.com";
+/* O mesmo contato que a página de contato usa. Mantido aqui como constante
+   para não divergirem em silêncio.
+
+   Sem `email`: o endereço saiu da seção de contato junto com o nome da
+   pessoa, e este arquivo só afirma o que a página afirma. Volta quando
+   existir `contato@` no domínio próprio. */
 const WHATSAPP = "+5511942263007";
 
 const dados = {
@@ -31,46 +34,53 @@ const dados = {
   url: siteUrl,
   description: siteDescription,
   inLanguage: "pt-BR",
-  email: EMAIL,
   telephone: WHATSAPP,
-  founder: { "@type": "Person", name: "Lucca Oliveira" },
-  /* Atende remoto no país inteiro — é o que o site diz. Sem `address`:
-     não há endereço comercial publicado, e inventar um seria pior que
-     omitir. */
+  /* Sem `founder`: o site não identifica pessoa em nenhum lugar público, e
+     dado estruturado não pode afirmar o que a página não afirma. A
+     identificação legal do responsável vive só na política de privacidade,
+     onde a LGPD exige que exista.
+
+     Atende remoto no país — é o que o rodapé diz. Sem `address`: não há
+     endereço comercial publicado, e inventar um seria pior que omitir. */
   areaServed: { "@type": "Country", name: "Brasil" },
   knowsLanguage: "pt-BR",
   serviceType: [
     "Criação de sites",
     "Site institucional",
-    "Landing page",
     "Desenvolvimento web",
+    "Manutenção de sites",
   ],
   hasOfferCatalog: {
     "@type": "OfferCatalog",
     name: "Criação de sites",
     itemListElement: [
+      /* Os mesmos três nomes dos pacotes na página. Antes eram outros três
+         ("Página profissional", "Landing page", "Site institucional"), o
+         que dava ao buscador um catálogo que não existia em lugar nenhum
+         do site. */
       {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "Página profissional",
-          description: "Página única para apresentar o negócio e receber contato.",
+          name: "Essencial",
+          description: "Uma página para apresentar o negócio e receber contato.",
         },
       },
       {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "Site institucional",
-          description: "Site de múltiplas páginas com conteúdo, serviços e contato.",
+          name: "Negócio",
+          description: "Site completo com serviços, trabalhos, dúvidas e contato.",
         },
       },
       {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "Landing page",
-          description: "Página focada em uma ação, para campanha ou lançamento.",
+          name: "Profissional",
+          description:
+            "Site completo mais uma capacidade: outro idioma, catálogo com filtros, conteúdo gerenciável ou integração com sistema.",
         },
       },
     ],

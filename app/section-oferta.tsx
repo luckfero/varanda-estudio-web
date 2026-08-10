@@ -1,6 +1,6 @@
 "use client";
 
-import { maintenance, packages, process } from "./data";
+import { included, launchDeadline, maintenance, packages, process, standardIntegrations } from "./data";
 import { ArrowIcon } from "./icons";
 import { useAncoraSuave } from "./use-ancora-suave";
 
@@ -36,7 +36,7 @@ export default function SectionOferta() {
             <h2 id="pricing-title">Comece com o que<br />seu negócio precisa hoje.</h2>
           </div>
           <p>
-            Condições de lançamento para os primeiros cinco projetos contratados.
+            Condição de lançamento válida para contratos fechados até {launchDeadline}.
           </p>
         </div>
 
@@ -59,8 +59,26 @@ export default function SectionOferta() {
             </article>
           ))}
         </div>
+
+        {/* Garantias da casa fora dos cartoes, de proposito. Enquanto viviam
+            dentro da lista de cada pacote, pareciam variar entre eles — e
+            "direcao visual personalizada" so no mais caro dizia, na pratica,
+            que os outros dois eram modelo pronto. */}
+        <div className="pricing-included" data-reveal>
+          <h3>Em todos os pacotes, sem cobrança à parte</h3>
+          <ul>
+            {included.map((item) => (
+              <li key={item.title}>
+                <strong>{item.title}</strong>
+                <span>{item.text}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
         <p className="launch-note">
-          A condição de lançamento vale para os cinco primeiros contratos com proposta aceita, contrato assinado e entrada confirmada. Qualquer necessidade fora do pacote é informada e orçada antes do início.
+          As integrações padrão incluem {standardIntegrations}. Cada rodada de ajustes deve chegar em uma lista consolidada.
+          Qualquer necessidade fora do pacote é informada e orçada antes do início — nunca durante.
         </p>
       </section>
 
@@ -68,22 +86,24 @@ export default function SectionOferta() {
         <div className="care-heading" data-reveal>
           <div className="section-index section-index--light">06 — Depois da publicação</div>
           <h2 id="care-title">Seu site pode continuar<br /><em>bem cuidado.</em></h2>
-          <p>Planos opcionais para atualizar textos e imagens, corrigir pequenos problemas e acompanhar o funcionamento do site.</p>
+          <p>Planos opcionais para manter o site no ar, atualizado e seguro — e para mudar o conteúdo sempre que o negócio mudar.</p>
         </div>
 
         <div className="care-grid">
           {maintenance.map((item) => (
-            <article key={item.name} data-reveal>
+            <article className={item.featured ? "is-featured" : undefined} key={item.name} data-reveal>
               <h3>{item.name}</h3>
               <div className="care-price"><small>R$</small><strong>{item.price}</strong><span>/mês</span></div>
-              <p>{item.time}</p>
-              <p>{item.response}</p>
+              <p className="care-summary">{item.summary}</p>
+              <ul>
+                {item.items.map((linha) => <li key={linha}>{linha}</li>)}
+              </ul>
             </article>
           ))}
         </div>
         <div className="care-notes" data-reveal>
           <p>O tempo mensal não é acumulativo. O pagamento é antecipado e o cancelamento requer aviso prévio de 30 dias.</p>
-          <p>Para demandas pontuais, a manutenção avulsa custa R$ 80 por até 30 minutos. Acima desse período, o valor é de R$ 150 por hora, calculado em blocos de 30 minutos.</p>
+          <p>Para demandas pontuais sem plano, a manutenção avulsa custa R$ 220 por hora, cobrada em blocos de 30 minutos. Dentro dos planos, a hora sai sempre mais barata.</p>
         </div>
       </section>
     </>

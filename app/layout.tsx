@@ -19,7 +19,7 @@ import "./accessibility.css";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: `${siteName} | Sites para negócios brasileiros`,
+    default: `${siteName} | Criação de sites profissionais`,
     template: `%s | ${siteName}`,
   },
   description: siteDescription,
@@ -27,10 +27,10 @@ export const metadata: Metadata = {
     "criação de sites",
     "site para negócio",
     "desenvolvimento web",
-    "landing page",
+    "site institucional",
     "São Paulo",
   ],
-  authors: [{ name: "Lucca Oliveira" }],
+  authors: [{ name: siteName }],
   creator: siteName,
   publisher: siteName,
   alternates: {

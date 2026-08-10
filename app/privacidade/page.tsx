@@ -21,10 +21,13 @@ export default function PrivacyPage() {
       <article>
         <p className="kicker"><span /> Informação e transparência</p>
         <h1>Política de Privacidade</h1>
-        <p className="legal-updated">Última atualização: 20 de julho de 2026.</p>
+        <p className="legal-updated">Última atualização: 10 de agosto de 2026.</p>
 
         <h2>1. Quem trata os dados</h2>
-        <p>Esta página é mantida por Lucca Oliveira, pessoa física que atua comercialmente sob o nome provisório Varanda Estúdio Web. Para assuntos de privacidade, escreva para <a href="mailto:luccaassoc@gmail.com">luccaassoc@gmail.com</a>.</p>
+        {/* A identificação do controlador é exigida pela LGPD (e pelo RGPD,
+            se houver visitante europeu) — é o único lugar do site em que o
+            nome da pessoa física precisa aparecer, e é aqui que ele fica. */}
+        <p>Varanda Estúdio Web é o nome comercial sob o qual Lucca Oliveira, pessoa física, presta serviços, e é o responsável pelo tratamento dos dados recebidos por esta página. Para assuntos de privacidade, escreva para <a href="mailto:luccaassoc@gmail.com">luccaassoc@gmail.com</a>.</p>
 
         <h2>2. Dados utilizados</h2>
         <p>O formulário solicita nome, nome do negócio, e-mail, WhatsApp, tipo de site procurado e uma descrição do projeto. Esses dados são usados somente para analisar a solicitação, iniciar o atendimento e responder ao contato.</p>

@@ -96,6 +96,7 @@
   .pricing-grid { grid-template-columns: 1fr; gap: 1.25rem; }
   .price-card.is-featured { transform: none; }
   .price-description { min-height: 0; }
+  .pricing-included ul { grid-template-columns: 1fr 1fr; gap: 1.5rem 2rem; }
   .care-grid { grid-template-columns: 1fr; }
   .care-grid article { border-right: 0; border-bottom: 1px solid rgba(255,255,255,.25); }
   .care-grid article:last-child { border-bottom: 0; }
@@ -170,6 +171,7 @@
   .process-list p { font-size: .9rem; }
   .price-card { padding: 1.6rem 1.25rem; }
   .price strong { font-size: 4rem; }
+  .pricing-included ul { grid-template-columns: 1fr; gap: 1.4rem; }
   .care-notes { flex-direction: column; gap: .3rem; }
   .about-art { min-height: 420px; }
   .about-arch { inset: 25px 25px 0 15px; }

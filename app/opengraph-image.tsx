@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Varanda Estúdio Web — sites para pequenos negócios";
+export const alt = "Varanda Estúdio Web — criação de sites profissionais";
 export const size = {
   width: 1200,
   height: 630,
@@ -32,12 +32,12 @@ export default function OpenGraphImage() {
             Sites que dão espaço para o seu negócio crescer.
           </div>
           <div style={{ fontFamily: "sans-serif", fontSize: 28, color: "#625b54" }}>
-            Estratégia, conteúdo e desenvolvimento para pequenos negócios brasileiros.
+            Estratégia, direção visual autoral e desenvolvimento, do zero.
           </div>
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", fontFamily: "sans-serif", fontSize: 24 }}>
-          <span>São Paulo</span>
-          <span style={{ color: "#b86749" }}>Atendimento em todo o Brasil</span>
+          <span>São Paulo, Brasil</span>
+          <span style={{ color: "#b86749" }}>Atendimento remoto</span>
         </div>
       </div>
     ),

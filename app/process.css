@@ -166,9 +166,63 @@
 .price-card li::before { content: "✓"; margin-right: .65rem; color: var(--terracotta); font-weight: 800; }
 .is-featured li::before { color: var(--ochre); }
 
+/**
+ * Garantias da casa, fora dos cartoes.
+ *
+ * Enquanto viviam dentro da lista de cada pacote, pareciam variar entre
+ * eles — e "direcao visual personalizada" so no mais caro dizia, na
+ * pratica, que os outros dois eram modelo pronto.
+ *
+ * Fica sobre --cream, entao vale a mesma paleta ja conferida nos cartoes:
+ * --green-dark no titulo, --ink-soft no corpo, --terracotta-dark no acento
+ * (5,35:1 sobre este fundo).
+ */
+.pricing-included {
+  margin-top: 4rem;
+  padding-top: 2.6rem;
+  border-top: 1px solid var(--line);
+}
+
+.pricing-included > h3 {
+  margin: 0 0 2.2rem;
+  color: var(--terracotta-dark);
+  font-family: var(--font-sans), sans-serif;
+  font-size: .65rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.pricing-included ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.8rem 2.5rem;
+}
+
+.pricing-included li {
+  display: grid;
+  gap: .4rem;
+}
+
+.pricing-included strong {
+  color: var(--green-dark);
+  font-family: var(--serif);
+  font-size: 1.32rem;
+  font-weight: 400;
+}
+
+.pricing-included span {
+  color: var(--ink-soft);
+  font-size: .8rem;
+  line-height: 1.6;
+}
+
 .launch-note {
   max-width: 760px;
-  margin: 2rem auto 0;
+  margin: 2.6rem auto 0;
   color: var(--ink-muted);
   font-size: .72rem;
   line-height: 1.65;
@@ -214,6 +268,42 @@
   font-size: .87rem;
   font-weight: 650;
   line-height: 1.5;
+}
+
+/* O plano do meio e o recomendado, como no bloco de pacotes. Aqui o
+   destaque nao pode ser fundo claro: o cartao vive sobre
+   --terracotta-dark e qualquer ilha clara exigiria repintar o texto
+   inteiro. Uma faixa de acento no topo resolve sem mexer em contraste. */
+.care-grid article.is-featured {
+  position: relative;
+  background: rgba(255,255,255,.07);
+}
+
+.care-grid article.is-featured::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: var(--ochre-light);
+}
+
+.care-grid ul {
+  margin: 1.4rem 0 0;
+  padding: 1.3rem 0 0;
+  border-top: 1px solid rgba(255,255,255,.25);
+  list-style: none;
+  display: grid;
+  gap: .7rem;
+  color: var(--paper);
+  font-size: .79rem;
+  line-height: 1.5;
+}
+
+.care-grid li::before {
+  content: "✓";
+  margin-right: .6rem;
+  color: var(--ochre-light);
+  font-weight: 800;
 }
 
 .care-notes {

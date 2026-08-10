@@ -1,4 +1,4 @@
-import { faqs } from "./data";
+import { byQuote, extras, faqs } from "./data";
 
 /**
  * Quem está na Varanda, serviços sob medida e dúvidas frequentes.
@@ -18,15 +18,15 @@ export default function SectionSobre() {
         </div>
         <div className="about-copy" data-reveal>
           <div className="section-index">07 — Quem está na Varanda</div>
-          <p className="eyebrow">Olá, eu sou o Lucca.</p>
+          <p className="eyebrow">Um estúdio pequeno, de propósito.</p>
           <h2 id="about-title">Tecnologia boa é a que aproxima, não a que complica.</h2>
           <p>
-            A Varanda Estúdio Web nasceu para ajudar comércios, profissionais e empresas a construírem uma presença digital clara, profissional e confiável.
+            A Varanda Estúdio Web existe para ajudar comércios, profissionais e empresas a construírem uma presença digital clara, profissional e confiável.
           </p>
           <p>
-            Eu acompanho cada projeto de perto, desde a organização das ideias até o desenvolvimento, com conversa franca, processo documentado e atenção aos detalhes.
+            Cada projeto é acompanhado de perto, da organização das ideias ao desenvolvimento, com conversa franca, processo documentado e atenção aos detalhes. Poucos projetos por vez, e nenhum tratado como encomenda de esteira.
           </p>
-          <div className="signature">Lucca Oliveira <span>— São Paulo, SP</span></div>
+          <div className="signature">Varanda Estúdio Web <span>— São Paulo, Brasil</span></div>
         </div>
       </section>
 
@@ -39,15 +39,15 @@ export default function SectionSobre() {
           <p>Estes serviços podem ser adicionados quando não estiverem incluídos no pacote escolhido.</p>
         </div>
         <div className="extras-list" data-reveal>
-          <div><span>Nova página</span><strong>R$ 220</strong></div>
-          <div><span>Redação completa</span><strong>R$ 120/página</strong></div>
-          <div><span>Configuração de domínio e hospedagem</span><strong>R$ 150</strong></div>
-          <div><span>Integração padrão</span><strong>a partir de R$ 220</strong></div>
-          <div><span>Blog ou CMS</span><strong>a partir de R$ 490</strong></div>
-          <div><span>Idioma adicional</span><strong>a partir de R$ 350</strong></div>
-          <div><span>Rodada adicional de ajustes</span><strong>R$ 150</strong></div>
+          {extras.map((item) => (
+            <div key={item.name}><span>{item.name}</span><strong>{item.price}</strong></div>
+          ))}
         </div>
-        <p className="extras-note">Os valores acima não incluem custos cobrados por domínio, hospedagem ou ferramentas externas. Demandas urgentes estão sujeitas à disponibilidade e podem ter adicional de 30%.</p>
+        <p className="extras-note">
+          Sob orçamento, porque o esforço varia demais para caber em preço de tabela: {byQuote.join(" · ").toLowerCase()}.
+          Os valores acima não incluem custos cobrados por domínio, hospedagem ou ferramentas externas. Entrega em prazo
+          menor que o combinado, ou trabalho em fim de semana e feriado, tem adicional de 30% e depende de disponibilidade.
+        </p>
       </section>
 
       <section className="faq section" aria-labelledby="faq-title">

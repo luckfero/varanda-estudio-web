@@ -5,5 +5,5 @@
 export const siteUrl = "https://varandaestudioweb.com";
 export const siteName = "Varanda Estúdio Web";
 export const siteDescription =
-  "Sites profissionais, próximos e bem pensados para pequenos negócios brasileiros. Design, conteúdo e desenvolvimento com atendimento direto.";
-export const siteLastUpdated = new Date("2026-07-21T00:00:00.000Z");
+  "Estúdio de criação de sites. Estratégia, direção visual autoral e desenvolvimento para negócios que querem uma presença digital clara e confiável.";
+export const siteLastUpdated = new Date("2026-08-10T00:00:00.000Z");

@@ -21,7 +21,7 @@ export default function SectionContato() {
     const data = new FormData(event.currentTarget);
     const texto = (campo: string) => String(data.get(campo) ?? "").trim();
     const message = [
-      "Olá, Lucca! Vim pelo site da Varanda Estúdio Web.",
+      "Olá! Vim pelo site da Varanda Estúdio Web.",
       "",
       `Meu nome: ${texto("name")}`,
       `Negócio: ${texto("business")}`,
@@ -56,11 +56,11 @@ export default function SectionContato() {
           <div className="section-index section-index--light">10 — Vamos conversar</div>
           <h2 id="contact-title">Seu negócio merece<br />um lugar para <em>crescer.</em></h2>
           <p>
-            Conte o que seu negócio precisa e em que momento ele está. Vou analisar as informações e responder com a orientação para o próximo passo.
+            Conte o que seu negócio precisa e em que momento ele está. Analisamos as informações e respondemos com a orientação para o próximo passo.
           </p>
           <div className="contact-direct">
             <a
-              href={`${whatsappUrl}?text=${encodeURIComponent("Olá, Lucca! Vim pelo site da Varanda Estúdio Web e gostaria de conversar sobre um projeto.")}`}
+              href={`${whatsappUrl}?text=${encodeURIComponent("Olá! Vim pelo site da Varanda Estúdio Web e gostaria de conversar sobre um projeto.")}`}
               target="_blank"
               rel="noreferrer"
               aria-label="Falar com a Varanda pelo WhatsApp em uma nova aba"
@@ -68,10 +68,17 @@ export default function SectionContato() {
               <span>WhatsApp</span>
               <strong>+55 11 94226-3007</strong>
             </a>
-            <a href="mailto:luccaassoc@gmail.com">
-              <span>E-mail</span>
-              <strong>luccaassoc@gmail.com</strong>
-            </a>
+            {/* O e-mail saiu daqui em 2026-08-10.
+                O endereço era `luccaassoc@gmail.com`: o nome da pessoa em
+                texto grande, na seção de contato — exatamente o que a
+                decisão de falar só como estúdio pedia para tirar, e ainda
+                um Gmail, que contradiz a apresentação de estúdio mais do
+                que qualquer assinatura.
+                Volta como canal assim que existir `contato@` no domínio
+                próprio. Até lá o contato é WhatsApp, que é para onde o
+                formulário desta seção já leva. O endereço continua na
+                política de privacidade, que precisa de um canal para
+                pedido de titular. */}
           </div>
         </div>
 
@@ -100,9 +107,9 @@ export default function SectionContato() {
             Que tipo de site você procura? *
             <select name="siteType" required defaultValue="">
               <option value="" disabled>Selecione uma opção</option>
-              <option>Site institucional</option>
-              <option>Landing page</option>
-              <option>Página profissional ou portfólio</option>
+              <option>Essencial — uma página</option>
+              <option>Negócio — site completo</option>
+              <option>Profissional — site completo e mais uma capacidade</option>
               <option>Loja virtual ou projeto especial</option>
               <option>Ainda não sei</option>
             </select>
@@ -122,7 +129,7 @@ export default function SectionContato() {
           {formStatus === "success" && (
             <p className="form-success" role="status">
               Mensagem preparada e aberta no WhatsApp. Confira e toque em enviar
-              para que ela chegue até mim.
+              para que ela chegue até nós.
             </p>
           )}
           {formStatus === "blocked" && (

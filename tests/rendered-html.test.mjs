@@ -31,9 +31,20 @@ async function fetchRoute(pathname) {
    worker, o buscador tratava `.workers.dev` como a versão oficial do site. */
 const SITE = "https://varandaestudioweb.com";
 
+function headDe(html) {
+  return html.slice(0, html.indexOf("</head>"));
+}
+
 function canonicalDe(html) {
-  const head = html.slice(0, html.indexOf("</head>"));
-  return head.match(/rel=["']canonical["'][^>]*href=["']([^"']+)["']/i)?.[1] ?? null;
+  return headDe(html).match(/rel=["']canonical["'][^>]*href=["']([^"']+)["']/i)?.[1] ?? null;
+}
+
+/* O payload do RSC repete os metadados como dado serializado no corpo da
+   página: um `assert.match(html, ...)` passa mesmo com a tag ausente da
+   head. Por isso recorta a head — e conta, porque duas `<title>` fazem o
+   navegador usar a primeira, que costuma ser a do layout. */
+function titulosDe(html) {
+  return [...headDe(html).matchAll(/<title[^>]*>([\s\S]*?)<\/title>/gi)].map((m) => m[1]);
 }
 
 function assertSecurityHeaders(response) {
@@ -51,10 +62,58 @@ test("renders the homepage with production metadata and security headers", async
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   assertSecurityHeaders(response);
-  assert.match(html, /<title>Varanda Estúdio Web \| Sites para negócios brasileiros<\/title>/i);
+  const titulos = titulosDe(html);
+  assert.equal(titulos.length, 1, `a head deveria ter uma única <title>, tem ${titulos.length}`);
+  assert.equal(titulos[0], "Varanda Estúdio Web | Criação de sites profissionais");
   assert.equal(canonicalDe(html), `${SITE}/`);
   assert.match(html, /href=["']\/privacidade["']/i);
   assert.doesNotMatch(html, /codex-preview/i);
+});
+
+test("a home fala como estúdio: nenhum nome de pessoa na página", async () => {
+  const html = await (await fetchRoute("/")).text();
+
+  /* Decisão comercial de 2026-08-10: o site se apresenta só como Varanda
+     Estúdio Web. Isto é teste e não revisão porque o nome tinha voltado
+     por três caminhos diferentes — assinatura da seção "sobre", `authors`
+     nos metadados, `founder` no JSON-LD — e o endereço de e-mail o
+     exibia em texto grande na seção de contato sem parecer um nome. */
+  assert.doesNotMatch(html, /Lucca Oliveira/i, "nome da pessoa voltou à home");
+  assert.doesNotMatch(html, /luccaassoc/i, "o e-mail pessoal voltou à home");
+
+  /* Conhecido e ainda aberto: as três URLs do portfólio apontam para
+     `*.luccaoliveira123.workers.dev`, que carrega o nome e ainda parece
+     endereço de teste. Só sai com domínio próprio para os conceituais —
+     por isso a asserção acima é pelo nome completo, não por "lucca". */
+});
+
+test("a tabela publicada é a tabela decidida", async () => {
+  const html = await (await fetchRoute("/")).text();
+
+  /* Preço é a informação do site que custa mais caro quando erra, e a que
+     mais fácil fica para trás — a tabela vive em `data.ts` e é renderizada
+     em dois componentes. Estes são os valores da rodada de 2026-08-10. */
+  for (const valor of ["1.500", "3.200", "5.900"]) {
+    assert.match(html, new RegExp(`>${valor.replace(".", "\\.")}<`), `pacote de R$ ${valor} sumiu da home`);
+  }
+  for (const mensal of ["149", "349", "649"]) {
+    assert.match(html, new RegExp(`>${mensal}<`), `plano de R$ ${mensal}/mês sumiu da home`);
+  }
+
+  /* A tabela antiga tinha o plano mensal mais barato saindo a R$ 178/hora
+     contra R$ 160/hora da avulsa: assinar era pior que não assinar. Se os
+     valores antigos voltarem, é sinal de que o arquivo foi revertido. */
+  assert.doesNotMatch(html, />89</, "preço da manutenção antiga (R$ 89) voltou");
+});
+
+test("a política de privacidade mantém a identificação exigida por lei", async () => {
+  const html = await (await fetchRoute("/privacidade")).text();
+
+  /* O contraponto do teste acima. A LGPD exige identificar quem controla
+     os dados; se alguém "limpar" o nome daqui junto com o resto do site,
+     a página fica ilegal em silêncio. */
+  assert.match(html, /Lucca Oliveira/i, "a identificação do controlador sumiu da política");
+  assert.match(html, /luccaassoc@gmail\.com/i, "sem canal para pedido de titular");
 });
 
 test("nenhum endereço de worker sobra nos metadados", async () => {

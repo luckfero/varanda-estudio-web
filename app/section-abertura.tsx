@@ -12,7 +12,7 @@ export default function SectionAbertura() {
     <>
       <section className="hero" id="inicio">
         <div className="hero-copy" data-reveal>
-          <p className="kicker"><span /> Sites para negócios brasileiros</p>
+          <p className="kicker"><span /> Estúdio de criação de sites</p>
           <h1>Sites que dão <em>espaço</em> para o seu negócio crescer.</h1>
           <p className="hero-lead">
             Conteúdo claro, visual profissional e tecnologia sem complicação para transformar boas ideias em uma presença digital confiável.
@@ -24,8 +24,8 @@ export default function SectionAbertura() {
             <a className="text-link" href="#portfolio" onClick={(event) => handleNavClick(event, "#portfolio")}>Ver projeto <ArrowDownRightIcon /></a>
           </div>
           <div className="hero-footnote">
-            <span>São Paulo</span>
-            <span>Atendimento remoto em todo o Brasil</span>
+            <span>São Paulo, Brasil</span>
+            <span>Atendimento remoto</span>
           </div>
         </div>
 
@@ -72,7 +72,7 @@ export default function SectionAbertura() {
             <div className="section-index section-index--light">02 — O que fazemos</div>
             <h2 id="services-title">O formato certo<br />para o seu momento.</h2>
           </div>
-          <p>Projetos objetivos para apresentar seu trabalho, explicar seus diferenciais e facilitar o contato com novos clientes.</p>
+          <p>Três formatos, do mais direto ao mais completo. São os mesmos nomes que aparecem no investimento, mais abaixo.</p>
         </div>
         <div className="service-grid">
           {services.map((service) => (
