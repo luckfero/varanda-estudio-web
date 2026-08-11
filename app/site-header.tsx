@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { LeafMark } from "./icons";
+import { ArcoMark } from "./icons";
 import type { Dicionario, Locale } from "./i18n";
 import { useAncoraSuave } from "./use-ancora-suave";
 
@@ -41,7 +41,7 @@ export default function SiteHeader({
   return (
     <header className="site-header">
       <a className="brand" href="#inicio" aria-label={`Varanda Estúdio Web — ${t.nav.inicio}`} onClick={(event) => handleNavClick(event, "#inicio")}>
-        <LeafMark small />
+        <ArcoMark small />
         <span>
           <strong>Varanda</strong>
           <small>Estúdio Web</small>

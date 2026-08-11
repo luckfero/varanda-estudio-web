@@ -72,7 +72,7 @@
   .hero-arch { height: 545px; }
 
   .intro { grid-template-columns: 120px 1fr; }
-  .intro > .leaf-mark { display: none; }
+  .intro > .arco-mark { display: none; }
 
   .section-heading,
   .pricing-heading,
@@ -121,11 +121,7 @@
   .brand strong { font-size: 1.25rem; }
   /* Era .51rem (8,2px), o menor texto do site inteiro. */
   .brand small { font-size: .64rem; }
-  .leaf-mark--small { width: 38px; height: 38px; }
-  .leaf-mark--small::after { left: 18px; top: 7px; height: 24px; }
-  .leaf-mark--small i:nth-child(1) { left: 10px; top: 13px; }
-  .leaf-mark--small i:nth-child(2) { left: 18px; top: 18px; }
-  .leaf-mark--small i:nth-child(3) { left: 11px; top: 23px; }
+  .arco-mark--small { width: 38px; height: 38px; padding: 7px; }
 
   .section { padding: 4.8rem 1.15rem; }
   .hero { min-height: 0; padding: 7.5rem 1.15rem 4rem; }

@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowDownRightIcon, ArrowIcon, LeafMark } from "./icons";
+import { ArcoMark, ArrowDownRightIcon, ArrowIcon } from "./icons";
 import type { Dicionario } from "./i18n";
 import { useAncoraSuave } from "./use-ancora-suave";
 
@@ -78,7 +78,7 @@ export default function SectionAbertura({
             <p>{t.intro.coluna2}</p>
           </div>
         </div>
-        <LeafMark />
+        <ArcoMark />
       </section>
 
       <section className="services section" id="servicos" aria-labelledby="services-title">

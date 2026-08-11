@@ -48,63 +48,49 @@
   text-transform: uppercase;
 }
 
-.leaf-mark {
-  position: relative;
+/**
+ * A marca.
+ *
+ * As cores vem de variaveis com valor padrao para fundo claro. Uma secao
+ * escura redefine `--marca-traco` e `--marca-sol` e a marca acompanha, sem
+ * precisar de um segundo componente — a licao da secao 9.8 do protocolo:
+ * quem decide a cor e a superficie, nao a peca.
+ *
+ * A geometria e a mesma de `public/marca/simbolo.svg`. Mudou uma, muda a
+ * outra.
+ */
+.arco-mark {
   display: inline-block;
   width: 88px;
   height: 88px;
-  border: 1px solid rgba(33, 77, 59, 0.25);
-  border-radius: 50%;
 }
 
-.leaf-mark::after {
-  content: "";
-  position: absolute;
-  left: 43px;
-  top: 20px;
-  width: 1px;
-  height: 49px;
-  background: var(--green);
-  transform: rotate(8deg);
-  transform-origin: bottom;
+.arco-mark-traco {
+  fill: none;
+  stroke: var(--marca-traco, var(--green));
+  stroke-width: 5;
+  stroke-linecap: round;
 }
 
-.leaf-mark i {
-  position: absolute;
-  width: 18px;
-  height: 10px;
-  border: 1px solid var(--green);
-  border-radius: 100% 0 100% 0;
-  transform: rotate(-23deg);
+.arco-mark-sol {
+  fill: var(--marca-sol, var(--ochre));
 }
 
-.leaf-mark i:nth-child(1) { left: 27px; top: 32px; }
-.leaf-mark i:nth-child(2) { left: 42px; top: 42px; transform: scaleX(-1) rotate(-23deg); }
-.leaf-mark i:nth-child(3) { left: 28px; top: 51px; }
-
-.leaf-mark--small {
+/* Versao de assinatura: disco verde com a marca em creme, como era antes.
+   O `padding` com `border-box` e o que da respiro dentro do disco; sem ele o
+   arco encosta na borda e o simbolo perde o ar de selo. */
+.arco-mark--small {
   width: 42px;
   height: 42px;
-  border: 0;
+  padding: 8px;
+  box-sizing: border-box;
   background: var(--green);
+  border-radius: 50%;
+  --marca-traco: var(--cream);
+  /* --ochre puro mede 2,37:1 sobre o verde; o claro chega a 3,19:1 e
+     continua sendo dourado. Mesma troca do resto do site. */
+  --marca-sol: var(--ochre-light);
 }
-
-.leaf-mark--small::after {
-  left: 20px;
-  top: 8px;
-  height: 26px;
-  background: var(--cream);
-}
-
-.leaf-mark--small i {
-  width: 9px;
-  height: 5px;
-  border-color: var(--cream);
-}
-
-.leaf-mark--small i:nth-child(1) { left: 12px; top: 15px; }
-.leaf-mark--small i:nth-child(2) { left: 20px; top: 20px; }
-.leaf-mark--small i:nth-child(3) { left: 13px; top: 25px; }
 
 .nav {
   display: flex;

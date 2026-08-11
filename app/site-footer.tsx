@@ -1,7 +1,7 @@
 "use client";
 
 import type { Dicionario } from "./i18n";
-import { LeafMark } from "./icons";
+import { ArcoMark } from "./icons";
 import { useAncoraSuave } from "./use-ancora-suave";
 
 export default function SiteFooter({
@@ -20,7 +20,7 @@ export default function SiteFooter({
     <footer className="footer">
       <div className="footer-top">
         <a className="brand brand--footer" href="#inicio" aria-label={t.rodape.voltarInicio} onClick={(event) => handleNavClick(event, "#inicio")}>
-          <LeafMark small />
+          <ArcoMark small />
           <span><strong>Varanda</strong><small>Estúdio Web</small></span>
         </a>
         <p>{t.rodape.frase}</p>

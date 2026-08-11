@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArcoMark } from "./icons";
 import { getDicionario, type Locale } from "./i18n";
 
 /* O canal para pedido de titular. Fica aqui e não no dicionário porque é o
@@ -22,7 +23,7 @@ export default function Politica({ locale }: { locale: Locale }) {
       <a className="skip-link" href="#conteudo">{t.nav.pular}</a>
       <main className="legal-page" id="conteudo" tabIndex={-1}>
         <Link className="brand" href={t.path === "" ? "/" : t.path} aria-label={t.privacidade.voltarAria}>
-          <span className="leaf-mark leaf-mark--small" aria-hidden="true"><i /><i /><i /></span>
+          <ArcoMark small />
           <span><strong>Varanda</strong><small>Estúdio Web</small></span>
         </Link>
         <article>
