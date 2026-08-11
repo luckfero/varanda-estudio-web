@@ -104,9 +104,16 @@ export function metadadosDe(locale: Locale, pagina: Pagina): Metadata {
           },
         }
       : {}),
+    /* O `?v=` não é enfeite. O navegador guarda favicon num índice próprio,
+       fora do cache HTTP normal, e ignora `must-revalidate`: quem já visitou
+       o site continua vendo o ícone antigo por tempo indeterminado, mesmo
+       com Ctrl+F5. Mudar o endereço é o que faz ele buscar de novo.
+
+       **Trocar o desenho do favicon sem subir este número não chega em
+       ninguém que já esteve aqui.** v2 = marca do arco, 2026-08-11. */
     icons: {
-      icon: "/favicon.svg",
-      shortcut: "/favicon.svg",
+      icon: "/favicon.svg?v=2",
+      shortcut: "/favicon.svg?v=2",
     },
   };
 }
