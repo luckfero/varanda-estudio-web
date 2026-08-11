@@ -189,8 +189,8 @@ const en: Dicionario = {
       {
         name: "Essential",
         eyebrow: "To get started",
-        launch: "1,100",
-        future: "1,400",
+        launch: "900",
+        future: "1,150",
         featured: false,
         description: "One page to introduce the essentials of the business and open a conversation with whoever arrives.",
         items: [
@@ -203,8 +203,8 @@ const en: Dicionario = {
       {
         name: "Business",
         eyebrow: "Recommended",
-        launch: "2,250",
-        future: "2,800",
+        launch: "1,850",
+        future: "2,300",
         featured: true,
         description: "The full site for your business, with room to explain, show your work and answer questions.",
         items: [
@@ -218,8 +218,8 @@ const en: Dicionario = {
       {
         name: "Professional",
         eyebrow: "To grow",
-        launch: "4,000",
-        future: "4,900",
+        launch: "3,350",
+        future: "4,200",
         featured: false,
         description: "Everything in Business, plus one capability your project calls for — chosen together with you.",
         items: [
@@ -248,11 +248,11 @@ const en: Dicionario = {
     resumo: "Optional plans to keep the site live, updated and secure — and to change the content whenever the business changes.",
     porMes: "/month",
     nota1: "Monthly time does not roll over. Payment is in advance and cancellation requires 30 days' notice.",
-    nota2: "For one-off needs without a plan, ad-hoc maintenance costs US$ 85 per hour, billed in 30-minute blocks. Inside the plans, the hour always works out cheaper.",
+    nota2: "For one-off needs without a plan, ad-hoc maintenance costs US$ 69 per hour, billed in 30-minute blocks. Inside the plans, the hour always works out cheaper.",
     planos: [
       {
         name: "Care",
-        price: "55",
+        price: "45",
         featured: false,
         summary: "The site always live and up to date.",
         items: [
@@ -264,14 +264,14 @@ const en: Dicionario = {
       },
       {
         name: "Presence",
-        price: "110",
+        price: "89",
         featured: true,
         summary: "Content keeping up with the business.",
         items: ["Everything in the Care plan", "Up to 1 hour a month of content changes", "Reply within 2 business days"],
       },
       {
         name: "Priority",
-        price: "210",
+        price: "169",
         featured: false,
         summary: "For those who change the site often.",
         items: ["Everything in the Presence plan", "Up to 3 hours a month of changes", "Reply the same business day"],
@@ -296,11 +296,11 @@ const en: Dicionario = {
     notaSobOrcamento: "Quoted case by case, because the effort varies far too much to fit a list price:",
     nota: "The prices above don't include what the domain, hosting or third-party tools charge. Delivery faster than agreed, or work over a weekend or public holiday, carries a 30% surcharge and depends on availability.",
     lista: [
-      { name: "Extra page", price: "US$ 350" },
-      { name: "Full copywriting", price: "US$ 200/page" },
-      { name: "Integration beyond the standard set", price: "from US$ 350" },
-      { name: "Extra revision round", price: "US$ 290" },
-      { name: "Ad-hoc maintenance", price: "US$ 85/hour" },
+      { name: "Extra page", price: "US$ 290" },
+      { name: "Full copywriting", price: "US$ 170/page" },
+      { name: "Integration beyond the standard set", price: "from US$ 290" },
+      { name: "Extra revision round", price: "US$ 230" },
+      { name: "Ad-hoc maintenance", price: "US$ 69/hour" },
     ],
     sobOrcamento: [
       "online store and payments",

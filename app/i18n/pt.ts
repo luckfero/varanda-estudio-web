@@ -196,8 +196,8 @@ const pt = {
       {
         name: "Essencial",
         eyebrow: "Para começar",
-        launch: "1.500",
-        future: "1.900",
+        launch: "1.200",
+        future: "1.500",
         /* Presente nos três, mesmo falso. Sem a chave em todos, o TypeScript
            infere um tipo diferente por elemento e `typeof pt` deixa de servir
            como contrato para `es.ts` e `en.ts`. */
@@ -213,8 +213,8 @@ const pt = {
       {
         name: "Negócio",
         eyebrow: "Recomendado",
-        launch: "3.200",
-        future: "3.900",
+        launch: "2.500",
+        future: "2.900",
         featured: true,
         description: "O site completo do seu negócio, com espaço para explicar, mostrar trabalhos e responder dúvidas.",
         items: [
@@ -228,8 +228,8 @@ const pt = {
       {
         name: "Profissional",
         eyebrow: "Para crescer",
-        launch: "5.900",
-        future: "7.400",
+        launch: "4.500",
+        future: "5.500",
         featured: false,
         description: "Tudo do Negócio, mais uma capacidade que o seu projeto exige — escolhida junto com você.",
         items: [
@@ -258,11 +258,11 @@ const pt = {
     resumo: "Planos opcionais para manter o site no ar, atualizado e seguro — e para mudar o conteúdo sempre que o negócio mudar.",
     porMes: "/mês",
     nota1: "O tempo mensal não é acumulativo. O pagamento é antecipado e o cancelamento requer aviso prévio de 30 dias.",
-    nota2: "Para demandas pontuais sem plano, a manutenção avulsa custa R$ 220 por hora, cobrada em blocos de 30 minutos. Dentro dos planos, a hora sai sempre mais barata.",
+    nota2: "Para demandas pontuais sem plano, a manutenção avulsa custa R$ 190 por hora, cobrada em blocos de 30 minutos. Dentro dos planos, a hora sai sempre mais barata.",
     planos: [
       {
         name: "Cuidado",
-        price: "149",
+        price: "119",
         featured: false,
         summary: "O site sempre no ar e em dia.",
         items: [
@@ -274,14 +274,14 @@ const pt = {
       },
       {
         name: "Presença",
-        price: "349",
+        price: "279",
         featured: true,
         summary: "O conteúdo acompanhando o negócio.",
         items: ["Tudo do plano Cuidado", "Até 1 hora por mês de alterações de conteúdo", "Retorno em até 2 dias úteis"],
       },
       {
         name: "Prioridade",
-        price: "649",
+        price: "519",
         featured: false,
         summary: "Para quem mexe no site com frequência.",
         items: ["Tudo do plano Presença", "Até 3 horas por mês de alterações", "Retorno no mesmo dia útil"],
@@ -306,11 +306,11 @@ const pt = {
     notaSobOrcamento: "Sob orçamento, porque o esforço varia demais para caber em preço de tabela:",
     nota: "Os valores acima não incluem custos cobrados por domínio, hospedagem ou ferramentas externas. Entrega em prazo menor que o combinado, ou trabalho em fim de semana e feriado, tem adicional de 30% e depende de disponibilidade.",
     lista: [
-      { name: "Página adicional", price: "R$ 480" },
-      { name: "Redação completa", price: "R$ 280/página" },
-      { name: "Integração além das padrão", price: "a partir de R$ 480" },
-      { name: "Rodada adicional de ajustes", price: "R$ 390" },
-      { name: "Manutenção avulsa", price: "R$ 220/hora" },
+      { name: "Página adicional", price: "R$ 390" },
+      { name: "Redação completa", price: "R$ 220/página" },
+      { name: "Integração além das padrão", price: "a partir de R$ 390" },
+      { name: "Rodada adicional de ajustes", price: "R$ 320" },
+      { name: "Manutenção avulsa", price: "R$ 190/hora" },
     ],
     sobOrcamento: [
       "loja virtual e pagamentos",

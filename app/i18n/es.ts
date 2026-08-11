@@ -12,6 +12,11 @@ import type { Dicionario } from "./index";
  * Convertir la tabla brasileña daría unos 250 €, por debajo del suelo de
  * credibilidad de ese mercado, donde menos de 600–700 € no se lee como barato
  * sino como arriesgado.
+ *
+ * Ese suelo es el límite de la bajada de 2026-08-10: el paquete de entrada
+ * quedó en 790 €, deliberadamente por encima de los 700 €. Bajarlo más no
+ * haría la oferta más competitiva — la haría sospechosa, que es justo lo
+ * contrario de lo que se buscaba.
  */
 
 const es: Dicionario = {
@@ -23,7 +28,7 @@ const es: Dicionario = {
   nome: "Español",
 
   moeda: "€",
-  /* En español el símbolo va **después** del número (1.950 €). El marcado de
+  /* En español el símbolo va **después** del número (1.590 €). El marcado de
      `.price` asumía siempre delante; ahora lo decide el diccionario. */
   moedaAposValor: true,
 
@@ -195,8 +200,8 @@ const es: Dicionario = {
       {
         name: "Esencial",
         eyebrow: "Para empezar",
-        launch: "950",
-        future: "1.200",
+        launch: "790",
+        future: "990",
         featured: false,
         description: "Una página para presentar lo esencial del negocio y abrir conversación con quien llega.",
         items: [
@@ -209,8 +214,8 @@ const es: Dicionario = {
       {
         name: "Negocio",
         eyebrow: "Recomendado",
-        launch: "1.950",
-        future: "2.400",
+        launch: "1.590",
+        future: "1.990",
         featured: true,
         description: "La web completa de tu negocio, con espacio para explicar, mostrar trabajos y resolver dudas.",
         items: [
@@ -224,8 +229,8 @@ const es: Dicionario = {
       {
         name: "Profesional",
         eyebrow: "Para crecer",
-        launch: "3.500",
-        future: "4.200",
+        launch: "2.900",
+        future: "3.600",
         featured: false,
         description: "Todo lo de Negocio, más una capacidad que tu proyecto necesite — elegida contigo.",
         items: [
@@ -254,11 +259,11 @@ const es: Dicionario = {
     resumo: "Planes opcionales para mantener la web publicada, actualizada y segura — y para cambiar el contenido siempre que el negocio cambie.",
     porMes: "/mes",
     nota1: "El tiempo mensual no se acumula. El pago es por adelantado y la baja requiere un aviso previo de 30 días.",
-    nota2: "Para necesidades puntuales sin plan, el mantenimiento suelto cuesta 75 € por hora, facturado en bloques de 30 minutos. Dentro de los planes, la hora sale siempre más barata.",
+    nota2: "Para necesidades puntuales sin plan, el mantenimiento suelto cuesta 59 € por hora, facturado en bloques de 30 minutos. Dentro de los planes, la hora sale siempre más barata.",
     planos: [
       {
         name: "Cuidado",
-        price: "45",
+        price: "39",
         featured: false,
         summary: "La web siempre publicada y al día.",
         items: [
@@ -270,14 +275,14 @@ const es: Dicionario = {
       },
       {
         name: "Presencia",
-        price: "95",
+        price: "79",
         featured: true,
         summary: "El contenido siguiendo al negocio.",
         items: ["Todo el plan Cuidado", "Hasta 1 hora al mes de cambios de contenido", "Respuesta en hasta 2 días laborables"],
       },
       {
         name: "Prioridad",
-        price: "180",
+        price: "149",
         featured: false,
         summary: "Para quien toca la web a menudo.",
         items: ["Todo el plan Presencia", "Hasta 3 horas al mes de cambios", "Respuesta el mismo día laborable"],
@@ -302,11 +307,11 @@ const es: Dicionario = {
     notaSobOrcamento: "Bajo presupuesto, porque el esfuerzo varía demasiado para caber en un precio de tarifa:",
     nota: "Los precios de arriba no incluyen los costes que cobran el dominio, el alojamiento o las herramientas externas. Una entrega en menos plazo del acordado, o trabajo en fin de semana y festivo, tiene un recargo del 30% y depende de disponibilidad.",
     lista: [
-      { name: "Página adicional", price: "300 €" },
-      { name: "Redacción completa", price: "180 €/página" },
-      { name: "Integración fuera de las estándar", price: "desde 300 €" },
-      { name: "Ronda adicional de ajustes", price: "250 €" },
-      { name: "Mantenimiento suelto", price: "75 €/hora" },
+      { name: "Página adicional", price: "250 €" },
+      { name: "Redacción completa", price: "150 €/página" },
+      { name: "Integración fuera de las estándar", price: "desde 250 €" },
+      { name: "Ronda adicional de ajustes", price: "199 €" },
+      { name: "Mantenimiento suelto", price: "59 €/hora" },
     ],
     sobOrcamento: [
       "tienda online y pagos",

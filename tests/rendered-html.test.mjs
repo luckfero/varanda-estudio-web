@@ -45,9 +45,9 @@ const SITE = "https://varandaestudioweb.com";
    atributo do `<html>` é `es` e a anotação para o buscador é `es-ES`.
    Tratá-los como um só campo foi o primeiro erro deste arquivo. */
 const IDIOMAS = [
-  { locale: "pt", lang: "pt-BR", hreflang: "pt-BR", home: "/", politica: "/privacidade", titulo: "Varanda Estúdio Web | Criação de sites profissionais", moeda: "R$", precos: ["1.500", "3.200", "5.900"], mensais: ["149", "349", "649"] },
-  { locale: "es", lang: "es", hreflang: "es-ES", home: "/es", politica: "/es/privacidad", titulo: "Varanda Estúdio Web | Diseño y desarrollo de webs profesionales", moeda: "€", precos: ["950", "1.950", "3.500"], mensais: ["45", "95", "180"] },
-  { locale: "en", lang: "en", hreflang: "en", home: "/en", politica: "/en/privacy", titulo: "Varanda Estúdio Web | Professional website design and development", moeda: "US$", precos: ["1,100", "2,250", "4,000"], mensais: ["55", "110", "210"] },
+  { locale: "pt", lang: "pt-BR", hreflang: "pt-BR", home: "/", politica: "/privacidade", titulo: "Varanda Estúdio Web | Criação de sites profissionais", moeda: "R$", precos: ["1.200", "2.500", "4.500"], mensais: ["119", "279", "519"] },
+  { locale: "es", lang: "es", hreflang: "es-ES", home: "/es", politica: "/es/privacidad", titulo: "Varanda Estúdio Web | Diseño y desarrollo de webs profesionales", moeda: "€", precos: ["790", "1.590", "2.900"], mensais: ["39", "79", "149"] },
+  { locale: "en", lang: "en", hreflang: "en", home: "/en", politica: "/en/privacy", titulo: "Varanda Estúdio Web | Professional website design and development", moeda: "US$", precos: ["900", "1,850", "3,350"], mensais: ["45", "89", "169"] },
 ];
 
 function headDe(html) {
