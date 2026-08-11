@@ -1,8 +1,9 @@
 "use client";
 
 import { TouchEvent, useRef, useState } from "react";
-import { projects } from "./data";
+import { projectAssets } from "./data";
 import { CarouselArrow } from "./icons";
+import type { Dicionario } from "./i18n";
 import Picture, { sizesPelaAltura } from "./picture";
 
 /**
@@ -32,10 +33,19 @@ const ALTURAS_DA_CAIXA: Array<[string | null, number]> = [
  * O índice atual e o gesto de arrasto são assunto exclusivo desta seção —
  * nenhuma outra parte da página lê ou muda esses valores, então eles moram
  * aqui em vez de subirem para a página.
+ *
+ * O texto de cada projeto vem do dicionário e a imagem e o endereço vêm de
+ * `projectAssets`, casados pela posição. Projeto descrito no dicionário sem
+ * arquivo correspondente cai no cartão de "em breve" em vez de quebrar.
  */
-export default function SectionPortfolio() {
+export default function SectionPortfolio({ portfolio }: { portfolio: Dicionario["portfolio"] }) {
   const [currentProject, setCurrentProject] = useState(0);
   const touchStartX = useRef<number | null>(null);
+  /* Só a fatia do portfólio: propriedade de componente cliente viaja
+     serializada até o navegador, e o dicionário inteiro levaria junto o
+     texto da política — o único lugar com o nome da pessoa. */
+  const t = { portfolio };
+  const projects = portfolio.projetos;
 
   function showProject(index: number) {
     setCurrentProject((index + projects.length) % projects.length);
@@ -58,15 +68,16 @@ export default function SectionPortfolio() {
   return (
       <section className="portfolio section" id="portfolio" aria-labelledby="portfolio-title">
         <div className="portfolio-intro" data-reveal>
-          <div className="section-index">03 — Trabalhos desenvolvidos</div>
-          <h2 id="portfolio-title">Ideias ganhando<br /><em>forma e presença.</em></h2>
+          <div className="section-index">{t.portfolio.indice}</div>
+          <h2 id="portfolio-title">{t.portfolio.tituloAntes}<br /><em>{t.portfolio.tituloDestaque}</em></h2>
+          <p className="portfolio-aviso">{t.portfolio.aviso}</p>
         </div>
 
         <div
           className="project-carousel"
           role="region"
-          aria-roledescription="carrossel"
-          aria-label="Trabalhos desenvolvidos pela Varanda"
+          aria-roledescription={t.portfolio.carrossel}
+          aria-label={t.portfolio.carrosselLabel}
           data-reveal
         >
           <div
@@ -75,20 +86,22 @@ export default function SectionPortfolio() {
             onTouchStart={handleProjectTouchStart}
             onTouchEnd={handleProjectTouchEnd}
           >
-            {projects.map((project, index) => (
+            {projects.map((project, index) => {
+              const asset = projectAssets[index];
+              return (
               <div
                 className="project-slide"
                 key={project.name}
                 aria-hidden={currentProject !== index}
               >
                 <article className="project">
-                  {project.url ? (
+                  {asset?.url ? (
                     <a
                       className="project-visual"
-                      href={project.url}
+                      href={asset.url}
                       target="_blank"
                       rel="noreferrer"
-                      aria-label={`Abrir demonstração do projeto ${project.name} em uma nova aba`}
+                      aria-label={`${t.portfolio.abrirAntes}${project.name}${t.portfolio.abrirDepois}`}
                       tabIndex={currentProject === index ? 0 : -1}
                     >
                       {/* Abaixo da dobra: carregamento preguiçoso de propósito.
@@ -97,66 +110,69 @@ export default function SectionPortfolio() {
                           pela proporção de cada foto — o porquê está em
                           `sizesPelaAltura`, em picture.tsx. */}
                       <Picture
-                        name={project.image}
+                        name={asset.image}
                         alt={project.imageAlt}
-                        sizes={sizesPelaAltura(project.image, ALTURAS_DA_CAIXA)}
+                        sizes={sizesPelaAltura(asset.image, ALTURAS_DA_CAIXA)}
                       />
                       <div className="project-browser" aria-hidden="true">
                         <span /><span /><span />
                       </div>
                     </a>
                   ) : (
-                    <div className={`project-visual project-visual--placeholder project-visual--placeholder-${index + 1}`} role="img" aria-label="Espaço reservado para um próximo projeto">
+                    <div className={`project-visual project-visual--placeholder project-visual--placeholder-${index + 1}`} role="img" aria-label={t.portfolio.reservado}>
                       <div className="project-browser" aria-hidden="true">
                         <span /><span /><span />
                       </div>
                       <div className="project-placeholder-content" aria-hidden="true">
                         <span>{String(index + 1).padStart(2, "0")}</span>
-                        <strong>novo projeto</strong>
+                        <strong>{t.portfolio.novoProjeto}</strong>
                         <i />
                       </div>
-                      <div className="project-stamp project-stamp--soon">em breve</div>
+                      <div className="project-stamp project-stamp--soon">{t.portfolio.emBreve}</div>
                     </div>
                   )}
                   <div className="project-info">
                     <p className="project-label">{project.label}</p>
                     <h3>{project.name}</h3>
                     <p>{project.description}</p>
-                    <ul aria-label={project.placeholder ? "Características previstas" : "Entregas do projeto"}>
+                    <ul aria-label={asset?.url ? t.portfolio.entregas : t.portfolio.previstas}>
                       {project.features.map((feature) => <li key={feature}>{feature}</li>)}
                     </ul>
-                    {!project.url && (
-                      <span className="project-soon">Novos trabalhos serão adicionados aqui.</span>
+                    {!asset?.url && (
+                      <span className="project-soon">{t.portfolio.novosTrabalhos}</span>
                     )}
                   </div>
                 </article>
               </div>
-            ))}
+            );
+            })}
           </div>
 
           <div className="carousel-footer">
             <p className="carousel-status" aria-live="polite">
               <strong>{String(currentProject + 1).padStart(2, "0")}</strong>
               <span>/ {String(projects.length).padStart(2, "0")}</span>
-              <span className="sr-only">Projeto {currentProject + 1} de {projects.length}: {projects[currentProject].name}</span>
+              <span className="sr-only">
+                {t.portfolio.projetoAntes}{currentProject + 1}{t.portfolio.projetoDe}{projects.length}: {projects[currentProject].name}
+              </span>
             </p>
-            <div className="carousel-dots" aria-label="Escolher projeto">
+            <div className="carousel-dots" aria-label={t.portfolio.escolher}>
               {projects.map((project, index) => (
                 <button
                   type="button"
                   key={project.name}
                   className={currentProject === index ? "is-active" : ""}
-                  aria-label={`Mostrar ${project.name}`}
+                  aria-label={`${t.portfolio.mostrar}${project.name}`}
                   aria-current={currentProject === index ? "true" : undefined}
                   onClick={() => showProject(index)}
                 />
               ))}
             </div>
             <div className="carousel-buttons">
-              <button type="button" aria-label="Projeto anterior" onClick={() => showProject(currentProject - 1)}>
+              <button type="button" aria-label={t.portfolio.anterior} onClick={() => showProject(currentProject - 1)}>
                 <CarouselArrow direction="previous" />
               </button>
-              <button type="button" aria-label="Próximo projeto" onClick={() => showProject(currentProject + 1)}>
+              <button type="button" aria-label={t.portfolio.proximo} onClick={() => showProject(currentProject + 1)}>
                 <CarouselArrow direction="next" />
               </button>
             </div>

@@ -27,9 +27,28 @@ async function fetchRoute(pathname) {
   );
 }
 
+async function htmlDe(pathname) {
+  return (await fetchRoute(pathname)).text();
+}
+
 /* O domínio próprio. Enquanto o canonical apontava para o endereço do
    worker, o buscador tratava `.workers.dev` como a versão oficial do site. */
 const SITE = "https://varandaestudioweb.com";
+
+/**
+ * Os seis endereços do site, com o que cada um deve declarar.
+ *
+ * O português mora na raiz porque é o endereço que o domínio já tinha
+ * indexado; mover para `/pt` jogaria fora a autoridade acumulada.
+ */
+/* `lang` e `hreflang` não são a mesma coisa e divergem no espanhol: o
+   atributo do `<html>` é `es` e a anotação para o buscador é `es-ES`.
+   Tratá-los como um só campo foi o primeiro erro deste arquivo. */
+const IDIOMAS = [
+  { locale: "pt", lang: "pt-BR", hreflang: "pt-BR", home: "/", politica: "/privacidade", titulo: "Varanda Estúdio Web | Criação de sites profissionais", moeda: "R$", precos: ["1.500", "3.200", "5.900"], mensais: ["149", "349", "649"] },
+  { locale: "es", lang: "es", hreflang: "es-ES", home: "/es", politica: "/es/privacidad", titulo: "Varanda Estúdio Web | Diseño y desarrollo de webs profesionales", moeda: "€", precos: ["950", "1.950", "3.500"], mensais: ["45", "95", "180"] },
+  { locale: "en", lang: "en", hreflang: "en", home: "/en", politica: "/en/privacy", titulo: "Varanda Estúdio Web | Professional website design and development", moeda: "US$", precos: ["1,100", "2,250", "4,000"], mensais: ["55", "110", "210"] },
+];
 
 function headDe(html) {
   return html.slice(0, html.indexOf("</head>"));
@@ -47,6 +66,16 @@ function titulosDe(html) {
   return [...headDe(html).matchAll(/<title[^>]*>([\s\S]*?)<\/title>/gi)].map((m) => m[1]);
 }
 
+function alternativosDe(html) {
+  const mapa = {};
+  for (const tag of headDe(html).matchAll(/<link[^>]*rel=["']alternate["'][^>]*>/gi)) {
+    const hreflang = tag[0].match(/hreflang=["']([^"']+)["']/i)?.[1];
+    const href = tag[0].match(/href=["']([^"']+)["']/i)?.[1];
+    if (hreflang && href) mapa[hreflang] = href;
+  }
+  return mapa;
+}
+
 function assertSecurityHeaders(response) {
   assert.equal(response.headers.get("x-content-type-options"), "nosniff");
   assert.equal(response.headers.get("x-frame-options"), "DENY");
@@ -55,76 +84,124 @@ function assertSecurityHeaders(response) {
   assert.equal(response.headers.get("strict-transport-security"), "max-age=86400");
 }
 
-test("renders the homepage with production metadata and security headers", async () => {
-  const response = await fetchRoute("/");
-  const html = await response.text();
+for (const idioma of IDIOMAS) {
+  test(`[${idioma.locale}] home responde com metadados e cabeçalhos de segurança`, async () => {
+    const response = await fetchRoute(idioma.home);
+    const html = await response.text();
 
-  assert.equal(response.status, 200);
-  assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
-  assertSecurityHeaders(response);
-  const titulos = titulosDe(html);
-  assert.equal(titulos.length, 1, `a head deveria ter uma única <title>, tem ${titulos.length}`);
-  assert.equal(titulos[0], "Varanda Estúdio Web | Criação de sites profissionais");
-  assert.equal(canonicalDe(html), `${SITE}/`);
-  assert.match(html, /href=["']\/privacidade["']/i);
-  assert.doesNotMatch(html, /codex-preview/i);
-});
+    assert.equal(response.status, 200);
+    assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
+    assertSecurityHeaders(response);
 
-test("a home fala como estúdio: nenhum nome de pessoa na página", async () => {
-  const html = await (await fetchRoute("/")).text();
+    const titulos = titulosDe(html);
+    assert.equal(titulos.length, 1, `a head deveria ter uma única <title>, tem ${titulos.length}`);
+    assert.equal(titulos[0], idioma.titulo);
+    assert.equal(canonicalDe(html), `${SITE}${idioma.home}`);
+    assert.doesNotMatch(html, /codex-preview/i);
+  });
 
-  /* Decisão comercial de 2026-08-10: o site se apresenta só como Varanda
-     Estúdio Web. Isto é teste e não revisão porque o nome tinha voltado
-     por três caminhos diferentes — assinatura da seção "sobre", `authors`
-     nos metadados, `founder` no JSON-LD — e o endereço de e-mail o
-     exibia em texto grande na seção de contato sem parecer um nome. */
-  assert.doesNotMatch(html, /Lucca Oliveira/i, "nome da pessoa voltou à home");
-  assert.doesNotMatch(html, /luccaassoc/i, "o e-mail pessoal voltou à home");
+  test(`[${idioma.locale}] o <html lang> acompanha o idioma da rota`, async () => {
+    /* Três layouts raiz, um por grupo de rota, existem só por causa disto:
+       é o que faz um leitor de tela trocar de voz. Um layout único não sabe
+       qual rota está abaixo dele e serviria pt-BR para as três. */
+    for (const rota of [idioma.home, idioma.politica]) {
+      const html = await htmlDe(rota);
+      const lang = html.match(/<html[^>]*\slang=["']([^"']+)["']/i)?.[1];
+      assert.equal(lang, idioma.lang, `${rota} declarou lang="${lang}"`);
+    }
+  });
 
-  /* Conhecido e ainda aberto: as três URLs do portfólio apontam para
-     `*.luccaoliveira123.workers.dev`, que carrega o nome e ainda parece
-     endereço de teste. Só sai com domínio próprio para os conceituais —
-     por isso a asserção acima é pelo nome completo, não por "lucca". */
-});
+  test(`[${idioma.locale}] hreflang é recíproco e inclui x-default`, async () => {
+    /* O buscador só honra a anotação quando todas as versões apontam umas
+       para as outras **e cada uma se inclui na lista**. Faltando um lado,
+       ele descarta o conjunto inteiro em silêncio — é o tipo de defeito que
+       nunca aparece em revisão visual. */
+    for (const pagina of ["home", "politica"]) {
+      const mapa = alternativosDe(await htmlDe(idioma[pagina]));
+      for (const outro of IDIOMAS) {
+        assert.equal(mapa[outro.hreflang], `${SITE}${outro[pagina]}`, `${idioma[pagina]} não aponta para ${outro.hreflang}`);
+      }
+      assert.equal(mapa["x-default"], `${SITE}${IDIOMAS[0][pagina]}`, `${idioma[pagina]} sem x-default para a raiz`);
+    }
+  });
 
-test("a tabela publicada é a tabela decidida", async () => {
-  const html = await (await fetchRoute("/")).text();
+  test(`[${idioma.locale}] a tabela publicada é a tabela decidida, na moeda certa`, async () => {
+    const html = await htmlDe(idioma.home);
 
-  /* Preço é a informação do site que custa mais caro quando erra, e a que
-     mais fácil fica para trás — a tabela vive em `data.ts` e é renderizada
-     em dois componentes. Estes são os valores da rodada de 2026-08-10. */
-  for (const valor of ["1.500", "3.200", "5.900"]) {
-    assert.match(html, new RegExp(`>${valor.replace(".", "\\.")}<`), `pacote de R$ ${valor} sumiu da home`);
-  }
-  for (const mensal of ["149", "349", "649"]) {
-    assert.match(html, new RegExp(`>${mensal}<`), `plano de R$ ${mensal}/mês sumiu da home`);
-  }
+    /* Preço é a informação do site que custa mais caro quando erra. São três
+       tabelas independentes — euro e dólar não são conversão do real, estão
+       ancorados em pesquisa de cada mercado —, então errar uma não deixa
+       rastro nas outras. */
+    for (const valor of [...idioma.precos, ...idioma.mensais]) {
+      assert.match(html, new RegExp(`>${valor.replace(".", "\\.")}<`), `${idioma.locale}: valor ${valor} sumiu da home`);
+    }
+    assert.ok(html.includes(idioma.moeda), `${idioma.locale}: moeda ${idioma.moeda} ausente`);
 
-  /* A tabela antiga tinha o plano mensal mais barato saindo a R$ 178/hora
-     contra R$ 160/hora da avulsa: assinar era pior que não assinar. Se os
-     valores antigos voltarem, é sinal de que o arquivo foi revertido. */
-  assert.doesNotMatch(html, />89</, "preço da manutenção antiga (R$ 89) voltou");
-});
+    /* A tabela antiga tinha o plano mensal mais barato saindo a R$ 178/hora
+       contra R$ 160/hora da avulsa: assinar era pior que não assinar. */
+    if (idioma.locale === "pt") assert.doesNotMatch(html, />89</, "preço da manutenção antiga (R$ 89) voltou");
+  });
 
-test("a política de privacidade mantém a identificação exigida por lei", async () => {
-  const html = await (await fetchRoute("/privacidade")).text();
+  test(`[${idioma.locale}] fala como estúdio: nenhum nome de pessoa na home`, async () => {
+    const html = await htmlDe(idioma.home);
 
-  /* O contraponto do teste acima. A LGPD exige identificar quem controla
-     os dados; se alguém "limpar" o nome daqui junto com o resto do site,
-     a página fica ilegal em silêncio. */
-  assert.match(html, /Lucca Oliveira/i, "a identificação do controlador sumiu da política");
-  assert.match(html, /luccaassoc@gmail\.com/i, "sem canal para pedido de titular");
-});
+    /* Decisão comercial de 2026-08-10: o site se apresenta só como Varanda
+       Estúdio Web. Isto é teste e não revisão porque o nome tinha voltado
+       por quatro caminhos diferentes — assinatura da seção "sobre",
+       `authors` nos metadados, `founder` no JSON-LD — e o endereço de e-mail
+       o exibia em texto grande na seção de contato sem parecer um nome.
+
+       O quinto caminho foi este teste que encontrou, na tradução: passar o
+       dicionário inteiro como propriedade de um componente cliente serializa
+       **todas** as chaves no payload, inclusive o texto da política. O nome
+       ficava invisível na tela e presente no fonte das três home. A correção
+       foi passar fatias; este teste é o que impede a volta. */
+    assert.doesNotMatch(html, /Lucca Oliveira/i, `${idioma.locale}: nome da pessoa voltou à home`);
+    assert.doesNotMatch(html, /luccaassoc/i, `${idioma.locale}: o e-mail pessoal voltou à home`);
+
+    /* Conhecido e ainda aberto: as três URLs do portfólio apontam para
+       `*.luccaoliveira123.workers.dev`, que carrega o nome e ainda parece
+       endereço de teste. Só sai com domínio próprio para os conceituais —
+       por isso a asserção acima é pelo nome completo, não por "lucca". */
+  });
+
+  test(`[${idioma.locale}] a política mantém a identificação exigida por lei`, async () => {
+    const response = await fetchRoute(idioma.politica);
+    const html = await response.text();
+
+    assert.equal(response.status, 200);
+    assertSecurityHeaders(response);
+    assert.equal(canonicalDe(html), `${SITE}${idioma.politica}`);
+
+    /* O contraponto do teste acima. A LGPD e o RGPD exigem identificar quem
+       controla os dados; se alguém "limpar" o nome daqui junto com o resto
+       do site, as três páginas ficam ilegais em silêncio. */
+    assert.match(html, /Lucca Oliveira/i, `${idioma.locale}: identificação do controlador sumiu`);
+    assert.match(html, /luccaassoc@gmail\.com/i, `${idioma.locale}: sem canal para pedido de titular`);
+  });
+
+  test(`[${idioma.locale}] o seletor de idioma leva aos outros dois`, async () => {
+    const html = await htmlDe(idioma.home);
+    for (const outro of IDIOMAS.filter((o) => o.locale !== idioma.locale)) {
+      assert.match(
+        html,
+        new RegExp(`href=["']${outro.home.replace("/", "\\/")}["']`),
+        `${idioma.locale}: sem link para ${outro.locale}`,
+      );
+    }
+  });
+}
 
 test("nenhum endereço de worker sobra nos metadados", async () => {
-  for (const rota of ["/", "/privacidade"]) {
-    const head = (await (await fetchRoute(rota)).text()).split("</head>")[0];
-    assert.doesNotMatch(head, /workers\.dev/i, `${rota} ainda cita workers.dev na head`);
+  for (const idioma of IDIOMAS) {
+    for (const rota of [idioma.home, idioma.politica]) {
+      assert.doesNotMatch(headDe(await htmlDe(rota)), /workers\.dev/i, `${rota} ainda cita workers.dev na head`);
+    }
   }
 });
 
 test("o conteúdo não depende do JavaScript para aparecer", async () => {
-  const html = await (await fetchRoute("/")).text();
+  const html = await htmlDe("/");
   assert.match(html, /data-reveal/, "a home deveria ter elementos de revelação");
 
   /* Se o CSS esconder `[data-reveal]` sem exigir a classe que só o JS
@@ -147,41 +224,29 @@ test("o conteúdo não depende do JavaScript para aparecer", async () => {
   }
 });
 
-test("renders the privacy route with its own canonical URL", async () => {
-  const response = await fetchRoute("/privacidade");
-  const html = await response.text();
-
-  assert.equal(response.status, 200);
-  assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
-  assertSecurityHeaders(response);
-  assert.match(html, /<h1[^>]*>Política de Privacidade<\/h1>/i);
-  assert.equal(canonicalDe(html), `${SITE}/privacidade`);
-  assert.doesNotMatch(html, /codex-preview/i);
-});
-
 test("a home publica dados estruturados válidos e sem dado inventado", async () => {
-  const response = await fetchRoute("/");
-  const html = await response.text();
+  for (const idioma of IDIOMAS) {
+    const html = await htmlDe(idioma.home);
 
-  const bloco = html.match(
-    /<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/i,
-  );
-  assert.ok(bloco, "nenhum bloco JSON-LD na página");
+    const bloco = html.match(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/i);
+    assert.ok(bloco, `${idioma.locale}: nenhum bloco JSON-LD na página`);
 
-  /* Se o JSON estiver malformado o Google descarta tudo em silêncio, então
-     o teste precisa fazer o parse, não só procurar a string. */
-  const dados = JSON.parse(bloco[1]);
-  assert.equal(dados["@context"], "https://schema.org");
-  assert.equal(dados["@type"], "ProfessionalService");
-  assert.equal(dados.name, "Varanda Estúdio Web");
-  assert.equal(dados.url, "https://varandaestudioweb.com");
-  assert.ok(Array.isArray(dados.serviceType) && dados.serviceType.length > 0);
-  assert.equal(dados.hasOfferCatalog.itemListElement.length, 3);
+    /* Se o JSON estiver malformado o Google descarta tudo em silêncio, então
+       o teste precisa fazer o parse, não só procurar a string. */
+    const dados = JSON.parse(bloco[1]);
+    assert.equal(dados["@context"], "https://schema.org");
+    assert.equal(dados["@type"], "ProfessionalService");
+    assert.equal(dados.name, "Varanda Estúdio Web");
+    assert.equal(dados.url, SITE);
+    assert.equal(dados.inLanguage, idioma.hreflang);
+    assert.ok(Array.isArray(dados.serviceType) && dados.serviceType.length > 0);
+    assert.equal(dados.hasOfferCatalog.itemListElement.length, 3);
 
-  /* O protocolo proíbe inventar dado comercial. Estes campos só poderiam
-     ser preenchidos com número que ninguém confirmou. */
-  for (const campo of ["aggregateRating", "review", "priceRange", "foundingDate", "address", "taxID"]) {
-    assert.equal(dados[campo], undefined, `${campo} não pode ser inventado`);
+    /* O protocolo proíbe inventar dado comercial. Estes campos só poderiam
+       ser preenchidos com número que ninguém confirmou. */
+    for (const campo of ["aggregateRating", "review", "priceRange", "foundingDate", "address", "taxID", "founder"]) {
+      assert.equal(dados[campo], undefined, `${idioma.locale}: ${campo} não pode ser inventado`);
+    }
   }
 });
 
@@ -198,14 +263,14 @@ test("HTTP puro não entrega página: redireciona para HTTPS", async () => {
     );
 
   /* Visitante em texto aberto: 301 para o mesmo caminho em HTTPS. */
-  const aberto = await pedir("http://varanda-estudio-web.test/privacidade?x=1");
+  const aberto = await pedir("http://varanda-estudio-web.test/es/privacidad?x=1");
   assert.equal(aberto.status, 301);
-  assert.equal(aberto.headers.get("location"), "https://varanda-estudio-web.test/privacidade?x=1");
+  assert.equal(aberto.headers.get("location"), "https://varanda-estudio-web.test/es/privacidad?x=1");
 
   /* A borda da Cloudflare entrega o esquema original no CF-Visitor. Ele
      manda mais que o endereço: numa borda que já terminou o TLS, a URL
      chega como https mesmo quando o visitante veio de http. */
-  const viaBorda = await pedir("https://varanda-estudio-web.test/", { "CF-Visitor": '{"scheme":"http"}' });
+  const viaBorda = await pedir("https://varanda-estudio-web.test/en", { "CF-Visitor": '{"scheme":"http"}' });
   assert.equal(viaBorda.status, 301, "CF-Visitor http deve redirecionar mesmo com URL https");
 
   /* E o contrário: quem já está em HTTPS **não** pode ser redirecionado,

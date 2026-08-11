@@ -1,4 +1,5 @@
-import { siteDescription, siteName, siteUrl } from "./site-config";
+import { getDicionario, type Locale } from "./i18n";
+import { siteName, siteUrl } from "./site-config";
 
 /**
  * Dados estruturados (JSON-LD) — só a Varanda.
@@ -13,9 +14,9 @@ import { siteDescription, siteName, siteUrl } from "./site-config";
  * inventada seria alimentar o buscador com dado falso.
  *
  * Tudo abaixo é fato que o site já afirma em outro lugar — nome, serviços,
- * área de atendimento, e-mail e WhatsApp. Nada de avaliação, número de
- * clientes, endereço físico, CNPJ ou ano de fundação: o que não está no
- * site não entra aqui.
+ * área de atendimento e WhatsApp. Nada de avaliação, número de clientes,
+ * endereço físico, CNPJ ou ano de fundação: o que não está no site não
+ * entra aqui.
  */
 
 /* O mesmo contato que a página de contato usa. Mantido aqui como constante
@@ -26,74 +27,59 @@ import { siteDescription, siteName, siteUrl } from "./site-config";
    existir `contato@` no domínio próprio. */
 const WHATSAPP = "+5511942263007";
 
-const dados = {
-  "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  "@id": `${siteUrl}/#negocio`,
-  name: siteName,
-  url: siteUrl,
-  description: siteDescription,
-  inLanguage: "pt-BR",
-  telephone: WHATSAPP,
-  /* Sem `founder`: o site não identifica pessoa em nenhum lugar público, e
-     dado estruturado não pode afirmar o que a página não afirma. A
-     identificação legal do responsável vive só na política de privacidade,
-     onde a LGPD exige que exista.
+export default function StructuredData({ locale }: { locale: Locale }) {
+  const t = getDicionario(locale);
 
-     Atende remoto no país — é o que o rodapé diz. Sem `address`: não há
-     endereço comercial publicado, e inventar um seria pior que omitir. */
-  areaServed: { "@type": "Country", name: "Brasil" },
-  knowsLanguage: "pt-BR",
-  serviceType: [
-    "Criação de sites",
-    "Site institucional",
-    "Desenvolvimento web",
-    "Manutenção de sites",
-  ],
-  hasOfferCatalog: {
-    "@type": "OfferCatalog",
-    name: "Criação de sites",
-    itemListElement: [
-      /* Os mesmos três nomes dos pacotes na página. Antes eram outros três
-         ("Página profissional", "Landing page", "Site institucional"), o
-         que dava ao buscador um catálogo que não existia em lugar nenhum
-         do site. */
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Essencial",
-          description: "Uma página para apresentar o negócio e receber contato.",
-        },
-      },
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Negócio",
-          description: "Site completo com serviços, trabalhos, dúvidas e contato.",
-        },
-      },
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Profissional",
-          description:
-            "Site completo mais uma capacidade: outro idioma, catálogo com filtros, conteúdo gerenciável ou integração com sistema.",
-        },
-      },
+  const dados = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "@id": `${siteUrl}/#negocio`,
+    name: siteName,
+    url: siteUrl,
+    description: t.meta.description,
+    inLanguage: t.code,
+    telephone: WHATSAPP,
+    /* Sem `founder`: o site não identifica pessoa em nenhum lugar público, e
+       dado estruturado não pode afirmar o que a página não afirma. A
+       identificação legal do responsável vive só na política de privacidade,
+       onde a LGPD exige que exista.
+
+       `areaServed` deixou de ser só o Brasil quando o site passou a existir
+       em três idiomas e a dizer, no próprio FAQ, que atende fora do país.
+       Sem `address`: não há endereço comercial publicado, e inventar um
+       seria pior que omitir. */
+    areaServed: { "@type": "Place", name: "Brasil, Europa e América do Norte" },
+    knowsLanguage: ["pt-BR", "es-ES", "en"],
+    serviceType: [
+      "Criação de sites",
+      "Site institucional",
+      "Desenvolvimento web",
+      "Manutenção de sites",
     ],
-  },
-} as const;
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: t.investimento.indice.replace(/^\d+\s*—\s*/, ""),
+      /* Os mesmos três nomes dos pacotes na página, no idioma da página.
+         Antes eram outros três ("Página profissional", "Landing page",
+         "Site institucional"), o que dava ao buscador um catálogo que não
+         existia em lugar nenhum do site. */
+      itemListElement: t.investimento.pacotes.map((pacote) => ({
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: pacote.name,
+          description: pacote.description,
+        },
+      })),
+    },
+  };
 
-export default function StructuredData() {
   return (
     <script
       type="application/ld+json"
-      /* O conteúdo é um objeto nosso, definido acima — não vem de entrada
-         de usuário nem de rede. O `JSON.stringify` já escapa o que
-         precisa para viver dentro de uma tag script. */
+      /* O conteúdo é um objeto nosso, montado acima a partir do dicionário —
+         não vem de entrada de usuário nem de rede. O `JSON.stringify` já
+         escapa o que precisa para viver dentro de uma tag script. */
       dangerouslySetInnerHTML={{ __html: JSON.stringify(dados) }}
     />
   );

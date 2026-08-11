@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { whatsappUrl } from "./data";
+import type { Dicionario } from "./i18n";
 import { ArrowIcon } from "./icons";
 
 /**
@@ -9,8 +10,21 @@ import { ArrowIcon } from "./icons";
  *
  * Não há banco de dados: o envio monta a mensagem e abre o WhatsApp. O
  * estado do envio e o link de reserva nascem e morrem dentro desta seção.
+ *
+ * A mensagem sai no idioma em que o visitante navegou — inclusive os rótulos
+ * de cada campo. É o que faz a conversa começar já na língua certa, sem
+ * ninguém ter que perguntar.
  */
-export default function SectionContato() {
+export default function SectionContato({
+  contato,
+  privacyPath,
+}: {
+  contato: Dicionario["contato"];
+  privacyPath: string;
+}) {
+  /* Fatia, não o dicionário: propriedade de componente cliente viaja
+     serializada até o navegador. */
+  const t = { contato, privacyPath };
   const [formStatus, setFormStatus] = useState<"idle" | "success" | "blocked">("idle");
   /* Guardado para o caso de a aba ser bloqueada: aí o link vira algo
      clicável na própria página, em vez de um beco sem saída. */
@@ -21,15 +35,15 @@ export default function SectionContato() {
     const data = new FormData(event.currentTarget);
     const texto = (campo: string) => String(data.get(campo) ?? "").trim();
     const message = [
-      "Olá! Vim pelo site da Varanda Estúdio Web.",
+      t.contato.formSaudacao,
       "",
-      `Meu nome: ${texto("name")}`,
-      `Negócio: ${texto("business")}`,
-      `E-mail: ${texto("email")}`,
-      `WhatsApp: ${texto("phone")}`,
-      `Tipo de site: ${texto("siteType")}`,
+      `${t.contato.rotuloNome}: ${texto("name")}`,
+      `${t.contato.rotuloNegocio}: ${texto("business")}`,
+      `${t.contato.rotuloEmail}: ${texto("email")}`,
+      `${t.contato.rotuloWhatsapp}: ${texto("phone")}`,
+      `${t.contato.rotuloTipo}: ${texto("siteType")}`,
       "",
-      "Sobre o projeto:",
+      t.contato.rotuloProjeto,
       texto("summary"),
     ].join("\n");
 
@@ -53,19 +67,20 @@ export default function SectionContato() {
   return (
       <section className="contact section" id="contato" aria-labelledby="contact-title">
         <div className="contact-copy" data-reveal>
-          <div className="section-index section-index--light">10 — Vamos conversar</div>
-          <h2 id="contact-title">Seu negócio merece<br />um lugar para <em>crescer.</em></h2>
-          <p>
-            Conte o que seu negócio precisa e em que momento ele está. Analisamos as informações e respondemos com a orientação para o próximo passo.
-          </p>
+          <div className="section-index section-index--light">{t.contato.indice}</div>
+          <h2 id="contact-title">
+            <span dangerouslySetInnerHTML={{ __html: t.contato.tituloAntes }} />
+            <em>{t.contato.tituloDestaque}</em>
+          </h2>
+          <p>{t.contato.resumo}</p>
           <div className="contact-direct">
             <a
-              href={`${whatsappUrl}?text=${encodeURIComponent("Olá! Vim pelo site da Varanda Estúdio Web e gostaria de conversar sobre um projeto.")}`}
+              href={`${whatsappUrl}?text=${encodeURIComponent(t.contato.whatsappMensagem)}`}
               target="_blank"
               rel="noreferrer"
-              aria-label="Falar com a Varanda pelo WhatsApp em uma nova aba"
+              aria-label={t.contato.whatsappAria}
             >
-              <span>WhatsApp</span>
+              <span>{t.contato.whatsappLabel}</span>
               <strong>+55 11 94226-3007</strong>
             </a>
             {/* O e-mail saiu daqui em 2026-08-10.
@@ -85,60 +100,53 @@ export default function SectionContato() {
         <form className="contact-form" onSubmit={handleSubmit} data-reveal>
           <div className="field-row">
             <label>
-              Seu nome *
-              <input name="name" type="text" autoComplete="name" required placeholder="Como você prefere ser chamado?" />
+              {t.contato.campoNome}
+              <input name="name" type="text" autoComplete="name" required placeholder={t.contato.campoNomePlaceholder} />
             </label>
             <label>
-              Nome do negócio *
-              <input name="business" type="text" autoComplete="organization" required placeholder="Nome da empresa ou do projeto" />
+              {t.contato.campoNegocio}
+              <input name="business" type="text" autoComplete="organization" required placeholder={t.contato.campoNegocioPlaceholder} />
             </label>
           </div>
           <div className="field-row">
             <label>
-              E-mail *
+              {t.contato.campoEmail}
               <input name="email" type="email" autoComplete="email" required placeholder="voce@exemplo.com" />
             </label>
             <label>
-              WhatsApp *
-              <input name="phone" type="tel" autoComplete="tel" required placeholder="(11) 99999-9999" />
+              {t.contato.campoWhatsapp}
+              <input name="phone" type="tel" autoComplete="tel" required placeholder="+55 11 99999-9999" />
             </label>
           </div>
           <label>
-            Que tipo de site você procura? *
+            {t.contato.campoTipo}
             <select name="siteType" required defaultValue="">
-              <option value="" disabled>Selecione uma opção</option>
-              <option>Essencial — uma página</option>
-              <option>Negócio — site completo</option>
-              <option>Profissional — site completo e mais uma capacidade</option>
-              <option>Loja virtual ou projeto especial</option>
-              <option>Ainda não sei</option>
+              <option value="" disabled>{t.contato.campoTipoPlaceholder}</option>
+              {t.contato.tipos.map((tipo) => <option key={tipo}>{tipo}</option>)}
             </select>
           </label>
           <label>
-            Conte sobre o projeto *
-            <textarea name="summary" required rows={5} placeholder="Conte o que seu negócio faz, o que o site precisa apresentar e qual resultado você espera." />
+            {t.contato.campoResumo}
+            <textarea name="summary" required rows={5} placeholder={t.contato.campoResumoPlaceholder} />
           </label>
           <label className="consent">
             <input name="consent" type="checkbox" required />
-            <span>Concordo com o uso destes dados para receber retorno sobre meu projeto, conforme a <a href="/privacidade">Política de Privacidade</a>.</span>
+            <span>{t.contato.consentimento} <a href={t.privacyPath}>{t.contato.consentimentoLink}</a>.</span>
           </label>
           <button className="button button--terracotta" type="submit">
-            Continuar no WhatsApp <ArrowIcon />
+            {t.contato.botao} <ArrowIcon />
           </button>
-          <p className="form-hint">Ao continuar, o WhatsApp abrirá uma mensagem com as informações preenchidas. Nada é armazenado em um banco de dados deste site.</p>
+          <p className="form-hint">{t.contato.dica}</p>
           {formStatus === "success" && (
-            <p className="form-success" role="status">
-              Mensagem preparada e aberta no WhatsApp. Confira e toque em enviar
-              para que ela chegue até nós.
-            </p>
+            <p className="form-success" role="status">{t.contato.sucesso}</p>
           )}
           {formStatus === "blocked" && (
             <p className="form-success" role="status">
-              O navegador bloqueou a nova aba.{" "}
+              {t.contato.bloqueadoAntes}{" "}
               <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-                Abrir a mensagem no WhatsApp
+                {t.contato.bloqueadoLink}
               </a>{" "}
-              — os dados já preenchidos vão junto.
+              {t.contato.bloqueadoDepois}
             </p>
           )}
         </form>

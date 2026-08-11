@@ -353,6 +353,21 @@
   font-weight: 400;
 }
 
+/* O rótulo de cada cartão já diz "Projeto conceitual", mas é fácil de passar
+   batido — e visitante estrangeiro não tem como saber que as empresas não
+   existem. O protocolo é taxativo: trabalho conceitual nunca pode parecer
+   trabalho de cliente.
+
+   Ochre é fundo exigente (ver a nota acima): --charcoal mede 6,02:1 aqui,
+   contra 2,25:1 do creme e 2,58:1 do branco. */
+.portfolio-aviso {
+  max-width: 620px;
+  margin: 1.6rem 0 0;
+  color: var(--charcoal);
+  font-size: .78rem;
+  line-height: 1.6;
+}
+
 .project-carousel {
   position: relative;
   margin-top: 4.5rem;
