@@ -18,22 +18,23 @@ export const whatsappUrl = "https://wa.me/5511942263007";
  * As demonstrações, na mesma ordem de `portfolio.projetos` de cada
  * dicionário. Nome, descrição e entregas vêm de lá; imagem e endereço, daqui.
  *
- * TODO (combinado em 2026-08-10): trocar por subdomínios de
- * `varandaestudioweb.com`. `luccaoliveira123.workers.dev` carrega o nome da
- * pessoa, que o site deixou de exibir, e ainda parece endereço de teste em
- * link de portfólio. Custa zero — o domínio já está na Cloudflare.
+ * Em subdomínios próprios desde 2026-08-10. O endereço anterior era
+ * `*.luccaoliveira123.workers.dev`, que carregava o nome da pessoa logo
+ * depois de o site inteiro ter deixado de exibi-lo, e ainda parecia endereço
+ * de teste num link de portfólio. Os três seguem `noindex`: são projetos
+ * conceituais, com empresas que não existem.
  */
 export const projectAssets = [
   {
     image: "brasa-do-vale-hero",
-    url: "https://brasa-do-vale.luccaoliveira123.workers.dev/",
+    url: "https://brasa.varandaestudioweb.com/",
   },
   {
     image: "nivora-casa-patio-alto",
-    url: "https://nivora-construcoes.luccaoliveira123.workers.dev/",
+    url: "https://nivora.varandaestudioweb.com/",
   },
   {
     image: "nascente-hero-central",
-    url: "https://nascente-casa-olfativa.luccaoliveira123.workers.dev/",
+    url: "https://nascente.varandaestudioweb.com/",
   },
 ];
