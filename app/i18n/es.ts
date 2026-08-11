@@ -195,7 +195,24 @@ const es: Dicionario = {
     valorRegular: "precio habitual:",
     cta: "Quiero este plan",
     incluidoTitulo: "En todos los paquetes, sin coste aparte",
-    nota: "Las integraciones estándar incluyen formulario de contacto que llega a tu correo y a tu WhatsApp, medición de visitas, mapa y enlaces a tus redes. Cada ronda de ajustes debe llegar en una lista consolidada. Cualquier necesidad fuera del paquete se comunica y se presupuesta antes de empezar — nunca durante.",
+    escopoIncluidoTitulo: "Integraciones incluidas en todos los paquetes",
+    escopoIncluido: [
+      "Formulario de contacto que llega a tu correo y a tu WhatsApp",
+      "Medición de visitas y origen del tráfico",
+      "Mapa y localización",
+      "Enlaces a tus redes sociales",
+      "Botón de WhatsApp en todas las páginas",
+    ],
+    escopoOrcamentoTitulo: "También desarrollamos, con presupuesto propio",
+    escopoOrcamento: [
+      "Pago online y suscripción recurrente",
+      "Tienda online completa",
+      "Reservas y cita previa",
+      "Área privada para clientes",
+      "Automatizaciones a medida",
+      "La segunda capacidad, cuando el proyecto pida más de una",
+    ],
+    nota: "Cada ronda de ajustes debe llegar en una lista consolidada. Cualquier necesidad fuera del paquete se comunica y se presupuesta antes de empezar, nunca durante.",
     pacotes: [
       {
         name: "Esencial",
@@ -304,7 +321,6 @@ const es: Dicionario = {
     indice: "08 — A medida",
     titulo: "¿Qué más puede necesitar tu proyecto?",
     resumo: "Estos servicios se pueden añadir cuando no estén incluidos en el paquete elegido.",
-    notaSobOrcamento: "Bajo presupuesto, porque el esfuerzo varía demasiado para caber en un precio de tarifa:",
     nota: "Los precios de arriba no incluyen los costes que cobran el dominio, el alojamiento o las herramientas externas. Una entrega en menos plazo del acordado, o trabajo en fin de semana y festivo, tiene un recargo del 30% y depende de disponibilidad.",
     lista: [
       { name: "Página adicional", price: "250 €" },
@@ -312,12 +328,6 @@ const es: Dicionario = {
       { name: "Integración fuera de las estándar", price: "desde 250 €" },
       { name: "Ronda adicional de ajustes", price: "199 €" },
       { name: "Mantenimiento suelto", price: "59 €/hora" },
-    ],
-    sobOrcamento: [
-      "tienda online y pagos",
-      "área privada, reservas o sistema",
-      "blog o panel de contenido",
-      "idiomas adicionales",
     ],
   },
 

@@ -191,7 +191,34 @@ const pt = {
     valorRegular: "valor regular:",
     cta: "Quero este plano",
     incluidoTitulo: "Em todos os pacotes, sem cobrança à parte",
-    nota: "As integrações padrão incluem formulário de contato que chega no seu e-mail e no seu WhatsApp, medição de visitas, mapa e links das suas redes. Cada rodada de ajustes deve chegar em uma lista consolidada. Qualquer necessidade fora do pacote é informada e orçada antes do início — nunca durante.",
+    /* Duas colunas, e a separação é comercial antes de ser visual: a da
+       esquerda está no preço do pacote, a da direita não. Enquanto era um
+       parágrafo único, "pagamento online" ao lado de "mapa" faria o cliente
+       ler as duas como inclusas. */
+    escopoIncluidoTitulo: "Integrações inclusas em todos os pacotes",
+    escopoIncluido: [
+      "Formulário de contato que chega no seu e-mail e no seu WhatsApp",
+      "Medição de visitas e origem do tráfego",
+      "Mapa e localização",
+      "Links das suas redes sociais",
+      "Botão de WhatsApp em todas as páginas",
+    ],
+    escopoOrcamentoTitulo: "Também desenvolvemos, com orçamento próprio",
+    /* Não repete as quatro capacidades do pacote Profissional, que estão
+       nos cartões logo acima. Repetir fazia o visitante ler que catálogo
+       com filtros estava incluso e cobrado à parte ao mesmo tempo.
+       O critério do corte: o que envolve dinheiro, identidade de usuário ou
+       estado em tempo real é sempre grande demais para caber como "uma
+       capacidade". */
+    escopoOrcamento: [
+      "Pagamento online e assinatura recorrente",
+      "Loja virtual completa",
+      "Agendamento e reserva de horário",
+      "Área de acesso para clientes",
+      "Automações sob medida",
+      "A segunda capacidade, quando o projeto pedir mais de uma",
+    ],
+    nota: "Cada rodada de ajustes deve chegar em uma lista consolidada. Qualquer necessidade fora do pacote é informada e orçada antes do início, nunca durante.",
     pacotes: [
       {
         name: "Essencial",
@@ -303,7 +330,6 @@ const pt = {
     indice: "08 — Sob medida",
     titulo: "O que mais o seu projeto pode precisar?",
     resumo: "Estes serviços podem ser adicionados quando não estiverem incluídos no pacote escolhido.",
-    notaSobOrcamento: "Sob orçamento, porque o esforço varia demais para caber em preço de tabela:",
     nota: "Os valores acima não incluem custos cobrados por domínio, hospedagem ou ferramentas externas. Entrega em prazo menor que o combinado, ou trabalho em fim de semana e feriado, tem adicional de 30% e depende de disponibilidade.",
     lista: [
       { name: "Página adicional", price: "R$ 390" },
@@ -311,12 +337,6 @@ const pt = {
       { name: "Integração além das padrão", price: "a partir de R$ 390" },
       { name: "Rodada adicional de ajustes", price: "R$ 320" },
       { name: "Manutenção avulsa", price: "R$ 190/hora" },
-    ],
-    sobOrcamento: [
-      "loja virtual e pagamentos",
-      "área de acesso, agendamento ou sistema",
-      "blog ou painel de conteúdo",
-      "idiomas adicionais",
     ],
   },
 

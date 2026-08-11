@@ -97,6 +97,7 @@
   .price-card.is-featured { transform: none; }
   .price-description { min-height: 0; }
   .pricing-included ul { grid-template-columns: 1fr 1fr; gap: 1.5rem 2rem; }
+  .pricing-escopo { grid-template-columns: 1fr; gap: 2.4rem; }
   .care-grid { grid-template-columns: 1fr; }
   .care-grid article { border-right: 0; border-bottom: 1px solid rgba(255,255,255,.25); }
   .care-grid article:last-child { border-bottom: 0; }

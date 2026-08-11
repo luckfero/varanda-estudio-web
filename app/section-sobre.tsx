@@ -48,9 +48,11 @@ export default function SectionSobre({
             <div key={item.name}><span>{item.name}</span><strong>{item.price}</strong></div>
           ))}
         </div>
-        <p className="extras-note">
-          {t.extras.notaSobOrcamento} {t.extras.sobOrcamento.join(" · ")}. {t.extras.nota}
-        </p>
+        {/* A lista do que é orçado à parte saiu daqui em 2026-08-10: passou
+            a viver em destaque na seção de investimento, em duas colunas ao
+            lado do que está incluso. Repetir nos dois lugares enfraquecia os
+            dois, e aqui ela ficava em letra miúda. */}
+        <p className="extras-note">{t.extras.nota}</p>
       </section>
 
       <section className="faq section" aria-labelledby="faq-title">

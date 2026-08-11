@@ -220,8 +220,73 @@
   line-height: 1.6;
 }
 
+/**
+ * O que entra no pacote, e o que fazemos com orcamento proprio.
+ *
+ * Duas colunas de largura cheia. Era um paragrafo corrido de 760px que
+ * subaproveitava a faixa e escondia metade do que o estudio entrega.
+ *
+ * A separacao e comercial antes de ser visual: a esquerda esta no preco do
+ * pacote, a direita nao. Por isso o marcador difere — ✓ para incluso, + para
+ * adicional — e nao so a coluna. Numa leitura rapida, que e como esta secao
+ * costuma ser lida, e o marcador que carrega a informacao.
+ */
+.pricing-escopo {
+  margin-top: 3.4rem;
+  padding-top: 2.6rem;
+  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem 4vw;
+}
+
+.pricing-escopo-col h3 {
+  margin: 0 0 1.5rem;
+  color: var(--green-dark);
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 2vw, 1.85rem);
+  font-weight: 400;
+  letter-spacing: -.02em;
+}
+
+.pricing-escopo ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: .8rem;
+  color: var(--ink-soft);
+  font-size: .84rem;
+  line-height: 1.5;
+}
+
+.pricing-escopo li {
+  display: grid;
+  grid-template-columns: 1.4rem 1fr;
+  align-items: baseline;
+}
+
+.pricing-escopo li::before {
+  font-weight: 800;
+}
+
+/* --terracotta-dark mede 5,35:1 sobre o creme; o tom medio ficaria em
+   3,67:1. Mesmo marcador dos cartoes de preco, de proposito: repete o
+   vocabulario de "isto esta incluso". */
+.pricing-escopo-incluso li::before {
+  content: "✓";
+  color: var(--terracotta-dark);
+}
+
+/* O sinal de mais diz "soma-se ao pacote", que e exatamente a relacao
+   comercial. Em --green-dark, 11,19:1 sobre o creme. */
+.pricing-escopo-extra li::before {
+  content: "+";
+  color: var(--green-dark);
+}
+
 .launch-note {
-  max-width: 760px;
+  max-width: 1040px;
   margin: 2.6rem auto 0;
   color: var(--ink-muted);
   font-size: .72rem;

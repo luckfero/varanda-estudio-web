@@ -130,8 +130,15 @@
   text-transform: uppercase;
 }
 
+/* Areia quente. Era #ded5c8, que lia como cinza ao lado de uma paleta toda
+   quente — 25% de saturacao contra os 46% deste.
+   A claridade foi mantida de proposito (0,67 para 0,72): o ritmo da pagina
+   alterna claro e escuro nas secoes 3, 7 e 11, e escurecer esta faixa
+   colocaria dois escuros quase colados. O que incomodava era a
+   dessaturacao, nao a claridade.
+   Contraste do texto miudo desta secao sobe de 5,14:1 para 5,51:1. */
 .extras {
-  background: #ded5c8;
+  background: #e9dcc4;
 }
 
 .extras-heading {

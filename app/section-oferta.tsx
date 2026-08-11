@@ -105,6 +105,25 @@ export default function SectionOferta({
           </ul>
         </div>
 
+        {/* Duas colunas, e a separação é comercial antes de ser visual: a
+            esquerda está no preço do pacote, a direita não. O marcador
+            diferente (✓ contra +) existe para a distinção sobreviver a uma
+            leitura rápida, que é como esta seção costuma ser lida. */}
+        <div className="pricing-escopo" data-reveal>
+          <div className="pricing-escopo-col">
+            <h3>{t.investimento.escopoIncluidoTitulo}</h3>
+            <ul className="pricing-escopo-incluso">
+              {t.investimento.escopoIncluido.map((item) => <li key={item}>{item}</li>)}
+            </ul>
+          </div>
+          <div className="pricing-escopo-col">
+            <h3>{t.investimento.escopoOrcamentoTitulo}</h3>
+            <ul className="pricing-escopo-extra">
+              {t.investimento.escopoOrcamento.map((item) => <li key={item}>{item}</li>)}
+            </ul>
+          </div>
+        </div>
+
         <p className="launch-note">{t.investimento.nota}</p>
       </section>
 

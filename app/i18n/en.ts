@@ -184,7 +184,24 @@ const en: Dicionario = {
     valorRegular: "standard price:",
     cta: "I want this plan",
     incluidoTitulo: "In every package, at no extra charge",
-    nota: "Standard integrations include a contact form that reaches your email and your WhatsApp, visit tracking, a map and links to your social profiles. Each revision round should arrive as one consolidated list. Anything outside the package is flagged and quoted before we start — never during.",
+    escopoIncluidoTitulo: "Integrations included in every package",
+    escopoIncluido: [
+      "A contact form that reaches your email and your WhatsApp",
+      "Visit tracking and traffic sources",
+      "Map and location",
+      "Links to your social profiles",
+      "A WhatsApp button on every page",
+    ],
+    escopoOrcamentoTitulo: "We also build these, quoted separately",
+    escopoOrcamento: [
+      "Online payments and recurring subscriptions",
+      "A full online store",
+      "Booking and appointment scheduling",
+      "A client login area",
+      "Custom automations",
+      "A second capability, when the project calls for more than one",
+    ],
+    nota: "Each revision round should arrive as one consolidated list. Anything outside the package is flagged and quoted before we start, never during.",
     pacotes: [
       {
         name: "Essential",
@@ -293,7 +310,6 @@ const en: Dicionario = {
     indice: "08 — Made to measure",
     titulo: "What else might your project need?",
     resumo: "These can be added when they aren't included in the package you choose.",
-    notaSobOrcamento: "Quoted case by case, because the effort varies far too much to fit a list price:",
     nota: "The prices above don't include what the domain, hosting or third-party tools charge. Delivery faster than agreed, or work over a weekend or public holiday, carries a 30% surcharge and depends on availability.",
     lista: [
       { name: "Extra page", price: "US$ 290" },
@@ -301,12 +317,6 @@ const en: Dicionario = {
       { name: "Integration beyond the standard set", price: "from US$ 290" },
       { name: "Extra revision round", price: "US$ 230" },
       { name: "Ad-hoc maintenance", price: "US$ 69/hour" },
-    ],
-    sobOrcamento: [
-      "online store and payments",
-      "members area, bookings or a system",
-      "blog or content dashboard",
-      "additional languages",
     ],
   },
 
