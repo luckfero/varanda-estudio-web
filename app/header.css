@@ -37,14 +37,15 @@
   line-height: 1;
 }
 
-/* Peso normal, nao 600. Na Playfair, que ja tem contraste alto entre traco
-   grosso e fino, o peso extra engrossa os finos e o nome perde a elegancia
-   que a serifada existe para dar. */
+/* Peso 500, nao 600 nem 400. Era 600, que na Playfair engrossava os tracos
+   finos e tirava a elegancia que a serifada existe para dar; 400 corrigiu
+   isso mas deixou o nome leve demais ao lado do selo verde. 500 e o degrau
+   do meio, e a Playfair variavel entrega esse peso sem simulacao. */
 .brand strong {
   color: var(--green);
   font-family: var(--serif);
   font-size: 1.55rem;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: -0.01em;
 }
 
