@@ -54,3 +54,8 @@ next-env.d.ts
 
 # Capturas geradas pela varredura do Safari — artefato de execução.
 capturas/
+
+# Previa local do hero animado (Claude Design). Arquivo em public/ vai para
+# producao num push, e previa de trabalho nao deve ficar publicada no dominio
+# do negocio.
+/public/preview-hero.html
