@@ -95,7 +95,7 @@ const pt = {
       {
         number: "03",
         title: "Profissional",
-        text: "Quando o site precisa fazer mais do que apresentar — outro idioma, catálogo com filtros, conteúdo que você mesmo atualiza ou integração com o sistema que já usa.",
+        text: "Quando o site precisa fazer mais do que apresentar: outro idioma, catálogo com filtros, conteúdo que você mesmo atualiza ou integração com o sistema que já usa.",
       },
     ],
   },
@@ -258,7 +258,7 @@ const pt = {
         launch: "4.500",
         future: "5.500",
         featured: false,
-        description: "Tudo do Negócio, mais uma capacidade que o seu projeto exige — escolhida junto com você.",
+        description: "Tudo do Negócio, mais uma capacidade que o seu projeto exige, escolhida junto com você.",
         items: [
           "Tudo do pacote Negócio",
           "Uma capacidade à escolha: outro idioma, catálogo com filtros, conteúdo gerenciável ou integração com sistema",
@@ -282,7 +282,7 @@ const pt = {
     indice: "06 — Depois da publicação",
     tituloAntes: "Seu site pode continuar",
     tituloDestaque: "bem cuidado.",
-    resumo: "Planos opcionais para manter o site no ar, atualizado e seguro — e para mudar o conteúdo sempre que o negócio mudar.",
+    resumo: "Planos opcionais para manter o site no ar, atualizado e seguro, e para mudar o conteúdo sempre que o negócio mudar.",
     porMes: "/mês",
     nota1: "O tempo mensal não é acumulativo. O pagamento é antecipado e o cancelamento requer aviso prévio de 30 dias.",
     nota2: "Para demandas pontuais sem plano, a manutenção avulsa custa R$ 190 por hora, cobrada em blocos de 30 minutos. Dentro dos planos, a hora sai sempre mais barata.",
@@ -357,7 +357,7 @@ const pt = {
       {
         question: "E se der problema depois que o site estiver no ar?",
         answer:
-          "Todo projeto tem 30 dias de garantia: defeito de funcionamento é corrigido sem custo. Depois desse prazo, correções entram por manutenção avulsa ou por plano mensal — que também monitora o site e avisa antes de você perceber.",
+          "Todo projeto tem 30 dias de garantia: defeito de funcionamento é corrigido sem custo. Depois desse prazo, correções entram por manutenção avulsa ou por plano mensal, que também monitora o site e avisa antes de você perceber.",
       },
       {
         question: "De quem é o site depois de pronto?",
@@ -372,7 +372,7 @@ const pt = {
       {
         question: "Posso pedir mudanças depois de publicado?",
         answer:
-          "Sim. Alterações pontuais entram por manutenção avulsa ou pelo plano mensal. Páginas novas, funcionalidades e mudanças de escopo recebem orçamento próprio antes da execução — nunca durante.",
+          "Sim. Alterações pontuais entram por manutenção avulsa ou pelo plano mensal. Páginas novas, funcionalidades e mudanças de escopo recebem orçamento próprio antes da execução, nunca durante.",
       },
       {
         question: "Vocês atendem fora do Brasil?",
@@ -413,7 +413,7 @@ const pt = {
     sucesso: "Mensagem preparada e aberta no WhatsApp. Confira e toque em enviar para que ela chegue até nós.",
     bloqueadoAntes: "O navegador bloqueou a nova aba.",
     bloqueadoLink: "Abrir a mensagem no WhatsApp",
-    bloqueadoDepois: "— os dados já preenchidos vão junto.",
+    bloqueadoDepois: "(os dados preenchidos vão junto).",
     rotuloNome: "Meu nome",
     rotuloNegocio: "Negócio",
     rotuloEmail: "E-mail",
@@ -421,9 +421,9 @@ const pt = {
     rotuloTipo: "Tipo de site",
     rotuloProjeto: "Sobre o projeto:",
     tipos: [
-      "Essencial — uma página",
-      "Negócio — site completo",
-      "Profissional — site completo e mais uma capacidade",
+      "Essencial (uma página)",
+      "Negócio (site completo)",
+      "Profissional (site completo e mais uma capacidade)",
       "Loja virtual ou projeto especial",
       "Ainda não sei",
     ],
@@ -435,7 +435,7 @@ const pt = {
     local: "São Paulo, Brasil · Atendimento remoto",
     privacidade: "Privacidade",
     direitos: "© 2026 Varanda Estúdio Web",
-    voltarInicio: "Varanda Estúdio Web — voltar ao início",
+    voltarInicio: "Varanda Estúdio Web, voltar ao início",
   },
 
   privacidade: {

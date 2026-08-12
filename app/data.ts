@@ -18,8 +18,8 @@ export const whatsappUrl = "https://wa.me/5511942263007";
  * As demonstrações, na mesma ordem de `portfolio.projetos` de cada
  * dicionário. Nome, descrição e entregas vêm de lá; imagem e endereço, daqui.
  *
- * Em subdomínios próprios desde 2026-08-10. O endereço anterior era
- * `*.luccaoliveira123.workers.dev`, que carregava o nome da pessoa logo
+ * Em subdomínios próprios desde 2026-08-10. O endereço anterior era o
+ * `*.workers.dev` da conta, que carregava um nome de pessoa logo
  * depois de o site inteiro ter deixado de exibi-lo, e ainda parecia endereço
  * de teste num link de portfólio. Os três seguem `noindex`: são projetos
  * conceituais, com empresas que não existem.

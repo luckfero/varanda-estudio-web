@@ -160,7 +160,7 @@ for (const idioma of IDIOMAS) {
     assert.doesNotMatch(html, /luccaassoc/i, `${idioma.locale}: o e-mail pessoal voltou à home`);
 
     /* Conhecido e ainda aberto: as três URLs do portfólio apontam para
-       `*.luccaoliveira123.workers.dev`, que carrega o nome e ainda parece
+       o `*.workers.dev` da conta, que carrega um nome e ainda parece
        endereço de teste. Só sai com domínio próprio para os conceituais —
        por isso a asserção acima é pelo nome completo, não por "lucca". */
   });

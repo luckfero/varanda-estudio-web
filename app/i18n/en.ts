@@ -50,7 +50,7 @@ const en: Dicionario = {
     tituloAntes: "Websites that make ",
     tituloDestaque: "room",
     tituloDepois: " for your business to grow.",
-    lead: "Clear content, a professional look and technology without the headache — turning good ideas into a presence people trust.",
+    lead: "Clear content, a professional look and technology without the headache, turning good ideas into a presence people trust.",
     ctaPrimario: "Tell us about your project",
     ctaSecundario: "See a project",
     local: "São Paulo, Brazil",
@@ -94,7 +94,7 @@ const en: Dicionario = {
       {
         number: "03",
         title: "Professional",
-        text: "For when the site has to do more than introduce you — another language, a filterable catalogue, content you update yourself, or an integration with the system you already use.",
+        text: "For when the site has to do more than introduce you: another language, a filterable catalogue, content you update yourself, or an integration with the system you already use.",
       },
     ],
   },
@@ -238,7 +238,7 @@ const en: Dicionario = {
         launch: "3,350",
         future: "4,200",
         featured: false,
-        description: "Everything in Business, plus one capability your project calls for — chosen together with you.",
+        description: "Everything in Business, plus one capability your project calls for, chosen together with you.",
         items: [
           "Everything in the Business package",
           "One capability of your choice: another language, a filterable catalogue, manageable content, or a system integration",
@@ -262,7 +262,7 @@ const en: Dicionario = {
     indice: "06 — After launch",
     tituloAntes: "Your site can stay",
     tituloDestaque: "well looked after.",
-    resumo: "Optional plans to keep the site live, updated and secure — and to change the content whenever the business changes.",
+    resumo: "Optional plans to keep the site live, updated and secure, and to change the content whenever the business changes.",
     porMes: "/month",
     nota1: "Monthly time does not roll over. Payment is in advance and cancellation requires 30 days' notice.",
     nota2: "For one-off needs without a plan, ad-hoc maintenance costs US$ 69 per hour, billed in 30-minute blocks. Inside the plans, the hour always works out cheaper.",
@@ -337,7 +337,7 @@ const en: Dicionario = {
       {
         question: "What if something breaks after launch?",
         answer:
-          "Every project comes with a 30-day warranty: any fault is fixed at no cost. After that, fixes go through ad-hoc maintenance or a monthly plan — which also monitors the site and tells you before you notice.",
+          "Every project comes with a 30-day warranty: any fault is fixed at no cost. After that, fixes go through ad-hoc maintenance or a monthly plan, which also monitors the site and tells you before you notice.",
       },
       {
         question: "Who owns the site once it's done?",
@@ -352,12 +352,12 @@ const en: Dicionario = {
       {
         question: "Can I ask for changes after launch?",
         answer:
-          "Yes. One-off changes go through ad-hoc maintenance or the monthly plan. New pages, new features and changes of scope get their own quote before any work happens — never during.",
+          "Yes. One-off changes go through ad-hoc maintenance or the monthly plan. New pages, new features and changes of scope get their own quote before any work happens, never during.",
       },
       {
         question: "You're in Brazil. Do you work with clients abroad?",
         answer:
-          "Yes — the work is remote and already done that way. We work in English, Portuguese and Spanish, and figures can be agreed in dollars, euros or reais depending on the country. São Paulo sits within a few hours of both North America and Europe, so there's a wide overlap in the working day.",
+          "Yes. The work is remote and already done that way. We work in English, Portuguese and Spanish, and figures can be agreed in dollars, euros or reais depending on the country. São Paulo sits within a few hours of both North America and Europe, so there's a wide overlap in the working day.",
       },
       {
         question: "Do you build online stores or custom systems?",
@@ -393,7 +393,7 @@ const en: Dicionario = {
     sucesso: "Message prepared and opened in WhatsApp. Check it and hit send so it reaches us.",
     bloqueadoAntes: "Your browser blocked the new tab.",
     bloqueadoLink: "Open the message in WhatsApp",
-    bloqueadoDepois: "— the details you filled in come along.",
+    bloqueadoDepois: "(the details you filled in come along).",
     rotuloNome: "My name",
     rotuloNegocio: "Business",
     rotuloEmail: "Email",
@@ -401,9 +401,9 @@ const en: Dicionario = {
     rotuloTipo: "Type of site",
     rotuloProjeto: "About the project:",
     tipos: [
-      "Essential — one page",
-      "Business — full site",
-      "Professional — full site plus one capability",
+      "Essential (one page)",
+      "Business (full site)",
+      "Professional (full site plus one capability)",
       "Online store or special project",
       "Not sure yet",
     ],
@@ -415,7 +415,7 @@ const en: Dicionario = {
     local: "São Paulo, Brazil · Working remotely",
     privacidade: "Privacy",
     direitos: "© 2026 Varanda Estúdio Web",
-    voltarInicio: "Varanda Estúdio Web — back to the top",
+    voltarInicio: "Varanda Estúdio Web, back to the top",
   },
 
   privacidade: {

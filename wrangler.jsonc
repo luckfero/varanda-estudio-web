@@ -2,6 +2,22 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "varanda-estudio-web",
   "main": "worker/index.ts",
+  // O endereço `workers.dev` está desligado de propósito. Descobriu-se na
+  // varredura de 2026-08-11 que declarar `custom_domain` sem `workers_dev`
+  // explícito faz o deploy desativá-lo sozinho; aqui isso vira decisão
+  // documentada, porque o endereço antigo carregava o nome da conta pessoal
+  // na URL e nenhum link publicado aponta mais para ele. Quem precisar
+  // reativar: trocar para `true` e publicar.
+  "workers_dev": false,
+  // O domínio vivia só no painel; declarado aqui em 2026-08-11 para a
+  // configuração ser autossuficiente, como nos outros três projetos. Com o
+  // `workers_dev: false` acima, este passa a ser o único endereço servido.
+  "routes": [
+    {
+      "pattern": "varandaestudioweb.com",
+      "custom_domain": true
+    }
+  ],
   "compatibility_date": "2026-05-15",
   "compatibility_flags": ["nodejs_compat"],
   "observability": {

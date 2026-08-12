@@ -105,7 +105,7 @@ const es: Dicionario = {
       {
         number: "03",
         title: "Profesional",
-        text: "Cuando la web tiene que hacer más que presentar — otro idioma, catálogo con filtros, contenido que actualizas tú mismo o integración con el sistema que ya usas.",
+        text: "Cuando la web tiene que hacer más que presentar: otro idioma, catálogo con filtros, contenido que actualizas tú mismo o integración con el sistema que ya usas.",
       },
     ],
   },
@@ -249,7 +249,7 @@ const es: Dicionario = {
         launch: "2.900",
         future: "3.600",
         featured: false,
-        description: "Todo lo de Negocio, más una capacidad que tu proyecto necesite — elegida contigo.",
+        description: "Todo lo de Negocio, más una capacidad que tu proyecto necesite, elegida contigo.",
         items: [
           "Todo el paquete Negocio",
           "Una capacidad a elegir: otro idioma, catálogo con filtros, contenido gestionable o integración con sistema",
@@ -273,7 +273,7 @@ const es: Dicionario = {
     indice: "06 — Después de publicar",
     tituloAntes: "Tu web puede seguir",
     tituloDestaque: "bien cuidada.",
-    resumo: "Planes opcionales para mantener la web publicada, actualizada y segura — y para cambiar el contenido siempre que el negocio cambie.",
+    resumo: "Planes opcionales para mantener la web publicada, actualizada y segura, y para cambiar el contenido siempre que el negocio cambie.",
     porMes: "/mes",
     nota1: "El tiempo mensual no se acumula. El pago es por adelantado y la baja requiere un aviso previo de 30 días.",
     nota2: "Para necesidades puntuales sin plan, el mantenimiento suelto cuesta 59 € por hora, facturado en bloques de 30 minutos. Dentro de los planes, la hora sale siempre más barata.",
@@ -348,7 +348,7 @@ const es: Dicionario = {
       {
         question: "¿Y si algo falla después de publicar?",
         answer:
-          "Todo proyecto tiene 30 días de garantía: cualquier fallo de funcionamiento se corrige sin coste. Pasado ese plazo, las correcciones entran por mantenimiento suelto o por plan mensual — que además monitoriza la web y avisa antes de que tú lo notes.",
+          "Todo proyecto tiene 30 días de garantía: cualquier fallo de funcionamiento se corrige sin coste. Pasado ese plazo, las correcciones entran por mantenimiento suelto o por plan mensual, que además monitoriza la web y avisa antes de que tú lo notes.",
       },
       {
         question: "¿De quién es la web una vez terminada?",
@@ -363,7 +363,7 @@ const es: Dicionario = {
       {
         question: "¿Puedo pedir cambios después de publicar?",
         answer:
-          "Sí. Los cambios puntuales entran por mantenimiento suelto o por el plan mensual. Páginas nuevas, funcionalidades y cambios de alcance reciben presupuesto propio antes de ejecutarse — nunca durante.",
+          "Sí. Los cambios puntuales entran por mantenimiento suelto o por el plan mensual. Páginas nuevas, funcionalidades y cambios de alcance reciben presupuesto propio antes de ejecutarse, nunca durante.",
       },
       {
         question: "Estáis en Brasil. ¿Trabajáis con empresas en España?",
@@ -404,7 +404,7 @@ const es: Dicionario = {
     sucesso: "Mensaje preparado y abierto en WhatsApp. Revísalo y pulsa enviar para que nos llegue.",
     bloqueadoAntes: "El navegador ha bloqueado la pestaña nueva.",
     bloqueadoLink: "Abrir el mensaje en WhatsApp",
-    bloqueadoDepois: "— los datos rellenados van incluidos.",
+    bloqueadoDepois: "(los datos rellenados van incluidos).",
     rotuloNome: "Mi nombre",
     rotuloNegocio: "Negocio",
     rotuloEmail: "Correo",
@@ -412,9 +412,9 @@ const es: Dicionario = {
     rotuloTipo: "Tipo de web",
     rotuloProjeto: "Sobre el proyecto:",
     tipos: [
-      "Esencial — una página",
-      "Negocio — web completa",
-      "Profesional — web completa y una capacidad más",
+      "Esencial (una página)",
+      "Negocio (web completa)",
+      "Profesional (web completa y una capacidad más)",
       "Tienda online o proyecto especial",
       "Aún no lo sé",
     ],
@@ -426,7 +426,7 @@ const es: Dicionario = {
     local: "São Paulo, Brasil · Trabajamos en remoto",
     privacidade: "Privacidad",
     direitos: "© 2026 Varanda Estúdio Web",
-    voltarInicio: "Varanda Estúdio Web — volver al inicio",
+    voltarInicio: "Varanda Estúdio Web, volver al inicio",
   },
 
   privacidade: {

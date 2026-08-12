@@ -33,9 +33,9 @@ import { mkdir } from "node:fs/promises";
 
 const SITES = [
   ["Varanda", "https://varandaestudioweb.com", ["/", "/privacidade"]],
-  ["Brasa", "https://brasa-do-vale.luccaoliveira123.workers.dev", ["/", "/cardapio", "/galeria", "/contato"]],
-  ["Nivora", "https://nivora-construcoes.luccaoliveira123.workers.dev", ["/pt", "/pt/projetos", "/pt/contato"]],
-  ["Nascente", "https://nascente-casa-olfativa.luccaoliveira123.workers.dev", ["/", "/produtos", "/guia-olfativo"]],
+  ["Brasa", "https://brasa.varandaestudioweb.com", ["/", "/cardapio", "/galeria", "/contato"]],
+  ["Nivora", "https://nivora.varandaestudioweb.com", ["/pt", "/pt/projetos", "/pt/contato"]],
+  ["Nascente", "https://nascente.varandaestudioweb.com", ["/", "/produtos", "/guia-olfativo"]],
 ];
 
 /** iPhone 15 e um desktop. O celular é o caso que importa: lá o Safari é
