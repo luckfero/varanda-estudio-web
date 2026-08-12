@@ -3,15 +3,48 @@
  * Por ultimo de proposito: e o que sobrescreve o resto.
  */
 
+/**
+ * Menu entre 861px e 1100px.
+ *
+ * Aqui vivia `.nav a:nth-child(3), .nav a:nth-child(5) { display: none }`, que
+ * escondia Processo e Sobre para a barra nao estourar. Duas coisas erradas:
+ *
+ * 1. O seletor era descendente (`.nav a`), nao filho direto. Dentro de
+ *    `.nav-idiomas` os filhos sao PT, ES e EN, entao o terceiro filho e o
+ *    **EN** — que sumia junto. Quem estivesse em portugues nesta faixa nao
+ *    tinha como chegar ao ingles. Item de navegacao sumindo e ruim; idioma
+ *    inteiro inalcancavel e defeito.
+ * 2. Escondia a partir de 1100px, e a barra so aperta perto de 880px. Medido:
+ *    a marca ocupa 145px, os seis rotulos em portugues somam 448px (o idioma
+ *    mais largo dos tres) e o seletor de idioma 107px.
+ *
+ * A saida foi apertar o espacamento em vez de remover navegacao. Nada some.
+ */
 @media (max-width: 1100px) {
-  .nav { gap: 1.15rem; }
-  .nav a:nth-child(3), .nav a:nth-child(5) { display: none; }
+  .nav { gap: clamp(0.8rem, 1.7vw, 1.6rem); }
+  .nav-idiomas { margin-left: 0; }
   .hero { grid-template-columns: 1fr .8fr; }
   .hero-art { min-height: 500px; }
   .hero-arch { width: 88%; height: 490px; left: 5%; }
   .project { grid-template-columns: 1.15fr .85fr; }
   .project-info { padding: 2.5rem; }
   .extras-heading { grid-template-columns: 1.2fr .8fr; }
+}
+
+/**
+ * A faixa mais apertada, logo acima do menu de celular.
+ *
+ * Entre 861px e 960px a marca, os seis rotulos e o seletor de idioma quase
+ * nao cabem. Em vez de remover itens, encolhe-se o respiro: padding lateral
+ * do cabecalho e padding horizontal do botao. Medido em 861px, o pior caso
+ * (portugues, o idioma de rotulos mais largos) sobra folga.
+ */
+@media (max-width: 960px) {
+  .site-header {
+    padding-left: clamp(1rem, 2.5vw, 2rem);
+    padding-right: clamp(1rem, 2.5vw, 2rem);
+  }
+  .nav-cta { padding-left: 0.9rem; padding-right: 0.9rem; }
 }
 
 @media (min-width: 861px) {
@@ -59,7 +92,12 @@
     transition: opacity .25s ease, transform .25s ease;
   }
   .nav.is-open { opacity: 1; transform: translateY(0); pointer-events: auto; }
-  .nav > a, .nav a:nth-child(3), .nav a:nth-child(5) { display: block; padding: .85rem .4rem !important; }
+  /* Os `nth-child` que existiam aqui so serviam para desfazer o `display:none`
+     da faixa de cima, que nao existe mais. E o `.nav a:nth-child(3)` alcancava
+     tambem o link EN dentro de `.nav-idiomas`, aplicando nele um `display:
+     block` com padding `!important` que o ES nao recebia: os dois botoes de
+     idioma ficavam diferentes um do outro no menu do celular. */
+  .nav > a { display: block; padding: .85rem .4rem !important; }
   .nav-cta { margin-top: .4rem; text-align: center; }
 
   .hero {
