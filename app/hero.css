@@ -183,35 +183,17 @@
 }
 
 /* ==========================================================
-   A composicao da direita.
+   A composicao da direita, estatica.
 
-   O arco se desenha em traco, e preenchido de baixo para cima, o sol sobe
-   por dentro, a janela entra e os dois recados chegam por ultimo, com uma
-   flutuacao continua depois. A sequencia inteira leva ~4s.
+   Teve animacao de entrada por uma rodada e voltou a ser parada. O desenho
+   ficou: arco cheio, sol nascendo dentro dele e a janela sobreposta ao arco,
+   em vez de contida como era antes.
 
    As medidas usam `cqw`, que e 1% da largura do `.hero` (ver o
    `container-type` la em cima): a composicao acompanha a largura da tela em
    vez de depender de uma moldura fixa. Os `min-` seguram o desenho quando a
    coluna fica estreita demais.
-
-   Movimento reduzido ja e tratado globalmente em responsive.css, que zera a
-   duracao de toda animacao do site.
    ========================================================== */
-
-@keyframes artSurge   { from { opacity: 0 } to { opacity: 1 } }
-@keyframes artSome    { from { opacity: 1 } to { opacity: 0 } }
-@keyframes artDesenha { from { stroke-dashoffset: 1320 } to { stroke-dashoffset: 0 } }
-@keyframes artEnche   { from { clip-path: inset(100% 0 0 0) } to { clip-path: inset(0 0 0 0) } }
-@keyframes artNasce   { from { opacity: 0; transform: translate(-50%, 100%) }
-                        to   { opacity: 1; transform: translate(-50%, 0) } }
-@keyframes artEntra   { from { opacity: 0; transform: translateY(22px) scale(.94) }
-                        to   { opacity: 1; transform: none } }
-@keyframes artPula    { from { opacity: 0; transform: scale(.72) translateY(12px) }
-                        to   { opacity: 1; transform: none } }
-@keyframes artCresce  { from { transform: scaleX(0) } to { transform: scaleX(1) } }
-@keyframes artSobe    { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: none } }
-@keyframes artFlutua  { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(-9px) } }
-@keyframes artFlutuaB { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(7px) } }
 
 .hero-art {
   position: relative;
@@ -229,9 +211,6 @@
   min-height: 90px;
   background: var(--ochre);
   border-radius: 50%;
-  animation:
-    artPula .7s 3.15s cubic-bezier(.34, 1.4, .64, 1) both,
-    artFlutua 7s 3.9s ease-in-out infinite;
 }
 
 .art-arco {
@@ -241,65 +220,42 @@
   width: 88%;
   height: 33cqw;
   min-height: 520px;
-}
-
-.art-arco-traco {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.art-arco-traco path {
-  fill: none;
-  stroke: var(--green);
-  stroke-width: 3;
-  stroke-linecap: round;
-  stroke-dasharray: 1320;
-  animation:
-    artDesenha 1.5s .35s cubic-bezier(.65, 0, .35, 1) both,
-    artSome .5s 2.15s both;
-}
-
-.art-arco-corpo {
-  position: absolute;
-  inset: 0;
   background: var(--green);
   border-radius: 210px 210px 3px 3px;
   overflow: hidden;
-  animation: artEnche .85s 1.6s cubic-bezier(.65, 0, .35, 1) both;
 }
 
 .art-arco-sol {
   position: absolute;
   left: 50%;
   bottom: 0;
+  transform: translateX(-50%);
   width: 18cqw;
   height: 9cqw;
   min-width: 150px;
   min-height: 80px;
   background: var(--ochre);
   border-radius: 999px 999px 0 0;
-  /* O `-50%` vive nos dois quadros da animacao. Se ficasse so no `transform`
-     do elemento, o quadro final o apagaria e o sol sairia do centro. */
-  animation: artNasce .8s 2.2s cubic-bezier(.16, 1, .3, 1) both;
 }
 
-/* Caixa de fora: so a inclinacao. A de dentro: so a animacao. */
+/* A janela sobe ate perto do meio do arco.
+   Nao da para centralizar de vez: o arco e uma abobada de 210px de raio, e
+   acima de certa altura a curva fecha para dentro e a quina do card apareceria
+   fora do verde.
+   Quem manda no limite e a quina, nao a caixa: a rotacao de -2 graus baixa a
+   quina esquerda e sobe a direita, entao a caixa pode estar 17px mais alta que
+   a quina que de fato precisa caber. Conferido calculando os quatro cantos
+   contra a curva; com este valor os quatro assentam dentro. */
 .art-janela {
   position: absolute;
   left: 8%;
-  top: 14cqw;
+  top: 8cqw;
   z-index: 2;
   width: 76%;
   min-width: 290px;
   transform: rotate(-2deg);
-}
-
-.art-janela-caixa {
   background: var(--paper);
   box-shadow: 0 26px 60px rgba(8, 24, 18, 0.28);
-  animation: artEntra .9s 2.35s cubic-bezier(.16, 1, .3, 1) both;
 }
 
 .art-janela-topo {
@@ -325,7 +281,6 @@
   margin-left: auto;
   color: #89827a;
   font-size: 0.48rem;
-  animation: artSurge .5s 2.7s both;
 }
 
 .art-janela-conteudo {
@@ -341,7 +296,6 @@
   font-family: var(--serif);
   font-size: 0.72rem;
   font-weight: 700;
-  animation: artSurge .5s 2.7s both;
 }
 
 .art-janela-titulo {
@@ -351,7 +305,6 @@
   font-size: clamp(1.8rem, 3.55cqw, 4.4rem);
   line-height: 0.95;
   letter-spacing: -0.05em;
-  animation: artSobe .7s 2.8s cubic-bezier(.16, 1, .3, 1) both;
 }
 
 .art-janela-linhas {
@@ -365,14 +318,9 @@
   width: 43%;
   height: 3px;
   background: #d9d1c7;
-  transform-origin: left;
-  animation: artCresce .6s 2.95s cubic-bezier(.65, 0, .35, 1) both;
 }
 
-.art-janela-linhas i:last-child {
-  width: 33%;
-  animation-delay: 3.05s;
-}
+.art-janela-linhas i:last-child { width: 33%; }
 
 .art-janela-botao {
   width: max-content;
@@ -383,15 +331,11 @@
   font-size: 0.5rem;
   font-weight: 700;
   text-transform: uppercase;
-  animation: artPula .6s 3.15s cubic-bezier(.34, 1.4, .64, 1) both;
 }
 
 .art-recado {
   position: absolute;
   z-index: 4;
-}
-
-.art-recado > div {
   padding: 1rem 1.15rem;
   font-family: var(--serif);
   font-size: 1rem;
@@ -403,16 +347,10 @@
   right: 0;
   top: 97px;
   transform: rotate(4deg);
-}
-
-.art-recado--topo > div {
   /* Branco sobre --terracotta dava 4,37:1, logo abaixo do minimo. Sobre o
      tom escuro vai a 6,12:1. */
   background: var(--terracotta-dark);
   color: white;
-  animation:
-    artPula .65s 3.3s cubic-bezier(.34, 1.4, .64, 1) both,
-    artFlutuaB 8s 4s ease-in-out infinite;
 }
 
 .art-recado--topo strong {
@@ -424,9 +362,6 @@
   left: 1%;
   bottom: 50px;
   transform: rotate(-5deg);
-}
-
-.art-recado--base > div {
   min-width: 150px;
   min-height: 96px;
   padding: 1rem 1.25rem;
@@ -437,9 +372,6 @@
   text-align: center;
   background: var(--ochre);
   color: var(--green-dark);
-  animation:
-    artPula .65s 3.45s cubic-bezier(.34, 1.4, .64, 1) both,
-    artFlutua 9s 4.2s ease-in-out infinite;
 }
 
 .art-recado--base small {
