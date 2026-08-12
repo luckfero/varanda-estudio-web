@@ -15,7 +15,7 @@
      se ele ficar menor, o titulo da secao para embaixo da barra ao clicar
      num link do menu. */
   min-height: var(--altura-cabecalho);
-  padding: 1.15rem clamp(1.25rem, 4vw, 4.5rem);
+  padding: 1.15rem var(--recuo-topo);
   display: flex;
   align-items: center;
   justify-content: space-between;

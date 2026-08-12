@@ -31,6 +31,11 @@
      `min-height`, responsive.css a usa como `top` do menu de celular, e o
      `scroll-padding-top` acima deriva dela. */
   --altura-cabecalho: 100px;
+  /* Recuo lateral do topo. O cabecalho e o hero usam o mesmo, para a marca
+     ficar alinhada com o titulo logo abaixo dela. Eram dois valores
+     diferentes (4vw no cabecalho, 6vw no hero) e a marca sentava 29px a
+     esquerda do titulo em 1440px. */
+  --recuo-topo: clamp(1.25rem, 6vw, 6.5rem);
   /* Era a pilha de serifadas do sistema ("Iowan Old Style", Baskerville,
      Times New Roman), que não custava download nenhum mas mudava de desenho
      conforme o computador do visitante. A Playfair é a mesma de todos: dá o
@@ -39,6 +44,11 @@
      Auto-hospedada por npm; ver o import em `raiz.tsx`. */
   --serif: "Playfair Display Variable", "Iowan Old Style", "Baskerville",
     "Times New Roman", serif;
+  /* A serifada anterior, do sistema. Continua existindo porque o titulo do
+     hero voltou a usa-la: o `letter-spacing: -0.055em` e o `line-height: 0.9`
+     daquele titulo foram medidos para ela, e a Playfair, de contraste mais
+     alto e olho menor, fechava demais nesses valores. */
+  --serif-sistema: "Iowan Old Style", "Baskerville", "Times New Roman", serif;
 }
 
 * {

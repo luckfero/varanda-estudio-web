@@ -5,7 +5,9 @@
 .hero {
   position: relative;
   min-height: 760px;
-  padding: 9.5rem clamp(1.25rem, 6vw, 6.5rem) 5rem;
+  /* Mesmo recuo do cabecalho, por `--recuo-topo`: e o que mantem a marca
+     alinhada com este titulo. */
+  padding: 9.5rem var(--recuo-topo) 5rem;
   display: grid;
   grid-template-columns: minmax(0, .92fr) minmax(520px, 1.08fr);
   align-items: center;
@@ -54,7 +56,11 @@
   max-width: 680px;
   margin: 0;
   color: var(--green-dark);
-  font-family: var(--serif);
+  /* Volta para a serifada do sistema, como era antes da Playfair entrar.
+     O resto do site segue em Playfair; so este titulo nao, porque o
+     espacamento negativo e a entrelinha de 0,9 foram medidos para esta
+     pilha e a Playfair fica apertada neles. */
+  font-family: var(--serif-sistema);
   font-size: clamp(3.8rem, 6.25vw, 7.2rem);
   font-weight: 500;
   letter-spacing: -0.055em;
