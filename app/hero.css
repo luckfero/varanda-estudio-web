@@ -4,6 +4,10 @@
 
 .hero {
   position: relative;
+  /* Faz do hero a referencia das medidas `cqw` da composicao da direita:
+     1cqw passa a ser 1% da largura daqui. E o que permite a composicao
+     acompanhar a tela sem depender de uma moldura de tamanho fixo. */
+  container-type: inline-size;
   min-height: 760px;
   /* Mesmo recuo do cabecalho, por `--recuo-topo`: e o que mantem a marca
      alinhada com este titulo. */
@@ -178,42 +182,280 @@
   text-transform: uppercase;
 }
 
+/* ==========================================================
+   A composicao da direita.
+
+   O arco se desenha em traco, e preenchido de baixo para cima, o sol sobe
+   por dentro, a janela entra e os dois recados chegam por ultimo, com uma
+   flutuacao continua depois. A sequencia inteira leva ~4s.
+
+   As medidas usam `cqw`, que e 1% da largura do `.hero` (ver o
+   `container-type` la em cima): a composicao acompanha a largura da tela em
+   vez de depender de uma moldura fixa. Os `min-` seguram o desenho quando a
+   coluna fica estreita demais.
+
+   Movimento reduzido ja e tratado globalmente em responsive.css, que zera a
+   duracao de toda animacao do site.
+   ========================================================== */
+
+@keyframes artSurge   { from { opacity: 0 } to { opacity: 1 } }
+@keyframes artSome    { from { opacity: 1 } to { opacity: 0 } }
+@keyframes artDesenha { from { stroke-dashoffset: 1320 } to { stroke-dashoffset: 0 } }
+@keyframes artEnche   { from { clip-path: inset(100% 0 0 0) } to { clip-path: inset(0 0 0 0) } }
+@keyframes artNasce   { from { opacity: 0; transform: translate(-50%, 100%) }
+                        to   { opacity: 1; transform: translate(-50%, 0) } }
+@keyframes artEntra   { from { opacity: 0; transform: translateY(22px) scale(.94) }
+                        to   { opacity: 1; transform: none } }
+@keyframes artPula    { from { opacity: 0; transform: scale(.72) translateY(12px) }
+                        to   { opacity: 1; transform: none } }
+@keyframes artCresce  { from { transform: scaleX(0) } to { transform: scaleX(1) } }
+@keyframes artSobe    { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: none } }
+@keyframes artFlutua  { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(-9px) } }
+@keyframes artFlutuaB { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(7px) } }
+
 .hero-art {
   position: relative;
-  min-height: 650px;
+  height: 37cqw;
+  min-height: 560px;
 }
 
-.hero-sun {
+.art-sol {
   position: absolute;
   left: 0;
   top: 34px;
-  width: 105px;
-  height: 105px;
+  width: 8.4cqw;
+  height: 8.4cqw;
+  min-width: 90px;
+  min-height: 90px;
   background: var(--ochre);
   border-radius: 50%;
+  animation:
+    artPula .7s 3.15s cubic-bezier(.34, 1.4, .64, 1) both,
+    artFlutua 7s 3.9s ease-in-out infinite;
 }
 
-.hero-arch {
+.art-arco {
   position: absolute;
-  top: 0;
   left: 3%;
+  top: 0;
   width: 88%;
-  height: 625px;
-  padding: 2.9rem 2.35rem;
-  display: flex;
-  align-items: center;
+  height: 33cqw;
+  min-height: 520px;
+}
+
+.art-arco-traco {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.art-arco-traco path {
+  fill: none;
+  stroke: var(--green);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 1320;
+  animation:
+    artDesenha 1.5s .35s cubic-bezier(.65, 0, .35, 1) both,
+    artSome .5s 2.15s both;
+}
+
+.art-arco-corpo {
+  position: absolute;
+  inset: 0;
   background: var(--green);
   border-radius: 210px 210px 3px 3px;
   overflow: hidden;
+  animation: artEnche .85s 1.6s cubic-bezier(.65, 0, .35, 1) both;
 }
 
-.hero-arch::before,
-.hero-arch::after {
-  content: "";
+.art-arco-sol {
   position: absolute;
-  border: 1px solid rgba(255,255,255,.16);
+  left: 50%;
+  bottom: 0;
+  width: 18cqw;
+  height: 9cqw;
+  min-width: 150px;
+  min-height: 80px;
+  background: var(--ochre);
+  border-radius: 999px 999px 0 0;
+  /* O `-50%` vive nos dois quadros da animacao. Se ficasse so no `transform`
+     do elemento, o quadro final o apagaria e o sol sairia do centro. */
+  animation: artNasce .8s 2.2s cubic-bezier(.16, 1, .3, 1) both;
+}
+
+/* Caixa de fora: so a inclinacao. A de dentro: so a animacao. */
+.art-janela {
+  position: absolute;
+  left: 8%;
+  top: 14cqw;
+  z-index: 2;
+  width: 76%;
+  min-width: 290px;
+  transform: rotate(-2deg);
+}
+
+.art-janela-caixa {
+  background: var(--paper);
+  box-shadow: 0 26px 60px rgba(8, 24, 18, 0.28);
+  animation: artEntra .9s 2.35s cubic-bezier(.16, 1, .3, 1) both;
+}
+
+.art-janela-topo {
+  height: 34px;
+  padding: 0 0.7rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border-bottom: 1px solid rgba(40, 35, 31, 0.12);
+}
+
+.art-janela-topo i {
+  width: 5px;
+  height: 5px;
+  background: var(--terracotta);
   border-radius: 50%;
 }
 
-.hero-arch::before { width: 320px; height: 320px; right: -110px; bottom: -80px; }
-.hero-arch::after { width: 220px; height: 220px; right: -60px; bottom: -30px; }
+.art-janela-topo i:nth-child(2) { background: var(--ochre); }
+.art-janela-topo i:nth-child(3) { background: var(--green); }
+
+.art-janela-topo span {
+  margin-left: auto;
+  color: #89827a;
+  font-size: 0.48rem;
+  animation: artSurge .5s 2.7s both;
+}
+
+.art-janela-conteudo {
+  position: relative;
+  padding: 2.55rem;
+  background:
+    linear-gradient(90deg, transparent 72%, rgba(199, 154, 67, .16) 72%),
+    radial-gradient(circle at 85% 22%, rgba(184, 103, 73, .55) 0 15%, transparent 15.5%);
+}
+
+.art-janela-marca {
+  color: var(--green);
+  font-family: var(--serif);
+  font-size: 0.72rem;
+  font-weight: 700;
+  animation: artSurge .5s 2.7s both;
+}
+
+.art-janela-titulo {
+  margin-top: 2.6rem;
+  color: var(--green-dark);
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 3.55cqw, 4.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+  animation: artSobe .7s 2.8s cubic-bezier(.16, 1, .3, 1) both;
+}
+
+.art-janela-linhas {
+  margin-top: 1.4rem;
+  display: grid;
+  gap: 6px;
+}
+
+.art-janela-linhas i {
+  display: block;
+  width: 43%;
+  height: 3px;
+  background: #d9d1c7;
+  transform-origin: left;
+  animation: artCresce .6s 2.95s cubic-bezier(.65, 0, .35, 1) both;
+}
+
+.art-janela-linhas i:last-child {
+  width: 33%;
+  animation-delay: 3.05s;
+}
+
+.art-janela-botao {
+  width: max-content;
+  margin-top: 1.6rem;
+  padding: 0.55rem 0.75rem;
+  background: var(--terracotta);
+  color: white;
+  font-size: 0.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  animation: artPula .6s 3.15s cubic-bezier(.34, 1.4, .64, 1) both;
+}
+
+.art-recado {
+  position: absolute;
+  z-index: 4;
+}
+
+.art-recado > div {
+  padding: 1rem 1.15rem;
+  font-family: var(--serif);
+  font-size: 1rem;
+  line-height: 1.15;
+  box-shadow: 0 14px 30px rgba(40, 35, 31, .14);
+}
+
+.art-recado--topo {
+  right: 0;
+  top: 97px;
+  transform: rotate(4deg);
+}
+
+.art-recado--topo > div {
+  /* Branco sobre --terracotta dava 4,37:1, logo abaixo do minimo. Sobre o
+     tom escuro vai a 6,12:1. */
+  background: var(--terracotta-dark);
+  color: white;
+  animation:
+    artPula .65s 3.3s cubic-bezier(.34, 1.4, .64, 1) both,
+    artFlutuaB 8s 4s ease-in-out infinite;
+}
+
+.art-recado--topo strong {
+  font-style: italic;
+  font-weight: 400;
+}
+
+.art-recado--base {
+  left: 1%;
+  bottom: 50px;
+  transform: rotate(-5deg);
+}
+
+.art-recado--base > div {
+  min-width: 150px;
+  min-height: 96px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--ochre);
+  color: var(--green-dark);
+  animation:
+    artPula .65s 3.45s cubic-bezier(.34, 1.4, .64, 1) both,
+    artFlutua 9s 4.2s ease-in-out infinite;
+}
+
+.art-recado--base small {
+  display: block;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.art-recado--base strong {
+  display: block;
+  margin-top: .28rem;
+  font-family: var(--serif);
+  font-size: 1.55rem;
+  font-weight: 400;
+  line-height: 1;
+}

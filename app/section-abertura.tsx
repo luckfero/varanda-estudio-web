@@ -45,26 +45,52 @@ export default function SectionAbertura({
           </div>
         </div>
 
-        <div className="hero-art" role="img" aria-label={t.hero.arteAlt} data-reveal>
-          <div className="hero-sun" />
-          <div className="hero-arch">
-            <div className="browser-card">
-              <div className="browser-top"><i /><i /><i /><span>{t.hero.navegadorEndereco}</span></div>
-              <div className="browser-body">
-                <div className="browser-brand">{t.hero.navegadorMarca}</div>
+        {/* A composição da direita.
+         *
+         * Não leva `data-reveal`: as peças entram por animação própria, em
+         * sequência, e o revelar por rolagem zera opacidade e `transform`,
+         * o que brigaria com elas.
+         *
+         * Cada peça que precisa manter inclinação ou centralização tem duas
+         * caixas: a de fora carrega o `transform` fixo e a de dentro carrega
+         * a animação. Se as duas dividissem a mesma caixa, o quadro final da
+         * animação apagaria a posição, que é como a versão original deste
+         * desenho perdia a janela para fora da tela no celular. */}
+        <div className="hero-art" role="img" aria-label={t.hero.arteAlt}>
+          <div className="art-sol" />
+
+          <div className="art-arco">
+            {/* O traço se desenha por `stroke-dashoffset` e some quando o
+                preenchimento chega, para não sobrar contorno sobre o verde. */}
+            <svg className="art-arco-traco" viewBox="0 0 400 340" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M3,338 L3,200 A197,197 0 0 1 397,200 L397,338 Z" />
+            </svg>
+            <div className="art-arco-corpo">
+              <div className="art-arco-sol" />
+            </div>
+          </div>
+
+          <div className="art-janela">
+            <div className="art-janela-caixa">
+              <div className="art-janela-topo"><i /><i /><i /><span>{t.hero.navegadorEndereco}</span></div>
+              <div className="art-janela-conteudo">
+                <div className="art-janela-marca">{t.hero.navegadorMarca}</div>
                 {/* O título do navegador de mentira quebra em duas linhas, e o
                     ponto da quebra muda com a língua — por isso vem do
                     dicionário com a marcação junto, e não como texto puro. */}
-                <div className="browser-title" dangerouslySetInnerHTML={{ __html: t.hero.navegadorTitulo }} />
-                <div className="browser-lines"><i /><i /></div>
-                <div className="browser-button">{t.hero.navegadorBotao}</div>
+                <div className="art-janela-titulo" dangerouslySetInnerHTML={{ __html: t.hero.navegadorTitulo }} />
+                <div className="art-janela-linhas"><i /><i /></div>
+                <div className="art-janela-botao">{t.hero.navegadorBotao}</div>
               </div>
             </div>
           </div>
-          <div className="floating-note floating-note--top">{t.hero.notaTopo}<br /><strong>{t.hero.notaTopoForte}</strong></div>
-          <div className="floating-note floating-note--bottom"><small>{t.hero.notaBaixo}</small><strong>{t.hero.notaBaixoForte}</strong></div>
-          <div className="botanical botanical--one"><i /><i /><i /><i /><i /></div>
-          <div className="botanical botanical--two"><i /><i /><i /><i /></div>
+
+          <div className="art-recado art-recado--topo">
+            <div>{t.hero.notaTopo}<br /><strong>{t.hero.notaTopoForte}</strong></div>
+          </div>
+          <div className="art-recado art-recado--base">
+            <div><small>{t.hero.notaBaixo}</small><strong>{t.hero.notaBaixoForte}</strong></div>
+          </div>
         </div>
       </section>
 
