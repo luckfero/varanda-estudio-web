@@ -67,7 +67,7 @@ const en: Dicionario = {
   },
 
   intro: {
-    indice: "01 — How we see it",
+    indice: "How we see it",
     eyebrow: "A website doesn't have to look complicated",
     titulo: "It has to make sense to the person arriving and to the person running the business.",
     coluna1: "Varanda brings businesses closer to the web with clear communication, a transparent process and decisions made for the reality of each client.",
@@ -75,7 +75,7 @@ const en: Dicionario = {
   },
 
   servicos: {
-    indice: "02 — What we do",
+    indice: "What we do",
     titulo: "The right format<br />for where you are.",
     resumo: "Three formats, from the most direct to the most complete. Same names you'll find under pricing, further down.",
     nota: "Need an online store, bookings, a members area or automation?",
@@ -100,7 +100,7 @@ const en: Dicionario = {
   },
 
   portfolio: {
-    indice: "03 — Work we've built",
+    indice: "Work we've built",
     tituloAntes: "Ideas taking on",
     tituloDestaque: "shape and presence.",
     aviso: "Concept projects, built by the studio to demonstrate visual direction and development. The companies, copy and data are fictional.",
@@ -149,7 +149,7 @@ const en: Dicionario = {
   },
 
   processo: {
-    indice: "04 — How it works",
+    indice: "How it works",
     titulo: "A clear path,<br />from the first hello<br />to going live.",
     resumo: "You follow the decisions, approve each stage and know what to expect all the way to launch.",
     etapas: [
@@ -177,7 +177,7 @@ const en: Dicionario = {
   },
 
   investimento: {
-    indice: "05 — Pricing",
+    indice: "Pricing",
     titulo: "Start with what<br />your business needs today.",
     prazo: "Launch pricing valid for contracts signed until 30 September 2026.",
     porProjeto: "per project",
@@ -259,7 +259,7 @@ const en: Dicionario = {
   },
 
   manutencao: {
-    indice: "06 — After launch",
+    indice: "After launch",
     tituloAntes: "Your site can stay",
     tituloDestaque: "well looked after.",
     resumo: "Optional plans to keep the site live, updated and secure, and to change the content whenever the business changes.",
@@ -297,7 +297,7 @@ const en: Dicionario = {
   },
 
   sobre: {
-    indice: "07 — Who's at Varanda",
+    indice: "Who's at Varanda",
     eyebrow: "A small studio, on purpose.",
     titulo: "Good technology is the kind that brings people closer, not the kind that complicates.",
     paragrafo1: "Varanda Estúdio Web exists to help shops, professionals and companies build a presence online that is clear, professional and trustworthy.",
@@ -307,7 +307,7 @@ const en: Dicionario = {
   },
 
   extras: {
-    indice: "08 — Made to measure",
+    indice: "Made to measure",
     titulo: "What else might your project need?",
     resumo: "These can be added when they aren't included in the package you choose.",
     nota: "The prices above don't include what the domain, hosting or third-party tools charge. Delivery faster than agreed, or work over a weekend or public holiday, carries a 30% surcharge and depends on availability.",
@@ -321,7 +321,7 @@ const en: Dicionario = {
   },
 
   faq: {
-    indice: "09 — Frequently asked",
+    indice: "Frequently asked",
     titulo: "Worth knowing<br />before we start.",
     perguntas: [
       {
@@ -368,7 +368,7 @@ const en: Dicionario = {
   },
 
   contato: {
-    indice: "10 — Let's talk",
+    indice: "Let's talk",
     tituloAntes: "Your business deserves<br />a place to ",
     tituloDestaque: "grow.",
     resumo: "Tell us what your business needs and where it stands. We'll go through it and reply with a clear next step.",

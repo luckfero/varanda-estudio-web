@@ -8,8 +8,14 @@
   top: 0;
   left: 0;
   right: 0;
-  min-height: 82px;
-  padding: 0.85rem clamp(1.25rem, 4vw, 4.5rem);
+  /* Barra mais alta: 82px era justo para um selo de 44px mais o nome em duas
+     linhas, e o conteudo encostava nas bordas. Com 100px o topo ganha ar, que
+     e o que faz a barra parecer de estudio e nao de painel.
+     Quem depende deste numero e o `scroll-padding-top` do html, em base.css:
+     se ele ficar menor, o titulo da secao para embaixo da barra ao clicar
+     num link do menu. */
+  min-height: var(--altura-cabecalho);
+  padding: 1.15rem clamp(1.25rem, 4vw, 4.5rem);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -31,12 +37,15 @@
   line-height: 1;
 }
 
+/* Peso normal, nao 600. Na Playfair, que ja tem contraste alto entre traco
+   grosso e fino, o peso extra engrossa os finos e o nome perde a elegancia
+   que a serifada existe para dar. */
 .brand strong {
   color: var(--green);
   font-family: var(--serif);
-  font-size: 1.45rem;
-  font-weight: 600;
-  letter-spacing: -0.03em;
+  font-size: 1.55rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
 }
 
 /* Peso 500 e cinza quente, nao 750 em carvao.
@@ -84,21 +93,21 @@
 /* Versao de assinatura: disco verde com a marca em creme, como era antes.
    O `padding` com `border-box` e o que da respiro dentro do disco; sem ele o
    arco encosta na borda e o simbolo perde o ar de selo. */
+/* O quadrado, o respiro e os cantos vivem no `rect` do proprio SVG, e nao
+   mais em `background`, `padding` e `border-radius` do CSS. Ver o comentario
+   em `icons.tsx`: a forma passou a ser a mesma do favicon, e ter uma fonte de
+   verdade so evita que as duas voltem a divergir. */
 .arco-mark--small {
-  width: 42px;
-  height: 42px;
-  padding: 8px;
-  box-sizing: border-box;
-  background: var(--green);
-  /* Quadrado de cantos arredondados, nao circulo.
-     E a mesma forma do favicon (`rx=14` num viewBox de 64, ou seja 21,875%),
-     entao a marca na aba do navegador e a marca no topo do site passam a ser
-     o mesmo desenho. Em porcentagem para acompanhar qualquer tamanho. */
-  border-radius: 22%;
+  width: 44px;
+  height: 44px;
   --marca-traco: var(--cream);
   /* --ochre puro mede 2,37:1 sobre o verde; o claro chega a 3,19:1 e
      continua sendo dourado. Mesma troca do resto do site. */
   --marca-sol: var(--ochre-light);
+}
+
+.arco-mark-caixa {
+  fill: var(--green);
 }
 
 /* Verde da marca e peso 500, no lugar do marrom escuro em 650.

@@ -27,7 +27,18 @@
      hover precisava de um degrau abaixo para continuar sendo perceptível. */
   --terracotta-deep: #7d3f2b;
   --line: rgba(40, 35, 31, 0.18);
-  --serif: "Iowan Old Style", "Baskerville", "Times New Roman", serif;
+  /* Altura da barra do topo. Fonte unica de verdade: header.css a usa como
+     `min-height`, responsive.css a usa como `top` do menu de celular, e o
+     `scroll-padding-top` acima deriva dela. */
+  --altura-cabecalho: 100px;
+  /* Era a pilha de serifadas do sistema ("Iowan Old Style", Baskerville,
+     Times New Roman), que não custava download nenhum mas mudava de desenho
+     conforme o computador do visitante. A Playfair é a mesma de todos: dá o
+     contraste alto entre traço grosso e fino que a marca pede, e o itálico
+     dela é o que faz a palavra em destaque do hero funcionar.
+     Auto-hospedada por npm; ver o import em `raiz.tsx`. */
+  --serif: "Playfair Display Variable", "Iowan Old Style", "Baskerville",
+    "Times New Roman", serif;
 }
 
 * {
@@ -41,7 +52,11 @@ picture { display: contents; }
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 88px;
+  /* Deriva da altura do cabecalho, com uma folga. Nao repetir o numero:
+     tres coisas dependem dessa altura (o proprio cabecalho, o `top` do menu
+     de celular e este `scroll-padding`), e quando os tres eram numeros
+     soltos bastou subir a barra para o menu do celular descolar 10px. */
+  scroll-padding-top: calc(var(--altura-cabecalho) + 0.75rem);
 
   /* Barra de rolagem oculta a pedido — decisão estética consciente. O custo é
      perder o indicador de posição na página; a rolagem por roda, toque e

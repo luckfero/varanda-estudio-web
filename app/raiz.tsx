@@ -3,6 +3,18 @@ import AccessibilityEnhancements from "./accessibility-enhancements";
 import { caminho, getDicionario, idiomasAlternativos, type Locale, type Pagina } from "./i18n";
 import { siteName, siteUrl } from "./site-config";
 import StructuredData from "./structured-data";
+/* Playfair Display, a serifada do site.
+ *
+ * Vem por npm e não de CDN: a regra 9.1 do protocolo proíbe fonte de
+ * terceiro, e o Vite empacota estes arquivos com hash no nome, o que resolve
+ * cache e caminho de uma vez. É o mesmo caminho do Nascente.
+ *
+ * `wght` é a variável de peso e `wght-italic` traz o itálico, que o hero usa
+ * na palavra em destaque e os recados usam no texto. Cada arquivo latino tem
+ * 40 KB e o navegador só baixa a faixa Unicode que a página pedir.
+ */
+import "@fontsource-variable/playfair-display/wght.css";
+import "@fontsource-variable/playfair-display/wght-italic.css";
 import "./fonts.css";
 /* A ordem destes imports E a cascata. Foram partidos em intervalos
    contiguos do arquivo original justamente para que ela permanecesse

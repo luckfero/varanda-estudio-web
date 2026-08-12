@@ -45,16 +45,37 @@ export function CarouselArrow({ direction }: { direction: "previous" | "next" })
  * quem decide a cor é a superfície, não a peça.
  */
 export function ArcoMark({ small = false }: { small?: boolean }) {
+  /* Versão de assinatura: a geometria do `public/favicon.svg`, letra por
+     letra, incluindo o quadrado de fundo.
+     O selo do topo do site e o ícone da aba do navegador passam a ser o mesmo
+     desenho, que era a intenção desde que o favicon foi refeito e não se
+     cumpria: o cabeçalho usava o arco aberto dentro de um círculo de CSS, com
+     proporções diferentes. O fundo agora é um `rect` do próprio SVG, e não
+     `background` mais `border-radius` no CSS, porque assim a forma acompanha
+     o desenho em qualquer tamanho sem depender de duas fontes de verdade. */
+  if (small) {
+    return (
+      <svg
+        className="arco-mark arco-mark--small"
+        viewBox="0 0 64 64"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <rect className="arco-mark-caixa" width="64" height="64" rx="14" />
+        <path className="arco-mark-traco" d="M20 45V31a12 12 0 0 1 24 0v14" />
+        {/* Meia-lua, e não círculo inteiro: o círculo fechava o vão e a marca
+            passava a ler como cadeado em tamanho pequeno. */}
+        <path className="arco-mark-sol" d="M26 42.5a6 6 0 0 1 12 0Z" />
+        <path className="arco-mark-traco" d="M14 45h36" />
+      </svg>
+    );
+  }
+
+  /* Versão aberta, sem fundo: usada grande na seção de apresentação, onde o
+     arco respira sozinho e o traço fino é legível. */
   return (
-    <svg
-      className={`arco-mark${small ? " arco-mark--small" : ""}`}
-      viewBox="0 0 64 64"
-      aria-hidden="true"
-      focusable="false"
-    >
+    <svg className="arco-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
       <path className="arco-mark-traco" d="M15 53V28a17 17 0 0 1 34 0v25" />
-      {/* Meia-lua, e não círculo inteiro: o círculo fechava o vão e a marca
-          passava a ler como cadeado em tamanho pequeno. */}
       <path className="arco-mark-sol" d="M22.5 50.5a9.5 9.5 0 0 1 19 0Z" />
       <path className="arco-mark-traco" d="M7 53h50" />
     </svg>

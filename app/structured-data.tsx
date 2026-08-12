@@ -58,7 +58,9 @@ export default function StructuredData({ locale }: { locale: Locale }) {
     ],
     hasOfferCatalog: {
       "@type": "OfferCatalog",
-      name: t.investimento.indice.replace(/^\d+\s*—\s*/, ""),
+      /* O `replace` que tirava o "05 — " daqui saiu junto com os números das
+         seções: o índice agora já é só o rótulo. */
+      name: t.investimento.indice,
       /* Os mesmos três nomes dos pacotes na página, no idioma da página.
          Antes eram outros três ("Página profissional", "Landing page",
          "Site institucional"), o que dava ao buscador um catálogo que não

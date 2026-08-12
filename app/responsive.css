@@ -73,11 +73,15 @@
 
 @media (max-width: 860px) {
   .section { padding-top: 6rem; padding-bottom: 6rem; }
-  .site-header { min-height: 72px; }
+  /* Redefinir a variavel, e nao o `min-height`: assim o `top` do menu abaixo
+     e o `scroll-padding-top` do html acompanham sozinhos. Antes eram tres
+     numeros soltos, e subir a barra no desktop deixou o menu do celular
+     descolado do cabecalho. */
+  :root { --altura-cabecalho: 84px; }
   .menu-toggle { display: flex; }
   .nav {
     position: fixed;
-    top: 72px;
+    top: var(--altura-cabecalho);
     left: 0;
     right: 0;
     padding: 1.5rem;
@@ -154,12 +158,11 @@
 }
 
 @media (max-width: 600px) {
-  html { scroll-padding-top: 72px; }
   .site-header { padding-inline: 1rem; }
   .brand strong { font-size: 1.25rem; }
   /* Era .51rem (8,2px), o menor texto do site inteiro. */
   .brand small { font-size: .64rem; }
-  .arco-mark--small { width: 38px; height: 38px; padding: 7px; }
+  .arco-mark--small { width: 40px; height: 40px; }
 
   .section { padding: 4.8rem 1.15rem; }
   .hero { min-height: 0; padding: 7.5rem 1.15rem 4rem; }

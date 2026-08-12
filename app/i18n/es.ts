@@ -78,7 +78,7 @@ const es: Dicionario = {
   },
 
   intro: {
-    indice: "01 — Nuestra mirada",
+    indice: "Nuestra mirada",
     eyebrow: "Una web no tiene por qué parecer complicada",
     titulo: "Tiene que tener sentido para quien llega y para quien lleva el negocio.",
     coluna1: "Varanda acerca los negocios a lo digital con comunicación clara, un proceso transparente y decisiones pensadas para la realidad de cada cliente.",
@@ -86,7 +86,7 @@ const es: Dicionario = {
   },
 
   servicos: {
-    indice: "02 — Qué hacemos",
+    indice: "Qué hacemos",
     titulo: "El formato adecuado<br />para tu momento.",
     resumo: "Tres formatos, del más directo al más completo. Son los mismos nombres que aparecen en la inversión, más abajo.",
     nota: "¿Necesitas tienda online, reservas, área privada o automatizaciones?",
@@ -111,7 +111,7 @@ const es: Dicionario = {
   },
 
   portfolio: {
-    indice: "03 — Trabajos realizados",
+    indice: "Trabajos realizados",
     tituloAntes: "Ideas tomando",
     tituloDestaque: "forma y presencia.",
     aviso: "Proyectos conceptuales, creados por el estudio para mostrar dirección visual y desarrollo. Las empresas, los textos y los datos son ficticios.",
@@ -160,7 +160,7 @@ const es: Dicionario = {
   },
 
   processo: {
-    indice: "04 — Cómo funciona",
+    indice: "Cómo funciona",
     titulo: "Un camino claro,<br />del primer “hola”<br />a la publicación.",
     resumo: "Sigues las decisiones, apruebas cada etapa y sabes qué esperar hasta la publicación.",
     etapas: [
@@ -188,7 +188,7 @@ const es: Dicionario = {
   },
 
   investimento: {
-    indice: "05 — Inversión",
+    indice: "Inversión",
     titulo: "Empieza por lo que<br />tu negocio necesita hoy.",
     prazo: "Condición de lanzamiento válida para contratos cerrados hasta el 30 de septiembre de 2026.",
     porProjeto: "por proyecto",
@@ -270,7 +270,7 @@ const es: Dicionario = {
   },
 
   manutencao: {
-    indice: "06 — Después de publicar",
+    indice: "Después de publicar",
     tituloAntes: "Tu web puede seguir",
     tituloDestaque: "bien cuidada.",
     resumo: "Planes opcionales para mantener la web publicada, actualizada y segura, y para cambiar el contenido siempre que el negocio cambie.",
@@ -308,7 +308,7 @@ const es: Dicionario = {
   },
 
   sobre: {
-    indice: "07 — Quién está en Varanda",
+    indice: "Quién está en Varanda",
     eyebrow: "Un estudio pequeño, a propósito.",
     titulo: "La buena tecnología es la que acerca, no la que complica.",
     paragrafo1: "Varanda Estúdio Web existe para ayudar a comercios, profesionales y empresas a construir una presencia digital clara, profesional y fiable.",
@@ -318,7 +318,7 @@ const es: Dicionario = {
   },
 
   extras: {
-    indice: "08 — A medida",
+    indice: "A medida",
     titulo: "¿Qué más puede necesitar tu proyecto?",
     resumo: "Estos servicios se pueden añadir cuando no estén incluidos en el paquete elegido.",
     nota: "Los precios de arriba no incluyen los costes que cobran el dominio, el alojamiento o las herramientas externas. Una entrega en menos plazo del acordado, o trabajo en fin de semana y festivo, tiene un recargo del 30% y depende de disponibilidad.",
@@ -332,7 +332,7 @@ const es: Dicionario = {
   },
 
   faq: {
-    indice: "09 — Preguntas frecuentes",
+    indice: "Preguntas frecuentes",
     titulo: "Antes de empezar,<br />conviene saber.",
     perguntas: [
       {
@@ -379,7 +379,7 @@ const es: Dicionario = {
   },
 
   contato: {
-    indice: "10 — Hablemos",
+    indice: "Hablemos",
     tituloAntes: "Tu negocio merece<br />un lugar donde ",
     tituloDestaque: "crecer.",
     resumo: "Cuéntanos qué necesita tu negocio y en qué momento está. Analizamos la información y respondemos con la orientación para el siguiente paso.",

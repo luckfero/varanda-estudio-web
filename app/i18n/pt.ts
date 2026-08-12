@@ -68,7 +68,7 @@ const pt = {
   },
 
   intro: {
-    indice: "01 — Nosso olhar",
+    indice: "Nosso olhar",
     eyebrow: "Um site não precisa parecer complicado",
     titulo: "Ele precisa fazer sentido para quem chega e para quem cuida do negócio.",
     coluna1: "A Varanda aproxima negócios do digital com comunicação clara, processo transparente e decisões pensadas para a realidade de cada cliente.",
@@ -76,7 +76,7 @@ const pt = {
   },
 
   servicos: {
-    indice: "02 — O que fazemos",
+    indice: "O que fazemos",
     titulo: "O formato certo<br />para o seu momento.",
     resumo: "Três formatos, do mais direto ao mais completo. São os mesmos nomes que aparecem no investimento, mais abaixo.",
     nota: "Precisa de loja virtual, agendamento, área de acesso ou automação?",
@@ -103,7 +103,7 @@ const pt = {
   portfolio: {
     /* Texto igual ao que já está publicado — esta rodada traduz, não
        reescreve o português outra vez. */
-    indice: "03 — Trabalhos desenvolvidos",
+    indice: "Trabalhos desenvolvidos",
     tituloAntes: "Ideias ganhando",
     tituloDestaque: "forma e presença.",
     /* Único acréscimo: o rótulo de cada cartão já diz "Projeto conceitual",
@@ -156,7 +156,7 @@ const pt = {
   },
 
   processo: {
-    indice: "04 — Como acontece",
+    indice: "Como acontece",
     titulo: "Um caminho claro,<br />do primeiro “oi”<br />até a publicação.",
     resumo: "Você acompanha as decisões, aprova cada etapa e sabe o que esperar até a publicação.",
     etapas: [
@@ -184,7 +184,7 @@ const pt = {
   },
 
   investimento: {
-    indice: "05 — Investimento",
+    indice: "Investimento",
     titulo: "Comece com o que<br />seu negócio precisa hoje.",
     prazo: "Condição de lançamento válida para contratos fechados até 30 de setembro de 2026.",
     porProjeto: "por projeto",
@@ -279,7 +279,7 @@ const pt = {
   },
 
   manutencao: {
-    indice: "06 — Depois da publicação",
+    indice: "Depois da publicação",
     tituloAntes: "Seu site pode continuar",
     tituloDestaque: "bem cuidado.",
     resumo: "Planos opcionais para manter o site no ar, atualizado e seguro, e para mudar o conteúdo sempre que o negócio mudar.",
@@ -317,7 +317,7 @@ const pt = {
   },
 
   sobre: {
-    indice: "07 — Quem está na Varanda",
+    indice: "Quem está na Varanda",
     eyebrow: "Um estúdio pequeno, de propósito.",
     titulo: "Tecnologia boa é a que aproxima, não a que complica.",
     paragrafo1: "A Varanda Estúdio Web existe para ajudar comércios, profissionais e empresas a construírem uma presença digital clara, profissional e confiável.",
@@ -327,7 +327,7 @@ const pt = {
   },
 
   extras: {
-    indice: "08 — Sob medida",
+    indice: "Sob medida",
     titulo: "O que mais o seu projeto pode precisar?",
     resumo: "Estes serviços podem ser adicionados quando não estiverem incluídos no pacote escolhido.",
     nota: "Os valores acima não incluem custos cobrados por domínio, hospedagem ou ferramentas externas. Entrega em prazo menor que o combinado, ou trabalho em fim de semana e feriado, tem adicional de 30% e depende de disponibilidade.",
@@ -341,7 +341,7 @@ const pt = {
   },
 
   faq: {
-    indice: "09 — Dúvidas frequentes",
+    indice: "Dúvidas frequentes",
     titulo: "Antes de começar,<br />vale saber.",
     perguntas: [
       {
@@ -388,7 +388,7 @@ const pt = {
   },
 
   contato: {
-    indice: "10 — Vamos conversar",
+    indice: "Vamos conversar",
     tituloAntes: "Seu negócio merece<br />um lugar para ",
     tituloDestaque: "crescer.",
     resumo: "Conte o que seu negócio precisa e em que momento ele está. Analisamos as informações e respondemos com a orientação para o próximo passo.",
