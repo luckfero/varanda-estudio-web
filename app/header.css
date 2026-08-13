@@ -53,10 +53,23 @@
    Em 0,64rem com 0,18em de espacamento, peso 750 fecha o desenho das letras e
    o rotulo compete com o nome da marca logo acima. O papel dele e o contrario:
    qualificar o nome sem disputar com ele.
-   O cinza mede 4,70:1 sobre o creme do cabecalho, acima do minimo de 4,5. */
+
+   **O cinza era #6b6b60, e a conta que o aprovou estava errada.** Ela media
+   4,70:1 "sobre o creme do cabecalho", supondo o cabecalho opaco. Ele nao e:
+   o fundo e `rgba(244,239,230,.91)` com desfoque, entao 9% da secao que rola
+   por baixo atravessa. Quando passa a faixa em carvao, o fundo efetivo cai
+   para rgb(224,222,213) e o rotulo mede 3,98:1 — abaixo do minimo, e sem
+   nenhuma media query envolvida, so rolagem.
+
+   O `--ink-soft` mantem o tom quente e o peso visual, e o pior caso passa a
+   ser 4,94:1. Medido compondo o alfa contra as quatro superficies que passam
+   sob o cabecalho: creme 5,83 · terracota 5,15 · verde 4,99 · carvao 4,94.
+
+   Vale como regra: **cabecalho translucido nao tem uma cor de fundo, tem uma
+   faixa de cores.** A conta precisa ser feita contra a pior delas. */
 .brand small {
   margin-top: 0.25rem;
-  color: #6b6b60;
+  color: var(--ink-soft);
   font-size: 0.64rem;
   font-weight: 500;
   letter-spacing: 0.18em;
