@@ -120,15 +120,10 @@ const en: Dicionario = {
     novosTrabalhos: "New work will be added here.",
     anterior: "Previous project",
     proximo: "Next project",
+    /* Order is paired by index with `projectAssets` in `app/data.ts`, where
+       the reasoning lives. Changing it here without changing it there, or
+       without changing the other two languages, swaps image and link. */
     projetos: [
-      {
-        name: "Brasa do Vale",
-        label: "Concept project · Restaurant",
-        description:
-          "A warm, direct site for a steakhouse, built around the menu, what sets the place apart and quick contact over WhatsApp.",
-        features: ["Content strategy", "Visual direction", "Responsive design", "Development"],
-        imageAlt: "Grilled meat image used on the home page of the Brasa do Vale project",
-      },
       {
         name: "Nívora Construções",
         label: "Concept project · Construction",
@@ -144,6 +139,14 @@ const en: Dicionario = {
           "An independent perfumery with a catalogue filterable by collection and intensity, a step-by-step scent guide and a complete purchase flow, from discovering the fragrance to confirming the order.",
         features: ["Visual identity", "Catalogue and filters", "Scent guide", "Purchase flow"],
         imageAlt: "Amber glass perfume bottle among dark leaves, on the home page of the Nascente project",
+      },
+      {
+        name: "Brasa do Vale",
+        label: "Concept project · Restaurant",
+        description:
+          "A warm, direct site for a steakhouse, built around the menu, what sets the place apart and quick contact over WhatsApp.",
+        features: ["Content strategy", "Visual direction", "Responsive design", "Development"],
+        imageAlt: "Grilled meat image used on the home page of the Brasa do Vale project",
       },
     ],
   },

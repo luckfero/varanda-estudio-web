@@ -18,17 +18,32 @@ export const whatsappUrl = "https://wa.me/5511942263007";
  * As demonstrações, na mesma ordem de `portfolio.projetos` de cada
  * dicionário. Nome, descrição e entregas vêm de lá; imagem e endereço, daqui.
  *
+ * **A ordem é pareada por índice, e nada no build reclama se ela divergir.**
+ * Trocar a ordem aqui e esquecer um dos três dicionários cola a imagem e o
+ * link de um projeto na descrição de outro, em um idioma só. Há um teste
+ * (`tests/portfolio-ordem.test.mjs`) que trava o pareamento nome↔endereço nos
+ * três idiomas justamente porque a revisão visual em português não pegaria.
+ *
  * Em subdomínios próprios desde 2026-08-10. O endereço anterior era o
  * `*.workers.dev` da conta, que carregava um nome de pessoa logo
  * depois de o site inteiro ter deixado de exibi-lo, e ainda parecia endereço
  * de teste num link de portfólio. Os três seguem `noindex`: são projetos
  * conceituais, com empresas que não existem.
+ *
+ * **A ordem não é cronológica nem estética, é comercial.** Quem abre este
+ * portfólio é a lista de prospecção: 32 empresas de usinagem, ferramentaria,
+ * caldeiraria e manutenção industrial no ABC. Num carrossel, o primeiro
+ * cartão é o portfólio inteiro para a maioria dos visitantes, e a Brasa do
+ * Vale, que estava nessa posição, fazia um dono de ferramentaria ler "faz
+ * site de restaurante" e sair. A Nívora abre porque é a que mais se parece
+ * com o cliente: B2B, obra física, venda por orçamento e trilíngue, que em
+ * São Bernardo importa porque metalúrgica atende montadora estrangeira. A
+ * Nascente vem depois por ser a prova técnica mais difícil (catálogo com
+ * filtros e fluxo de compra), que é o que sustenta o pacote Profissional.
+ * A Brasa fecha por ser o exemplo do Essencial — e não perde nada, porque
+ * para prospect de gastronomia o link vai direto para o subdomínio dela.
  */
 export const projectAssets = [
-  {
-    image: "brasa-do-vale-hero",
-    url: "https://brasa.varandaestudioweb.com/",
-  },
   {
     image: "nivora-casa-patio-alto",
     url: "https://nivora.varandaestudioweb.com/",
@@ -36,5 +51,9 @@ export const projectAssets = [
   {
     image: "nascente-hero-central",
     url: "https://nascente.varandaestudioweb.com/",
+  },
+  {
+    image: "brasa-do-vale-hero",
+    url: "https://brasa.varandaestudioweb.com/",
   },
 ];

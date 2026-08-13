@@ -127,15 +127,10 @@ const pt = {
     novosTrabalhos: "Novos trabalhos serão adicionados aqui.",
     anterior: "Projeto anterior",
     proximo: "Próximo projeto",
+    /* A ordem é pareada por índice com `projectAssets` em `app/data.ts`, que
+       explica por que ela é esta. Mudar aqui sem mudar lá, ou sem mudar os
+       outros dois idiomas, troca a imagem e o link de lugar. */
     projetos: [
-      {
-        name: "Brasa do Vale",
-        label: "Projeto conceitual · Gastronomia",
-        description:
-          "Um site acolhedor e direto para uma churrascaria, com foco no cardápio, nos diferenciais da casa e no contato rápido pelo WhatsApp.",
-        features: ["Estratégia de conteúdo", "Direção visual", "Design responsivo", "Desenvolvimento"],
-        imageAlt: "Imagem de churrasco usada na página inicial do projeto Brasa do Vale",
-      },
       {
         name: "Nívora Construções",
         label: "Projeto conceitual · Construção civil",
@@ -151,6 +146,14 @@ const pt = {
           "Uma loja de perfumaria autoral com catálogo filtrável por coleção e intensidade, guia olfativo em etapas e fluxo de compra completo, da descoberta da fragrância à confirmação do pedido.",
         features: ["Identidade visual", "Catálogo e filtros", "Guia olfativo", "Fluxo de compra"],
         imageAlt: "Frasco de perfume em vidro âmbar entre folhas escuras, na página inicial do projeto Nascente",
+      },
+      {
+        name: "Brasa do Vale",
+        label: "Projeto conceitual · Gastronomia",
+        description:
+          "Um site acolhedor e direto para uma churrascaria, com foco no cardápio, nos diferenciais da casa e no contato rápido pelo WhatsApp.",
+        features: ["Estratégia de conteúdo", "Direção visual", "Design responsivo", "Desenvolvimento"],
+        imageAlt: "Imagem de churrasco usada na página inicial do projeto Brasa do Vale",
       },
     ],
   },

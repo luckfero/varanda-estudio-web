@@ -131,15 +131,10 @@ const es: Dicionario = {
     novosTrabalhos: "Aquí se irán añadiendo nuevos trabajos.",
     anterior: "Proyecto anterior",
     proximo: "Proyecto siguiente",
+    /* La orden está emparejada por índice con `projectAssets` en
+       `app/data.ts`, donde está explicada. Cambiarla aquí sin cambiarla allí,
+       o sin cambiar los otros dos idiomas, intercambia imagen y enlace. */
     projetos: [
-      {
-        name: "Brasa do Vale",
-        label: "Proyecto conceptual · Restauración",
-        description:
-          "Una web acogedora y directa para un asador, centrada en la carta, en lo que distingue a la casa y en el contacto rápido por WhatsApp.",
-        features: ["Estrategia de contenido", "Dirección visual", "Diseño responsive", "Desarrollo"],
-        imageAlt: "Imagen de carne a la brasa usada en la página de inicio del proyecto Brasa do Vale",
-      },
       {
         name: "Nívora Construções",
         label: "Proyecto conceptual · Construcción",
@@ -155,6 +150,14 @@ const es: Dicionario = {
           "Una perfumería de autor con catálogo filtrable por colección e intensidad, guía olfativa por pasos y flujo de compra completo, del descubrimiento de la fragancia a la confirmación del pedido.",
         features: ["Identidad visual", "Catálogo y filtros", "Guía olfativa", "Flujo de compra"],
         imageAlt: "Frasco de perfume en vidrio ámbar entre hojas oscuras, en la página de inicio del proyecto Nascente",
+      },
+      {
+        name: "Brasa do Vale",
+        label: "Proyecto conceptual · Restauración",
+        description:
+          "Una web acogedora y directa para un asador, centrada en la carta, en lo que distingue a la casa y en el contacto rápido por WhatsApp.",
+        features: ["Estrategia de contenido", "Dirección visual", "Diseño responsive", "Desarrollo"],
+        imageAlt: "Imagen de carne a la brasa usada en la página de inicio del proyecto Brasa do Vale",
       },
     ],
   },
