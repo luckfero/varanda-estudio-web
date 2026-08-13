@@ -36,19 +36,19 @@
      diferentes (4vw no cabecalho, 6vw no hero) e a marca sentava 29px a
      esquerda do titulo em 1440px. */
   --recuo-topo: clamp(1.25rem, 6vw, 6.5rem);
-  /* Era a pilha de serifadas do sistema ("Iowan Old Style", Baskerville,
-     Times New Roman), que não custava download nenhum mas mudava de desenho
-     conforme o computador do visitante. A Playfair é a mesma de todos: dá o
-     contraste alto entre traço grosso e fino que a marca pede, e o itálico
-     dela é o que faz a palavra em destaque do hero funcionar.
-     Auto-hospedada por npm; ver o import em `raiz.tsx`. */
-  --serif: "Playfair Display Variable", "Iowan Old Style", "Baskerville",
-    "Times New Roman", serif;
-  /* A serifada anterior, do sistema. Continua existindo porque o titulo do
-     hero voltou a usa-la: o `letter-spacing: -0.055em` e o `line-height: 0.9`
-     daquele titulo foram medidos para ela, e a Playfair, de contraste mais
-     alto e olho menor, fechava demais nesses valores. */
-  --serif-sistema: "Iowan Old Style", "Baskerville", "Times New Roman", serif;
+  /* A serifada geral do site: nome da marca, olho de secao, maquete do
+     navegador, titulo do hero e a pagina de privacidade. E do sistema, entao
+     nao custa download.
+     **Nao trocar esta variavel para mudar a fonte de um lugar so.** Ela e
+     usada em mais de trinta pontos, e foi exatamente assim que uma troca
+     pensada para o titulo do hero mudou o site inteiro. */
+  --serif: "Iowan Old Style", "Baskerville", "Times New Roman", serif;
+  /* Playfair Display, so nos titulos de secao. Auto-hospedada por npm, nao
+     por CDN (regra 9.1). O contraste alto entre traco grosso e fino aparece
+     bem nos corpos grandes dos titulos e seria ruido em texto de leitura,
+     e e por isso que ela vive numa variavel propria e nao na de cima. */
+  --serif-titulo: "Playfair Display Variable", "Iowan Old Style",
+    "Baskerville", "Times New Roman", serif;
 }
 
 * {

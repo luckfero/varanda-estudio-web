@@ -37,16 +37,16 @@
   line-height: 1;
 }
 
-/* Peso 500, nao 600 nem 400. Era 600, que na Playfair engrossava os tracos
-   finos e tirava a elegancia que a serifada existe para dar; 400 corrigiu
-   isso mas deixou o nome leve demais ao lado do selo verde. 500 e o degrau
-   do meio, e a Playfair variavel entrega esse peso sem simulacao. */
+/* Peso 500, no lugar do 600 original: tira o ar pesado sem deixar o nome
+   leve demais ao lado do selo verde. Tamanho e espacamento voltaram ao que
+   eram; tinham sido ajustados para compensar o olho menor da Playfair, que
+   nao esta mais aqui. */
 .brand strong {
   color: var(--green);
   font-family: var(--serif);
-  font-size: 1.55rem;
+  font-size: 1.45rem;
   font-weight: 500;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.03em;
 }
 
 /* Peso 500 e cinza quente, nao 750 em carvao.

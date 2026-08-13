@@ -18,7 +18,7 @@
 .process-heading h2 {
   margin: 1.5rem 0 0;
   color: var(--green-dark);
-  font-family: var(--serif);
+  font-family: var(--serif-titulo);
   font-size: clamp(3rem, 4.6vw, 5rem);
   font-weight: 400;
   letter-spacing: -.05em;

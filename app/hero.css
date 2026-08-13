@@ -60,11 +60,7 @@
   max-width: 680px;
   margin: 0;
   color: var(--green-dark);
-  /* Volta para a serifada do sistema, como era antes da Playfair entrar.
-     O resto do site segue em Playfair; so este titulo nao, porque o
-     espacamento negativo e a entrelinha de 0,9 foram medidos para esta
-     pilha e a Playfair fica apertada neles. */
-  font-family: var(--serif-sistema);
+  font-family: var(--serif);
   font-size: clamp(3.8rem, 6.25vw, 7.2rem);
   font-weight: 500;
   letter-spacing: -0.055em;
