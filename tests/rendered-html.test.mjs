@@ -283,6 +283,64 @@ test("HTTP puro não entrega página: redireciona para HTTPS", async () => {
   assert.notEqual(local.status, 301, "localhost não pode redirecionar");
 });
 
+test("a head declara o favicon em SVG, PNG e ICO, e os arquivos existem", async () => {
+  /* Em 2026-08-14 o resultado de busca do Google ainda mostrava o "V" verde
+     antigo. O SVG publicado estava certo, válido e em 200: o que faltava era
+     formato alternativo, e `/favicon.ico` respondia 404 — que é o endereço
+     que o rastreador tenta sozinho quando não usa o que foi declarado.
+
+     A causa maior era outra (o Google não tinha voltado, e o título exibido
+     era anterior a 10/08), mas declarar só um formato era o risco que dava
+     para eliminar de graça.
+
+     **A head é recortada de propósito.** O payload repete metadado no corpo
+     da página, e asserção sobre o documento inteiro já passou aqui com a tag
+     ausente. */
+  const head = headDe(await htmlDe("/"));
+
+  const tagsDeIcone = [...head.matchAll(/<link\b[^>]*>/gi)]
+    .map(([tag]) => tag)
+    .filter((tag) => /rel=["'][^"']*icon/i.test(tag));
+
+  const hrefs = tagsDeIcone.map((tag) => tag.match(/href=["']([^"']+)["']/i)?.[1] ?? "");
+
+  for (const esperado of [
+    "/favicon.svg",
+    "/favicon-96.png",
+    "/favicon-48.png",
+    "/favicon.ico",
+    "/apple-touch-icon.png",
+  ]) {
+    assert.ok(
+      hrefs.some((href) => href.includes(esperado)),
+      `${esperado} não está declarado na head (declarados: ${hrefs.join(", ") || "nenhum"})`,
+    );
+  }
+
+  /* Declarar `sizes="96x96"` num arquivo que não tem 96px é pior que não
+     declarar: o buscador confia no atributo. Ler o IHDR do PNG é a única
+     forma de conferir sem dependência — largura e altura são dois inteiros
+     de 32 bits logo depois da assinatura e do cabeçalho do bloco. */
+  const publicDir = new URL("../public/", import.meta.url);
+
+  for (const [arquivo, lado] of [
+    ["favicon-96.png", 96],
+    ["favicon-48.png", 48],
+    ["apple-touch-icon.png", 180],
+  ]) {
+    const bytes = await readFile(new URL(arquivo, publicDir));
+    assert.equal(bytes.subarray(12, 16).toString("ascii"), "IHDR", `${arquivo} não é um PNG`);
+    assert.equal(bytes.readUInt32BE(16), lado, `${arquivo} não tem ${lado}px de largura`);
+    assert.equal(bytes.readUInt32BE(20), lado, `${arquivo} não tem ${lado}px de altura`);
+  }
+
+  const ico = await readFile(new URL("favicon.ico", publicDir));
+  /* Cabeçalho ICO: dois bytes zerados, tipo 1, e a contagem de imagens. */
+  assert.equal(ico.readUInt16LE(0), 0, "favicon.ico não começa com o cabeçalho ICO");
+  assert.equal(ico.readUInt16LE(2), 1, "favicon.ico não se declara como ícone");
+  assert.ok(ico.readUInt16LE(4) >= 1, "favicon.ico não contém nenhuma imagem");
+});
+
 test("todo SVG do projeto é XML válido", async () => {
   /* Um favicon com XML inválido não avisa: o navegador não faz o parse, não
      renderiza nada, e mantém o ícone anterior. Parece cache e não é.

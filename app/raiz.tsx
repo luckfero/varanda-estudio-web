@@ -115,10 +115,31 @@ export function metadadosDe(locale: Locale, pagina: Pagina): Metadata {
        com Ctrl+F5. Mudar o endereço é o que faz ele buscar de novo.
 
        **Trocar o desenho do favicon sem subir este número não chega em
-       ninguém que já esteve aqui.** v2 = marca do arco, 2026-08-11. */
+       ninguém que já esteve aqui.** v2 = marca do arco, 2026-08-11.
+
+       O número **não sobe** quando só se acrescenta formato, como em
+       2026-08-14: o desenho é o mesmo, e o Google prefere endereço de favicon
+       estável. Subir aqui obrigaria ele a redescobrir tudo de novo.
+
+       **Por que existe PNG se o SVG já funciona.** Até 2026-08-14 o site
+       declarava só o SVG e `/favicon.ico` respondia 404. O resultado de busca
+       mostrava o ícone antigo, junto com um título anterior a 10/08 — ou seja,
+       o Google não tinha voltado. Os formatos abaixo são seguro barato para o
+       caso de o rastreador não usar SVG: ele recomenda ícone quadrado em
+       múltiplo de 48px, e `/favicon.ico` é o caminho que todo navegador pede
+       sozinho quando nada é declarado.
+
+       Os três PNG são gerados a partir de `public/favicon.svg`, e não de
+       `marca/simbolo.svg`: só o primeiro tem o fundo verde arredondado. Se o
+       desenho mudar, regerar os quatro juntos e aí sim subir o `?v=`. */
     icons: {
-      icon: "/favicon.svg?v=2",
-      shortcut: "/favicon.svg?v=2",
+      icon: [
+        { url: "/favicon.svg?v=2", type: "image/svg+xml" },
+        { url: "/favicon-96.png?v=2", type: "image/png", sizes: "96x96" },
+        { url: "/favicon-48.png?v=2", type: "image/png", sizes: "48x48" },
+      ],
+      shortcut: "/favicon.ico?v=2",
+      apple: "/apple-touch-icon.png?v=2",
     },
   };
 }

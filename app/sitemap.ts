@@ -4,8 +4,11 @@ import { siteLastUpdated, siteUrl } from "./site-config";
 
 /* Prioridade e frequência por tipo de página, não por idioma: as três
    versões da home valem o mesmo para o buscador. */
-const PESO: Record<Pagina, { priority: number; changeFrequency: "monthly" | "yearly" }> = {
-  home: { priority: 1, changeFrequency: "monthly" },
+const PESO: Record<Pagina, { priority: number; changeFrequency: "weekly" | "monthly" | "yearly" }> = {
+  /* A home era `monthly`, e é a página que mais muda: preço, portfólio e
+     metadados mexeram quatro vezes em uma semana. O buscador trata isto como
+     dica e não como ordem, mas dica errada não ajuda. */
+  home: { priority: 1, changeFrequency: "weekly" },
   privacidade: { priority: 0.3, changeFrequency: "yearly" },
 };
 
