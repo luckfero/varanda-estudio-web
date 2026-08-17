@@ -132,16 +132,20 @@ img {
   position: fixed;
   z-index: 200;
   left: 1rem;
-  top: -5rem;
+  /* Fica na posicao final e sobe para fora da tela por transform, em vez de
+     animar `top`, que recalcula layout. O deslocamento e maior que a altura
+     do elemento para ele sair da tela por inteiro. */
+  top: 1rem;
+  transform: translateY(-6rem);
   background: var(--charcoal);
   color: var(--paper);
   padding: 0.8rem 1rem;
   border-radius: 2px;
-  transition: top 0.2s ease;
+  transition: transform var(--dur-fast) var(--ease-out);
 }
 
 .skip-link:focus {
-  top: 1rem;
+  transform: none;
 }
 
 /* A revelação só começa a esconder depois que o JavaScript avisa que está
