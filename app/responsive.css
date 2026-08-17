@@ -251,6 +251,26 @@
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+
+  /* Este bloco nunca zerou `transition-duration`, e por isso não cegava o
+     visitante como os dos outros três sites. Mas ele também não tirava o
+     movimento: os quatro hovers com `transform` continuavam se deslocando
+     para quem pediu menos movimento. Medido em produção em 2026-08-17, com
+     `transition-property` saindo como `transform, background, color`.
+     Restringir a lista tira o deslocamento e mantém a resposta. */
+  *, *::before, *::after {
+    transition-property: opacity, color, background-color, border-color, fill, stroke !important;
+  }
+
+  /* Sem transição, um transform de hover viraria pulo instantâneo. Estes são
+     anulados de vez. O `.skip-link` fica de fora: ele precisa do transform
+     para entrar na tela, e sem transição simplesmente aparece, que é o
+     comportamento certo. */
+  .nav-cta:hover,
+  .button:hover,
+  .project-visual:hover img,
+  .project-visual:hover .project-stamp { transform: none; }
+
   .reveal-ready [data-reveal] {
     opacity: 0;
     transform: none;
