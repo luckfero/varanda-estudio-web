@@ -100,11 +100,16 @@
   font-weight: 750;
   letter-spacing: 0.02em;
   cursor: pointer;
-  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+  transition: transform var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
 }
 
-.button:hover {
-  transform: translateY(-2px);
+/* Toque dispara :hover e o deixa preso: movimento de mouse so aqui. */
+@media (hover: hover) and (pointer: fine) {
+  .button:hover {
+    transform: translateY(-2px);
+  }
 }
 
 .button svg,

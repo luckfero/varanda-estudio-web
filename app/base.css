@@ -49,6 +49,14 @@
      e e por isso que ela vive numa variavel propria e nao na de cima. */
   --serif-titulo: "Playfair Display Variable", "Iowan Old Style",
     "Baskerville", "Times New Roman", serif;
+  /* Movimento. As curvas nativas do CSS sao fracas demais para movimento
+     deliberado. Interface fica abaixo de 300ms; superficie de marketing
+     pode passar. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --dur-press: 160ms;
+  --dur-fast: 200ms;
+  --dur-base: 250ms;
+  --dur-slow: 300ms;
 }
 
 * {

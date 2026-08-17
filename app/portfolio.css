@@ -235,7 +235,10 @@
   transition: transform .7s ease;
 }
 
-.project-visual:hover img { transform: scale(1.025); }
+/* Toque dispara :hover e o deixa preso: movimento de mouse so aqui. */
+@media (hover: hover) and (pointer: fine) {
+  .project-visual:hover img { transform: scale(1.025); }
+}
 
 .project-browser {
   position: absolute;
@@ -306,7 +309,10 @@
   color: var(--green-dark);
 }
 
-.project-visual:hover .project-stamp { transform: rotate(6deg) scale(1.05); }
+/* Toque dispara :hover e o deixa preso: movimento de mouse so aqui. */
+@media (hover: hover) and (pointer: fine) {
+  .project-visual:hover .project-stamp { transform: rotate(6deg) scale(1.05); }
+}
 
 .project-info {
   padding: clamp(2.2rem, 4.5vw, 5rem);

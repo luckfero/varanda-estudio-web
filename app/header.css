@@ -151,27 +151,40 @@
   content: "";
   position: absolute;
   left: 0;
-  right: 100%;
+  right: 0;
   bottom: 0.25rem;
   height: 1px;
   background: var(--terracotta);
-  transition: right 0.25s ease;
+  /* A barra existe na largura final e e revelada por escala. Antes ela
+     crescia animando `right`, que recalcula layout a cada quadro do hover
+     na navegacao principal. */
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-base) var(--ease-out);
 }
 
-.nav > a:not(.nav-cta):hover::after {
-  right: 0;
+/* Toque dispara :hover e o deixa preso: movimento de mouse so aqui. */
+@media (hover: hover) and (pointer: fine) {
+  .nav > a:not(.nav-cta):hover::after {
+    transform: scaleX(1);
+  }
 }
 
 .nav-cta {
   padding: 0.85rem 1.2rem;
   background: var(--green);
   color: white;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition: background var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+/* Toque dispara :hover e o deixa preso: movimento de mouse so aqui. */
+@media (hover: hover) and (pointer: fine) {
+  .nav-cta:hover { transform: translateY(-2px); }
 }
 
 .nav-cta:hover {
   background: var(--green-dark);
-  transform: translateY(-2px);
 }
 
 /**
