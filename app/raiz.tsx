@@ -21,6 +21,7 @@ import "./about.css";
 import "./contact.css";
 import "./responsive.css";
 import "./accessibility.css";
+import "./barra-rolagem.css";
 
 /**
  * O invólucro `<html>`/`<body>`, um por idioma.
@@ -48,11 +49,15 @@ export default function Raiz({ locale, children }: { locale: Locale; children: R
           type="font/woff2"
           crossOrigin="anonymous"
         />
+        {/* Antes da primeira pintura, senão a página pula a largura da
+            barra nativa. Por classe: sem JavaScript, a nativa fica. */}
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('tem-js')" }} />
       </head>
       <body>
         <StructuredData locale={locale} />
         <AccessibilityEnhancements />
         {children}
+        <script src="/barra-rolagem.js" defer />
       </body>
     </html>
   );
