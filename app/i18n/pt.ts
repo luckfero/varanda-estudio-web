@@ -155,6 +155,17 @@ const pt = {
         features: ["Estratégia de conteúdo", "Direção visual", "Design responsivo", "Desenvolvimento"],
         imageAlt: "Imagem de churrasco usada na página inicial do projeto Brasa do Vale",
       },
+      {
+        /* Quarto cartão SEM par em `projectAssets`, de propósito: é assim que
+           o carrossel monta o espaço reservado (ver `section-portfolio.tsx`).
+           O CSS de `--placeholder-4` já existia, o desenho previa isto. */
+        name: "Seu projeto",
+        label: "Espaço reservado · Próximo trabalho",
+        description:
+          "O próximo trabalho do estúdio ocupa este espaço. Pode ser o seu: a conversa começa com um oi.",
+        features: ["Conversa e briefing", "Direção e conteúdo", "Criação e ajustes", "Publicação e cuidado"],
+        imageAlt: "",
+      },
     ],
   },
 

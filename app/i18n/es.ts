@@ -159,6 +159,16 @@ const es: Dicionario = {
         features: ["Estrategia de contenido", "Dirección visual", "Diseño responsive", "Desarrollo"],
         imageAlt: "Imagen de carne a la brasa usada en la página de inicio del proyecto Brasa do Vale",
       },
+      {
+        /* Cuarta tarjeta sin par en `projectAssets`, a propósito: así el
+           carrusel arma el espacio reservado. */
+        name: "Tu proyecto",
+        label: "Espacio reservado · Próximo trabajo",
+        description:
+          "El próximo trabajo del estudio ocupa este espacio. Puede ser el tuyo: la conversación empieza con un hola.",
+        features: ["Conversación y briefing", "Dirección y contenido", "Creación y ajustes", "Publicación y cuidado"],
+        imageAlt: "",
+      },
     ],
   },
 

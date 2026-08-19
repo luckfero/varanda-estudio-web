@@ -148,6 +148,16 @@ const en: Dicionario = {
         features: ["Content strategy", "Visual direction", "Responsive design", "Development"],
         imageAlt: "Grilled meat image used on the home page of the Brasa do Vale project",
       },
+      {
+        /* Fourth card with no match in `projectAssets`, on purpose: that is
+           how the carousel builds the reserved slot. */
+        name: "Your project",
+        label: "Reserved space · Next work",
+        description:
+          "The studio's next piece of work takes this space. It could be yours: the conversation starts with a hello.",
+        features: ["Conversation and brief", "Direction and content", "Building and revisions", "Launch and care"],
+        imageAlt: "",
+      },
     ],
   },
 

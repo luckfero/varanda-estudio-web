@@ -186,10 +186,21 @@
   line-height: 1.6;
 }
 
+/* O card do portfolio e o unico canto arredondado do site, e e assim de
+   proposito: pedido do Lucca em 19/08. O resto da linguagem e reta, entao o
+   raio fica no bloco inteiro (imagem + ficha + rodape do carrossel), que le
+   como uma peca so, e nao em cada pedaco.
+
+   O raio aparece em tres lugares e nao so aqui. `overflow: hidden` no pai
+   deveria bastar, mas o filho que desliza tem `transform`, e navegador com
+   camada composta as vezes ignora o recorte arredondado do pai — o classico
+   do Safari. Repetir o raio no card e no rodape faz o visual continuar certo
+   mesmo quando o recorte falha. */
 .project-carousel {
   position: relative;
   margin-top: 4.5rem;
   overflow: hidden;
+  border-radius: var(--raio-portfolio);
 }
 
 .project-track {
@@ -213,6 +224,8 @@
   min-height: 580px;
   background: var(--green-dark);
   color: var(--paper);
+  overflow: hidden;
+  border-radius: var(--raio-portfolio) var(--raio-portfolio) 0 0;
 }
 
 .project-visual {
@@ -438,6 +451,7 @@
 }
 
 .carousel-footer {
+  border-radius: 0 0 var(--raio-portfolio) var(--raio-portfolio);
   min-height: 78px;
   padding: 0 0 0 1rem;
   display: grid;

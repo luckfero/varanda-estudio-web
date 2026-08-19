@@ -8,6 +8,10 @@
 :root {
   --cream: #f4efe6;
   --paper: #fbf8f2;
+
+  /* Unico raio retangular do site, so no card do portfolio (ver
+     portfolio.css). O resto da linguagem visual e reta. */
+  --raio-portfolio: 14px;
   --green: #214d3b;
   --green-dark: #17382c;
   --terracotta: #b86749;
