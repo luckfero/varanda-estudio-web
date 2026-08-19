@@ -58,12 +58,16 @@ export default function SectionAbertura({
          *
          * O `data-reveal` voltou: é o revelar por rolagem que todo bloco do
          * site tem, e sem as animações próprias não há mais com o que brigar. */}
-        {/* Sem `data-reveal` aqui, de propósito: quem faz a entrada desta
-            composição é a sequência de luz logo abaixo. Com os dois, o
-            revelar por rolagem esconderia o bloco enquanto a luz já estivesse
-            acontecendo por dentro, e a metade boa da animação se perderia.
-            As outras seções continuam com o revelar de sempre. */}
-        <div className="hero-art" role="img" aria-label={t.hero.arteAlt}>
+        {/* O `data-reveal` é o GATILHO da luz, não um concorrente dela.
+            Antes a sequência disparava no carregamento, e no celular a arte
+            fica ABAIXO do texto: quando o visitante rolava até ela, a
+            animação já tinha acabado e ele via só o quadro final. Agora as
+            regras da luz vivem sob `.hero-art.is-visible`, a classe que o
+            observador põe quando o bloco entra na tela.
+
+            Consequência boa: sem `IntersectionObserver`, `is-visible` nunca
+            chega, nenhuma animação existe e a composição nasce montada. */}
+        <div className="hero-art" role="img" aria-label={t.hero.arteAlt} data-reveal>
           <div className="art-sol" />
 
           <div className="art-arco">
