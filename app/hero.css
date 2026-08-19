@@ -392,3 +392,101 @@
   font-weight: 400;
   line-height: 1;
 }
+
+/* ==========================================================================
+   Luz do arco e entrada da composição            (rodada de 19/08/2026)
+   ==========================================================================
+   O mesmo efeito da hero da Casa Conexão, trazido para cá a pedido: a luz
+   entra por dentro do arco, os feixes abrem um atrás do outro e a composição
+   se apoia depois. A diferença é que aqui a arte já existia e é ela que
+   ganhou a luz — o arco, o sol e a janela continuam sendo os mesmos.
+
+   O comentário no `section-abertura.tsx` conta que esta hero JÁ TEVE animação
+   de entrada e voltou a ser parada. Voltou a ter, agora com três diferenças
+   que eram o problema da vez anterior:
+
+   1. o TEXTO não anima. Subida escalonada em título, lead e botões é a
+      assinatura genérica de site gerado por IA, e faz o conteúdo depender da
+      animação para existir. Aqui quem entra é a luz; o texto já estava lá.
+   2. nada nasce escondido fora de `no-preference`. Se a animação não rodar,
+      o primeiro quadro é a composição inteira, montada.
+   3. a arte perdeu o `data-reveal`, então não há duas animações disputando
+      o mesmo elemento.
+   ========================================================================== */
+
+.art-luz {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+@keyframes var-surge {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes var-surge-feixe {
+  from { opacity: 0; transform: translate3d(-38px, -26px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes var-surge-baixo {
+  from { opacity: 0; transform: translate3d(0, 24px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* Curva de entrada do manual do estúdio em tudo. Nada de `ease-in`. */
+.art-luz__brilho,
+.art-luz__feixe,
+.art-sol,
+.art-arco-sol,
+.art-janela,
+.art-recado {
+  animation-duration: 820ms;
+  animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  animation-fill-mode: both;
+}
+
+.art-luz__brilho { animation-name: var-surge; animation-duration: 1100ms; }
+.art-luz__feixe  { animation-name: var-surge-feixe; animation-duration: 900ms; }
+.art-luz__feixe--1 { animation-delay: 240ms; }
+.art-luz__feixe--2 { animation-delay: 380ms; }
+.art-luz__feixe--3 { animation-delay: 520ms; }
+
+.art-sol       { animation-name: var-surge-baixo; animation-delay: 120ms; animation-duration: 700ms; }
+.art-arco-sol  { animation-name: var-surge-baixo; animation-delay: 620ms; animation-duration: 700ms; }
+.art-janela    { animation-name: var-surge-baixo; animation-delay: 700ms; animation-duration: 760ms; }
+.art-recado--topo { animation-name: var-surge; animation-delay: 1020ms; animation-duration: 620ms; }
+.art-recado--base { animation-name: var-surge; animation-delay: 1120ms; animation-duration: 620ms; }
+
+/* A janela tem `transform: rotate(-2deg)` no repouso, e o `translate3d` do
+   quadro inicial sobrescreveria a rotação. Por isso o quadro carrega as duas
+   transformações, na ordem em que elas se compõem. */
+@keyframes var-surge-janela {
+  from { opacity: 0; transform: translate3d(0, 24px, 0) rotate(-2deg); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0) rotate(-2deg); }
+}
+.art-janela { animation-name: var-surge-janela; }
+
+/* Reduz, não zera: o surgimento continua, porque é ele que explica que a luz
+   entra — só perde o deslocamento e encurta. */
+@media (prefers-reduced-motion: reduce) {
+  .art-luz__brilho,
+  .art-luz__feixe,
+  .art-sol,
+  .art-arco-sol,
+  .art-janela,
+  .art-recado {
+    animation-name: var-surge;
+    animation-duration: 420ms;
+  }
+  .art-luz__feixe--1 { animation-delay: 120ms; }
+  .art-luz__feixe--2 { animation-delay: 180ms; }
+  .art-luz__feixe--3 { animation-delay: 240ms; }
+  .art-sol,
+  .art-arco-sol,
+  .art-janela { animation-delay: 300ms; }
+  .art-recado--topo,
+  .art-recado--base { animation-delay: 380ms; }
+}

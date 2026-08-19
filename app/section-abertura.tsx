@@ -58,10 +58,53 @@ export default function SectionAbertura({
          *
          * O `data-reveal` voltou: é o revelar por rolagem que todo bloco do
          * site tem, e sem as animações próprias não há mais com o que brigar. */}
-        <div className="hero-art" role="img" aria-label={t.hero.arteAlt} data-reveal>
+        {/* Sem `data-reveal` aqui, de propósito: quem faz a entrada desta
+            composição é a sequência de luz logo abaixo. Com os dois, o
+            revelar por rolagem esconderia o bloco enquanto a luz já estivesse
+            acontecendo por dentro, e a metade boa da animação se perderia.
+            As outras seções continuam com o revelar de sempre. */}
+        <div className="hero-art" role="img" aria-label={t.hero.arteAlt}>
           <div className="art-sol" />
 
           <div className="art-arco">
+            {/* A luz entra por dentro do arco. Fica aqui, e não solta na
+                composição, porque `.art-arco` já tem `overflow: hidden` e o
+                raio da abóbada: os feixes se recortam na forma sem precisar
+                de máscara própria. Decorativo, então `aria-hidden`. */}
+            <svg className="art-luz" viewBox="0 0 600 620" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
+              <defs>
+                <radialGradient id="var-brilho" cx="50%" cy="88%" r="62%">
+                  <stop offset="0" stopColor="#dcb668" stopOpacity=".55" />
+                  <stop offset=".45" stopColor="#c79a43" stopOpacity=".22" />
+                  <stop offset="1" stopColor="#214d3b" stopOpacity="0" />
+                </radialGradient>
+                <linearGradient id="var-feixe-a" x1="120" y1="0" x2="470" y2="620" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stopColor="#dcb668" stopOpacity=".34" />
+                  <stop offset=".55" stopColor="#c79a43" stopOpacity=".12" />
+                  <stop offset="1" stopColor="#214d3b" stopOpacity="0" />
+                </linearGradient>
+                <linearGradient id="var-feixe-b" x1="220" y1="0" x2="560" y2="620" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stopColor="#f0dcae" stopOpacity=".40" />
+                  <stop offset=".5" stopColor="#c79a43" stopOpacity=".14" />
+                  <stop offset="1" stopColor="#214d3b" stopOpacity="0" />
+                </linearGradient>
+                <linearGradient id="var-feixe-c" x1="330" y1="0" x2="650" y2="620" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stopColor="#b86749" stopOpacity=".30" />
+                  <stop offset=".6" stopColor="#b86749" stopOpacity=".08" />
+                  <stop offset="1" stopColor="#214d3b" stopOpacity="0" />
+                </linearGradient>
+              </defs>
+
+              <rect className="art-luz__brilho" x="-60" y="-60" width="720" height="740" fill="url(#var-brilho)" />
+
+              <g className="art-luz__feixes">
+                <path className="art-luz__feixe art-luz__feixe--1" d="M40 -80 210 -80 470 700 300 700Z" fill="url(#var-feixe-a)" />
+                <path className="art-luz__feixe art-luz__feixe--2" d="M215 -80 320 -80 600 700 495 700Z" fill="url(#var-feixe-b)" />
+                <path className="art-luz__feixe art-luz__feixe--3" d="M330 -80 385 -80 660 700 605 700Z" fill="url(#var-feixe-c)" />
+              </g>
+
+</svg>
+
             <div className="art-arco-sol" />
           </div>
 
