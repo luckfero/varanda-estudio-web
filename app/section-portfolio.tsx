@@ -12,10 +12,10 @@ import Picture from "./picture";
  *
  * Três decisões que sustentam o desenho e que se quebram sem querer:
  *
- * 1. **A rampa não é enfeite.** A seção de cima é verde escuro, e um preto
- *    quente encostado num escuro colorido lê como acidente. A rampa esfria o
- *    verde até o preto ao longo de 168px, e o fio de ocre marca a costura.
- *    Tirar a rampa devolve a colisão.
+ * 1. **A seção se separa só pela troca de cor**, como todas as outras da
+ *    página. Houve aqui uma rampa que esfriava o verde de cima até o preto,
+ *    mais dois fios de ocre nas bordas; saíram a pedido em 25/08/2026, porque
+ *    faziam esta seção ser a única com tratamento de borda.
  * 2. **Não há mais carrossel.** Os cinco projetos existem ao mesmo tempo no
  *    documento, o que também tira do caminho o gesto de arrasto, os pontos e
  *    as setas. Nada aqui depende de estado, então o componente não precisa
@@ -30,10 +30,6 @@ export default function SectionPortfolio({ portfolio }: { portfolio: Dicionario[
 
   return (
     <section className="portfolio section" id="portfolio" aria-labelledby="portfolio-title">
-      {/* A transição de temperatura entre o verde de cima e o preto daqui.
-          Decorativa por definição, então fica fora da árvore de acessibilidade. */}
-      <div className="portfolio-rampa" aria-hidden="true" />
-
       <div className="portfolio-wrap">
         <header className="portfolio-cabeca" data-reveal>
           <div>

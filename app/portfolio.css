@@ -170,30 +170,11 @@
 
   position: relative;
   background: var(--chao);
-  border-top: 1px solid var(--ochre);
-  border-bottom: 1px solid var(--ochre);
-  padding-top: 0;
+  /* Sem fio e sem degradê na borda: a página inteira separa seção por troca
+     de cor, e esta não tem por que ser exceção. Havia aqui uma rampa que
+     esfriava o verde de cima até o preto; ela foi removida a pedido, em
+     25/08/2026, junto com os dois fios de ocre. */
   overflow: hidden;
-}
-
-/* A costura com a seção verde de cima.
-
-   Um preto quente encostado num escuro COLORIDO lê como acidente, não
-   como decisão. A rampa esfria o verde e o traz até o chão ao longo de
-   até 168px, e o fio de ocre marca onde uma acaba e a outra começa.
-   Remover a rampa devolve a colisão. */
-.portfolio-rampa {
-  height: clamp(104px, 15vw, 168px);
-  margin: 0 calc(-1 * clamp(1.25rem, 5vw, 5.5rem));
-  background: linear-gradient(
-    180deg,
-    #214d3b 0%,
-    #1c4234 16%,
-    #152e24 38%,
-    #14211a 58%,
-    #171814 78%,
-    var(--chao) 100%
-  );
 }
 
 .portfolio-wrap {
