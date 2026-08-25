@@ -1,3 +1,4 @@
+import { ArrowIcon } from "./icons";
 import type { Dicionario } from "./i18n";
 
 /**
@@ -67,6 +68,23 @@ export default function SectionSobre({
               <p>{item.answer}</p>
             </details>
           ))}
+        </div>
+
+        {/* As oito dúvidas terminavam sem nada para clicar, que é exatamente
+            onde a última objeção acabou de ser respondida. */}
+        <div className="faq-fechamento" data-reveal>
+          <div>
+            <h3>{t.faq.fechamentoTitulo}</h3>
+            <p>{t.faq.fechamentoTexto}</p>
+          </div>
+          {/* Âncora simples, sem o gancho de rolagem suave: esta seção é
+              componente de servidor, e trazer `use-ancora-suave` para cá
+              mandaria o JavaScript dela inteiro para o navegador por causa de
+              um botão. A folha já declara `scroll-behavior: smooth`, então o
+              navegador faz o mesmo movimento sozinho. */}
+          <a className="button button--primary" href="#contato">
+            {t.faq.fechamentoBotao} <ArrowIcon />
+          </a>
         </div>
       </section>
     </>

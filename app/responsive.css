@@ -132,6 +132,8 @@
   .project-visual { min-height: 480px; }
 
   .process-heading, .faq-heading { position: static; }
+  /* Coluna única aqui: `grid-column: 2` inventaria uma segunda coluna vazia. */
+  .faq-fechamento { grid-column: 1; }
   .process-list { margin-top: 2rem; }
   .pricing-grid { grid-template-columns: 1fr; gap: 1.25rem; }
   .price-card.is-featured { margin-block: 0; }

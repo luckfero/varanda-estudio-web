@@ -147,8 +147,12 @@
   background: var(--terracotta-deep);
 }
 
+/* A LARGURA saiu daqui em 25/08/2026, para `.button--bloco`.
+   `width: 100%` numa classe de COR é armadilha: o modificador diz de que cor
+   é o botão, e quem herdava a largura junto era todo lugar novo que pedisse a
+   mesma cor. Foi o que aconteceu com a chamada do portfólio e com a da
+   manutenção, que nasceram esticadas de ponta a ponta da seção. */
 .button--outline {
-  width: 100%;
   border-color: var(--green);
   color: var(--green);
 }
@@ -159,10 +163,13 @@
 }
 
 .button--cream {
-  width: 100%;
   background: var(--cream);
   color: var(--green-dark);
 }
+
+/* Botão que ocupa a linha inteira. É pedido do LUGAR, não da cor: no cartão
+   de preço a coluna é a unidade de leitura e o botão fecha a coluna. */
+.button--bloco { width: 100%; }
 
 .text-link {
   display: inline-flex;

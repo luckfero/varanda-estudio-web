@@ -157,13 +157,35 @@
 .price span { color: var(--ink-soft); font-size: .68rem; }
 .is-featured .price span { color: #cfc7bb; }
 
-.future-price {
+/* No lugar da segunda coluna de preço ("valor regular: 1.500"), que saiu em
+   25/08/2026 junto com a data de validade, entra a informação que o cliente
+   de fato precisa e que a página não dava em lugar nenhum: quanto tempo leva.
+
+   O rótulo em bloco próprio, e não em linha, porque "Prazo típico" precisa
+   ser lido como rótulo e não como parte da frase. */
+.price-entrega {
+  /* Duas linhas de texto mais o rótulo. Sem piso, o cartão cujo prazo cabe em
+     uma linha sobe o botão 22px e os três deixam de alinhar — mesmo remédio
+     que `.price-description` já usa logo acima. */
+  min-height: 66px;
   margin: -.35rem 0 1.8rem;
-  color: var(--ink-muted);
+  color: var(--ink-soft);
   font-size: var(--c-apoio);
+  line-height: var(--lh-apoio);
 }
 
-.is-featured .future-price { color: #afa79c; }
+.price-entrega span {
+  display: block;
+  margin-bottom: .25rem;
+  color: var(--terracotta-dark);
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.is-featured .price-entrega { color: #cfc7bb; }
+.is-featured .price-entrega span { color: var(--ochre); }
 
 .price-card ul {
   margin: 2rem 0 0;
@@ -300,6 +322,20 @@
   color: var(--green-dark);
 }
 
+/* Condição de pagamento, uma vez só para os três. Repetida em cada cartão
+   leria como se variasse entre eles, que foi o defeito que tirou as garantias
+   de dentro da lista dos pacotes na rodada de 10/08. */
+.pricing-pagamento {
+  max-width: 1040px;
+  margin: 2.4rem auto 0;
+  padding: 1.1rem 1.4rem;
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: var(--c-base);
+  line-height: var(--lh-base);
+  text-align: center;
+}
+
 .launch-note {
   max-width: 1040px;
   margin: 2.6rem auto 0;
@@ -393,9 +429,17 @@
 .care-notes {
   margin-top: 1.5rem;
   display: flex;
-  justify-content: space-between;
+  /* Era `justify-content: space-between` com dois parágrafos. Com o botão
+     como terceiro filho, o `space-between` o jogaria para a borda direita e
+     ele leria como legenda solta. `align-items: flex-start` mantém as duas
+     notas fluindo e o botão alinhado pelo topo delas. */
+  flex-wrap: wrap;
+  align-items: flex-start;
   gap: 2rem;
   color: #f0d9ce;
   font-size: var(--c-apoio);
   line-height: 1.6;
 }
+
+.care-notes p { flex: 1 1 20rem; margin: 0; }
+.care-notes .button { flex: 0 0 auto; }

@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { whatsappUrl } from "./data";
+import { emailContato, whatsappUrl } from "./data";
 import type { Dicionario } from "./i18n";
 import { ArrowIcon } from "./icons";
 
@@ -83,6 +83,15 @@ export default function SectionContato({
               <span>{t.contato.whatsappLabel}</span>
               <strong>+55 11 94226-3007</strong>
             </a>
+            {/* O segundo canal, de volta em 25/08/2026.
+                Até aqui o site tinha UM canal, e nem sempre ele funcionava:
+                no desktop a aba do WhatsApp cai no `web.whatsapp.com`, que
+                pede leitura de QR code. Quem estava num computador sem o
+                aparelho pareado não tinha como falar com a gente. */}
+            <a href={`mailto:${emailContato}`}>
+              <span>{t.contato.emailLabel}</span>
+              <strong>{emailContato}</strong>
+            </a>
             {/* O e-mail saiu daqui em 2026-08-10.
                 O endereço era `luccaassoc@gmail.com`: o nome da pessoa em
                 texto grande, na seção de contato — exatamente o que a
@@ -104,14 +113,14 @@ export default function SectionContato({
               <input name="name" type="text" autoComplete="name" required placeholder={t.contato.campoNomePlaceholder} />
             </label>
             <label>
-              {t.contato.campoNegocio}
-              <input name="business" type="text" autoComplete="organization" required placeholder={t.contato.campoNegocioPlaceholder} />
+              {t.contato.campoNegocio} <i>{t.contato.opcional}</i>
+              <input name="business" type="text" autoComplete="organization" placeholder={t.contato.campoNegocioPlaceholder} />
             </label>
           </div>
           <div className="field-row">
             <label>
-              {t.contato.campoEmail}
-              <input name="email" type="email" autoComplete="email" required placeholder="voce@exemplo.com" />
+              {t.contato.campoEmail} <i>{t.contato.opcional}</i>
+              <input name="email" type="email" autoComplete="email" placeholder="voce@exemplo.com" />
             </label>
             <label>
               {t.contato.campoWhatsapp}
@@ -119,8 +128,8 @@ export default function SectionContato({
             </label>
           </div>
           <label>
-            {t.contato.campoTipo}
-            <select name="siteType" required defaultValue="">
+            {t.contato.campoTipo} <i>{t.contato.opcional}</i>
+            <select name="siteType" defaultValue="">
               <option value="" disabled>{t.contato.campoTipoPlaceholder}</option>
               {t.contato.tipos.map((tipo) => <option key={tipo}>{tipo}</option>)}
             </select>

@@ -1,5 +1,6 @@
 "use client";
 
+import { emailContato } from "./data";
 import type { Dicionario } from "./i18n";
 import { ArcoMark } from "./icons";
 import { useAncoraSuave } from "./use-ancora-suave";
@@ -28,6 +29,10 @@ export default function SiteFooter({
       </div>
       <div className="footer-bottom">
         <span className="footer-location">{t.rodape.local}</span>
+        {/* O canal também aqui, e não só na seção de contato: quem chega ao
+            rodapé passou por tudo e não clicou em nada, e mandá-lo rolar de
+            volta é perder a única pessoa que leu a página inteira. */}
+        <a href={`mailto:${emailContato}`}>{emailContato}</a>
         {/* O caminho da política muda com o idioma (`/privacidade`,
             `/es/privacidad`, `/en/privacy`), então vem do dicionário — link
             fixo mandaria o visitante espanhol para a versão portuguesa. */}

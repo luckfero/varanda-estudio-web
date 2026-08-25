@@ -1,4 +1,5 @@
 import { featuredAssets, projectAssets } from "./data";
+import { ArrowIcon } from "./icons";
 import type { Dicionario } from "./i18n";
 import Picture from "./picture";
 
@@ -136,6 +137,17 @@ export default function SectionPortfolio({ portfolio }: { portfolio: Dicionario[
               );
             })}
           </ul>
+        </div>
+
+        {/* A chamada fecha a seção, e o lugar não é decorativo: aqui é onde a
+            objeção "será que eles conseguem fazer isso?" acabou de morrer,
+            olhando cinco projetos. Sem ela, a próxima coisa clicável no
+            celular estava a 7.839px — 9,3 telas de rolagem sem uma ação. */}
+        <div className="portfolio-chamada" data-reveal>
+          <p>{t.portfolio.ctaTexto}</p>
+          <a className="button button--cream" href="#contato">
+            {t.portfolio.ctaBotao} <ArrowIcon />
+          </a>
         </div>
       </div>
     </section>

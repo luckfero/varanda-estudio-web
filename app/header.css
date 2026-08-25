@@ -273,14 +273,42 @@
   color: var(--cream);
 }
 
+/* Os SELETORES desta parte estavam errados desde que a inversão nasceu, em
+   25/08/2026, e o defeito passou por duas verificações porque as duas
+   olhavam a coisa errada: uma conferia se a CLASSE entrava, e a outra media
+   contraste com o painel de preview, onde transição de CSS não anda e o
+   `getComputedStyle` devolve o valor de partida para sempre.
+
+   Não existe `.nav-link` nem `.lang-link` no HTML. A navegação é `.nav > a` e
+   o seletor de idioma é `.nav-idiomas > span` e `> a`. Medido no Chrome de
+   verdade com a classe forçada: os cinco itens do menu davam 1,57:1 e o
+   seletor de idioma, 1,14:1 — texto escuro sobre a barra escura, ilegível
+   por toda a faixa do portfólio, do contato e do rodapé. */
 .cabecalho-escuro .site-header .brand strong,
 .cabecalho-escuro .site-header .brand span,
-.cabecalho-escuro .site-header .nav-link,
-.cabecalho-escuro .site-header .lang-link {
+/* O `small` não herda do `span`: ele tem cor própria (`--ink-soft`, que é de
+   texto sobre claro). */
+.cabecalho-escuro .site-header .brand small,
+.cabecalho-escuro .site-header .nav > a:not(.nav-cta) {
   color: var(--cream);
 }
 
-.cabecalho-escuro .site-header .lang-link[aria-current="true"] {
+/* O fio do sublinhado some sobre o escuro: o terracota puro dá 2,4:1 contra
+   #16120f, e ele é a única marca de "onde o ponteiro está". */
+.cabecalho-escuro .site-header .nav > a:not(.nav-cta)::after {
+  background: var(--ochre);
+}
+
+.cabecalho-escuro .site-header .nav-idiomas > a {
+  color: #cfc7bb;
+}
+
+.cabecalho-escuro .site-header .nav-idiomas > a:hover {
+  background: rgba(244, 239, 230, .10);
+  color: var(--cream);
+}
+
+.cabecalho-escuro .site-header .nav-idiomas > span {
   background: rgba(244, 239, 230, .14);
   color: var(--cream);
 }

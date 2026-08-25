@@ -32,6 +32,7 @@ const en: Dicionario = {
 
   nav: {
     pular: "Skip to content",
+    flutuante: "Chat on WhatsApp",
     inicio: "home",
     servicos: "Services",
     portfolio: "Work",
@@ -69,7 +70,9 @@ const en: Dicionario = {
   servicos: {
     indice: "What we do",
     titulo: "The right format<br />for where you are.",
-    resumo: "Three formats, from the most direct to the most complete. Same names you'll find under pricing, further down.",
+    resumo: "Three formats, from the most direct to the most complete. Each card carries its own starting price.",
+    aPartirDe: "from",
+    verPlano: "See what's included",
     nota: "Need an online store, bookings, a members area or automation?",
     notaLink: "Let's look at it together.",
     lista: [
@@ -101,6 +104,8 @@ const en: Dicionario = {
        relationship that does not exist. */
     noArIndice: "Live",
     conceitualSelo: "Concept",
+    ctaTexto: "Tell us what your business needs and we'll reply with the next step.",
+    ctaBotao: "I want a site like this",
     estudosNota: "No client, no address online.",
     estudosIndice: "Concept studies",
     noArNota: "Published sites, at an address anyone can visit.",
@@ -192,9 +197,18 @@ const en: Dicionario = {
   investimento: {
     indice: "Pricing",
     titulo: "Start with what<br />your business needs today.",
-    prazo: "Launch pricing valid for contracts signed until 30 September 2026.",
+    /* Era a condição de lançamento com data de validade ("até 30 de setembro
+       de 2026"). Ela venceria em 36 dias em três idiomas, e site que anuncia
+       condição vencida é pior que site sem condição nenhuma. A comparação com
+       o "valor regular" saiu junto, por decisão do dono em 25/08/2026: o preço
+       publicado passa a ser o preço que se cobra, sem segunda coluna. */
+    resumo: "The price is settled before we start, together with the scope in writing. Nothing is charged mid-project that wasn't agreed beforehand.",
     porProjeto: "per project",
-    valorRegular: "standard price:",
+    entregaRotulo: "Typical timeline",
+    /* Prazo e pagamento não existiam na página: nenhuma das duas perguntas
+       que todo cliente faz tinha resposta antes de ele precisar perguntar.
+       O 50/50 vem de `comercial/oferta/politicas.md`, que é a fonte. */
+    pagamento: "Payment in two parts: 50% to start and 50% on final approval, before publishing. Bank transfer.",
     cta: "I want this plan",
     incluidoTitulo: "In every package, at no extra charge",
     escopoIncluidoTitulo: "Integrations included in every package",
@@ -220,7 +234,7 @@ const en: Dicionario = {
         name: "Essential",
         eyebrow: "To get started",
         launch: "900",
-        future: "1,150",
+        entrega: "A few days after the material is approved",
         featured: false,
         description: "One page to introduce the essentials of the business and open a conversation with whoever arrives.",
         items: [
@@ -234,7 +248,7 @@ const en: Dicionario = {
         name: "Business",
         eyebrow: "Recommended",
         launch: "1,850",
-        future: "2,300",
+        entrega: "1 to 2 weeks after the material is approved",
         featured: true,
         description: "The full site for your business, with room to explain, show your work and answer questions.",
         items: [
@@ -249,7 +263,7 @@ const en: Dicionario = {
         name: "Professional",
         eyebrow: "To grow",
         launch: "3,350",
-        future: "4,200",
+        entrega: "Set in the quote, depending on the capability chosen",
         featured: false,
         description: "Everything in Business, plus one capability your project calls for, chosen together with you.",
         items: [
@@ -277,6 +291,7 @@ const en: Dicionario = {
     tituloDestaque: "well looked after.",
     resumo: "Optional plans to keep the site live, updated and secure, and to change the content whenever the business changes.",
     porMes: "/month",
+    cta: "I want a maintenance plan",
     nota1: "Monthly time does not roll over. Payment is in advance and cancellation requires 30 days' notice.",
     nota2: "For one-off needs without a plan, ad-hoc maintenance costs US$ 69 per hour, billed in 30-minute blocks. Inside the plans, the hour always works out cheaper.",
     planos: [
@@ -334,6 +349,9 @@ const en: Dicionario = {
   },
 
   faq: {
+    fechamentoTitulo: "Still have a question?",
+    fechamentoTexto: "Just ask. We'll reply with guidance for your case, with no obligation to hire.",
+    fechamentoBotao: "Ask a question",
     indice: "Frequently asked",
     titulo: "Worth knowing<br />before we start.",
     perguntas: [
@@ -385,17 +403,19 @@ const en: Dicionario = {
     tituloAntes: "Your business deserves<br />a place to ",
     tituloDestaque: "grow.",
     resumo: "Tell us what your business needs and where it stands. We'll go through it and reply with a clear next step.",
+    emailLabel: "Email",
     whatsappLabel: "WhatsApp",
     whatsappAria: "Message Varanda on WhatsApp in a new tab",
     whatsappMensagem: "Hello! I came from the Varanda Estúdio Web site and I'd like to talk about a project.",
     formSaudacao: "Hello! I came from the Varanda Estúdio Web site.",
+    opcional: "optional",
     campoNome: "Your name *",
     campoNomePlaceholder: "What should we call you?",
-    campoNegocio: "Business name *",
+    campoNegocio: "Business name",
     campoNegocioPlaceholder: "Company or project name",
-    campoEmail: "Email *",
+    campoEmail: "Email",
     campoWhatsapp: "WhatsApp *",
-    campoTipo: "What kind of site are you after? *",
+    campoTipo: "What kind of site are you after?",
     campoTipoPlaceholder: "Choose an option",
     campoResumo: "Tell us about the project *",
     campoResumoPlaceholder: "Tell us what your business does, what the site needs to show and what result you're hoping for.",

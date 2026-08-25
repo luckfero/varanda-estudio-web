@@ -30,8 +30,6 @@ export default function SectionOferta({
 
   /* Em linha corrida o símbolo e o número vêm juntos; nos cartões eles vão
      em elementos separados, com tamanhos diferentes. Daí as duas formas. */
-  const precoEmLinha = (valor: string) =>
-    t.moedaAposValor ? `${valor} ${t.moeda}` : `${t.moeda} ${valor}`;
 
   return (
     <>
@@ -60,14 +58,23 @@ export default function SectionOferta({
             <div className="section-index">{t.investimento.indice}</div>
             <h2 id="pricing-title" dangerouslySetInnerHTML={{ __html: t.investimento.titulo }} />
           </div>
-          <p>{t.investimento.prazo}</p>
+          <p>{t.investimento.resumo}</p>
         </div>
 
         <div className="pricing-grid">
-          {t.investimento.pacotes.map((item) => {
+          {t.investimento.pacotes.map((item, index) => {
             const partes = partesDoPreco(t, item.launch);
             return (
-            <article className={`price-card${item.featured ? " is-featured" : ""}`} key={item.name} data-reveal>
+            /* O `id` é numérico, e não derivado do nome, porque o nome é
+               traduzido: `#plano-essencial` viraria `#plano-esencial` em
+               espanhol e a âncora do cartão de serviço quebraria em dois
+               idiomas de três. */
+            <article
+              className={`price-card${item.featured ? " is-featured" : ""}`}
+              id={`plano-${index + 1}`}
+              key={item.name}
+              data-reveal
+            >
               <p className="price-eyebrow">{item.eyebrow}</p>
               <h3>{item.name}</h3>
               <p className="price-description">{item.description}</p>
@@ -77,8 +84,14 @@ export default function SectionOferta({
                 {partes.depois && <small className="price-moeda-depois">{partes.depois}</small>}
                 <span>{t.investimento.porProjeto}</span>
               </div>
-              <p className="future-price">{t.investimento.valorRegular} {precoEmLinha(item.future)}</p>
-              <a className={`button ${item.featured ? "button--cream" : "button--outline"}`} href="#contato" onClick={(event) => handleNavClick(event, "#contato")}>
+              {/* Prazo típico. Era a primeira pergunta das dúvidas frequentes
+                  e a resposta ficava a 8.000px daqui, depois do preço, que é
+                  exatamente onde a decisão é tomada. */}
+              <p className="price-entrega">
+                <span>{t.investimento.entregaRotulo}</span>
+                {item.entrega}
+              </p>
+              <a className={`button button--bloco ${item.featured ? "button--cream" : "button--outline"}`} href="#contato" onClick={(event) => handleNavClick(event, "#contato")}>
                 {t.investimento.cta} <ArrowIcon />
               </a>
               <ul>
@@ -124,6 +137,10 @@ export default function SectionOferta({
           </div>
         </div>
 
+        {/* Condição de pagamento uma vez só, abaixo dos três: ela é igual
+            para todos, e repetida em cada cartão leria como se variasse. */}
+        <p className="pricing-pagamento" data-reveal>{t.investimento.pagamento}</p>
+
         <p className="launch-note">{t.investimento.nota}</p>
       </section>
 
@@ -157,6 +174,13 @@ export default function SectionOferta({
         <div className="care-notes" data-reveal>
           <p>{t.manutencao.nota1}</p>
           <p>{t.manutencao.nota2}</p>
+          {/* Três planos com preço e nenhuma forma de contratar. Era o buraco
+              mais estranho da página: a seção anterior tem botão em cada
+              cartão, e esta, que vende assinatura, terminava em nota de
+              rodapé. */}
+          <a className="button button--cream" href="#contato" onClick={(event) => handleNavClick(event, "#contato")}>
+            {t.manutencao.cta} <ArrowIcon />
+          </a>
         </div>
       </section>
     </>

@@ -33,6 +33,7 @@ const pt = {
 
   nav: {
     pular: "Pular para o conteúdo",
+    flutuante: "Falar no WhatsApp",
     inicio: "início",
     servicos: "Serviços",
     portfolio: "Portfólio",
@@ -70,7 +71,9 @@ const pt = {
   servicos: {
     indice: "O que fazemos",
     titulo: "O formato certo<br />para o seu momento.",
-    resumo: "Três formatos, do mais direto ao mais completo. São os mesmos nomes que aparecem no investimento, mais abaixo.",
+    resumo: "Três formatos, do mais direto ao mais completo. O valor de entrada de cada um está no próprio cartão.",
+    aPartirDe: "a partir de",
+    verPlano: "Ver o que entra",
     nota: "Precisa de loja virtual, agendamento, área de acesso ou automação?",
     notaLink: "Vamos avaliar juntos.",
     lista: [
@@ -106,6 +109,8 @@ const pt = {
        duas, e é a informação que o visitante procura. */
     noArIndice: "No ar",
     conceitualSelo: "Conceitual",
+    ctaTexto: "Conte o que seu negócio precisa e respondemos com o próximo passo.",
+    ctaBotao: "Quero um site assim",
     estudosNota: "Sem cliente, sem endereço no ar.",
     estudosIndice: "Estudos conceituais",
     noArNota: "Sites publicados, com endereço aberto para qualquer pessoa visitar.",
@@ -206,9 +211,18 @@ const pt = {
   investimento: {
     indice: "Investimento",
     titulo: "Comece com o que<br />seu negócio precisa hoje.",
-    prazo: "Condição de lançamento válida para contratos fechados até 30 de setembro de 2026.",
+    /* Era a condição de lançamento com data de validade ("até 30 de setembro
+       de 2026"). Ela venceria em 36 dias em três idiomas, e site que anuncia
+       condição vencida é pior que site sem condição nenhuma. A comparação com
+       o "valor regular" saiu junto, por decisão do dono em 25/08/2026: o preço
+       publicado passa a ser o preço que se cobra, sem segunda coluna. */
+    resumo: "O preço fecha antes de começar, junto com o escopo por escrito. Nada é cobrado durante o projeto sem ter sido combinado antes.",
     porProjeto: "por projeto",
-    valorRegular: "valor regular:",
+    entregaRotulo: "Prazo típico",
+    /* Prazo e pagamento não existiam na página: nenhuma das duas perguntas
+       que todo cliente faz tinha resposta antes de ele precisar perguntar.
+       O 50/50 vem de `comercial/oferta/politicas.md`, que é a fonte. */
+    pagamento: "Pagamento em duas partes: 50% para iniciar e 50% na aprovação final, antes da publicação. Pix, transferência ou boleto.",
     cta: "Quero este plano",
     incluidoTitulo: "Em todos os pacotes, sem cobrança à parte",
     /* Duas colunas, e a separação é comercial antes de ser visual: a da
@@ -244,10 +258,10 @@ const pt = {
         name: "Essencial",
         eyebrow: "Para começar",
         launch: "1.200",
-        future: "1.500",
         /* Presente nos três, mesmo falso. Sem a chave em todos, o TypeScript
            infere um tipo diferente por elemento e `typeof pt` deixa de servir
            como contrato para `es.ts` e `en.ts`. */
+        entrega: "Alguns dias depois do material aprovado",
         featured: false,
         description: "Uma página para apresentar o essencial do negócio e abrir conversa com quem chega.",
         items: [
@@ -261,7 +275,7 @@ const pt = {
         name: "Negócio",
         eyebrow: "Recomendado",
         launch: "2.500",
-        future: "2.900",
+        entrega: "1 a 2 semanas depois do material aprovado",
         featured: true,
         description: "O site completo do seu negócio, com espaço para explicar, mostrar trabalhos e responder dúvidas.",
         items: [
@@ -276,7 +290,7 @@ const pt = {
         name: "Profissional",
         eyebrow: "Para crescer",
         launch: "4.500",
-        future: "5.500",
+        entrega: "Definido no orçamento, conforme a capacidade escolhida",
         featured: false,
         description: "Tudo do Negócio, mais uma capacidade que o seu projeto exige, escolhida junto com você.",
         items: [
@@ -304,6 +318,7 @@ const pt = {
     tituloDestaque: "bem cuidado.",
     resumo: "Planos opcionais para manter o site no ar, atualizado e seguro, e para mudar o conteúdo sempre que o negócio mudar.",
     porMes: "/mês",
+    cta: "Quero um plano de manutenção",
     nota1: "O tempo mensal não é acumulativo. O pagamento é antecipado e o cancelamento requer aviso prévio de 30 dias.",
     nota2: "Para demandas pontuais sem plano, a manutenção avulsa custa R$ 190 por hora, cobrada em blocos de 30 minutos. Dentro dos planos, a hora sai sempre mais barata.",
     planos: [
@@ -361,6 +376,9 @@ const pt = {
   },
 
   faq: {
+    fechamentoTitulo: "Ficou alguma dúvida de fora?",
+    fechamentoTexto: "Pergunte direto. Respondemos com a orientação para o seu caso, sem compromisso de contratar.",
+    fechamentoBotao: "Fazer uma pergunta",
     indice: "Dúvidas frequentes",
     titulo: "Antes de começar,<br />vale saber.",
     perguntas: [
@@ -412,17 +430,19 @@ const pt = {
     tituloAntes: "Seu negócio merece<br />um lugar para ",
     tituloDestaque: "crescer.",
     resumo: "Conte o que seu negócio precisa e em que momento ele está. Analisamos as informações e respondemos com a orientação para o próximo passo.",
+    emailLabel: "E-mail",
     whatsappLabel: "WhatsApp",
     whatsappAria: "Falar com a Varanda pelo WhatsApp em uma nova aba",
     whatsappMensagem: "Olá! Vim pelo site da Varanda Estúdio Web e gostaria de conversar sobre um projeto.",
     formSaudacao: "Olá! Vim pelo site da Varanda Estúdio Web.",
+    opcional: "opcional",
     campoNome: "Seu nome *",
     campoNomePlaceholder: "Como você prefere ser chamado?",
-    campoNegocio: "Nome do negócio *",
+    campoNegocio: "Nome do negócio",
     campoNegocioPlaceholder: "Nome da empresa ou do projeto",
-    campoEmail: "E-mail *",
+    campoEmail: "E-mail",
     campoWhatsapp: "WhatsApp *",
-    campoTipo: "Que tipo de site você procura? *",
+    campoTipo: "Que tipo de site você procura?",
     campoTipoPlaceholder: "Selecione uma opção",
     campoResumo: "Conte sobre o projeto *",
     campoResumoPlaceholder: "Conte o que seu negócio faz, o que o site precisa apresentar e qual resultado você espera.",

@@ -1,4 +1,6 @@
+import { whatsappUrl } from "./data";
 import { getDicionario, outrosIdiomas, type Locale } from "./i18n";
+import { WhatsappIcon } from "./icons";
 import Reveal from "./reveal";
 import SectionAbertura from "./section-abertura";
 import SectionContato from "./section-contato";
@@ -37,7 +39,19 @@ export default function Pagina({ locale }: { locale: Locale }) {
       <SiteHeader nav={t.nav} locale={locale} idiomas={outrosIdiomas(locale, "home")} />
 
       <main id="conteudo" tabIndex={-1}>
-        <SectionAbertura hero={t.hero} intro={t.intro} servicos={t.servicos} />
+        {/* O preço desce como três strings prontas, e não como a fatia
+            `investimento` inteira: a fatia já viaja para `SectionOferta`, e
+            mandá-la duas vezes duplicaria o bloco de preços no payload.
+            Formatado aqui porque o formato depende de `moedaAposValor`, que
+            é do dicionário e não do componente. */}
+        <SectionAbertura
+          hero={t.hero}
+          intro={t.intro}
+          servicos={t.servicos}
+          precos={t.investimento.pacotes.map((p) =>
+            t.moedaAposValor ? `${p.launch} ${t.moeda}` : `${t.moeda} ${p.launch}`,
+          )}
+        />
         <SectionPortfolio portfolio={t.portfolio} />
         <SectionOferta
           processo={t.processo}
@@ -49,6 +63,26 @@ export default function Pagina({ locale }: { locale: Locale }) {
         <SectionSobre sobre={t.sobre} extras={t.extras} faq={t.faq} />
         <SectionContato contato={t.contato} privacyPath={t.privacyPath} />
       </main>
+
+      {/* O botão fixo de WhatsApp, só no celular.
+          É literalmente um dos itens que os três pacotes prometem — "botão de
+          WhatsApp em todas as páginas" está em `escopoIncluido` — e o nosso
+          próprio site não tinha. No desktop ele não aparece: lá o cabeçalho
+          fica visível o tempo todo e já leva ao contato, enquanto no celular o
+          maior intervalo sem nada clicável media 7.839px, 9,3 telas.
+
+          `aria-hidden` no ícone e texto de verdade no `span`, escondido
+          visualmente mas lido: um botão flutuante sem nome é um círculo verde
+          que o leitor de tela anuncia como "link". */}
+      <a
+        className="zap-flutuante"
+        href={`${whatsappUrl}?text=${encodeURIComponent(t.contato.whatsappMensagem)}`}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <WhatsappIcon />
+        <span className="sr-only">{t.nav.flutuante}</span>
+      </a>
 
       <SiteFooter rodape={t.rodape} privacyPath={t.privacyPath} />
     </>

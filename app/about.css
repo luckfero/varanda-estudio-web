@@ -312,13 +312,39 @@
   gap: 1rem;
 }
 
+/* `block`, e não `grid`.
+   Com `display: grid` o "opcional" ao lado do rótulo virava uma LINHA da
+   grade e caía embaixo dele, o que empurrava o campo 17px para baixo — e como
+   só três dos seis campos têm a marca, as duas colunas do formulário
+   deixavam de alinhar. Em bloco, ele flui na mesma linha do texto. */
 .contact-form label:not(.consent) {
-  display: grid;
-  gap: .55rem;
+  display: block;
   margin-bottom: 1.1rem;
   color: var(--green-dark);
   font-size: .72rem;
   font-weight: 750;
+}
+
+/* "opcional" ao lado do rótulo.
+   Até 25/08/2026 os sete campos eram obrigatórios e todos carregavam um `*`.
+   Sete perguntas obrigatórias para abrir conversa é pedágio, não formulário:
+   ficaram nome, WhatsApp e a mensagem. Marcar o que é OPCIONAL, e não o que é
+   obrigatório, é o que faz o formulário parecer curto na primeira olhada. */
+.contact-form label:not(.consent) input,
+.contact-form label:not(.consent) select,
+.contact-form label:not(.consent) textarea {
+  /* O respiro que o `gap` da grade dava. */
+  margin-top: .55rem;
+}
+
+.contact-form label:not(.consent) i {
+  margin-left: .4rem;
+  color: var(--ink-muted);
+  font-size: .68rem;
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: lowercase;
 }
 
 .contact-form input:not([type="checkbox"]),
@@ -341,3 +367,46 @@
 .contact-form textarea:focus { border-color: var(--terracotta); }
 .contact-form textarea { resize: vertical; min-height: 120px; }
 .contact-form input::placeholder, .contact-form textarea::placeholder { color: #948c84; }
+
+/* Fechamento das dúvidas frequentes.
+   As oito perguntas terminavam sem nada para clicar, que é exatamente onde a
+   última objeção acabou de ser respondida. */
+/* Fica na COLUNA DAS PERGUNTAS, e não atravessando as duas.
+   Medido em 1440px: com `grid-column: 1 / -1` o título da seção e este bloco
+   saíam impressos um sobre o outro, ilegíveis os dois. A causa é que o
+   `.faq-heading` é `position: sticky`, e **no Chrome a moldura que prende um
+   item de grade grudado é o CONTAINER da grade, não a área dele**. Enquanto a
+   seção tinha uma linha só, container e área coincidiam e o defeito não
+   existia; a linha nova esticou o container e o título passou a poder
+   escorregar para dentro dela.
+
+   Pôr o bloco na coluna 2 resolve sem mexer no `sticky`, e é onde ele deveria
+   estar de qualquer jeito: ele fecha a lista de perguntas, e é ali que o olho
+   de quem acabou de ler a oitava está. */
+.faq-fechamento {
+  grid-column: 2;
+  margin-top: clamp(2rem, 3.5vw, 3rem);
+  padding-top: clamp(2rem, 3vw, 2.8rem);
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.4rem 2.5rem;
+}
+
+.faq-fechamento h3 {
+  margin: 0;
+  font-family: var(--serif-titulo);
+  font-size: var(--t-bloco);
+  font-weight: 400;
+  line-height: var(--lh-titulo);
+}
+
+.faq-fechamento p {
+  max-width: 52ch;
+  margin: .7rem 0 0;
+  color: var(--ink-soft);
+  font-size: var(--c-base);
+  line-height: var(--lh-base);
+}

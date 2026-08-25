@@ -43,6 +43,7 @@ const es: Dicionario = {
 
   nav: {
     pular: "Saltar al contenido",
+    flutuante: "Hablar por WhatsApp",
     inicio: "inicio",
     servicos: "Servicios",
     portfolio: "Proyectos",
@@ -80,7 +81,9 @@ const es: Dicionario = {
   servicos: {
     indice: "Qué hacemos",
     titulo: "El formato adecuado<br />para tu momento.",
-    resumo: "Tres formatos, del más directo al más completo. Son los mismos nombres que aparecen en la inversión, más abajo.",
+    resumo: "Tres formatos, del más directo al más completo. El precio de entrada de cada uno está en su propia tarjeta.",
+    aPartirDe: "desde",
+    verPlano: "Ver qué incluye",
     nota: "¿Necesitas tienda online, reservas, área privada o automatizaciones?",
     notaLink: "Lo valoramos juntos.",
     lista: [
@@ -112,6 +115,8 @@ const es: Dicionario = {
        que no existe. */
     noArIndice: "En línea",
     conceitualSelo: "Conceptual",
+    ctaTexto: "Cuéntanos qué necesita tu negocio y respondemos con el siguiente paso.",
+    ctaBotao: "Quiero un sitio así",
     estudosNota: "Sin cliente, sin dirección en línea.",
     estudosIndice: "Estudios conceptuales",
     noArNota: "Webs publicadas, con dirección abierta para que cualquiera las visite.",
@@ -203,9 +208,18 @@ const es: Dicionario = {
   investimento: {
     indice: "Inversión",
     titulo: "Empieza por lo que<br />tu negocio necesita hoy.",
-    prazo: "Condición de lanzamiento válida para contratos cerrados hasta el 30 de septiembre de 2026.",
+    /* Era a condição de lançamento com data de validade ("até 30 de setembro
+       de 2026"). Ela venceria em 36 dias em três idiomas, e site que anuncia
+       condição vencida é pior que site sem condição nenhuma. A comparação com
+       o "valor regular" saiu junto, por decisão do dono em 25/08/2026: o preço
+       publicado passa a ser o preço que se cobra, sem segunda coluna. */
+    resumo: "El precio se cierra antes de empezar, junto con el alcance por escrito. Nada se cobra durante el proyecto sin haberse acordado antes.",
     porProjeto: "por proyecto",
-    valorRegular: "precio habitual:",
+    entregaRotulo: "Plazo habitual",
+    /* Prazo e pagamento não existiam na página: nenhuma das duas perguntas
+       que todo cliente faz tinha resposta antes de ele precisar perguntar.
+       O 50/50 vem de `comercial/oferta/politicas.md`, que é a fonte. */
+    pagamento: "Pago en dos partes: 50% para empezar y 50% en la aprobación final, antes de publicar. Transferencia bancaria.",
     cta: "Quiero este plan",
     incluidoTitulo: "En todos los paquetes, sin coste aparte",
     escopoIncluidoTitulo: "Integraciones incluidas en todos los paquetes",
@@ -231,7 +245,7 @@ const es: Dicionario = {
         name: "Esencial",
         eyebrow: "Para empezar",
         launch: "790",
-        future: "990",
+        entrega: "Pocos días después de aprobar el material",
         featured: false,
         description: "Una página para presentar lo esencial del negocio y abrir conversación con quien llega.",
         items: [
@@ -245,7 +259,7 @@ const es: Dicionario = {
         name: "Negocio",
         eyebrow: "Recomendado",
         launch: "1.590",
-        future: "1.990",
+        entrega: "1 a 2 semanas después de aprobar el material",
         featured: true,
         description: "La web completa de tu negocio, con espacio para explicar, mostrar trabajos y resolver dudas.",
         items: [
@@ -260,7 +274,7 @@ const es: Dicionario = {
         name: "Profesional",
         eyebrow: "Para crecer",
         launch: "2.900",
-        future: "3.600",
+        entrega: "Se define en el presupuesto, según la capacidad elegida",
         featured: false,
         description: "Todo lo de Negocio, más una capacidad que tu proyecto necesite, elegida contigo.",
         items: [
@@ -288,6 +302,7 @@ const es: Dicionario = {
     tituloDestaque: "bien cuidada.",
     resumo: "Planes opcionales para mantener la web publicada, actualizada y segura, y para cambiar el contenido siempre que el negocio cambie.",
     porMes: "/mes",
+    cta: "Quiero un plan de mantenimiento",
     nota1: "El tiempo mensual no se acumula. El pago es por adelantado y la baja requiere un aviso previo de 30 días.",
     nota2: "Para necesidades puntuales sin plan, el mantenimiento suelto cuesta 59 € por hora, facturado en bloques de 30 minutos. Dentro de los planes, la hora sale siempre más barata.",
     planos: [
@@ -345,6 +360,9 @@ const es: Dicionario = {
   },
 
   faq: {
+    fechamentoTitulo: "¿Quedó alguna duda fuera?",
+    fechamentoTexto: "Pregunta directamente. Respondemos con la orientación para tu caso, sin compromiso de contratar.",
+    fechamentoBotao: "Hacer una pregunta",
     indice: "Preguntas frecuentes",
     titulo: "Antes de empezar,<br />conviene saber.",
     perguntas: [
@@ -396,17 +414,19 @@ const es: Dicionario = {
     tituloAntes: "Tu negocio merece<br />un lugar donde ",
     tituloDestaque: "crecer.",
     resumo: "Cuéntanos qué necesita tu negocio y en qué momento está. Analizamos la información y respondemos con la orientación para el siguiente paso.",
+    emailLabel: "Correo",
     whatsappLabel: "WhatsApp",
     whatsappAria: "Hablar con Varanda por WhatsApp en una pestaña nueva",
     whatsappMensagem: "¡Hola! Vengo desde la web de Varanda Estúdio Web y me gustaría hablar sobre un proyecto.",
     formSaudacao: "¡Hola! Vengo desde la web de Varanda Estúdio Web.",
+    opcional: "opcional",
     campoNome: "Tu nombre *",
     campoNomePlaceholder: "¿Cómo prefieres que te llamemos?",
-    campoNegocio: "Nombre del negocio *",
+    campoNegocio: "Nombre del negocio",
     campoNegocioPlaceholder: "Nombre de la empresa o del proyecto",
-    campoEmail: "Correo electrónico *",
+    campoEmail: "Correo electrónico",
     campoWhatsapp: "WhatsApp *",
-    campoTipo: "¿Qué tipo de web buscas? *",
+    campoTipo: "¿Qué tipo de web buscas?",
     campoTipoPlaceholder: "Selecciona una opción",
     campoResumo: "Cuéntanos el proyecto *",
     campoResumoPlaceholder: "Cuéntanos qué hace tu negocio, qué tiene que presentar la web y qué resultado esperas.",

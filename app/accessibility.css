@@ -92,3 +92,42 @@
   flex: 0 0 auto;
   margin: 10px;
 }
+
+/* ==========================================================================
+   Botão fixo de WhatsApp, só no celular             (rodada de 25/08/2026)
+   ==========================================================================
+   É um dos itens que os três pacotes prometem ("botão de WhatsApp em todas as
+   páginas") e que o nosso próprio site não tinha. No desktop ele não aparece:
+   lá o cabeçalho fica visível o tempo todo e já leva ao contato.
+
+   `min-width`/`min-height` de 56px, acima dos 44px que a WCAG pede para alvo
+   de toque, porque este é usado com o polegar em movimento.
+
+   O deslocamento inferior soma `env(safe-area-inset-bottom)`: sem isso o
+   botão fica embaixo da barra de gestos do iPhone e não recebe o toque. */
+.zap-flutuante { display: none; }
+
+@media (max-width: 880px) {
+  .zap-flutuante {
+    position: fixed;
+    right: 1rem;
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+    z-index: 60;
+    min-width: 56px;
+    min-height: 56px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    /* --green-dark, e não o verde do WhatsApp: a marca aqui é a nossa, e o
+       verde da outra empresa no canto da tela lê como widget colado. */
+    background: var(--green-dark);
+    color: var(--cream);
+    box-shadow: 0 10px 26px rgba(8, 24, 18, .3);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .zap-flutuante { transition: transform 180ms cubic-bezier(0.23, 1, 0.32, 1); }
+  .zap-flutuante:active { transform: scale(0.94); }
+}

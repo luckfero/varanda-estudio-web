@@ -15,6 +15,26 @@
 export const whatsappUrl = "https://wa.me/5511942263007";
 
 /**
+ * O canal de e-mail do estúdio.
+ *
+ * Até 25/08/2026 o site tinha **um canal só**, o WhatsApp, e nem sempre ele
+ * funciona: o formulário não envia nada — monta um texto e abre uma aba —, e
+ * no desktop essa aba cai no `web.whatsapp.com`, que pede leitura de QR code.
+ * Quem estava num computador sem o WhatsApp pareado não tinha como falar com
+ * a gente.
+ *
+ * **Não é `contato@varandaestudioweb.com`, e o motivo está registrado:** o
+ * endereço no domínio próprio existe, mas o ENVIO é pago e a decisão de
+ * 11/08/2026 foi não investir nisso agora. O que não podia era continuar
+ * usando o Gmail pessoal, que carrega o nome da pessoa — a decisão de
+ * 10/08/2026 foi falar só como estúdio. Este endereço foi criado para o
+ * estúdio e não tem nome de pessoa nenhum.
+ *
+ * Quando o envio no domínio próprio existir, troca aqui e some do site.
+ */
+export const emailContato = "varandaestudioweb@gmail.com";
+
+/**
  * As demonstrações, na mesma ordem de `portfolio.projetos` de cada
  * dicionário. Nome, descrição e entregas vêm de lá; imagem e endereço, daqui.
  *
