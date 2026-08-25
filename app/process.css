@@ -21,8 +21,8 @@
   font-family: var(--serif-titulo);
   font-size: var(--t-secao);
   font-weight: 400;
-  letter-spacing: -.05em;
-  line-height: .96;
+  letter-spacing: var(--ls-titulo);
+  line-height: var(--lh-titulo);
 }
 
 .process-heading > p {
@@ -57,6 +57,7 @@
   font-family: var(--serif-titulo);
   font-size: var(--t-bloco);
   font-weight: 400;
+  line-height: var(--lh-titulo);
 }
 
 .process-list p {
@@ -120,6 +121,7 @@
   font-family: var(--serif-titulo);
   font-size: var(--t-bloco);
   font-weight: 400;
+  line-height: var(--lh-titulo);
 }
 
 .price-description {
@@ -247,6 +249,7 @@
   font-size: var(--t-item);
   font-weight: 400;
   letter-spacing: -.02em;
+  line-height: var(--lh-titulo-miudo);
 }
 
 .pricing-escopo ul {

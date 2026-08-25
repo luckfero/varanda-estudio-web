@@ -93,8 +93,8 @@
   font-family: var(--serif-titulo);
   font-size: var(--t-secao);
   font-weight: 400;
-  letter-spacing: -.055em;
-  line-height: .96;
+  letter-spacing: var(--ls-titulo);
+  line-height: var(--lh-titulo);
 }
 
 .about-copy .eyebrow { margin-top: 2.4rem; }
@@ -161,7 +161,8 @@
   font-family: var(--serif-titulo);
   font-size: var(--t-secao);
   font-weight: 400;
-  letter-spacing: -.05em;
+  letter-spacing: var(--ls-titulo);
+  line-height: var(--lh-titulo);
 }
 
 .extras-heading > p {
@@ -226,6 +227,7 @@
   font-size: var(--t-item);
   cursor: pointer;
   list-style: none;
+  line-height: var(--lh-titulo-miudo);
 }
 
 .faq-list summary::-webkit-details-marker { display: none; }

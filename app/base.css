@@ -69,6 +69,15 @@
   --c-base:  1rem;      /* 16px, o corpo de texto */
   --c-apoio: .875rem;   /* 14px, legenda, nota e rótulo */
 
+  /* Entrelinha e aperto de TÍTULO. Sem estes, 17 dos 32 títulos herdavam o
+     1.5 que o preflight do Tailwind põe no html para corpo de texto, ou seja,
+     nunca tinham sido escolhidos. E o aperto variava de -0.05em no site
+     inteiro contra -0.01em na régua aprovada, cinco vezes mais no mesmo
+     corpo e na mesma fonte. */
+  --lh-titulo: 1.06;
+  --lh-titulo-miudo: 1.12;
+  --ls-titulo: -0.01em;
+
   --lh-base:  1.7;
   --lh-lead:  1.6;
   --lh-apoio: 1.6;

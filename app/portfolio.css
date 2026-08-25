@@ -26,8 +26,8 @@
   font-family: var(--serif-titulo);
   font-size: var(--t-secao);
   font-weight: 400;
-  letter-spacing: -0.05em;
-  line-height: 1;
+  letter-spacing: var(--ls-titulo);
+  line-height: var(--lh-titulo);
 }
 
 .intro-columns {
@@ -66,8 +66,8 @@
   font-family: var(--serif-titulo);
   font-size: var(--t-secao);
   font-weight: 400;
-  letter-spacing: -0.05em;
-  line-height: .95;
+  letter-spacing: var(--ls-titulo);
+  line-height: var(--lh-titulo);
 }
 
 .section-heading > p {
@@ -126,6 +126,7 @@
   font-family: var(--serif-titulo);
   font-size: var(--t-bloco);
   font-weight: 400;
+  line-height: var(--lh-titulo);
 }
 
 .service-card p {

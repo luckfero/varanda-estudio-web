@@ -63,8 +63,14 @@
   font-family: var(--serif-titulo);
   font-size: var(--t-hero);
   font-weight: 500;
+  /* O h1 fica mais apertado que o resto de propósito: é o único título em
+     corpo tão grande, e nele o aperto lê como desenho, não como erro. */
   letter-spacing: -0.055em;
-  line-height: 0.9;
+  /* Era 0.9, herdado de quando isto renderizava em Times New Roman, porque a
+     pilha pedia Iowan Old Style e Baskerville, que só existem em macOS. Na
+     Playfair, "ãçó" a 80px ocupa 81px de altura real contra os 72px que 0.9
+     dava, e as linhas encavalavam 9px em cima do acento e da cedilha. */
+  line-height: var(--lh-titulo);
 }
 
 .hero h1 em {
