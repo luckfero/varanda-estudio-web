@@ -108,14 +108,12 @@ const en: Dicionario = {
        studio's own property, and calling it a client would imply a
        relationship that does not exist. */
     noArIndice: "Live",
-    noArTitulo: "Real businesses, at their own address.",
     visitar: "Visit the ",
     visitarDepois: " website in a new tab",
     verSite: "Open the site",
 
     conceituaisIndice: "Studio projects",
-    conceituaisTitulo: "Three sectors, three different problems.",
-    aviso: "Concept projects, built by the studio to demonstrate visual direction and development. The companies, copy and data are fictional.",
+    aviso: "Three sectors, three different problems. These are concept projects, built by the studio to demonstrate visual direction and development: the companies, copy and data are fictional.",
 
     /* Paired by index with `featuredAssets` in `app/data.ts`. */
     destaques: [

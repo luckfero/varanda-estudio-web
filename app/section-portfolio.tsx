@@ -82,14 +82,12 @@ export default function SectionPortfolio({ portfolio }: { portfolio: Dicionario[
             Não é carrossel: são dois, cabem lado a lado, e um carrossel de
             dois esconde metade do que há de mais forte para mostrar. */}
         <div className="destaques" data-reveal>
-          {/* Mesma estrutura de `.pricing-heading` e `.section-heading`: um
-              bloco à esquerda com sobrancelha e título, e o texto de apoio
-              como irmão direto, na coluna da direita. */}
-          <div className="destaques-cabecalho subsecao-cabecalho">
-            <div>
-              <div className="section-index">{t.portfolio.noArIndice}</div>
-              <h3>{t.portfolio.noArTitulo}</h3>
-            </div>
+          {/* Só sobrancelha, sem título próprio. O `h2` da seção já diz o que
+              precisava ser dito, e dois títulos grandes em serifada empilhados
+              faziam o de cima virar enfeite. Quem separa as duas subseções
+              aqui é o rótulo, que é o trabalho dele. */}
+          <div className="destaques-cabecalho">
+            <div className="section-index">{t.portfolio.noArIndice}</div>
           </div>
 
           <ul className="destaques-lista">
@@ -144,10 +142,7 @@ export default function SectionPortfolio({ portfolio }: { portfolio: Dicionario[
             inteiro, e desde que existe trabalho publicado isso deixou de ser
             verdade. */}
         <div className="conceituais-cabecalho subsecao-cabecalho" data-reveal>
-          <div>
-            <div className="section-index">{t.portfolio.conceituaisIndice}</div>
-            <h3>{t.portfolio.conceituaisTitulo}</h3>
-          </div>
+          <div className="section-index">{t.portfolio.conceituaisIndice}</div>
           <p className="portfolio-aviso">{t.portfolio.aviso}</p>
         </div>
 

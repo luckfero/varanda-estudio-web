@@ -119,14 +119,12 @@ const es: Dicionario = {
        inmueble del propio estudio, y llamarlo cliente insinuaría una relación
        que no existe. */
     noArIndice: "En línea",
-    noArTitulo: "Negocios en pie, con dirección propia.",
     visitar: "Visitar la web de ",
     visitarDepois: " en una pestaña nueva",
     verSite: "Ver la web",
 
     conceituaisIndice: "Proyectos del estudio",
-    conceituaisTitulo: "Tres sectores, tres problemas distintos.",
-    aviso: "Proyectos conceptuales, creados por el estudio para mostrar dirección visual y desarrollo. Las empresas, los textos y los datos son ficticios.",
+    aviso: "Tres sectores, tres problemas distintos. Son proyectos conceptuales, creados por el estudio para mostrar dirección visual y desarrollo: las empresas, los textos y los datos son ficticios.",
 
     /* Emparejado por índice con `featuredAssets` en `app/data.ts`. */
     destaques: [

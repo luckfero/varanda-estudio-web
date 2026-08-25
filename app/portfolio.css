@@ -562,12 +562,17 @@
 .subsecao-cabecalho {
   display: grid;
   grid-template-columns: 1.4fr .6fr;
-  align-items: end;
+  /* `start`, e não o `end` das outras seções. Lá a coluna da esquerda é um
+     título de quatro linhas, e alinhar pela base é o que faz o texto de apoio
+     terminar junto com ele. Aqui a esquerda é uma sobrancelha de uma linha:
+     alinhada pela base, ela nascia embaixo do parágrafo, como se fosse
+     legenda dele em vez de rótulo da subseção. */
+  align-items: start;
   gap: 4rem;
 }
 
 .destaques-cabecalho {
-  margin-bottom: clamp(1.6rem, 3vw, 2.6rem);
+  margin-bottom: clamp(1rem, 1.8vw, 1.5rem);
 }
 
 .destaques-cabecalho .section-index {
@@ -575,16 +580,6 @@
      ocre dá 3,57:1, abaixo do mínimo. O --green-dark dá 4,96:1 e a olho
      nu é o mesmo verde. */
   color: var(--green-dark);
-}
-
-.destaques-cabecalho h3 {
-  margin: .9rem 0 0;
-  color: var(--green-dark);
-  font-family: var(--serif-titulo);
-  font-size: clamp(1.9rem, 3.1vw, 2.9rem);
-  font-weight: 400;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
 }
 
 .destaques-lista {
@@ -767,19 +762,6 @@
 
 .conceituais-cabecalho .section-index {
   color: var(--green-dark);
-}
-
-.conceituais-cabecalho h3 {
-  /* Mesma escala do `h3` do bloco "No ar": os dois são irmãos e precisam ler
-     como irmãos. Sem ele, os conceituais nasciam como rodapé do bloco de
-     cima em vez de seção própria. */
-  margin: .9rem 0 0;
-  color: var(--green-dark);
-  font-family: var(--serif-titulo);
-  font-size: clamp(1.9rem, 3.1vw, 2.9rem);
-  font-weight: 400;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
 }
 
 /* Fonte, corpo e entrelinha iguais aos de `.pricing-heading > p`. O que muda

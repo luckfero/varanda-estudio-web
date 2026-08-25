@@ -113,7 +113,6 @@ const pt = {
        insinuaria uma relação que não existe. "No ar" é verdade sobre as
        duas, e é a informação que o visitante procura. */
     noArIndice: "No ar",
-    noArTitulo: "Negócios de pé, com endereço próprio.",
     visitar: "Visitar o site de ",
     visitarDepois: " em uma nova aba",
     verSite: "Ver o site",
@@ -122,12 +121,11 @@ const pt = {
     conceituaisIndice: "Projetos do estúdio",
     /* O título diz por que estes três existem, que é a pergunta que o
        visitante faz depois de ver que dois já estão no ar. */
-    conceituaisTitulo: "Três setores, três problemas diferentes.",
     /* O rótulo de cada cartão já diz "Projeto conceitual", mas é fácil de
        passar batido, e visitante estrangeiro não tem como saber que a
        empresa não existe. O protocolo é taxativo sobre trabalho conceitual
        nunca parecer trabalho de cliente. */
-    aviso: "Projetos conceituais, criados pelo estúdio para demonstrar direção visual e desenvolvimento. Empresas, textos e dados são fictícios.",
+    aviso: "Três setores, três problemas diferentes. São projetos conceituais, criados pelo estúdio para demonstrar direção visual e desenvolvimento: as empresas, os textos e os dados são fictícios.",
 
     /* A ordem é pareada por índice com `featuredAssets` em `app/data.ts`.
        Nada aqui pode ser escrito sem estar no site do próprio projeto: são
