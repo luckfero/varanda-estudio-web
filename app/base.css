@@ -46,7 +46,32 @@
      **Nao trocar esta variavel para mudar a fonte de um lugar so.** Ela e
      usada em mais de trinta pontos, e foi exatamente assim que uma troca
      pensada para o titulo do hero mudou o site inteiro. */
-  --serif: "Iowan Old Style", "Baskerville", "Times New Roman", serif;
+  /* Uma serifada só. A Iowan saiu em 25/08/2026, quando o site tinha TRÊS
+     famílias em títulos (Iowan em 16, Playfair em 15 e Geist em 1) sem regra
+     nenhuma decidindo qual usar onde. Este alias fica para não quebrar
+     arquivo que ainda o referencie, e aponta para a mesma pilha. */
+  --serif: var(--serif-titulo);
+
+  /* ---- A escala tipográfica ----------------------------------------
+     Medido em 25/08/2026, antes: 12 tamanhos de título (10, 26, 31, 32,
+     35, 42, 50, 58, 59, 64, 68 e 80px) e 8 de corpo. Havia pares quase
+     iguais competindo, como 31 contra 32 e 58 contra 59, que o olho lê
+     como erro e não como hierarquia.
+
+     Quatro degraus de título e três de corpo. Tamanho novo aqui só entra
+     com motivo escrito. */
+  --t-hero:  clamp(3.8rem, 6.25vw, 7.2rem);  /* só o h1 da home */
+  --t-secao: clamp(3.2rem, 5vw, 5.7rem);     /* o h2 que abre uma seção */
+  --t-bloco: clamp(1.9rem, 3.2vw, 2.8rem);   /* h3 de cartão e de bloco */
+  --t-item:  clamp(1.25rem, 2vw, 1.6rem);    /* h3 miúdo, pergunta, item */
+
+  --c-lead:  1.125rem;  /* 18px, a linha de apoio de uma seção */
+  --c-base:  1rem;      /* 16px, o corpo de texto */
+  --c-apoio: .875rem;   /* 14px, legenda, nota e rótulo */
+
+  --lh-base:  1.7;
+  --lh-lead:  1.6;
+  --lh-apoio: 1.6;
   /* Playfair Display, so nos titulos de secao. Auto-hospedada por npm, nao
      por CDN (regra 9.1). O contraste alto entre traco grosso e fino aparece
      bem nos corpos grandes dos titulos e seria ruido em texto de leitura,
@@ -212,7 +237,7 @@ img {
 
 .eyebrow {
   color: var(--terracotta-dark);
-  font-family: var(--serif);
+  font-family: var(--serif-titulo);
   font-size: clamp(1.15rem, 2vw, 1.5rem);
   font-style: italic;
   margin: 0 0 1.25rem;

@@ -23,7 +23,7 @@
 }
 .consent a { color: var(--green); text-decoration: underline; }
 .contact-form .button { width: 100%; }
-.form-hint { margin: 1.15rem 0 0; color: var(--ink-muted); font-size: .65rem; line-height: 1.5; text-align: center; }
+.form-hint { margin: 1.15rem 0 0; color: var(--ink-muted); font-size: var(--c-apoio); line-height: var(--lh-apoio); text-align: center; }
 .form-success { padding: .8rem; background: rgba(33,77,59,.1); color: var(--green-dark); font-size: .75rem; text-align: center; }
 
 .footer {
@@ -40,7 +40,7 @@
 }
 
 .brand--footer { justify-self: start; }
-.footer-top > p { margin: 0; color: var(--green); font-family: var(--serif); font-size: 1.2rem; font-style: italic; text-align: center; }
+.footer-top > p { margin: 0; color: var(--green); font-family: var(--serif-titulo); font-size: var(--c-lead); font-style: italic; text-align: center; }
 /* `padding-block` para o alvo chegar aos 24px mínimos: o link media
    18px de altura. */
 .back-top { justify-self: end; padding-block: 5px; color: var(--green); font-size: .75rem; font-weight: 700; }
@@ -80,14 +80,14 @@
 .legal-page h1 {
   margin: 0;
   color: var(--green-dark);
-  font-family: var(--serif);
-  font-size: clamp(3.2rem, 7vw, 6.5rem);
+  font-family: var(--serif-titulo);
+  font-size: var(--t-hero);
   font-weight: 400;
   letter-spacing: -.055em;
 }
 
 .legal-updated { margin: 1rem 0 3rem; color: #756e66; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; }
-.legal-page h2 { margin: 2.4rem 0 .7rem; color: var(--green); font-family: var(--serif); font-size: 1.65rem; font-weight: 500; }
-.legal-page article p:not(.kicker) { color: var(--ink-soft); line-height: 1.8; }
+.legal-page h2 { margin: 2.4rem 0 .7rem; color: var(--green); font-family: var(--serif-titulo); font-size: var(--t-item); font-weight: 500; }
+.legal-page article p:not(.kicker) { color: var(--ink-soft); line-height: var(--lh-base); }
 .legal-page article a { color: var(--terracotta-dark); text-decoration: underline; }
 .legal-back { margin: 0 auto; display: flex; width: max-content; }

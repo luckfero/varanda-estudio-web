@@ -24,7 +24,7 @@
   margin: 0;
   color: var(--green-dark);
   font-family: var(--serif-titulo);
-  font-size: clamp(3rem, 5.3vw, 6.1rem);
+  font-size: var(--t-secao);
   font-weight: 400;
   letter-spacing: -0.05em;
   line-height: 1;
@@ -38,7 +38,7 @@
   max-width: 760px;
   color: var(--ink-soft);
   font-size: 1rem;
-  line-height: 1.75;
+  line-height: var(--lh-base);
 }
 
 .intro-columns p { margin: 0; }
@@ -64,7 +64,7 @@
 .contact-copy h2 {
   margin: 1.4rem 0 0;
   font-family: var(--serif-titulo);
-  font-size: clamp(3.2rem, 5vw, 5.7rem);
+  font-size: var(--t-secao);
   font-weight: 400;
   letter-spacing: -0.05em;
   line-height: .95;
@@ -94,7 +94,8 @@
 .service-card:last-child { border-right: 0; }
 
 .service-card > span {
-  color: #b9b0a2;
+  /* Era #b9b0a2, que dava 4,47:1 sobre o verde: reprovava por 0,03. */
+  color: #c2b9ab;
   font-size: .68rem;
   font-weight: 750;
   letter-spacing: .12em;
@@ -122,22 +123,22 @@
 
 .service-card h3 {
   margin: 0;
-  font-family: var(--serif);
-  font-size: clamp(1.7rem, 2.4vw, 2.5rem);
+  font-family: var(--serif-titulo);
+  font-size: var(--t-bloco);
   font-weight: 400;
 }
 
 .service-card p {
   margin: 1.2rem 0 0;
   color: #c9c2b7;
-  font-size: .93rem;
-  line-height: 1.7;
+  font-size: var(--c-base);
+  line-height: var(--lh-base);
 }
 
 .service-note {
   margin: 2rem 0 0;
   color: #bdb5a8;
-  font-size: .77rem;
+  font-size: var(--c-apoio);
   text-align: center;
 }
 
@@ -202,7 +203,7 @@
   max-width: 17ch;
   color: var(--cream);
   font-family: var(--serif-titulo);
-  font-size: clamp(38px, 5.6vw, 68px);
+  font-size: var(--t-secao);
   font-weight: 400;
   line-height: 1.06;
   letter-spacing: -0.01em;
@@ -231,7 +232,10 @@
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
-  margin-top: clamp(56px, 8vw, 104px);
+  /* Era clamp(56px, 8vw, 104px), e abria um buraco entre o título da seção e
+     o primeiro grupo. O trilho é o rótulo do que vem logo abaixo, então ele
+     precisa estar perto do grupo, não equidistante entre os dois. */
+  margin-top: clamp(30px, 4vw, 52px);
   padding-bottom: 14px;
   border-bottom: 1px solid var(--fio);
 }
@@ -341,7 +345,7 @@
   margin: 14px 0 0;
   color: var(--cream);
   font-family: var(--serif-titulo);
-  font-size: clamp(30px, 5.4vw, 50px);
+  font-size: var(--t-bloco);
   font-weight: 400;
   line-height: 1.06;
   letter-spacing: -0.01em;
@@ -352,7 +356,7 @@
   max-width: 46ch;
   color: var(--luz);
   font-size: 1rem;
-  line-height: 1.62;
+  line-height: var(--lh-base);
 }
 
 .portfolio-entregas {
@@ -453,7 +457,7 @@
   margin: 16px 0 0;
   color: var(--cream);
   font-family: var(--serif-titulo);
-  font-size: clamp(21px, 2.6vw, 26px);
+  font-size: var(--t-item);
   font-weight: 400;
   line-height: 1.12;
 }

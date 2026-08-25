@@ -43,7 +43,7 @@
    nao esta mais aqui. */
 .brand strong {
   color: var(--green);
-  font-family: var(--serif);
+  font-family: var(--serif-titulo);
   font-size: 1.45rem;
   font-weight: 500;
   letter-spacing: -0.03em;

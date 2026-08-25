@@ -51,7 +51,7 @@
   position: relative;
   z-index: 2;
   color: var(--cream);
-  font-family: var(--serif);
+  font-family: var(--serif-titulo);
   font-size: clamp(9rem, 19vw, 18rem);
   font-style: italic;
   line-height: 1;
@@ -91,7 +91,7 @@
   margin: 0;
   color: var(--green-dark);
   font-family: var(--serif-titulo);
-  font-size: clamp(3rem, 5vw, 5.7rem);
+  font-size: var(--t-secao);
   font-weight: 400;
   letter-spacing: -.055em;
   line-height: .96;
@@ -102,11 +102,18 @@
 .about-copy > p:not(.eyebrow) {
   max-width: 680px;
   color: var(--ink-soft);
-  line-height: 1.8;
+  line-height: var(--lh-base);
 }
 
 .about-copy h2 + p {
   margin-top: 2.35rem;
+}
+
+/* Dois parágrafos seguidos nasciam com margem zero entre si e liam como um
+   bloco só. O primeiro tem a margem que o separa do título; do segundo em
+   diante, a margem é o que os separa entre si. */
+.about-copy > p:not(.eyebrow) + p {
+  margin-top: 1.15rem;
 }
 
 .signature {
@@ -114,7 +121,7 @@
   padding-top: 1.4rem;
   border-top: 1px solid var(--line);
   color: var(--green);
-  font-family: var(--serif);
+  font-family: var(--serif-titulo);
   font-size: 1.55rem;
   font-style: italic;
 }
@@ -152,7 +159,7 @@
   margin: 1.4rem 0 0;
   color: var(--green-dark);
   font-family: var(--serif-titulo);
-  font-size: clamp(3rem, 4.5vw, 5rem);
+  font-size: var(--t-secao);
   font-weight: 400;
   letter-spacing: -.05em;
 }
@@ -184,7 +191,7 @@
 .extras-list div:nth-child(odd) { padding-right: 2rem; }
 .extras-list div:nth-child(even) { padding-left: 2rem; border-left: 1px solid rgba(40,35,31,.28); }
 .extras-list strong { color: var(--green); font-weight: 750; text-align: right; }
-.extras-note { margin: 2.1rem 0 0; color: var(--ink-muted); font-size: .7rem; line-height: 1.6; }
+.extras-note { margin: 2.1rem 0 0; color: var(--ink-muted); font-size: var(--c-apoio); line-height: var(--lh-apoio); }
 
 .faq {
   display: grid;
@@ -215,8 +222,8 @@
   align-items: center;
   gap: 1.3rem;
   color: var(--green-dark);
-  font-family: var(--serif);
-  font-size: clamp(1.2rem, 2vw, 1.65rem);
+  font-family: var(--serif-titulo);
+  font-size: var(--t-item);
   cursor: pointer;
   list-style: none;
 }
@@ -243,7 +250,7 @@
   margin: -.4rem 3.5rem 1.8rem 2.7rem;
   color: var(--ink-soft);
   font-size: .9rem;
-  line-height: 1.75;
+  line-height: var(--lh-base);
 }
 
 .contact {
@@ -259,7 +266,7 @@
 }
 
 .contact-copy h2 em { color: var(--ochre); font-weight: 400; }
-.contact-copy > p { max-width: 520px; margin-top: 2.35rem; color: #c9c1b5; line-height: 1.75; }
+.contact-copy > p { max-width: 520px; margin-top: 2.35rem; color: #c9c1b5; line-height: var(--lh-base); }
 
 .contact-direct {
   margin-top: 3rem;
