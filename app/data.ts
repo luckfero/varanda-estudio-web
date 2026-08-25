@@ -43,6 +43,31 @@ export const whatsappUrl = "https://wa.me/5511942263007";
  * A Brasa fecha por ser o exemplo do Essencial — e não perde nada, porque
  * para prospect de gastronomia o link vai direto para o subdomínio dela.
  */
+/**
+ * Os trabalhos publicados, na mesma ordem de `portfolio.destaques` de cada
+ * dicionário. São sites de negócios que existem, com endereço no ar.
+ *
+ * **A separação entre esta lista e `projectAssets` é o ponto.** Até 25/08/2026
+ * o portfólio era inteiro conceitual e dizia isso por escrito. Misturar
+ * trabalho publicado com demonstração num carrossel só obrigaria o visitante a
+ * ler o rótulo de cada cartão para saber o que é real, e rótulo em cartão se
+ * passa batido. Duas seções resolvem por estrutura o que o aviso resolvia por
+ * texto.
+ *
+ * A ordem aqui é cronológica de publicação, e não comercial como a de baixo:
+ * são dois, e com dois não há hierarquia a construir.
+ */
+export const featuredAssets = [
+  {
+    image: "casa-conexao-hero",
+    url: "https://casaconexao.varandaestudioweb.com/",
+  },
+  {
+    image: "milenio-hero",
+    url: "https://milenio.varandaestudioweb.com/",
+  },
+];
+
 export const projectAssets = [
   {
     image: "nivora-casa-patio-alto",

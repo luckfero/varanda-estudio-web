@@ -3,6 +3,8 @@
 /** Larguras que existem de fato para cada imagem em public/images/r/. */
 export const imageWidths: Record<string, number[]> = {
   "brasa-do-vale-hero": [480, 800, 1200, 1584],
+  "casa-conexao-hero": [480, 800, 1200, 1440],
+  "milenio-hero": [480, 800, 1200, 1366],
   "nascente-hero-central": [480, 800, 1200, 1600, 2000, 2250, 3344],
   "nivora-casa-patio-alto": [480, 800, 1200, 1600, 1823],
 };
@@ -12,6 +14,8 @@ export const imageWidths: Record<string, number[]> = {
  *  a largura de origem necessária é `altura da caixa × proporção`. */
 export const imageAspect: Record<string, number> = {
   "brasa-do-vale-hero": 1.6,
+  "casa-conexao-hero": 1.7778,
+  "milenio-hero": 1.7786,
   "nascente-hero-central": 1.7768,
   "nivora-casa-patio-alto": 2.1124,
 };

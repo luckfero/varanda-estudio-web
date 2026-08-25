@@ -538,3 +538,242 @@
 }
 
 .carousel-buttons svg.is-previous { transform: scaleX(-1); }
+
+/* ------------------------------------------------------------------
+   No ar · os trabalhos publicados
+
+   Vivem sobre o ocre da seção, então quem decide a cor de tudo aqui é a
+   superfície e não o componente (regra 9.8): o cartão é claro para se
+   levantar do fundo, e por isso o texto dentro dele volta a ser escuro.
+
+   Não é carrossel de propósito. São dois, cabem lado a lado, e esconder
+   metade do que existe de mais forte atrás de uma seta seria trabalhar
+   contra o motivo de a seção existir.
+   ------------------------------------------------------------------ */
+
+.destaques {
+  margin-top: clamp(2.5rem, 5vw, 4.5rem);
+}
+
+.destaques-cabecalho {
+  max-width: 720px;
+  margin-bottom: clamp(1.6rem, 3vw, 2.6rem);
+}
+
+.destaques-cabecalho .section-index {
+  /* Mesmo motivo do `.portfolio-intro .section-index`: o --green sobre o
+     ocre dá 3,57:1, abaixo do mínimo. O --green-dark dá 4,96:1 e a olho
+     nu é o mesmo verde. */
+  color: var(--green-dark);
+}
+
+.destaques-cabecalho h3 {
+  margin: .9rem 0 0;
+  color: var(--green-dark);
+  font-family: var(--serif-titulo);
+  font-size: clamp(1.9rem, 3.1vw, 2.9rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.destaques-cabecalho p {
+  margin: .7rem 0 0;
+  color: var(--charcoal);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.destaques-lista {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.2rem, 2.4vw, 2rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.destaque-link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--paper);
+  color: var(--charcoal);
+  text-decoration: none;
+  overflow: hidden;
+  border: 1px solid rgba(40, 35, 31, .10);
+  transition: transform .4s var(--curva-saida, cubic-bezier(0.23, 1, 0.32, 1)),
+              box-shadow .4s var(--curva-saida, cubic-bezier(0.23, 1, 0.32, 1));
+}
+
+.destaque-visual {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--cream);
+}
+
+.destaque-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform .7s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* O selo diz o que a seção já diz, e é isso mesmo: o cartão viaja sozinho
+   na memória de quem rolou rápido. Verde sobre creme, 8,3:1. */
+.destaque-selo {
+  position: absolute;
+  z-index: 3;
+  right: .85rem;
+  bottom: .85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .34rem .7rem;
+  background: var(--green-dark);
+  color: var(--cream);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.destaque-selo::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ochre-light);
+}
+
+.destaque-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: .6rem;
+  padding: clamp(1.3rem, 2.2vw, 1.9rem);
+}
+
+.destaque-info .project-label {
+  margin: 0;
+  color: var(--terracotta-dark);
+  font-size: .74rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.destaque-info strong {
+  font-family: var(--serif-titulo);
+  font-size: clamp(1.55rem, 2.4vw, 2.1rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--green-dark);
+}
+
+.destaque-descricao {
+  color: var(--ink-soft);
+  font-size: .96rem;
+  line-height: 1.62;
+}
+
+.destaque-entregas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-top: .2rem;
+}
+
+.destaque-entregas span {
+  padding: .3rem .6rem;
+  background: var(--cream);
+  border: 1px solid rgba(40, 35, 31, .12);
+  color: var(--charcoal);
+  font-size: .76rem;
+  line-height: 1.3;
+}
+
+/* Empurrado para o rodapé do cartão para que os dois terminem na mesma
+   linha mesmo com descrições de tamanhos diferentes. */
+.destaque-acao {
+  margin-top: auto;
+  padding-top: .8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  color: var(--terracotta-dark);
+  font-size: .9rem;
+  font-weight: 600;
+}
+
+.destaque-acao::after {
+  content: "";
+  width: 1.4rem;
+  height: 1px;
+  background: currentColor;
+  transition: width .3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .destaque-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 34px rgba(23, 56, 44, .16);
+  }
+  .destaque-link:hover .destaque-visual img { transform: scale(1.03); }
+  .destaque-link:hover .destaque-acao::after { width: 2.4rem; }
+}
+
+.destaque-link:focus-visible {
+  outline: 3px solid var(--green-dark);
+  outline-offset: 3px;
+}
+
+/* Reduzir, não zerar: some o deslocamento, fica a mudança de sombra, que é
+   o que informa que o cartão é clicável. */
+@media (prefers-reduced-motion: reduce) {
+  .destaque-link,
+  .destaque-visual img,
+  .destaque-acao::after {
+    transition-duration: .01ms;
+  }
+  .destaque-link:hover { transform: none; }
+  .destaque-link:hover .destaque-visual img { transform: none; }
+}
+
+/* ------------------------------------------------------------------
+   Cabeçalho dos projetos conceituais
+   ------------------------------------------------------------------ */
+
+.conceituais-cabecalho {
+  margin-top: clamp(3rem, 6vw, 5.5rem);
+  max-width: 760px;
+}
+
+.conceituais-cabecalho .section-index {
+  color: var(--green-dark);
+}
+
+.conceituais-cabecalho h3 {
+  /* Mesma escala do `h3` do bloco "No ar": os dois são irmãos e precisam ler
+     como irmãos. Sem ele, os conceituais nasciam como rodapé do bloco de
+     cima em vez de seção própria. */
+  margin: .9rem 0 0;
+  color: var(--green-dark);
+  font-family: var(--serif-titulo);
+  font-size: clamp(1.9rem, 3.1vw, 2.9rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.conceituais-cabecalho .portfolio-aviso {
+  margin-top: .85rem;
+}
+
+@media (max-width: 900px) {
+  .destaques-lista { grid-template-columns: minmax(0, 1fr); }
+}

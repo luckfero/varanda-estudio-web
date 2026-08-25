@@ -1,7 +1,7 @@
 "use client";
 
 import { TouchEvent, useRef, useState } from "react";
-import { projectAssets } from "./data";
+import { featuredAssets, projectAssets } from "./data";
 import { CarouselArrow } from "./icons";
 import type { Dicionario } from "./i18n";
 import Picture, { sizesPelaAltura } from "./picture";
@@ -70,6 +70,78 @@ export default function SectionPortfolio({ portfolio }: { portfolio: Dicionario[
         <div className="portfolio-intro" data-reveal>
           <div className="section-index">{t.portfolio.indice}</div>
           <h2 id="portfolio-title">{t.portfolio.tituloAntes}<br /><em>{t.portfolio.tituloDestaque}</em></h2>
+        </div>
+
+        {/* No ar.
+
+            Vem antes do carrossel porque é a resposta à única pergunta que
+            todo prospect faz em silêncio: isto já existe em algum lugar? Até
+            25/08/2026 a resposta do portfólio era "não", e ela estava escrita
+            no aviso logo abaixo do título.
+
+            Não é carrossel: são dois, cabem lado a lado, e um carrossel de
+            dois esconde metade do que há de mais forte para mostrar. */}
+        <div className="destaques" data-reveal>
+          <div className="destaques-cabecalho">
+            <div className="section-index">{t.portfolio.noArIndice}</div>
+            <h3>{t.portfolio.noArTitulo}</h3>
+            <p>{t.portfolio.noArLinha}</p>
+          </div>
+
+          <ul className="destaques-lista">
+            {t.portfolio.destaques.map((projeto, index) => {
+              const asset = featuredAssets[index];
+              if (!asset) return null;
+              return (
+                <li className="destaque" key={projeto.name}>
+                  <a
+                    className="destaque-link"
+                    href={asset.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`${t.portfolio.visitar}${projeto.name}${t.portfolio.visitarDepois}`}
+                  >
+                    <span className="destaque-visual">
+                      {/* Duas colunas acima de 900px, uma abaixo. O `sizes`
+                          sai daí, e não da altura como no carrossel: aqui a
+                          caixa tem proporção fixa, então quem manda é a
+                          largura. */}
+                      <Picture
+                        name={asset.image}
+                        alt={projeto.imageAlt}
+                        sizes="(max-width: 900px) 92vw, (max-width: 1400px) 46vw, 660px"
+                      />
+                      <span className="project-browser" aria-hidden="true">
+                        <span /><span /><span />
+                      </span>
+                      <span className="destaque-selo" aria-hidden="true">{t.portfolio.noArIndice}</span>
+                    </span>
+
+                    <span className="destaque-info">
+                      <span className="project-label">{projeto.label}</span>
+                      <strong>{projeto.name}</strong>
+                      <span className="destaque-descricao">{projeto.description}</span>
+                      <span className="destaque-entregas">
+                        {projeto.features.map((feature) => (
+                          <span key={feature}>{feature}</span>
+                        ))}
+                      </span>
+                      <span className="destaque-acao" aria-hidden="true">{t.portfolio.verSite}</span>
+                    </span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
+        {/* Projetos do estúdio, que são conceituais. O aviso desceu do topo da
+            seção para cá, junto com eles: no topo ele descrevia o portfólio
+            inteiro, e desde que existe trabalho publicado isso deixou de ser
+            verdade. */}
+        <div className="conceituais-cabecalho" data-reveal>
+          <div className="section-index">{t.portfolio.conceituaisIndice}</div>
+          <h3>{t.portfolio.conceituaisTitulo}</h3>
           <p className="portfolio-aviso">{t.portfolio.aviso}</p>
         </div>
 

@@ -103,7 +103,40 @@ const en: Dicionario = {
     indice: "Work we've built",
     tituloAntes: "Ideas taking on",
     tituloDestaque: "shape and presence.",
+
+    /* Called "Live" and not "Clients" on purpose: one of the two is the
+       studio's own property, and calling it a client would imply a
+       relationship that does not exist. */
+    noArIndice: "Live",
+    noArTitulo: "Real businesses, at their own address.",
+    noArLinha: "Sites published and running right now. Click to open them.",
+    visitar: "Visit the ",
+    visitarDepois: " website in a new tab",
+    verSite: "Open the site",
+
+    conceituaisIndice: "Studio projects",
+    conceituaisTitulo: "Three sectors, three different problems.",
     aviso: "Concept projects, built by the studio to demonstrate visual direction and development. The companies, copy and data are fictional.",
+
+    /* Paired by index with `featuredAssets` in `app/data.ts`. */
+    destaques: [
+      {
+        name: "Casa Conexão",
+        label: "Consulting rooms · São Bernardo do Campo, Brazil",
+        description:
+          "A house that rents rooms to independent professionals: psychologists, lawyers, doulas, accountants. The site introduces the space, shows who already works there and moves the conversation straight to WhatsApp.",
+        features: ["Visual direction", "Original illustration", "Interactive gallery", "A page per professional"],
+        imageAlt: "Casa Conexão home page, with two armchairs facing an arched window",
+      },
+      {
+        name: "Milênio",
+        label: "Rap group · YinYang album",
+        description:
+          "Three voices, nearly ten years on the road and a first album on the way. The site introduces the group, the record and the short film, with the alternation between black and white as the backbone of the story.",
+        features: ["Visual direction", "Image treatment", "Typography", "Dependency-free development"],
+        imageAlt: "Milênio home page, with the title O rap de outro milênio on a black background",
+      },
+    ],
     carrossel: "carousel",
     carrosselLabel: "Work built by Varanda",
     abrirAntes: "Open the ",

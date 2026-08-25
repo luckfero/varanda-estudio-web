@@ -106,11 +106,51 @@ const pt = {
     indice: "Trabalhos desenvolvidos",
     tituloAntes: "Ideias ganhando",
     tituloDestaque: "forma e presença.",
-    /* Único acréscimo: o rótulo de cada cartão já diz "Projeto conceitual",
-       mas é fácil de passar batido, e visitante estrangeiro não tem como
-       saber que a empresa não existe. O protocolo é taxativo sobre trabalho
-       conceitual nunca parecer trabalho de cliente. */
+
+    /* --- No ar -------------------------------------------------------
+       A seção se chama "No ar", e não "Clientes", de propósito. Uma das
+       duas é a Casa Conexão, imóvel do próprio Lucca: chamar de cliente
+       insinuaria uma relação que não existe. "No ar" é verdade sobre as
+       duas, e é a informação que o visitante procura. */
+    noArIndice: "No ar",
+    noArTitulo: "Negócios de pé, com endereço próprio.",
+    noArLinha: "Sites publicados e funcionando agora. Clique para abrir.",
+    visitar: "Visitar o site de ",
+    visitarDepois: " em uma nova aba",
+    verSite: "Ver o site",
+
+    /* --- Projetos do estúdio ------------------------------------------ */
+    conceituaisIndice: "Projetos do estúdio",
+    /* O título diz por que estes três existem, que é a pergunta que o
+       visitante faz depois de ver que dois já estão no ar. */
+    conceituaisTitulo: "Três setores, três problemas diferentes.",
+    /* O rótulo de cada cartão já diz "Projeto conceitual", mas é fácil de
+       passar batido, e visitante estrangeiro não tem como saber que a
+       empresa não existe. O protocolo é taxativo sobre trabalho conceitual
+       nunca parecer trabalho de cliente. */
     aviso: "Projetos conceituais, criados pelo estúdio para demonstrar direção visual e desenvolvimento. Empresas, textos e dados são fictícios.",
+
+    /* A ordem é pareada por índice com `featuredAssets` em `app/data.ts`.
+       Nada aqui pode ser escrito sem estar no site do próprio projeto: são
+       negócios que existem, e quem lê pode conferir em um clique. */
+    destaques: [
+      {
+        name: "Casa Conexão",
+        label: "Salas de atendimento · São Bernardo do Campo",
+        description:
+          "Uma casa que aluga salas para profissionais autônomos atenderem: psicólogos, advogados, doulas, contadores. O site apresenta o espaço, mostra quem já atende ali e leva a conversa direto para o WhatsApp.",
+        features: ["Direção visual", "Ilustração autoral", "Galeria interativa", "Página por profissional"],
+        imageAlt: "Página inicial da Casa Conexão, com duas poltronas diante de uma janela em arco",
+      },
+      {
+        name: "Milênio",
+        label: "Grupo de rap · Álbum YinYang",
+        description:
+          "Três vozes, quase dez anos de estrada e o primeiro álbum a caminho. O site apresenta o grupo, o disco e o curta, com a alternância entre preto e branco como espinha da narrativa.",
+        features: ["Direção visual", "Tratamento de imagem", "Tipografia", "Desenvolvimento sem dependência"],
+        imageAlt: "Página inicial da Milênio, com o título O rap de outro milênio sobre fundo preto",
+      },
+    ],
     carrossel: "carrossel",
     carrosselLabel: "Trabalhos desenvolvidos pela Varanda",
     abrirAntes: "Abrir demonstração do projeto ",

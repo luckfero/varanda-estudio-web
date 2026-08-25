@@ -114,7 +114,40 @@ const es: Dicionario = {
     indice: "Trabajos realizados",
     tituloAntes: "Ideas tomando",
     tituloDestaque: "forma y presencia.",
+
+    /* Se llama "En línea" y no "Clientes" a propósito: uno de los dos es un
+       inmueble del propio estudio, y llamarlo cliente insinuaría una relación
+       que no existe. */
+    noArIndice: "En línea",
+    noArTitulo: "Negocios en pie, con dirección propia.",
+    noArLinha: "Webs publicadas y funcionando ahora. Haz clic para abrirlas.",
+    visitar: "Visitar la web de ",
+    visitarDepois: " en una pestaña nueva",
+    verSite: "Ver la web",
+
+    conceituaisIndice: "Proyectos del estudio",
+    conceituaisTitulo: "Tres sectores, tres problemas distintos.",
     aviso: "Proyectos conceptuales, creados por el estudio para mostrar dirección visual y desarrollo. Las empresas, los textos y los datos son ficticios.",
+
+    /* Emparejado por índice con `featuredAssets` en `app/data.ts`. */
+    destaques: [
+      {
+        name: "Casa Conexão",
+        label: "Salas de consulta · São Bernardo do Campo",
+        description:
+          "Una casa que alquila salas para profesionales autónomos: psicólogos, abogados, doulas, contables. La web presenta el espacio, muestra quién trabaja allí y lleva la conversación directa a WhatsApp.",
+        features: ["Dirección visual", "Ilustración propia", "Galería interactiva", "Página por profesional"],
+        imageAlt: "Página de inicio de Casa Conexão, con dos butacas frente a una ventana de arco",
+      },
+      {
+        name: "Milênio",
+        label: "Grupo de rap · Álbum YinYang",
+        description:
+          "Tres voces, casi diez años de camino y el primer álbum en marcha. La web presenta al grupo, el disco y el cortometraje, con la alternancia entre negro y blanco como columna de la narración.",
+        features: ["Dirección visual", "Tratamiento de imagen", "Tipografía", "Desarrollo sin dependencias"],
+        imageAlt: "Página de inicio de Milênio, con el título O rap de outro milênio sobre fondo negro",
+      },
+    ],
     carrossel: "carrusel",
     carrosselLabel: "Trabajos realizados por Varanda",
     abrirAntes: "Abrir la demo del proyecto ",
