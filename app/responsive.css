@@ -188,7 +188,17 @@
      graus empurra para baixo. Com raio de abobada de 150px nesta largura, em
      `left: 7%` e `top: 88px` essa quina caia 2px fora do verde. */
   .art-janela { left: 8%; top: 96px; width: 82%; min-width: 0; }
-  .art-janela-topo { height: 26px; padding: 0 .5rem; }
+  .art-janela-conteudo { padding: 1.5rem; }
+  .art-janela-titulo { margin-top: 1.8rem; font-size: 1.7rem; }
+  .art-recado--topo { right: -6px; top: 60px; padding: .7rem .85rem; font-size: .85rem; }
+  .art-recado--base {
+    left: -4px;
+    bottom: 18px;
+    min-width: 120px;
+    min-height: 78px;
+    padding: .7rem .9rem;
+  }
+  .art-recado--base strong { font-size: 1.25rem; }
 
   .intro { min-height: 0; grid-template-columns: 1fr; gap: 2rem; }
   .intro h2 { font-size: clamp(2.85rem, 13vw, 4.5rem); }

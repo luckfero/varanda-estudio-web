@@ -57,7 +57,15 @@ const pt = {
     ctaSecundario: "Ver projeto",
     local: "São Paulo, Brasil",
     atendimento: "Atendimento remoto",
-    arteAlt: "Captura do site da Casa Conexão, publicado pelo estúdio, dentro de uma composição de arco com o sol nascendo atrás",
+    arteAlt: "Composição visual de um site sendo desenvolvido",
+    navegadorEndereco: "seunegocio.com.br",
+    navegadorMarca: "seu negócio",
+    navegadorTitulo: "Presença para ser<br />lembrado.",
+    navegadorBotao: "conheça mais",
+    notaTopo: "clareza",
+    notaTopoForte: "antes de tudo",
+    notaBaixo: "feito com",
+    notaBaixoForte: "intenção.",
   },
 
   intro: {
