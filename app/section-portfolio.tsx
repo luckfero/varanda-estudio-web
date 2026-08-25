@@ -1,260 +1,147 @@
-"use client";
-
-import { TouchEvent, useRef, useState } from "react";
 import { featuredAssets, projectAssets } from "./data";
-import { CarouselArrow } from "./icons";
 import type { Dicionario } from "./i18n";
-import Picture, { sizesPelaAltura } from "./picture";
+import Picture from "./picture";
 
 /**
- * Altura da caixa do carrossel por faixa de tela, em px CSS.
+ * Portfólio.
  *
- * Medida no site publicado, não deduzida do CSS: a altura sai de um
- * `min-height` (360px abaixo de 600, 480px acima) somado ao que o conteúdo
- * empurra, então o valor real não está escrito em lugar nenhum. Cada entrada
- * é o **maior** valor observado dentro da sua faixa.
+ * **Redesenhado em 25/08/2026, e a versão anterior foi rejeitada inteira.**
+ * O que saiu: fundo ocre, cartões claros com barra de navegador falsa em cima
+ * da imagem, e o carrossel com setas. O que entrou é uma faixa escura em que
+ * as telas dos próprios sites são a única fonte de luz.
  *
- * Se o layout do carrossel mudar, estes números precisam ser medidos de
- * novo — é o que garante que nenhuma tela receba foto abaixo do necessário.
- */
-const ALTURAS_DA_CAIXA: Array<[string | null, number]> = [
-  ["(max-width: 374px)", 415],
-  ["(max-width: 599px)", 388],
-  ["(max-width: 860px)", 494],
-  ["(max-width: 1100px)", 580],
-  ["(max-width: 1350px)", 629],
-  ["(max-width: 1600px)", 614],
-  [null, 736],
-];
-
-/**
- * Carrossel de trabalhos.
+ * Três decisões que sustentam o desenho e que se quebram sem querer:
  *
- * O índice atual e o gesto de arrasto são assunto exclusivo desta seção —
- * nenhuma outra parte da página lê ou muda esses valores, então eles moram
- * aqui em vez de subirem para a página.
- *
- * O texto de cada projeto vem do dicionário e a imagem e o endereço vêm de
- * `projectAssets`, casados pela posição. Projeto descrito no dicionário sem
- * arquivo correspondente cai no cartão de "em breve" em vez de quebrar.
+ * 1. **A rampa não é enfeite.** A seção de cima é verde escuro, e um preto
+ *    quente encostado num escuro colorido lê como acidente. A rampa esfria o
+ *    verde até o preto ao longo de 168px, e o fio de ocre marca a costura.
+ *    Tirar a rampa devolve a colisão.
+ * 2. **Não há mais carrossel.** Os cinco projetos existem ao mesmo tempo no
+ *    documento, o que também tira do caminho o gesto de arrasto, os pontos e
+ *    as setas. Nada aqui depende de estado, então o componente não precisa
+ *    mais de `useState`.
+ * 3. **A hierarquia é de tamanho, não de rótulo.** Publicado ocupa uma placa
+ *    de largura quase inteira; conceitual ocupa um terço de uma grade recuada.
+ *    O rótulo confirma o que o tamanho já disse, e é isso que impede trabalho
+ *    fictício de parecer trabalho de cliente mesmo para quem não lê o aviso.
  */
 export default function SectionPortfolio({ portfolio }: { portfolio: Dicionario["portfolio"] }) {
-  const [currentProject, setCurrentProject] = useState(0);
-  const touchStartX = useRef<number | null>(null);
-  /* Só a fatia do portfólio: propriedade de componente cliente viaja
-     serializada até o navegador, e o dicionário inteiro levaria junto o
-     texto da política — o único lugar com o nome da pessoa. */
   const t = { portfolio };
-  const projects = portfolio.projetos;
-
-  function showProject(index: number) {
-    setCurrentProject((index + projects.length) % projects.length);
-  }
-
-  function handleProjectTouchStart(event: TouchEvent<HTMLDivElement>) {
-    touchStartX.current = event.changedTouches[0]?.clientX ?? null;
-  }
-
-  function handleProjectTouchEnd(event: TouchEvent<HTMLDivElement>) {
-    if (touchStartX.current === null) return;
-    const endX = event.changedTouches[0]?.clientX ?? touchStartX.current;
-    const distance = endX - touchStartX.current;
-    touchStartX.current = null;
-
-    if (Math.abs(distance) < 45) return;
-    showProject(currentProject + (distance < 0 ? 1 : -1));
-  }
 
   return (
-      <section className="portfolio section" id="portfolio" aria-labelledby="portfolio-title">
-        <div className="portfolio-intro" data-reveal>
-          <div className="section-index">{t.portfolio.indice}</div>
-          <h2 id="portfolio-title">{t.portfolio.tituloAntes}<br /><em>{t.portfolio.tituloDestaque}</em></h2>
+    <section className="portfolio section" id="portfolio" aria-labelledby="portfolio-title">
+      {/* A transição de temperatura entre o verde de cima e o preto daqui.
+          Decorativa por definição, então fica fora da árvore de acessibilidade. */}
+      <div className="portfolio-rampa" aria-hidden="true" />
+
+      <div className="portfolio-wrap">
+        <header className="portfolio-cabeca" data-reveal>
+          <div>
+            <p className="section-index">{t.portfolio.indice}</p>
+            <h2 id="portfolio-title">
+              {t.portfolio.tituloAntes} <em>{t.portfolio.tituloDestaque}</em>
+            </h2>
+          </div>
+          <p className="portfolio-resumo">{t.portfolio.resumo}</p>
+        </header>
+
+        {/* --- No ar ---------------------------------------------------- */}
+        <div className="portfolio-trilho" data-reveal>
+          <span className="portfolio-marca portfolio-marca--no-ar">{t.portfolio.noArIndice}</span>
+          <span className="portfolio-trilho-nota">{t.portfolio.noArNota}</span>
         </div>
 
-        {/* No ar.
+        <ol className="portfolio-placas">
+          {t.portfolio.destaques.map((projeto, index) => {
+            const asset = featuredAssets[index];
+            if (!asset) return null;
+            /* A segunda placa inverte os lados. É o que dá ritmo a uma lista
+               de dois; com as duas iguais, a segunda lê como repetição. */
+            const invertida = index % 2 === 1;
+            return (
+              <li key={projeto.name} data-reveal>
+                <a
+                  className={`portfolio-placa${invertida ? " portfolio-placa--invertida" : ""}`}
+                  href={asset.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`${t.portfolio.visitar}${projeto.name}${t.portfolio.visitarDepois}`}
+                >
+                  <figure className="portfolio-figura">
+                    {/* Duas colunas acima de 880px, uma abaixo. A caixa tem
+                        proporção livre aqui: a imagem entra inteira, sem
+                        `cover`, então quem manda no `sizes` é a largura. */}
+                    <Picture
+                      name={asset.image}
+                      alt={projeto.imageAlt}
+                      sizes="(max-width: 880px) 92vw, (max-width: 1280px) 56vw, 660px"
+                    />
+                  </figure>
 
-            Vem antes do carrossel porque é a resposta à única pergunta que
-            todo prospect faz em silêncio: isto já existe em algum lugar? Até
-            25/08/2026 a resposta do portfólio era "não", e ela estava escrita
-            no aviso logo abaixo do título.
+                  <div className="portfolio-corpo">
+                    <p className="portfolio-meta">{projeto.label}</p>
+                    <h3>{projeto.name}</h3>
+                    <p className="portfolio-descricao">{projeto.description}</p>
+                    <ul className="portfolio-entregas">
+                      {projeto.features.map((feature) => (
+                        <li key={feature}>{feature}</li>
+                      ))}
+                    </ul>
+                    <p className="portfolio-endereco">
+                      {asset.url.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+                      <span aria-hidden="true">↗</span>
+                    </p>
+                  </div>
+                </a>
+              </li>
+            );
+          })}
+        </ol>
 
-            Não é carrossel: são dois, cabem lado a lado, e um carrossel de
-            dois esconde metade do que há de mais forte para mostrar. */}
-        <div className="destaques" data-reveal>
-          {/* Só sobrancelha, sem título próprio. O `h2` da seção já diz o que
-              precisava ser dito, e dois títulos grandes em serifada empilhados
-              faziam o de cima virar enfeite. Quem separa as duas subseções
-              aqui é o rótulo, que é o trabalho dele. */}
-          <div className="destaques-cabecalho">
-            <div className="section-index">{t.portfolio.noArIndice}</div>
+        {/* --- Estudos conceituais -------------------------------------- */}
+        <div className="portfolio-estudos" data-reveal>
+          <div className="portfolio-trilho">
+            <span className="portfolio-marca portfolio-marca--estudo">{t.portfolio.estudosIndice}</span>
+            <span className="portfolio-trilho-nota">{t.portfolio.estudosNota}</span>
           </div>
 
-          <ul className="destaques-lista">
-            {t.portfolio.destaques.map((projeto, index) => {
-              const asset = featuredAssets[index];
+          <p className="portfolio-aviso">{t.portfolio.aviso}</p>
+
+          <ul className="portfolio-estudos-lista">
+            {t.portfolio.projetos.map((projeto, index) => {
+              const asset = projectAssets[index];
               if (!asset) return null;
               return (
-                <li className="destaque" key={projeto.name}>
+                <li className="portfolio-estudo" key={projeto.name}>
+                  {/* Continua clicável, e isso é decisão comercial, não
+                      estética: os três existem em subdomínio próprio
+                      justamente para o prospect abrir, e para prospect de um
+                      setor com peça própria o link vai direto para ela. A
+                      honestidade fica por conta do selo e do aviso acima, que
+                      o visitante lê antes de chegar aqui. */}
                   <a
-                    className="destaque-link"
                     href={asset.url}
                     target="_blank"
                     rel="noreferrer"
-                    aria-label={`${t.portfolio.visitar}${projeto.name}${t.portfolio.visitarDepois}`}
+                    aria-label={`${t.portfolio.abrirAntes}${projeto.name}${t.portfolio.abrirDepois}`}
                   >
-                    <span className="destaque-visual">
-                      {/* Duas colunas acima de 900px, uma abaixo. O `sizes`
-                          sai daí, e não da altura como no carrossel: aqui a
-                          caixa tem proporção fixa, então quem manda é a
-                          largura. */}
+                    <figure>
                       <Picture
                         name={asset.image}
                         alt={projeto.imageAlt}
-                        sizes="(max-width: 900px) 92vw, (max-width: 1400px) 46vw, 660px"
+                        sizes="(max-width: 880px) 92vw, 360px"
                       />
-                      <span className="project-browser" aria-hidden="true">
-                        <span /><span /><span />
-                      </span>
-                      <span className="destaque-selo" aria-hidden="true">{t.portfolio.noArIndice}</span>
-                    </span>
-
-                    <span className="destaque-info">
-                      <span className="project-label">{projeto.label}</span>
-                      <strong>{projeto.name}</strong>
-                      <span className="destaque-descricao">{projeto.description}</span>
-                      <span className="destaque-entregas">
-                        {projeto.features.map((feature) => (
-                          <span key={feature}>{feature}</span>
-                        ))}
-                      </span>
-                      <span className="destaque-acao" aria-hidden="true">{t.portfolio.verSite}</span>
-                    </span>
+                    </figure>
+                    <h3>{projeto.name}</h3>
+                    <span className="portfolio-meta">{projeto.label}</span>
+                    <span className="portfolio-selo">{t.portfolio.conceitualSelo}</span>
                   </a>
                 </li>
               );
             })}
           </ul>
         </div>
-
-        {/* Projetos do estúdio, que são conceituais. O aviso desceu do topo da
-            seção para cá, junto com eles: no topo ele descrevia o portfólio
-            inteiro, e desde que existe trabalho publicado isso deixou de ser
-            verdade. */}
-        {/* Este bloco tem título e o de cima não, e a assimetria é de
-            propósito: o `h2` da seção está logo acima dos cartões e serve o
-            "No ar". Aqui, depois dos cartões, começa um movimento novo, e sem
-            título ele leria como rodapé do anterior. */}
-        <div className="conceituais-cabecalho subsecao-cabecalho" data-reveal>
-          <h3>{t.portfolio.conceituaisTitulo}</h3>
-          <p className="portfolio-aviso">{t.portfolio.aviso}</p>
-        </div>
-
-        <div
-          className="project-carousel"
-          role="region"
-          aria-roledescription={t.portfolio.carrossel}
-          aria-label={t.portfolio.carrosselLabel}
-          data-reveal
-        >
-          <div
-            className="project-track"
-            style={{ transform: `translateX(-${currentProject * 100}%)` }}
-            onTouchStart={handleProjectTouchStart}
-            onTouchEnd={handleProjectTouchEnd}
-          >
-            {projects.map((project, index) => {
-              const asset = projectAssets[index];
-              return (
-              <div
-                className="project-slide"
-                key={project.name}
-                aria-hidden={currentProject !== index}
-              >
-                <article className="project">
-                  {asset?.url ? (
-                    <a
-                      className="project-visual"
-                      href={asset.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label={`${t.portfolio.abrirAntes}${project.name}${t.portfolio.abrirDepois}`}
-                      tabIndex={currentProject === index ? 0 : -1}
-                    >
-                      {/* Abaixo da dobra: carregamento preguiçoso de propósito.
-
-                          O `sizes` sai de `ALTURAS_DA_CAIXA` multiplicado
-                          pela proporção de cada foto — o porquê está em
-                          `sizesPelaAltura`, em picture.tsx. */}
-                      <Picture
-                        name={asset.image}
-                        alt={project.imageAlt}
-                        sizes={sizesPelaAltura(asset.image, ALTURAS_DA_CAIXA)}
-                      />
-                      <div className="project-browser" aria-hidden="true">
-                        <span /><span /><span />
-                      </div>
-                    </a>
-                  ) : (
-                    <div className={`project-visual project-visual--placeholder project-visual--placeholder-${index + 1}`} role="img" aria-label={t.portfolio.reservado}>
-                      <div className="project-browser" aria-hidden="true">
-                        <span /><span /><span />
-                      </div>
-                      <div className="project-placeholder-content" aria-hidden="true">
-                        <span>{String(index + 1).padStart(2, "0")}</span>
-                        <strong>{t.portfolio.novoProjeto}</strong>
-                        <i />
-                      </div>
-                      <div className="project-stamp project-stamp--soon">{t.portfolio.emBreve}</div>
-                    </div>
-                  )}
-                  <div className="project-info">
-                    <p className="project-label">{project.label}</p>
-                    <h3>{project.name}</h3>
-                    <p>{project.description}</p>
-                    <ul aria-label={asset?.url ? t.portfolio.entregas : t.portfolio.previstas}>
-                      {project.features.map((feature) => <li key={feature}>{feature}</li>)}
-                    </ul>
-                    {!asset?.url && (
-                      <span className="project-soon">{t.portfolio.novosTrabalhos}</span>
-                    )}
-                  </div>
-                </article>
-              </div>
-            );
-            })}
-          </div>
-
-          <div className="carousel-footer">
-            <p className="carousel-status" aria-live="polite">
-              <strong>{String(currentProject + 1).padStart(2, "0")}</strong>
-              <span>/ {String(projects.length).padStart(2, "0")}</span>
-              <span className="sr-only">
-                {t.portfolio.projetoAntes}{currentProject + 1}{t.portfolio.projetoDe}{projects.length}: {projects[currentProject].name}
-              </span>
-            </p>
-            <div className="carousel-dots" aria-label={t.portfolio.escolher}>
-              {projects.map((project, index) => (
-                <button
-                  type="button"
-                  key={project.name}
-                  className={currentProject === index ? "is-active" : ""}
-                  aria-label={`${t.portfolio.mostrar}${project.name}`}
-                  aria-current={currentProject === index ? "true" : undefined}
-                  onClick={() => showProject(index)}
-                />
-              ))}
-            </div>
-            <div className="carousel-buttons">
-              <button type="button" aria-label={t.portfolio.anterior} onClick={() => showProject(currentProject - 1)}>
-                <CarouselArrow direction="previous" />
-              </button>
-              <button type="button" aria-label={t.portfolio.proximo} onClick={() => showProject(currentProject + 1)}>
-                <CarouselArrow direction="next" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+      </div>
+    </section>
   );
 }

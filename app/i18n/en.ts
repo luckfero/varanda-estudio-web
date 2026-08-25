@@ -108,11 +108,13 @@ const en: Dicionario = {
        studio's own property, and calling it a client would imply a
        relationship that does not exist. */
     noArIndice: "Live",
+    conceitualSelo: "Concept",
+    estudosNota: "No client, no address online.",
+    estudosIndice: "Concept studies",
+    noArNota: "Published sites, at an address anyone can visit.",
     visitar: "Visit the ",
     visitarDepois: " website in a new tab",
-    verSite: "Open the site",
 
-    conceituaisTitulo: "The studio's concept projects",
     aviso: "Three sectors, three different problems, chosen to demonstrate visual direction and development. The companies, copy and data are fictional.",
 
     /* Paired by index with `featuredAssets` in `app/data.ts`. */
@@ -134,29 +136,15 @@ const en: Dicionario = {
         imageAlt: "Milênio home page, with the title O rap de outro milênio on a black background",
       },
     ],
-    carrossel: "carousel",
-    carrosselLabel: "Work built by Varanda",
     abrirAntes: "Open the ",
     abrirDepois: " project demo in a new tab",
-    escolher: "Choose a project",
-    mostrar: "Show ",
-    projetoAntes: "Project ",
-    projetoDe: " of ",
-    entregas: "What the project delivered",
-    previstas: "Planned features",
-    reservado: "Placeholder for an upcoming project",
-    novoProjeto: "new project",
-    emBreve: "coming soon",
-    novosTrabalhos: "New work will be added here.",
-    anterior: "Previous project",
-    proximo: "Next project",
     /* Order is paired by index with `projectAssets` in `app/data.ts`, where
        the reasoning lives. Changing it here without changing it there, or
        without changing the other two languages, swaps image and link. */
     projetos: [
       {
         name: "Nívora Construções",
-        label: "Concept project · Construction",
+        label: "Construction",
         description:
           "A trilingual company site for a contemporary builder, with a portfolio of works, services, construction process and a budget pre-assessment, in a technical and immersive visual experience.",
         features: ["Trilingual strategy", "Information architecture", "Visual direction", "Responsive development"],
@@ -164,7 +152,7 @@ const en: Dicionario = {
       },
       {
         name: "Nascente",
-        label: "Concept project · Perfumery",
+        label: "Perfumery",
         description:
           "An independent perfumery with a catalogue filterable by collection and intensity, a step-by-step scent guide and a complete purchase flow, from discovering the fragrance to confirming the order.",
         features: ["Visual identity", "Catalogue and filters", "Scent guide", "Purchase flow"],
@@ -172,21 +160,11 @@ const en: Dicionario = {
       },
       {
         name: "Brasa do Vale",
-        label: "Concept project · Restaurant",
+        label: "Restaurant",
         description:
           "A warm, direct site for a steakhouse, built around the menu, what sets the place apart and quick contact over WhatsApp.",
         features: ["Content strategy", "Visual direction", "Responsive design", "Development"],
         imageAlt: "Grilled meat image used on the home page of the Brasa do Vale project",
-      },
-      {
-        /* Fourth card with no match in `projectAssets`, on purpose: that is
-           how the carousel builds the reserved slot. */
-        name: "Your project",
-        label: "Reserved space · Next work",
-        description:
-          "The studio's next piece of work takes this space. It could be yours: the conversation starts with a hello.",
-        features: ["Conversation and brief", "Direction and content", "Building and revisions", "Launch and care"],
-        imageAlt: "",
       },
     ],
   },

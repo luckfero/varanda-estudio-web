@@ -119,11 +119,13 @@ const es: Dicionario = {
        inmueble del propio estudio, y llamarlo cliente insinuaría una relación
        que no existe. */
     noArIndice: "En línea",
+    conceitualSelo: "Conceptual",
+    estudosNota: "Sin cliente, sin dirección en línea.",
+    estudosIndice: "Estudios conceptuales",
+    noArNota: "Webs publicadas, con dirección abierta para que cualquiera las visite.",
     visitar: "Visitar la web de ",
     visitarDepois: " en una pestaña nueva",
-    verSite: "Ver la web",
 
-    conceituaisTitulo: "Proyectos conceptuales del estudio",
     aviso: "Tres sectores, tres problemas distintos, elegidos para mostrar dirección visual y desarrollo. Las empresas, los textos y los datos son ficticios.",
 
     /* Emparejado por índice con `featuredAssets` en `app/data.ts`. */
@@ -145,29 +147,15 @@ const es: Dicionario = {
         imageAlt: "Página de inicio de Milênio, con el título O rap de outro milênio sobre fondo negro",
       },
     ],
-    carrossel: "carrusel",
-    carrosselLabel: "Trabajos realizados por Varanda",
     abrirAntes: "Abrir la demo del proyecto ",
     abrirDepois: " en una pestaña nueva",
-    escolher: "Elegir proyecto",
-    mostrar: "Mostrar ",
-    projetoAntes: "Proyecto ",
-    projetoDe: " de ",
-    entregas: "Entregas del proyecto",
-    previstas: "Características previstas",
-    reservado: "Espacio reservado para un próximo proyecto",
-    novoProjeto: "nuevo proyecto",
-    emBreve: "próximamente",
-    novosTrabalhos: "Aquí se irán añadiendo nuevos trabajos.",
-    anterior: "Proyecto anterior",
-    proximo: "Proyecto siguiente",
     /* La orden está emparejada por índice con `projectAssets` en
        `app/data.ts`, donde está explicada. Cambiarla aquí sin cambiarla allí,
        o sin cambiar los otros dos idiomas, intercambia imagen y enlace. */
     projetos: [
       {
         name: "Nívora Construções",
-        label: "Proyecto conceptual · Construcción",
+        label: "Construcción",
         description:
           "Una web institucional trilingüe para una constructora contemporánea, con portfolio de obras, servicios, proceso constructivo y prediagnóstico de presupuesto en una experiencia visual técnica e inmersiva.",
         features: ["Estrategia trilingüe", "Arquitectura de la información", "Dirección visual", "Desarrollo responsive"],
@@ -175,7 +163,7 @@ const es: Dicionario = {
       },
       {
         name: "Nascente",
-        label: "Proyecto conceptual · Perfumería",
+        label: "Perfumería",
         description:
           "Una perfumería de autor con catálogo filtrable por colección e intensidad, guía olfativa por pasos y flujo de compra completo, del descubrimiento de la fragancia a la confirmación del pedido.",
         features: ["Identidad visual", "Catálogo y filtros", "Guía olfativa", "Flujo de compra"],
@@ -183,21 +171,11 @@ const es: Dicionario = {
       },
       {
         name: "Brasa do Vale",
-        label: "Proyecto conceptual · Restauración",
+        label: "Restauración",
         description:
           "Una web acogedora y directa para un asador, centrada en la carta, en lo que distingue a la casa y en el contacto rápido por WhatsApp.",
         features: ["Estrategia de contenido", "Dirección visual", "Diseño responsive", "Desarrollo"],
         imageAlt: "Imagen de carne a la brasa usada en la página de inicio del proyecto Brasa do Vale",
-      },
-      {
-        /* Cuarta tarjeta sin par en `projectAssets`, a propósito: así el
-           carrusel arma el espacio reservado. */
-        name: "Tu proyecto",
-        label: "Espacio reservado · Próximo trabajo",
-        description:
-          "El próximo trabajo del estudio ocupa este espacio. Puede ser el tuyo: la conversación empieza con un hola.",
-        features: ["Conversación y briefing", "Dirección y contenido", "Creación y ajustes", "Publicación y cuidado"],
-        imageAlt: "",
       },
     ],
   },

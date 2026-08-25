@@ -113,12 +113,14 @@ const pt = {
        insinuaria uma relação que não existe. "No ar" é verdade sobre as
        duas, e é a informação que o visitante procura. */
     noArIndice: "No ar",
+    conceitualSelo: "Conceitual",
+    estudosNota: "Sem cliente, sem endereço no ar.",
+    estudosIndice: "Estudos conceituais",
+    noArNota: "Sites publicados, com endereço aberto para qualquer pessoa visitar.",
     visitar: "Visitar o site de ",
     visitarDepois: " em uma nova aba",
-    verSite: "Ver o site",
 
     /* --- Projetos do estúdio ------------------------------------------ */
-    conceituaisTitulo: "Projetos conceituais do estúdio",
     /* O título diz por que estes três existem, que é a pergunta que o
        visitante faz depois de ver que dois já estão no ar. */
     /* O rótulo de cada cartão já diz "Projeto conceitual", mas é fácil de
@@ -148,29 +150,15 @@ const pt = {
         imageAlt: "Página inicial da Milênio, com o título O rap de outro milênio sobre fundo preto",
       },
     ],
-    carrossel: "carrossel",
-    carrosselLabel: "Trabalhos desenvolvidos pela Varanda",
     abrirAntes: "Abrir demonstração do projeto ",
     abrirDepois: " em uma nova aba",
-    escolher: "Escolher projeto",
-    mostrar: "Mostrar ",
-    projetoAntes: "Projeto ",
-    projetoDe: " de ",
-    entregas: "Entregas do projeto",
-    previstas: "Características previstas",
-    reservado: "Espaço reservado para um próximo projeto",
-    novoProjeto: "novo projeto",
-    emBreve: "em breve",
-    novosTrabalhos: "Novos trabalhos serão adicionados aqui.",
-    anterior: "Projeto anterior",
-    proximo: "Próximo projeto",
     /* A ordem é pareada por índice com `projectAssets` em `app/data.ts`, que
        explica por que ela é esta. Mudar aqui sem mudar lá, ou sem mudar os
        outros dois idiomas, troca a imagem e o link de lugar. */
     projetos: [
       {
         name: "Nívora Construções",
-        label: "Projeto conceitual · Construção civil",
+        label: "Construção civil",
         description:
           "Um site institucional trilíngue para uma construtora contemporânea, com portfólio de obras, serviços, processo construtivo e pré-diagnóstico de orçamento em uma experiência visual técnica e imersiva.",
         features: ["Estratégia trilíngue", "Arquitetura da informação", "Direção visual", "Desenvolvimento responsivo"],
@@ -178,7 +166,7 @@ const pt = {
       },
       {
         name: "Nascente",
-        label: "Projeto conceitual · Perfumaria",
+        label: "Perfumaria",
         description:
           "Uma loja de perfumaria autoral com catálogo filtrável por coleção e intensidade, guia olfativo em etapas e fluxo de compra completo, da descoberta da fragrância à confirmação do pedido.",
         features: ["Identidade visual", "Catálogo e filtros", "Guia olfativo", "Fluxo de compra"],
@@ -186,22 +174,11 @@ const pt = {
       },
       {
         name: "Brasa do Vale",
-        label: "Projeto conceitual · Gastronomia",
+        label: "Gastronomia",
         description:
           "Um site acolhedor e direto para uma churrascaria, com foco no cardápio, nos diferenciais da casa e no contato rápido pelo WhatsApp.",
         features: ["Estratégia de conteúdo", "Direção visual", "Design responsivo", "Desenvolvimento"],
         imageAlt: "Imagem de churrasco usada na página inicial do projeto Brasa do Vale",
-      },
-      {
-        /* Quarto cartão SEM par em `projectAssets`, de propósito: é assim que
-           o carrossel monta o espaço reservado (ver `section-portfolio.tsx`).
-           O CSS de `--placeholder-4` já existia, o desenho previa isto. */
-        name: "Seu projeto",
-        label: "Espaço reservado · Próximo trabalho",
-        description:
-          "O próximo trabalho do estúdio ocupa este espaço. Pode ser o seu: a conversa começa com um oi.",
-        features: ["Conversa e briefing", "Direção e conteúdo", "Criação e ajustes", "Publicação e cuidado"],
-        imageAlt: "",
       },
     ],
   },
