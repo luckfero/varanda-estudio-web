@@ -8,6 +8,25 @@ import StructuredData from "./structured-data";
  * de terceiro, e o Vite empacota os arquivos com hash no nome. O navegador so
  * baixa a faixa Unicode que a pagina pedir. */
 import "@fontsource-variable/playfair-display/wght.css";
+/* O itálico de verdade.
+ *
+ * Sem esta linha o navegador FABRICA o itálico inclinando o romano, e o
+ * resultado é um oblíquo falso: contraste de traço errado, terminais errados,
+ * e o "a" de dois andares que a Playfair troca por um de um andar no itálico
+ * real simplesmente não aparece.
+ *
+ * Como se prova: a frase "forma e presença" a 60px mede 464,64px em Playfair
+ * normal E 464,64px em Playfair itálico, idênticas. Em fonte com itálico de
+ * verdade os dois números diferem. Largura igual é a assinatura do oblíquo
+ * sintético.
+ *
+ * Passou despercebido enquanto só três títulos eram itálicos. Em 25/08/2026 a
+ * unificação da serifada arrastou mais onze elementos para cá, incluindo um de
+ * 273px na seção sobre, e aí ficou grande demais para ignorar.
+ *
+ * Custo: 38,8 KB no subconjunto latino, que é o único que os três idiomas
+ * baixam. */
+import "@fontsource-variable/playfair-display/wght-italic.css";
 import "./fonts.css";
 /* A ordem destes imports E a cascata. Foram partidos em intervalos
    contiguos do arquivo original justamente para que ela permanecesse
