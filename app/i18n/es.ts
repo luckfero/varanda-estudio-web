@@ -120,7 +120,6 @@ const es: Dicionario = {
        que no existe. */
     noArIndice: "En línea",
     noArTitulo: "Negocios en pie, con dirección propia.",
-    noArLinha: "Webs publicadas y funcionando ahora. Haz clic para abrirlas.",
     visitar: "Visitar la web de ",
     visitarDepois: " en una pestaña nueva",
     verSite: "Ver la web",

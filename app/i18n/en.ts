@@ -109,7 +109,6 @@ const en: Dicionario = {
        relationship that does not exist. */
     noArIndice: "Live",
     noArTitulo: "Real businesses, at their own address.",
-    noArLinha: "Sites published and running right now. Click to open them.",
     visitar: "Visit the ",
     visitarDepois: " website in a new tab",
     verSite: "Open the site",

@@ -555,8 +555,18 @@
   margin-top: clamp(2.5rem, 5vw, 4.5rem);
 }
 
+/* Mesma grade de `.section-heading` e `.pricing-heading`, que é o padrão do
+   site inteiro para título à esquerda e texto de apoio à direita. Reusar a
+   proporção em vez de inventar outra é o que faz as subseções do portfólio
+   lerem como parte da mesma página. */
+.subsecao-cabecalho {
+  display: grid;
+  grid-template-columns: 1.4fr .6fr;
+  align-items: end;
+  gap: 4rem;
+}
+
 .destaques-cabecalho {
-  max-width: 720px;
   margin-bottom: clamp(1.6rem, 3vw, 2.6rem);
 }
 
@@ -575,13 +585,6 @@
   font-weight: 400;
   letter-spacing: -0.03em;
   line-height: 1.05;
-}
-
-.destaques-cabecalho p {
-  margin: .7rem 0 0;
-  color: var(--charcoal);
-  font-size: 1rem;
-  line-height: 1.6;
 }
 
 .destaques-lista {
@@ -606,10 +609,15 @@
               box-shadow .4s var(--curva-saida, cubic-bezier(0.23, 1, 0.32, 1));
 }
 
+/* A proporção é a da faixa da hero desses sites (1600 ÷ 758 ≈ 2,11), e não
+   16/9, porque as duas capas SÃO a hero inteira. Numa caixa 16/9 o
+   `object-fit: cover` cortaria cerca de 16% da largura, e na Casa Conexão isso
+   come justamente a planta de um lado e a borda da janela do outro. É a mesma
+   proporção da capa da Nívora, que já estava no carrossel. */
 .destaque-visual {
   position: relative;
   display: block;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 1600 / 758;
   overflow: hidden;
   background: var(--cream);
 }
@@ -749,8 +757,12 @@
    ------------------------------------------------------------------ */
 
 .conceituais-cabecalho {
+  /* Sem max-width: a grade precisa da largura inteira da seção para as
+     colunas darem os mesmos 862px e 370px de `.pricing-heading`. Com o
+     limite de 760px que havia aqui, elas saíam 487px e 209px, e o texto da
+     direita quebrava em cinco linhas curtas onde as outras seções quebram
+     em três. */
   margin-top: clamp(3rem, 6vw, 5.5rem);
-  max-width: 760px;
 }
 
 .conceituais-cabecalho .section-index {
@@ -770,8 +782,15 @@
   line-height: 1.05;
 }
 
-.conceituais-cabecalho .portfolio-aviso {
-  margin-top: .85rem;
+/* Fonte, corpo e entrelinha iguais aos de `.pricing-heading > p`. O que muda
+   é só a cor: lá o fundo é creme e o `--ink-soft` mede bem; aqui o fundo é o
+   ocre da seção, e quem decide a cor é a superfície (regra 9.8). */
+.conceituais-cabecalho > .portfolio-aviso {
+  max-width: 350px;
+  margin: 0;
+  color: var(--charcoal);
+  font-size: 1rem;
+  line-height: 1.7;
 }
 
 @media (max-width: 900px) {

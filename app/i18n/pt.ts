@@ -114,7 +114,6 @@ const pt = {
        duas, e é a informação que o visitante procura. */
     noArIndice: "No ar",
     noArTitulo: "Negócios de pé, com endereço próprio.",
-    noArLinha: "Sites publicados e funcionando agora. Clique para abrir.",
     visitar: "Visitar o site de ",
     visitarDepois: " em uma nova aba",
     verSite: "Ver o site",

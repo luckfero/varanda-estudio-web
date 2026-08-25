@@ -114,12 +114,14 @@
 
   .section-heading,
   .pricing-heading,
+  .subsecao-cabecalho,
   .process,
   .about,
   .faq,
   .contact { grid-template-columns: 1fr; }
-  .section-heading, .pricing-heading { align-items: start; gap: 1rem; }
-  .section-heading > p, .pricing-heading > p { margin-top: .4rem; }
+  .section-heading, .pricing-heading, .subsecao-cabecalho { align-items: start; gap: 1rem; }
+  .section-heading > p, .pricing-heading > p,
+  .conceituais-cabecalho > .portfolio-aviso { margin-top: .4rem; }
 
   .service-grid { grid-template-columns: 1fr; }
   .service-card { min-height: 0; border-right: 0; border-bottom: 1px solid rgba(255,255,255,.2); }
