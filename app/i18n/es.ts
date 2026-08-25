@@ -123,8 +123,8 @@ const es: Dicionario = {
     visitarDepois: " en una pestaña nueva",
     verSite: "Ver la web",
 
-    conceituaisIndice: "Proyectos del estudio",
-    aviso: "Tres sectores, tres problemas distintos. Son proyectos conceptuales, creados por el estudio para mostrar dirección visual y desarrollo: las empresas, los textos y los datos son ficticios.",
+    conceituaisTitulo: "Proyectos conceptuales del estudio",
+    aviso: "Tres sectores, tres problemas distintos, elegidos para mostrar dirección visual y desarrollo. Las empresas, los textos y los datos son ficticios.",
 
     /* Emparejado por índice con `featuredAssets` en `app/data.ts`. */
     destaques: [

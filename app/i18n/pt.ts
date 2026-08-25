@@ -118,14 +118,14 @@ const pt = {
     verSite: "Ver o site",
 
     /* --- Projetos do estúdio ------------------------------------------ */
-    conceituaisIndice: "Projetos do estúdio",
+    conceituaisTitulo: "Projetos conceituais do estúdio",
     /* O título diz por que estes três existem, que é a pergunta que o
        visitante faz depois de ver que dois já estão no ar. */
     /* O rótulo de cada cartão já diz "Projeto conceitual", mas é fácil de
        passar batido, e visitante estrangeiro não tem como saber que a
        empresa não existe. O protocolo é taxativo sobre trabalho conceitual
        nunca parecer trabalho de cliente. */
-    aviso: "Três setores, três problemas diferentes. São projetos conceituais, criados pelo estúdio para demonstrar direção visual e desenvolvimento: as empresas, os textos e os dados são fictícios.",
+    aviso: "Três setores, três problemas diferentes, escolhidos para demonstrar direção visual e desenvolvimento. Empresas, textos e dados são fictícios.",
 
     /* A ordem é pareada por índice com `featuredAssets` em `app/data.ts`.
        Nada aqui pode ser escrito sem estar no site do próprio projeto: são

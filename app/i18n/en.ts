@@ -112,8 +112,8 @@ const en: Dicionario = {
     visitarDepois: " website in a new tab",
     verSite: "Open the site",
 
-    conceituaisIndice: "Studio projects",
-    aviso: "Three sectors, three different problems. These are concept projects, built by the studio to demonstrate visual direction and development: the companies, copy and data are fictional.",
+    conceituaisTitulo: "The studio's concept projects",
+    aviso: "Three sectors, three different problems, chosen to demonstrate visual direction and development. The companies, copy and data are fictional.",
 
     /* Paired by index with `featuredAssets` in `app/data.ts`. */
     destaques: [

@@ -141,8 +141,12 @@ export default function SectionPortfolio({ portfolio }: { portfolio: Dicionario[
             seção para cá, junto com eles: no topo ele descrevia o portfólio
             inteiro, e desde que existe trabalho publicado isso deixou de ser
             verdade. */}
+        {/* Este bloco tem título e o de cima não, e a assimetria é de
+            propósito: o `h2` da seção está logo acima dos cartões e serve o
+            "No ar". Aqui, depois dos cartões, começa um movimento novo, e sem
+            título ele leria como rodapé do anterior. */}
         <div className="conceituais-cabecalho subsecao-cabecalho" data-reveal>
-          <div className="section-index">{t.portfolio.conceituaisIndice}</div>
+          <h3>{t.portfolio.conceituaisTitulo}</h3>
           <p className="portfolio-aviso">{t.portfolio.aviso}</p>
         </div>
 

@@ -567,7 +567,7 @@
      terminar junto com ele. Aqui a esquerda é uma sobrancelha de uma linha:
      alinhada pela base, ela nascia embaixo do parágrafo, como se fosse
      legenda dele em vez de rótulo da subseção. */
-  align-items: start;
+  align-items: end;
   gap: 4rem;
 }
 
@@ -752,23 +752,35 @@
    ------------------------------------------------------------------ */
 
 .conceituais-cabecalho {
-  /* Sem max-width: a grade precisa da largura inteira da seção para as
-     colunas darem os mesmos 862px e 370px de `.pricing-heading`. Com o
-     limite de 760px que havia aqui, elas saíam 487px e 209px, e o texto da
-     direita quebrava em cinco linhas curtas onde as outras seções quebram
-     em três. */
+  /* Sem max-width: a grade precisa da largura inteira da seção. Com o limite
+     de 760px que havia aqui, as colunas saíam 487px e 209px.
+
+     A proporção é 1.2/0.8 e não a 1.4/0.6 das outras seções: lá a esquerda é
+     um título de quatro linhas e a direita cabe em 350px. Aqui o título tem
+     uma linha, sobra espaço à esquerda, e em 350px o texto quebrava em cinco
+     linhas curtas ao lado de um vazio. */
+  grid-template-columns: 1.2fr .8fr;
   margin-top: clamp(3rem, 6vw, 5.5rem);
 }
 
-.conceituais-cabecalho .section-index {
+.conceituais-cabecalho > h3 {
+  /* Mesma família e mesmo tratamento do `h2` da seção, um degrau abaixo no
+     corpo: ele é h3 e vive dentro de uma seção que já tem h2, então competir
+     em tamanho seria pedir dois títulos principais na mesma faixa. */
+  margin: 0;
   color: var(--green-dark);
+  font-family: var(--serif-titulo);
+  font-size: clamp(2.2rem, 3.6vw, 3.4rem);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
 }
 
 /* Fonte, corpo e entrelinha iguais aos de `.pricing-heading > p`. O que muda
    é só a cor: lá o fundo é creme e o `--ink-soft` mede bem; aqui o fundo é o
    ocre da seção, e quem decide a cor é a superfície (regra 9.8). */
 .conceituais-cabecalho > .portfolio-aviso {
-  max-width: 350px;
+  max-width: 480px;
   margin: 0;
   color: var(--charcoal);
   font-size: 1rem;
