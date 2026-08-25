@@ -86,7 +86,9 @@
 }
 
 .service-card {
-  min-height: 400px;
+  /* Era 400px, medida para caber o ornamento de 78px mais 6,1rem de margem
+     que ele carregava. Sem ele, os 400px viravam buraco no fim do cartão. */
+  min-height: 290px;
   padding: 2rem clamp(1.5rem, 3vw, 3rem) 2.6rem;
   border-right: 1px solid rgba(255,255,255,.2);
 }
@@ -101,28 +103,25 @@
   letter-spacing: .12em;
 }
 
-.service-icon {
-  position: relative;
-  width: 78px;
-  height: 78px;
-  margin: 3.1rem 0 3rem;
-}
+/* O ornamento dos cartões de serviço foi REMOVIDO em 25/08/2026.
 
-.service-icon::before,
-.service-icon::after,
-.service-icon i {
-  content: "";
-  position: absolute;
-  border: 1px solid var(--ochre);
-}
+   Ele era um círculo de 78px com uma diagonal de 96px atravessando e sobrando
+   nas duas pontas, ou seja, o desenho do sinal de PROIBIDO, e estava idêntico
+   nos três cartões (0,03 de diferença média em 255 níveis de cinza). Ficava na
+   primeira seção depois da dobra.
 
-.service-icon::before { inset: 0; border-radius: 50%; }
-.service-icon::after { width: 1px; height: 96px; left: 38px; top: -9px; border: 0; background: var(--ochre); transform: rotate(40deg); }
-.service-icon i:first-child { width: 32px; height: 16px; left: 10px; top: 15px; border-radius: 100% 0 100% 0; transform: rotate(-25deg); }
-.service-icon i:last-child { width: 31px; height: 15px; right: 10px; bottom: 14px; border-radius: 100% 0 100% 0; transform: scaleX(-1) rotate(-25deg); }
+   Não foi substituído por três SVG novos de propósito: quem carrega o ritmo
+   aqui passa a ser o 01/02/03, do mesmo jeito que no portfólio quem separa os
+   grupos é a sobrancelha, e não um ícone. Menos peça, mesma leitura.
+
+   Se um dia entrar ícone aqui, ele nasce em `app/icons.tsx`, no padrão que o
+   `ArcoMark` já fixou, e não desenhado com `<i>` vazios posicionados por
+   left/top. */
+.service-icon { display: none; }
 
 .service-card h3 {
-  margin: 0;
+  /* Herda o respiro que o ornamento removido ocupava (3,1rem acima). */
+  margin: 3.1rem 0 0;
   font-family: var(--serif-titulo);
   font-size: var(--t-bloco);
   font-weight: 400;

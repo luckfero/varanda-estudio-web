@@ -100,7 +100,14 @@
   background: var(--green-dark);
   color: var(--paper);
   border-color: var(--green);
-  transform: translateY(-16px);
+  /* Era `transform: translateY(-16px)`, e não funcionava: a regra da
+     revelação, `.reveal-ready [data-reveal].is-visible`, tem especificidade
+     (0,3,0) contra (0,2,0) daqui e sobrescreve o transform com `translate(0)`.
+     Os três cartões nasciam com topo idêntico e o "recomendado" não se
+     destacava de nada.
+
+     `margin-block` faz o mesmo deslocamento e a revelação não toca nele. */
+  margin-block: -16px 16px;
 }
 
 .price-eyebrow {

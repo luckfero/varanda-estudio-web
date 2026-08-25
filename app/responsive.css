@@ -134,7 +134,7 @@
   .process-heading, .faq-heading { position: static; }
   .process-list { margin-top: 2rem; }
   .pricing-grid { grid-template-columns: 1fr; gap: 1.25rem; }
-  .price-card.is-featured { transform: none; }
+  .price-card.is-featured { margin-block: 0; }
   .price-description { min-height: 0; }
   .pricing-included ul { grid-template-columns: 1fr 1fr; gap: 1.5rem 2rem; }
   .pricing-escopo { grid-template-columns: 1fr; gap: 2.4rem; }

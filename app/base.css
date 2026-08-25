@@ -161,9 +161,25 @@ img {
   color: var(--green-dark);
 }
 
+/* O contorno de foco tem cor por superfície, e não uma só para o site.
+   O --ochre media 2,25:1 sobre o creme, 2,44:1 sobre o papel e 1,91:1 sobre
+   os extras, reprovando o critério 1.4.11 da WCAG, que pede 3:1 para
+   indicador de interface, em 27 das 35 paradas de Tab no celular.
+
+   Pesa dobrado aqui: a página vende "acessível de verdade, verificado com
+   ferramenta e não no olho". */
 :focus-visible {
-  outline: 3px solid var(--ochre);
+  outline: 3px solid var(--green-dark);
   outline-offset: 4px;
+}
+
+/* Nas seções escuras o verde some, e quem cumpre os 3:1 é o ocre claro. */
+.services :focus-visible,
+.portfolio :focus-visible,
+.care :focus-visible,
+.contact :focus-visible,
+.site-footer :focus-visible {
+  outline-color: var(--ochre-light);
 }
 
 .skip-link {

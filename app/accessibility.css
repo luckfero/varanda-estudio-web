@@ -45,3 +45,50 @@
     transition: none !important;
   }
 }
+
+/* ------------------------------------------------------------------
+   Alvo de toque · medido em 25/08/2026
+
+   Dez elementos focáveis mediam menos de 44px de altura em 390px, o pior
+   deles o link da política de privacidade com 14px. Num dedo isso é erro
+   de toque, não é acessibilidade abstrata.
+
+   `padding-block` em elemento INLINE aumenta a área de clique sem mexer
+   na altura da linha, então o desenho não muda nem um pixel. É por isso
+   que a correção pode ser genérica sem risco de quebrar layout.
+   ------------------------------------------------------------------ */
+
+/* O cálculo por `em` não fechava nos textos menores: no link de 14px do
+   consentimento ele dava 22px de altura total. O valor fixo garante os 44px
+   em qualquer corpo, e continua sem mexer na altura da linha. */
+.text-link,
+.service-note a,
+.legal-link,
+.back-top,
+.site-footer a,
+.footer-bottom a,
+.consent a,
+.contact-form label a,
+.brand {
+  padding-block: 15px;
+}
+
+/* A caixa de seleção tinha 24x24. Pseudo-elemento em `input` não é opção
+   confiável, porque input é elemento substituído e vários navegadores não
+   renderizam ::before nele. O caminho certo é o próprio rótulo: clicar no
+   texto já marca a caixa, então basta o rótulo ter altura de alvo. */
+.consent {
+  display: flex;
+  align-items: flex-start;
+  gap: .6rem;
+  min-height: 44px;
+  padding-block: 10px;
+  cursor: pointer;
+}
+
+/* O quadrado desenhado não muda de tamanho; ele só ganha folga em volta,
+   para o dedo ter onde cair mesmo mirando torto. */
+.consent input[type="checkbox"] {
+  flex: 0 0 auto;
+  margin: 10px;
+}
