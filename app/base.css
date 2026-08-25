@@ -18,6 +18,15 @@
   --terracotta-dark: #974d35;
   --ochre: #c79a43;
   --charcoal: #28231f;
+
+  /* O chão escuro da página. Nasceu local no portfólio em 25/08/2026 e subiu
+     para cá quando o contato passou a usá-lo também: a partir de duas seções,
+     a cor deixa de ser detalhe de uma e vira decisão da casa.
+
+     A página tem exatamente DOIS momentos neste chão, e cada um tem papel: o
+     portfólio é a prova, o contato é o pedido. Um terceiro os enfraquece. */
+  --escuro: #16120f;
+  --escuro-alto: #1d1815;
   --ink-soft: #625b54;
   /* Cinza de apoio para texto miúdo. O #625b54 acima passa no creme mas
      encosta no limite sobre o bege mais fechado; este cobre os dois fundos

@@ -12,7 +12,9 @@
   grid-template-columns: 160px minmax(0, 1fr) 110px;
   gap: 4vw;
   align-items: start;
-  border-top: 1px solid var(--line);
+  /* A border-top saiu em 25/08/2026: era a única borda de seção das doze, e
+     contradizia a mesma regra que fez a rampa do portfólio ser removida, de
+     que seção se separa por cor e mais nada. */
 }
 
 .intro-content {
@@ -43,9 +45,17 @@
 
 .intro-columns p { margin: 0; }
 
+/* Serviços subiu para claro em 25/08/2026, e não foi decisão estética.
+
+   Ela ficava logo acima do portfólio, e verde escuro contra o chão quase
+   preto de lá mede 1,94:1: a seção mais importante do site simplesmente não
+   se anunciava. Em claro, a mesma emenda passa a 16,26:1.
+
+   Com isso a página fica com dois momentos escuros e não quatro, e cada um
+   marca um papel: o portfólio é a prova, o contato é o pedido. */
 .services {
-  background: var(--green);
-  color: var(--paper);
+  background: var(--cream);
+  color: var(--charcoal);
 }
 
 .section-heading,
@@ -72,7 +82,7 @@
 
 .section-heading > p {
   max-width: 430px;
-  color: #c9c2b7;
+  color: var(--ink-soft);
   font-size: 1rem;
   line-height: 1.7;
 }
@@ -81,8 +91,8 @@
   margin-top: 5rem;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  border-top: 1px solid rgba(255,255,255,.2);
-  border-bottom: 1px solid rgba(255,255,255,.2);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
 }
 
 .service-card {
@@ -90,14 +100,14 @@
      que ele carregava. Sem ele, os 400px viravam buraco no fim do cartão. */
   min-height: 290px;
   padding: 2rem clamp(1.5rem, 3vw, 3rem) 2.6rem;
-  border-right: 1px solid rgba(255,255,255,.2);
+  border-right: 1px solid var(--line);
 }
 
 .service-card:last-child { border-right: 0; }
 
 .service-card > span {
-  /* Era #b9b0a2, que dava 4,47:1 sobre o verde: reprovava por 0,03. */
-  color: #c2b9ab;
+  /* Sobre claro desde 25/08. O --ink-soft dá 5,74:1 sobre o creme. */
+  color: var(--ink-soft);
   font-size: .68rem;
   font-weight: 750;
   letter-spacing: .12em;
@@ -130,19 +140,20 @@
 
 .service-card p {
   margin: 1.2rem 0 0;
-  color: #c9c2b7;
+  /* Sobre claro desde 25/08: o #c9c2b7 vinha de quando a seção era verde. */
+  color: var(--ink-soft);
   font-size: var(--c-base);
   line-height: var(--lh-base);
 }
 
 .service-note {
   margin: 2rem 0 0;
-  color: #bdb5a8;
+  color: var(--ink-soft);
   font-size: var(--c-apoio);
   text-align: center;
 }
 
-.service-note a { color: var(--paper); border-bottom: 1px solid rgba(255,255,255,.4); }
+.service-note a { color: var(--terracotta-dark); border-bottom: 1px solid rgba(151,77,53,.45); }
 
 /* ==================================================================
    PORTFÓLIO · redesenhado em 25/08/2026
@@ -162,8 +173,8 @@
   /* Escopo local. Estas cores só existem aqui, e declará-las na seção
      em vez de em `:root` é o que impede que virem paleta da casa sem
      alguém ter decidido isso. */
-  --chao: #16120f;
-  --chao-alto: #1d1815;
+  --chao: var(--escuro);
+  --chao-alto: var(--escuro-alto);
   --luz: #cfc6ba;
   --luz-fraca: #a89e93;
   --brasa: #d9906f;

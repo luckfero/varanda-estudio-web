@@ -7,7 +7,12 @@
   grid-template-columns: .85fr 1.15fr;
   gap: 8vw;
   align-items: center;
-  background: var(--paper);
+  /* Um creme só no lado claro desde 25/08/2026. O --paper e o --cream estão
+     a 1,08:1 um do outro: eles não separam seção nenhuma, e a página tinha
+     três emendas onde a seção seguinte simplesmente não começava. O --paper
+     continua vivo em CARTÃO, onde 1,08:1 é justamente o efeito sutil que se
+     quer. */
+  background: var(--cream);
 }
 
 .about-art {
@@ -145,7 +150,12 @@
    dessaturacao, nao a claridade.
    Contraste do texto miudo desta secao sobe de 5,14:1 para 5,51:1. */
 .extras {
-  background: #e9dcc4;
+  /* Era #e9dcc4, hex escrito à mão, fora da paleta e usado uma vez só na
+     página inteira. Ele ficava a 1,28:1 do vizinho de cima e 1,18:1 do de
+     baixo, ou seja, não separava nada e ainda era mais uma cor para a página
+     carregar. Sobre, extras e dúvidas assumem que são um bloco só, e a
+     separação passa a ser o título e o respiro. */
+  background: var(--cream);
 }
 
 .extras-heading {
@@ -259,7 +269,11 @@
   display: grid;
   grid-template-columns: .85fr 1.15fr;
   gap: 8vw;
-  background: var(--green-dark);
+  /* Mesmo chão do portfólio desde 25/08/2026. A página passa a ter dois
+     âncoras escuros iguais, um na prova e outro no pedido, com o corpo claro
+     entre eles. Antes eram quatro escuros diferentes e nenhum repetido, então
+     nada marcava o que é um momento escuro neste site. */
+  background: var(--escuro);
   color: var(--paper);
 }
 

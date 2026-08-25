@@ -19,16 +19,24 @@
   height: 24px;
   flex-shrink: 0;
   margin-top: 1px;
-  accent-color: var(--green);
+  accent-color: var(--terracotta-dark);
 }
-.consent a { color: var(--green); text-decoration: underline; }
+/* O formulário é um cartão CLARO dentro da seção escura, então o texto dele
+   NÃO acompanha a inversão da seção. Quem decide é a superfície imediata, e
+   não a seção em volta. */
+.consent a { color: var(--terracotta-dark); text-decoration: underline; }
 .contact-form .button { width: 100%; }
-.form-hint { margin: 1.15rem 0 0; color: var(--ink-muted); font-size: var(--c-apoio); line-height: var(--lh-apoio); text-align: center; }
+.form-hint { margin: 1.15rem 0 0; color: var(--ink-soft); font-size: var(--c-apoio); line-height: var(--lh-apoio); text-align: center; }
 .form-success { padding: .8rem; background: rgba(33,77,59,.1); color: var(--green-dark); font-size: .75rem; text-align: center; }
 
 .footer {
   padding: 3.2rem clamp(1.25rem, 5vw, 5.5rem) 2rem;
-  background: var(--cream);
+  /* Mesmo chão do contato desde 25/08/2026. A página terminava abrindo de
+     novo: o contato escuro era interrompido por uma faixa clara de 219px que
+     não carregava mensagem nenhuma, só endereço e copyright. Contato e rodapé
+     passam a ler como um bloco de fechamento só. */
+  background: var(--escuro);
+  color: var(--paper);
 }
 
 .footer-top {
@@ -40,10 +48,10 @@
 }
 
 .brand--footer { justify-self: start; }
-.footer-top > p { margin: 0; color: var(--green); font-family: var(--serif-titulo); font-size: var(--c-lead); font-style: italic; text-align: center; }
+.footer-top > p { margin: 0; color: var(--ochre-light); font-family: var(--serif-titulo); font-size: var(--c-lead); font-style: italic; text-align: center; }
 /* `padding-block` para o alvo chegar aos 24px mínimos: o link media
    18px de altura. */
-.back-top { justify-self: end; padding-block: 5px; color: var(--green); font-size: .75rem; font-weight: 700; }
+.back-top { justify-self: end; padding-block: 5px; color: var(--ochre-light); font-size: .75rem; font-weight: 700; }
 
 .footer-bottom {
   padding-top: 1.5rem;
@@ -54,14 +62,15 @@
   /* Era .62rem (9,9px) em caixa alta. Aqui vivem a área de atendimento, o
      link de privacidade e o aviso de direitos — conteúdo que alguém pode
      precisar ler, não ornamento de rodapé. */
-  color: #6b645d;
+  /* Sobre o chão escuro desde 25/08. */
+  color: #a89e93;
   font-size: .7rem;
   letter-spacing: .05em;
   text-transform: uppercase;
 }
 
 .footer-location { justify-self: start; }
-.footer-bottom a { justify-self: center; display: inline-block; padding-block: 5px; color: var(--green); }
+.footer-bottom a { justify-self: center; display: inline-block; padding-block: 5px; color: var(--ochre-light); }
 .footer-copyright { justify-self: end; text-align: right; }
 
 .legal-page {
@@ -91,3 +100,11 @@
 .legal-page article p:not(.kicker) { color: var(--ink-soft); line-height: var(--lh-base); }
 .legal-page article a { color: var(--terracotta-dark); text-decoration: underline; }
 .legal-back { margin: 0 auto; display: flex; width: max-content; }
+
+/* A marca no rodapé, agora sobre o chão escuro.
+
+   Ela herdava as cores da barra do topo, que vive sobre claro, e o resultado
+   era verde escuro sobre quase preto: ilegível. Quem decide a cor é a
+   superfície (regra 9.8), e aqui a superfície mudou. */
+.footer .brand strong { color: var(--cream); }
+.footer .brand span:last-child span { color: #a89e93; }

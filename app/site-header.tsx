@@ -28,6 +28,47 @@ export default function SiteHeader({
      dicionários inteiros para o pacote do navegador. */
   const t = { nav };
   const [menuOpen, setMenuOpen] = useState(false);
+
+  /* A barra inverte quando passa por cima de uma seção escura.
+   *
+   * Sem isso, na seção que foi desenhada para que as telas dos sites fossem a
+   * única fonte de luz, a coisa mais clara da tela era a própria navegação:
+   * ela compõe para #e0dbd3 e fica a 13,53:1 do chão do portfólio.
+   *
+   * Quem decide é a superfície que está EMBAIXO da barra, não a distância
+   * rolada: assim entrar e sair de qualquer seção escura funciona sozinho, e
+   * acrescentar uma seção escura nova não pede código novo, só a classe
+   * `.secao-escura` nela. */
+  useEffect(() => {
+    const escuras = document.querySelectorAll(".portfolio, .contact, .footer");
+    if (!escuras.length) return;
+
+    /* A linha de leitura fica logo ABAIXO da barra, e não no meio dela:
+       medindo pelo meio, no topo da página não há nada por baixo e a barra
+       inverteria de cara. */
+    const altura = parseFloat(
+      getComputedStyle(document.documentElement).getPropertyValue("--altura-cabecalho"),
+    ) || 100;
+
+    const decidir = () => {
+      const y = altura + 1;
+      let escura = false;
+      for (const s of escuras) {
+        const r = s.getBoundingClientRect();
+        if (r.top <= y && r.bottom > y) { escura = true; break; }
+      }
+      document.documentElement.classList.toggle("cabecalho-escuro", escura);
+    };
+
+    decidir();
+    window.addEventListener("scroll", decidir, { passive: true });
+    window.addEventListener("resize", decidir);
+    return () => {
+      window.removeEventListener("scroll", decidir);
+      window.removeEventListener("resize", decidir);
+      document.documentElement.classList.remove("cabecalho-escuro");
+    };
+  }, []);
   const handleNavClick = useAncoraSuave(() => setMenuOpen(false));
 
   useEffect(() => {

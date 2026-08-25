@@ -252,3 +252,39 @@
   height: 1px;
   background: var(--charcoal);
 }
+
+/* ------------------------------------------------------------------
+   A barra sobre seção escura
+
+   Quem liga a classe é `site-header.tsx`, lendo a superfície que está
+   embaixo da barra. Aqui mora só a aparência.
+
+   A transição é curta de propósito: a barra atravessa a emenda em poucos
+   quadros, e uma transição longa deixa a cor errada visível justamente no
+   momento em que o olho está olhando para a divisa.
+   ------------------------------------------------------------------ */
+
+.site-header {
+  transition: background-color .25s var(--ease-out), color .25s var(--ease-out);
+}
+
+.cabecalho-escuro .site-header {
+  background: rgba(22, 18, 15, .91);
+  color: var(--cream);
+}
+
+.cabecalho-escuro .site-header .brand strong,
+.cabecalho-escuro .site-header .brand span,
+.cabecalho-escuro .site-header .nav-link,
+.cabecalho-escuro .site-header .lang-link {
+  color: var(--cream);
+}
+
+.cabecalho-escuro .site-header .lang-link[aria-current="true"] {
+  background: rgba(244, 239, 230, .14);
+  color: var(--cream);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header { transition-duration: .01ms; }
+}
