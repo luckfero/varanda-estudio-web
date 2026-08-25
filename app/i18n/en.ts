@@ -55,15 +55,7 @@ const en: Dicionario = {
     ctaSecundario: "See a project",
     local: "São Paulo, Brazil",
     atendimento: "Working remotely",
-    arteAlt: "Visual composition of a website being built",
-    navegadorEndereco: "yourbusiness.com",
-    navegadorMarca: "your business",
-    navegadorTitulo: "A presence worth<br />remembering.",
-    navegadorBotao: "learn more",
-    notaTopo: "clarity",
-    notaTopoForte: "before anything",
-    notaBaixo: "made with",
-    notaBaixoForte: "intent.",
+    arteAlt: "Screenshot of the Casa Conexão website, published by the studio, inside an arch composition with the sun rising behind it",
   },
 
   intro: {

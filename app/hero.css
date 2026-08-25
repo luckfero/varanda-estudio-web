@@ -19,17 +19,12 @@
   overflow: hidden;
 }
 
-.hero::before {
-  content: "";
-  position: absolute;
-  left: -10vw;
-  top: 20%;
-  width: 38vw;
-  height: 38vw;
-  border: 1px solid rgba(184, 103, 73, 0.15);
-  border-radius: 50%;
-  pointer-events: none;
-}
+/* O círculo de contorno que ficava aqui saiu em 25/08/2026.
+   Ele media 38vw (547px em 1440px), estava em rgba(184,103,73,.15) — 1,18:1
+   contra o creme, ou seja, invisível — e o traço passava por dentro do h1, do
+   lead e da quina do botão principal. Enfeite que não se vê e que atravessa
+   texto é só ruído sob a tipografia. A geometria da página fica por conta do
+   arco, que está do outro lado e é visível de verdade. */
 
 .hero-copy {
   position: relative;
@@ -44,15 +39,20 @@
   margin: 0 0 1.8rem;
   color: var(--green);
   font-size: 0.72rem;
-  font-weight: 750;
-  letter-spacing: 0.14em;
+  font-weight: 500;
+  letter-spacing: 0.20em;
   line-height: 1.5;
   text-transform: uppercase;
 }
 
+/* Quadrado de 7px, o mesmo marcador das entregas do portfólio.
+   Era um traço de 34x1px, e o comentário do `portfolio.css` explica por que
+   ele não podia ficar: marcador em traço desenha um travessão em cada item, e
+   travessão é a marca que o texto da casa não usa. Aqui ele aparecia dois
+   centímetros acima do h1, contradizendo a regra na primeira tela. */
 .kicker > span {
-  width: 34px;
-  height: 1px;
+  width: 7px;
+  height: 7px;
   background: var(--terracotta);
 }
 
@@ -292,113 +292,25 @@
   font-size: 0.55rem;
 }
 
-.art-janela-conteudo {
-  position: relative;
-  padding: 2.55rem;
-  background:
-    linear-gradient(90deg, transparent 72%, rgba(199, 154, 67, .16) 72%),
-    radial-gradient(circle at 85% 22%, rgba(184, 103, 73, .55) 0 15%, transparent 15.5%);
+/* A tela: a captura ocupa a janela inteira, sem recuo.
+   Sem `padding` de propósito — margem entre a moldura e o site lá dentro
+   faria parecer print colado, e não navegador. O `display: block` no `img`
+   tira o vão de linha de base que sobraria embaixo. */
+.art-janela-tela {
+  /* Trava a caixa na proporção do arquivo (2880x1516) antes de a imagem
+     chegar: sem isto a janela nasce com 34px de altura e o arco salta quando
+     a captura carrega. */
+  aspect-ratio: 2880 / 1516;
+  overflow: hidden;
+  background: var(--paper);
 }
 
-.art-janela-marca {
-  color: var(--green);
-  font-family: var(--serif-titulo);
-  font-size: 0.72rem;
-  font-weight: 700;
-}
-
-.art-janela-titulo {
-  margin-top: 2.6rem;
-  color: var(--green-dark);
-  font-family: var(--serif-titulo);
-  font-size: clamp(1.8rem, 3.55cqw, 4.4rem);
-  line-height: 0.95;
-  letter-spacing: -0.05em;
-}
-
-.art-janela-linhas {
-  margin-top: 1.4rem;
-  display: grid;
-  gap: 6px;
-}
-
-.art-janela-linhas i {
+.art-janela-tela picture,
+.art-janela-tela img {
   display: block;
-  width: 43%;
-  height: 3px;
-  background: #d9d1c7;
-}
-
-.art-janela-linhas i:last-child { width: 33%; }
-
-.art-janela-botao {
-  width: max-content;
-  margin-top: 1.6rem;
-  padding: 0.55rem 0.75rem;
-  background: var(--terracotta);
-  color: white;
-  font-size: 0.5rem;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.art-recado {
-  position: absolute;
-  z-index: 4;
-  padding: 1rem 1.15rem;
-  font-family: var(--serif-titulo);
-  font-size: 1rem;
-  line-height: 1.15;
-  box-shadow: 0 14px 30px rgba(40, 35, 31, .14);
-}
-
-.art-recado--topo {
-  right: 0;
-  top: 97px;
-  transform: rotate(4deg);
-  /* Branco sobre --terracotta dava 4,37:1, logo abaixo do minimo. Sobre o
-     tom escuro vai a 6,12:1. */
-  background: var(--terracotta-dark);
-  color: white;
-}
-
-.art-recado--topo strong {
-  font-style: italic;
-  font-weight: 400;
-}
-
-.art-recado--base {
-  left: 1%;
-  bottom: 50px;
-  transform: rotate(-5deg);
-  min-width: 150px;
-  min-height: 96px;
-  padding: 1rem 1.25rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background: var(--ochre);
-  color: var(--green-dark);
-}
-
-.art-recado--base small {
-  display: block;
-  font-family: var(--font-sans), sans-serif;
-  font-size: 0.64rem;
-  font-weight: 800;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-}
-
-.art-recado--base strong {
-  display: block;
-  margin-top: .28rem;
-  font-family: var(--serif-titulo);
-  font-size: 1.55rem;
-  font-weight: 400;
-  line-height: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* ==========================================================================
@@ -459,8 +371,7 @@
 .hero-art.is-visible .art-luz__feixe,
 .hero-art.is-visible .art-sol,
 .hero-art.is-visible .art-arco-sol,
-.hero-art.is-visible .art-janela,
-.hero-art.is-visible .art-recado {
+.hero-art.is-visible .art-janela {
   animation-duration: 820ms;
   animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
   animation-fill-mode: both;
@@ -474,8 +385,6 @@
 
 .hero-art.is-visible .art-sol       { animation-name: var-surge-baixo; animation-delay: 120ms; animation-duration: 700ms; }
 .hero-art.is-visible .art-arco-sol  { animation-name: var-surge-baixo; animation-delay: 620ms; animation-duration: 700ms; }
-.hero-art.is-visible .art-recado--topo { animation-name: var-surge; animation-delay: 1020ms; animation-duration: 620ms; }
-.hero-art.is-visible .art-recado--base { animation-name: var-surge; animation-delay: 1120ms; animation-duration: 620ms; }
 
 /* A janela tem `transform: rotate(-2deg)` no repouso, e o `translate3d` do
    quadro inicial sobrescreveria a rotação. Por isso o quadro carrega as duas
@@ -484,7 +393,11 @@
   from { opacity: 0; transform: translate3d(0, 24px, 0) rotate(-2deg); }
   to   { opacity: 1; transform: translate3d(0, 0, 0) rotate(-2deg); }
 }
-.hero-art.is-visible .art-janela { animation-name: var-surge-janela; animation-delay: 700ms; animation-duration: 760ms; }
+/* Era 700ms, quando ainda havia dois recados entrando depois dela. Agora a
+   janela é a última peça e é a única prova real da primeira tela: 380ms é o
+   bastante para a luz já estar subindo atrás dela, sem fazer o visitante
+   esperar pelo que ele veio ver. */
+.hero-art.is-visible .art-janela { animation-name: var-surge-janela; animation-delay: 380ms; animation-duration: 760ms; }
 
 /* Reduz, não zera: o surgimento continua, porque é ele que explica que a luz
    entra — só perde o deslocamento e encurta. */
@@ -493,8 +406,7 @@
   .hero-art.is-visible .art-luz__feixe,
   .hero-art.is-visible .art-sol,
   .hero-art.is-visible .art-arco-sol,
-  .hero-art.is-visible .art-janela,
-  .hero-art.is-visible .art-recado {
+  .hero-art.is-visible .art-janela {
     animation-name: var-surge;
     animation-duration: 420ms;
   }
@@ -504,6 +416,33 @@
   .hero-art.is-visible .art-sol,
   .hero-art.is-visible .art-arco-sol,
   .hero-art.is-visible .art-janela { animation-delay: 300ms; }
-  .hero-art.is-visible .art-recado--topo,
-  .hero-art.is-visible .art-recado--base { animation-delay: 380ms; }
+}
+
+/* ==========================================================================
+   A dobra do laptop                              (rodada de 25/08/2026)
+   ==========================================================================
+   Numa tela de 1366x768, que ainda é o segundo tamanho mais comum, o botão
+   principal terminava em y=646 — dentro da tela, mas com 122px de sobra, e a
+   nota de rodapé do hero caía fora. A altura vinha de dois lugares fixos que
+   foram medidos em tela grande: o cabeçalho de 100px e o recuo de 9,5rem.
+
+   A consulta é por ALTURA, não por largura: um monitor 1920x800 tem o mesmo
+   problema e uma janela estreita e alta não tem nenhum. */
+@media (max-height: 800px) and (min-width: 881px) {
+  /* O token não é o que mede o cabeçalho: ele é `min-height`, e a marca em
+     duas linhas passa dos 100px sozinha. Quem encolhe de verdade é o recuo
+     vertical daqui. Medido: 112px -> 97px. */
+  :root {
+    --altura-cabecalho: 88px;
+    /* O h1 desce um degrau. Não é enfeite: em 1366px de largura ele ocupa
+       quatro linhas, e a 85px por linha isso são 362px só de título numa tela
+       de 768. A 68px são 290px, e os 72px de diferença são exatamente o que
+       faltava para a nota do rodapé caber acima da dobra. */
+    --t-hero: clamp(3.2rem, 5vw, 5rem);
+  }
+  .site-header { padding-block: 0.7rem; }
+
+  /* 128px = os 97px do cabeçalho mais 31px de respiro. O valor antigo, de
+     9,5rem, foi medido em tela alta e aqui empurrava tudo para baixo. */
+  .hero { padding-top: 8rem; padding-bottom: 3.5rem; min-height: 0; }
 }

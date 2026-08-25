@@ -1,7 +1,9 @@
 "use client";
 
+import { heroVitrine } from "./data";
 import { ArcoMark, ArrowDownRightIcon, ArrowIcon } from "./icons";
 import type { Dicionario } from "./i18n";
+import Picture from "./picture";
 import { useAncoraSuave } from "./use-ancora-suave";
 
 /**
@@ -112,21 +114,33 @@ export default function SectionAbertura({
             <div className="art-arco-sol" />
           </div>
 
+          {/* A janela deixou de ser maquete.
+              Dentro dela está a captura do site da Casa Conexão como ele
+              está no ar, com o endereço verdadeiro na barra. A moldura de
+              navegador fica: é ela que diz "isto é um site", e sem ela a
+              imagem lê como foto. O que saiu foi o conteúdo inventado.
+
+              Carrega com `eager`: esta é a maior imagem da primeira tela e
+              provavelmente o LCP da página. Deixá-la preguiçosa atrasaria de
+              propósito justamente o que precisa aparecer primeiro. */}
           <div className="art-janela">
-            <div className="art-janela-topo"><i /><i /><i /><span>{t.hero.navegadorEndereco}</span></div>
-            <div className="art-janela-conteudo">
-              <div className="art-janela-marca">{t.hero.navegadorMarca}</div>
-              {/* O título do navegador de mentira quebra em duas linhas, e o
-                  ponto da quebra muda com a língua — por isso vem do
-                  dicionário com a marcação junto, e não como texto puro. */}
-              <div className="art-janela-titulo" dangerouslySetInnerHTML={{ __html: t.hero.navegadorTitulo }} />
-              <div className="art-janela-linhas"><i /><i /></div>
-              <div className="art-janela-botao">{t.hero.navegadorBotao}</div>
+            <div className="art-janela-topo">
+              <i /><i /><i />
+              <span>{heroVitrine.url.replace(/^https?:\/\//, "").replace(/\/$/, "")}</span>
+            </div>
+            <div className="art-janela-tela">
+              {/* `alt` vazio de propósito: o `.hero-art` acima é `role="img"`
+                  com rótulo próprio, e leitor de tela não entra nos filhos de
+                  um `role="img"`. Repetir o texto aqui não seria lido; seria
+                  só duplicata esperando divergir. */}
+              <Picture
+                name={heroVitrine.image}
+                alt=""
+                sizes="(max-width: 880px) 76vw, (max-width: 1280px) 40vw, 560px"
+                loading="eager"
+              />
             </div>
           </div>
-
-          <div className="art-recado art-recado--topo">{t.hero.notaTopo}<br /><strong>{t.hero.notaTopoForte}</strong></div>
-          <div className="art-recado art-recado--base"><small>{t.hero.notaBaixo}</small><strong>{t.hero.notaBaixoForte}</strong></div>
         </div>
       </section>
 

@@ -57,6 +57,27 @@ export const whatsappUrl = "https://wa.me/5511942263007";
  * A ordem aqui é cronológica de publicação, e não comercial como a de baixo:
  * são dois, e com dois não há hierarquia a construir.
  */
+/**
+ * A captura que abre o site.
+ *
+ * Até 25/08/2026 a hero mostrava uma maquete de navegador desenhada em CSS,
+ * com marca ("seu negócio"), endereço ("seunegocio.com.br") e título
+ * inventados. Ela ocupava 653px de largura contra os 556px da coluna de
+ * texto: a coisa **maior** da primeira tela era trabalho que não existe, e o
+ * primeiro trabalho real só aparecia depois de 2.564px de rolagem.
+ *
+ * É a mesma regra de fidelidade que proíbe inventar depoimento ou preço, e
+ * ela vale primeiro para o nosso próprio site.
+ *
+ * O endereço mora aqui, e não no dicionário, porque ele é o mesmo nos três
+ * idiomas — endereço não se traduz — e porque assim ele não pode divergir do
+ * link que a seção do portfólio publica logo abaixo.
+ */
+export const heroVitrine = {
+  image: "casa-conexao-vitrine",
+  url: "https://casaconexao.varandaestudioweb.com/",
+};
+
 export const featuredAssets = [
   {
     image: "casa-conexao-hero",

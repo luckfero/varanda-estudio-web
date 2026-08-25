@@ -66,15 +66,7 @@ const es: Dicionario = {
     ctaSecundario: "Ver proyecto",
     local: "São Paulo, Brasil",
     atendimento: "Trabajamos en remoto",
-    arteAlt: "Composición visual de una web en desarrollo",
-    navegadorEndereco: "tunegocio.com",
-    navegadorMarca: "tu negocio",
-    navegadorTitulo: "Presencia para que<br />te recuerden.",
-    navegadorBotao: "saber más",
-    notaTopo: "claridad",
-    notaTopoForte: "antes que nada",
-    notaBaixo: "hecho con",
-    notaBaixoForte: "intención.",
+    arteAlt: "Captura del sitio de Casa Conexão, publicado por el estudio, dentro de una composición de arco con el sol saliendo detrás",
   },
 
   intro: {
