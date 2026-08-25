@@ -123,6 +123,7 @@ const es: Dicionario = {
        que no existe. */
     noArIndice: "En línea",
     conceitualSelo: "Conceptual",
+    depoimentoIndice: "Quien ya recibió su sitio",
     ctaTexto: "Cuéntanos qué necesita tu negocio y respondemos con el siguiente paso.",
     ctaBotao: "Quiero un sitio así",
     estudosNota: "Sin cliente, sin dirección en línea.",

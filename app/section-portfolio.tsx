@@ -1,4 +1,4 @@
-import { featuredAssets, projectAssets } from "./data";
+import { depoimentos, featuredAssets, projectAssets } from "./data";
 import { ArrowIcon } from "./icons";
 import type { Dicionario } from "./i18n";
 import Picture from "./picture";
@@ -138,6 +138,26 @@ export default function SectionPortfolio({ portfolio }: { portfolio: Dicionario[
             })}
           </ul>
         </div>
+
+        {/* Depoimento, quando existir um de verdade.
+            O `depoimentos.length > 0` não é defesa contra erro: é o que
+            garante que a seção **não apareça vazia nem com frase de mentira**
+            enquanto ninguém tiver dito nada. Ver o comentário em `data.ts`. */}
+        {depoimentos.length > 0 && (
+          <div className="portfolio-vozes" data-reveal>
+            <span className="portfolio-marca">{t.portfolio.depoimentoIndice}</span>
+            {depoimentos.map((d) => (
+              <figure className="portfolio-voz" key={d.autor}>
+                <blockquote>{d.frase}</blockquote>
+                <figcaption>
+                  <strong>{d.autor}</strong>
+                  <span>{d.papel}</span>
+                  <a href={d.url} target="_blank" rel="noreferrer">{d.projeto}</a>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        )}
 
         {/* A chamada fecha a seção, e o lugar não é decorativo: aqui é onde a
             objeção "será que eles conseguem fazer isso?" acabou de morrer,

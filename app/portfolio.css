@@ -616,3 +616,40 @@
   font-size: var(--c-lead);
   line-height: var(--lh-lead);
 }
+
+/* Depoimento no chão escuro do portfólio.
+   Só existe na tela quando `depoimentos` em data.ts tiver alguma coisa; até
+   lá o componente nem renderiza. Ver o comentário lá, que explica por quê. */
+.portfolio-vozes {
+  margin-top: clamp(3.5rem, 6vw, 5.5rem);
+  padding-top: clamp(2rem, 3vw, 3rem);
+  border-top: 1px solid rgba(233, 226, 213, .16);
+}
+
+.portfolio-voz {
+  max-width: 62ch;
+  margin: 1.8rem 0 0;
+}
+
+.portfolio-voz blockquote {
+  margin: 0;
+  color: var(--cream);
+  font-family: var(--serif-titulo);
+  font-size: var(--t-bloco);
+  font-style: italic;
+  font-weight: 400;
+  line-height: var(--lh-titulo-miudo);
+}
+
+.portfolio-voz figcaption {
+  margin-top: 1.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .2rem 1rem;
+  font-size: var(--c-apoio);
+}
+
+.portfolio-voz figcaption strong { color: var(--ochre-light); font-weight: 700; }
+.portfolio-voz figcaption span { color: #cfc7bb; }
+.portfolio-voz figcaption a { color: #cfc7bb; text-decoration: underline; text-underline-offset: 4px; }

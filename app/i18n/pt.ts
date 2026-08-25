@@ -117,6 +117,7 @@ const pt = {
        duas, e é a informação que o visitante procura. */
     noArIndice: "No ar",
     conceitualSelo: "Conceitual",
+    depoimentoIndice: "Quem já recebeu o site",
     ctaTexto: "Conte o que seu negócio precisa e respondemos com o próximo passo.",
     ctaBotao: "Quero um site assim",
     estudosNota: "Sem cliente, sem endereço no ar.",

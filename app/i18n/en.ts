@@ -112,6 +112,7 @@ const en: Dicionario = {
        relationship that does not exist. */
     noArIndice: "Live",
     conceitualSelo: "Concept",
+    depoimentoIndice: "From a client",
     ctaTexto: "Tell us what your business needs and we'll reply with the next step.",
     ctaBotao: "I want a site like this",
     estudosNota: "No client, no address online.",

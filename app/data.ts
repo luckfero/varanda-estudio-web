@@ -77,6 +77,37 @@ export const emailContato = "varandaestudioweb@gmail.com";
  * A ordem aqui é cronológica de publicação, e não comercial como a de baixo:
  * são dois, e com dois não há hierarquia a construir.
  */
+/**
+ * Depoimentos de clientes.
+ *
+ * **Está vazio de propósito, e enquanto estiver vazio a seção não aparece.**
+ *
+ * A regra que segura isto é a mesma que proíbe inventar preço, endereço ou
+ * certificação: frase entre aspas com nome embaixo é a pessoa falando. Escrever
+ * no lugar dela e assinar com o nome dela é depoimento fabricado, e é o tipo de
+ * coisa que um prospect confere com um telefonema.
+ *
+ * O caminho para preencher, em 25/08/2026:
+ *
+ * 1. `comercial/conversas/depoimento-casa-conexao.md` tem três frases prontas
+ *    para a Isamarta escolher, mais o pedido pronto para mandar.
+ * 2. Ela responde escolhendo uma, mudando as palavras ou escrevendo a dela.
+ * 3. **O que ela devolver é o que entra aqui**, com o nome como ela quiser
+ *    assinar. Se ela mudar uma vírgula, vale a versão dela.
+ *
+ * `frase` fica no original em português nos três idiomas: depoimento traduzido
+ * por nós deixa de ser a palavra da pessoa. O rótulo em volta é que muda.
+ */
+export type Depoimento = {
+  frase: string;
+  autor: string;
+  papel: string;
+  projeto: string;
+  url: string;
+};
+
+export const depoimentos: Depoimento[] = [];
+
 export const featuredAssets = [
   {
     image: "casa-conexao-hero",
