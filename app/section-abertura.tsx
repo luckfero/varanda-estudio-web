@@ -155,7 +155,7 @@ export default function SectionAbertura({
           <p>{t.servicos.resumo}</p>
         </div>
         <div className="service-grid">
-          {t.servicos.lista.map((service, index) => (
+          {t.servicos.lista.map((service) => (
             <article className="service-card" key={service.number} data-reveal>
               <span>{service.number}</span>
               <div className="service-icon" aria-hidden="true"><i /><i /></div>

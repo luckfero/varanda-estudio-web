@@ -91,12 +91,21 @@
      do site, está muito grande". Medido antes: TODOS os dez h2 da home em
      64px, e o do processo quebrando em SEIS linhas.
      A escala inteira desceu junta, e não título a título, para a hierarquia
-     entre os quatro degraus continuar a mesma. Em 1280px: 80 -> 56 no h1,
-     64 -> 44 no h2, 41 -> 28 no h3 de bloco, 26 -> 19 no h3 miúdo. */
-  --t-hero:  clamp(2.9rem, 4.4vw, 4.8rem);   /* só o h1 da home */
-  --t-secao: clamp(2.3rem, 3.4vw, 3.6rem);   /* o h2 que abre uma seção */
-  --t-bloco: clamp(1.5rem, 2.2vw, 1.95rem);  /* h3 de cartão e de bloco */
-  --t-item:  clamp(1.05rem, 1.45vw, 1.25rem);/* h3 miúdo, pergunta, item */
+     entre os quatro degraus continuar a mesma.
+
+     **Corrigida no mesmo dia, e este é o valor bom.** A primeira redução foi
+     longe demais: "agora está muito pequeno, ache um meio termo". Ela é
+     exatamente o meio do caminho entre os dois extremos, degrau por degrau.
+     Em 1280px: o h1 era 80, foi a 56 e ficou em 68; o h2 era 64, foi a 44 e
+     ficou em 54; o h3 de bloco era 41, foi a 28 e ficou em 35; o h3 miúdo era
+     26, foi a 19 e ficou em 22.
+
+     Mexer num degrau sozinho quebra a razão entre eles, que é o que faz a
+     página ter hierarquia. Se precisar mexer de novo, mexer nos quatro. */
+  --t-hero:  clamp(3.35rem, 5.3vw, 6rem);    /* só o h1 da home */
+  --t-secao: clamp(2.7rem, 4.2vw, 4.4rem);   /* o h2 que abre uma seção */
+  --t-bloco: clamp(1.75rem, 2.7vw, 2.35rem); /* h3 de cartão e de bloco */
+  --t-item:  clamp(1.2rem, 1.72vw, 1.45rem); /* h3 miúdo, pergunta, item */
 
   --c-lead:  1.125rem;  /* 18px, a linha de apoio de uma seção */
   --c-base:  1rem;      /* 16px, o corpo de texto */
