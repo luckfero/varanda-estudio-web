@@ -56,9 +56,6 @@ export default function SectionSobre({
               <pattern id="planta-grade" width="40" height="40" patternUnits="userSpaceOnUse">
                 <path d="M40 0V40M0 40H40" fill="none" stroke="#214d3b" strokeOpacity="0.11" strokeWidth="1" />
               </pattern>
-              <pattern id="planta-hachura" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                <path d="M0 0V9" stroke="#214d3b" strokeOpacity="0.4" strokeWidth="1" />
-              </pattern>
               <clipPath id="planta-abertura">
                 <path d="M136 470V300a144 144 0 0 1 288 0v170Z" />
               </clipPath>
@@ -75,8 +72,13 @@ export default function SectionSobre({
                 se traça numa prancha e a primeira que aparece aqui. */}
             <path className="planta-traco planta-chao" pathLength="100" d="M30 470h500" stroke="#b86749" strokeWidth="2.2" fill="none" />
 
-            {/* A geometria que gera o arco, deixada à vista. */}
-            <g className="planta-constru" fill="none" strokeWidth="1.1">
+            {/* A CONTA.
+                A geometria que gera o arco, mais os nós e as cotas lá embaixo,
+                formam um grupo só: `.planta-calculo`. Eles entram primeiro,
+                ficam enquanto o arco é traçado e construído, e **somem no fim**
+                — que é o que acontece com a linha de construção de qualquer
+                desenho técnico quando ele vira obra. */}
+            <g className="planta-calculo planta-constru" fill="none" strokeWidth="1.1">
               <circle cx="280" cy="300" r="170" stroke="#b86749" strokeOpacity="0.4" strokeDasharray="7 7" />
               <path d="M280 76V546" stroke="#214d3b" strokeOpacity="0.34" strokeDasharray="7 7" />
               <path d="M56 300H504" stroke="#214d3b" strokeOpacity="0.34" strokeDasharray="7 7" />
@@ -88,11 +90,16 @@ export default function SectionSobre({
             <path className="planta-traco planta-traco--fora" pathLength="100" d="M110 470V300a170 170 0 0 1 340 0v170" fill="none" stroke="#214d3b" strokeWidth="1.7" />
             <path className="planta-traco planta-traco--dentro" pathLength="100" d="M136 470V300a144 144 0 0 1 288 0v170" fill="none" stroke="#214d3b" strokeWidth="1.7" />
 
-            {/* O corte: preenchimento leve e hachura, entre os dois contornos.
-                `fill-rule="evenodd"` é o que abre o vão no meio. */}
-            <path className="planta-poche planta-poche--chapa" fillRule="evenodd" fill="#214d3b" fillOpacity="0.09"
-                  d="M110 470V300a170 170 0 0 1 340 0v170ZM136 470V300a144 144 0 0 1 288 0v170Z" />
-            <path className="planta-poche planta-poche--hachura" fillRule="evenodd" fill="url(#planta-hachura)"
+            {/* A alvenaria, em massa cheia.
+                Era preenchimento a 9% mais hachura a 45 graus, que é como se
+                representa corte numa prancha. Passou a ser o VERDE DA MARCA,
+                chapado, a pedido em 26/08/2026: `#214d3b` é exatamente o
+                mesmo do quadrado do logotipo e do `ArcoMark`.
+
+                `fill-rule="evenodd"` é o que abre o vão no meio: o caminho
+                traz o contorno de fora e o de dentro, e a regra vaza o miolo.
+                Trocar por `nonzero` fecha o arco e some com a abertura. */}
+            <path className="planta-poche" fillRule="evenodd" fill="var(--green)"
                   d="M110 470V300a170 170 0 0 1 340 0v170ZM136 470V300a144 144 0 0 1 288 0v170Z" />
 
             {/* A luz dentro da abertura, recortada pela forma do vão. */}
@@ -100,11 +107,11 @@ export default function SectionSobre({
               <rect className="planta-brilho" x="110" y="180" width="340" height="292" fill="url(#planta-luz)" />
             </g>
 
-            <path className="planta-constru planta-constru--sol" d="M216 470a64 64 0 0 0 128 0" fill="none" stroke="#b86749" strokeOpacity="0.5" strokeWidth="1.1" strokeDasharray="6 6" />
+            <path className="planta-calculo planta-constru--sol" d="M216 470a64 64 0 0 0 128 0" fill="none" stroke="#b86749" strokeOpacity="0.5" strokeWidth="1.1" strokeDasharray="6 6" />
             <path className="planta-sol" d="M216 470a64 64 0 0 1 128 0Z" fill="#c79a43" />
 
             {/* Nós e cotas: as marcas de quem desenha antes de construir. */}
-            <g className="planta-cota">
+            <g className="planta-calculo planta-cota">
               <rect x="277" y="297" width="6" height="6" fill="#b86749" />
               <rect x="107" y="297" width="6" height="6" fill="#b86749" />
               <rect x="447" y="297" width="6" height="6" fill="#b86749" />

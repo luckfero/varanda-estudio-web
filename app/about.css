@@ -48,21 +48,31 @@
 }
 
 /* --------------------------------------------------------------------------
-   O movimento: a prancha sendo desenhada
+   O movimento: a prancha sendo desenhada, e depois limpa
 
    TUDO daqui para baixo está sob `.about-art.is-visible`, que é a classe que o
    revelar por rolagem põe quando o bloco entra na tela. É a regra 9.26 do
-   protocolo: animação de entrada de bloco que pode nascer fora da tela se
-   prende à entrada dele na tela. Aqui isso importa mais do que na hero, porque
-   esta seção fica na metade de baixo da página e NUNCA é a primeira coisa que
-   o visitante vê.
+   protocolo. Aqui ela importa mais que na hero, porque esta seção fica na
+   metade de baixo da página e nunca é a primeira coisa que o visitante vê.
 
-   Enquanto a classe não chega, nenhuma regra abaixo se aplica e o desenho
-   nasce inteiro e parado. Sem `IntersectionObserver`, `is-visible` nunca
-   chega, e o pior caso é a peça completa e estática, que é o certo.
+   A narrativa, pedida em 26/08/2026: **a conta aparece primeiro, como se o
+   arco estivesse sendo calculado, e some no fim.** Então a ordem é a de quem
+   projeta:
 
-   A ordem é a de quem desenha: o chão, a geometria que gera o arco, os dois
-   contornos, o corte, a luz e o sol, e por último as cotas. -------------- */
+     1. o papel quadriculado
+     2. A CONTA: o círculo gerador, os eixos, o raio, os nós e as cotas
+     3. a linha do chão, traçada
+     4. os dois contornos do arco, traçados
+     5. a alvenaria enchendo de verde
+     6. a luz e o sol
+     7. a conta SOMINDO, que é o que acontece com linha de construção quando o
+        desenho vira obra
+
+   O estado final, e é ele que fica em pé 99% do tempo, é o arco verde cheio
+   com o sol na linha do chão sobre o quadriculado. Por isso `.planta-calculo`
+   nasce em `opacity: 0` fora da animação: sem JavaScript o visitante vê esse
+   mesmo estado final, e não uma versão que a animação depois contradiz.
+   -------------------------------------------------------------------------- */
 
 @keyframes planta-surge {
   from { opacity: 0; }
@@ -81,29 +91,18 @@
   to   { stroke-dashoffset: 0; }
 }
 
-.about-art.is-visible .planta-grade,
-.about-art.is-visible .planta-constru,
-.about-art.is-visible .planta-poche,
-.about-art.is-visible .planta-brilho,
-.about-art.is-visible .planta-sol,
-.about-art.is-visible .planta-cota,
-.about-art.is-visible .planta-traco {
-  animation-duration: 820ms;
-  animation-timing-function: var(--ease-out);
-  animation-fill-mode: both;
+/* Aparece, fica, some. Um quadro-chave só em vez de duas animações
+   encadeadas: com duas, a segunda precisaria saber quando a primeira acabou, e
+   qualquer ajuste de tempo exigiria mexer nas duas. */
+@keyframes planta-calcula {
+  0%   { opacity: 0; }
+  9%   { opacity: 1; }
+  72%  { opacity: 1; }
+  100% { opacity: 0; }
 }
 
-.about-art.is-visible .planta-grade   { animation-name: planta-surge; animation-duration: 900ms; }
-.about-art.is-visible .planta-chao    { animation-name: planta-pinta; animation-duration: 620ms; animation-delay: 80ms; }
-.about-art.is-visible .planta-constru { animation-name: planta-surge; animation-duration: 700ms; animation-delay: 240ms; }
-.about-art.is-visible .planta-traco--fora   { animation-name: planta-pinta; animation-duration: 900ms; animation-delay: 380ms; }
-.about-art.is-visible .planta-traco--dentro { animation-name: planta-pinta; animation-duration: 900ms; animation-delay: 520ms; }
-.about-art.is-visible .planta-poche--chapa   { animation-name: planta-surge; animation-duration: 700ms; animation-delay: 900ms; }
-.about-art.is-visible .planta-poche--hachura { animation-name: planta-surge; animation-duration: 700ms; animation-delay: 1000ms; }
-.about-art.is-visible .planta-brilho  { animation-name: planta-surge; animation-duration: 900ms; animation-delay: 1060ms; }
-.about-art.is-visible .planta-constru--sol { animation-name: planta-surge; animation-duration: 600ms; animation-delay: 1120ms; }
-.about-art.is-visible .planta-sol     { animation-name: planta-sobe;  animation-duration: 760ms; animation-delay: 1180ms; }
-.about-art.is-visible .planta-cota    { animation-name: planta-surge; animation-duration: 600ms; animation-delay: 1300ms; }
+/* A conta não existe em repouso: o desenho pronto é o arco construído. */
+.planta-calculo { opacity: 0; }
 
 /* Em repouso o traço está INTEIRO. Se o movimento não rodar, por qualquer
    motivo, o desenho aparece completo em vez de sumir pela metade. */
@@ -112,19 +111,54 @@
   stroke-dashoffset: 0;
 }
 
+.about-art.is-visible .planta-grade,
+.about-art.is-visible .planta-calculo,
+.about-art.is-visible .planta-poche,
+.about-art.is-visible .planta-brilho,
+.about-art.is-visible .planta-sol,
+.about-art.is-visible .planta-traco {
+  animation-timing-function: var(--ease-out);
+  animation-fill-mode: both;
+}
+
+.about-art.is-visible .planta-grade { animation-name: planta-surge; animation-duration: 700ms; }
+
+/* A conta: entra cedo e sai depois de o arco estar de pé. As durações são
+   diferentes de propósito, e os atrasos também: o que precisa coincidir é o
+   FIM das duas, para elas sumirem juntas. 40 + 2200 = 140 + 2100 = 2240ms. */
+.about-art.is-visible .planta-constru { animation-name: planta-calcula; animation-duration: 2200ms; animation-delay: 40ms; }
+.about-art.is-visible .planta-cota    { animation-name: planta-calcula; animation-duration: 2100ms; animation-delay: 140ms; }
+.about-art.is-visible .planta-constru--sol { animation-name: planta-calcula; animation-duration: 2100ms; animation-delay: 140ms; }
+
+.about-art.is-visible .planta-chao          { animation-name: planta-pinta; animation-duration: 520ms; animation-delay: 300ms; }
+.about-art.is-visible .planta-traco--fora   { animation-name: planta-pinta; animation-duration: 780ms; animation-delay: 460ms; }
+.about-art.is-visible .planta-traco--dentro { animation-name: planta-pinta; animation-duration: 780ms; animation-delay: 580ms; }
+
+.about-art.is-visible .planta-poche  { animation-name: planta-surge; animation-duration: 520ms; animation-delay: 1300ms; }
+.about-art.is-visible .planta-brilho { animation-name: planta-surge; animation-duration: 700ms; animation-delay: 1420ms; }
+.about-art.is-visible .planta-sol    { animation-name: planta-sobe;  animation-duration: 700ms; animation-delay: 1500ms; }
+
 /* Reduz, não zera: o surgimento continua, porque é ele que conta que a prancha
    está sendo desenhada. O que sai é o traço correndo, que é o deslocamento, e
-   a escada de atrasos encurta para caber em meio segundo. */
+   a escada de atrasos encurta para caber em pouco mais de meio segundo.
+
+   A conta continua aparecendo e sumindo, porque isso é NARRATIVA e não
+   enfeite: ela só faz o ciclo inteiro mais rápido. */
 @media (prefers-reduced-motion: reduce) {
   .about-art.is-visible .planta-grade,
-  .about-art.is-visible .planta-constru,
   .about-art.is-visible .planta-poche,
   .about-art.is-visible .planta-brilho,
   .about-art.is-visible .planta-sol,
-  .about-art.is-visible .planta-cota,
   .about-art.is-visible .planta-traco {
     animation-name: planta-surge !important;
     animation-duration: 420ms !important;
+    animation-fill-mode: both;
+  }
+  .about-art.is-visible .planta-constru,
+  .about-art.is-visible .planta-cota,
+  .about-art.is-visible .planta-constru--sol {
+    animation-name: planta-calcula !important;
+    animation-duration: 900ms !important;
     animation-fill-mode: both;
   }
   /* O `!important` NÃO é preguiça, e tirar ele quebra isto de novo.
@@ -135,25 +169,23 @@
      RESPEITAR a preferência.
 
      Medido no Chrome com `prefers-reduced-motion: reduce` forçado, antes desta
-     linha: a duração computava 1e-05s enquanto os atrasos sobreviviam intactos
-     (0 · 60 · 100 · 140 · 200 · 240 · 280 · 320 · 380ms). Com
-     `animation-fill-mode: both`, cada peça ficava em opacidade 0 até a vez
+     linha: a duração computava 1e-05s enquanto os atrasos sobreviviam intactos.
+     Com `animation-fill-mode: both`, cada peça ficava em opacidade 0 até a vez
      dela e então aparecia de estalo. Ou seja: quem pediu MENOS movimento
-     recebia nove estalos em vez de um surgimento suave, que é pior que não
-     animar e é o oposto da regra 9.20.
+     recebia uma sequência de estalos em vez de um surgimento suave, que é pior
+     que não animar e é o oposto da regra 9.20.
 
      Ler a folha dava a impressão contrária. Só o valor computado mostrou. */
 
+  .about-art.is-visible .planta-constru       { animation-delay: 0ms; }
+  .about-art.is-visible .planta-cota,
+  .about-art.is-visible .planta-constru--sol  { animation-delay: 60ms; }
   .about-art.is-visible .planta-chao          { animation-delay: 0ms; }
-  .about-art.is-visible .planta-constru       { animation-delay: 60ms; }
   .about-art.is-visible .planta-traco--fora   { animation-delay: 100ms; }
   .about-art.is-visible .planta-traco--dentro { animation-delay: 140ms; }
-  .about-art.is-visible .planta-poche--chapa,
-  .about-art.is-visible .planta-poche--hachura { animation-delay: 200ms; }
-  .about-art.is-visible .planta-brilho        { animation-delay: 240ms; }
-  .about-art.is-visible .planta-constru--sol  { animation-delay: 280ms; }
-  .about-art.is-visible .planta-sol           { animation-delay: 320ms; }
-  .about-art.is-visible .planta-cota          { animation-delay: 380ms; }
+  .about-art.is-visible .planta-poche         { animation-delay: 420ms; }
+  .about-art.is-visible .planta-brilho        { animation-delay: 500ms; }
+  .about-art.is-visible .planta-sol           { animation-delay: 560ms; }
 }
 
 .about-copy h2 {
