@@ -94,16 +94,21 @@
 }
 
 .button {
-  min-height: 52px;
-  padding: 0.9rem 1.3rem;
+  min-height: var(--btn-altura);
+  /* Recuo vertical ZERO, de propósito: quem define a altura é o
+     `min-height` mais o `align-items: center` do flex. Com recuo vertical, um
+     rótulo de duas linhas ou um ícone mais alto empurra o botão para cima do
+     token — foi assim que quatro alturas diferentes apareceram onde o plano
+     pedia duas. */
+  padding: 0 var(--btn-pad-x);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 1rem;
   border: 1px solid transparent;
   border-radius: 0;
-  font-size: 0.82rem;
-  font-weight: 750;
+  font-size: var(--btn-fonte);
+  font-weight: var(--btn-peso);
   letter-spacing: 0.02em;
   cursor: pointer;
   transition: transform var(--dur-fast) var(--ease-out),
@@ -167,6 +172,34 @@
   color: var(--green-dark);
 }
 
+/* O ESTADO DE PRESSIONADO.
+   O site inteiro não tinha nenhum, e `--dur-press: 160ms` estava declarado e
+   usado zero vezes desde que foi escrito. No toque isso pesa mais que no
+   mouse: lá não existe `:hover`, então **o pressionado é a única resposta que
+   o botão dá** entre o dedo encostar e a página mudar.
+
+   `scale(0.985)` e não `translateY`: afundar é o gesto de apertar, e descer
+   parece o contrário do que o `:hover` faz, que é subir 2px.
+
+   Fora de `@media (hover: hover)` de propósito: `:active` não gruda no toque
+   como `:hover` gruda, e é exatamente ali que ele precisa existir. */
+.button:active,
+.text-link:active,
+.nav-cta:active {
+  transform: scale(0.985);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .button,
+  .text-link,
+  .nav-cta {
+    transition:
+      transform var(--dur-press) var(--ease-out),
+      background var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out);
+  }
+}
+
 /* Botão que ocupa a linha inteira. É pedido do LUGAR, não da cor: no cartão
    de preço a coluna é a unidade de leitura e o botão fecha a coluna. */
 .button--bloco { width: 100%; }
@@ -176,10 +209,12 @@
   align-items: center;
   gap: 0.65rem;
   color: var(--green);
+  /* Tingido de propósito: é o sublinhado do link, não um fio de
+     separação. Fio separa; este marca que a palavra é clicável. */
   border-bottom: 1px solid rgba(33, 77, 59, 0.35);
   padding-bottom: 0.35rem;
-  font-size: 0.82rem;
-  font-weight: 750;
+  font-size: var(--btn-fonte);
+  font-weight: var(--btn-peso);
 }
 
 .hero-footnote {
@@ -278,7 +313,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  border-bottom: 1px solid rgba(40, 35, 31, 0.12);
+  border-bottom: 1px solid var(--fio);
 }
 
 .art-janela-topo i {

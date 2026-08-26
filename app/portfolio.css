@@ -196,16 +196,15 @@
 .service-acao {
   width: max-content;
   margin: auto auto 0;
-  padding: .85rem 1.6rem;
+  padding: 0 var(--btn-pad-x);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  /* Alvo de toque acima dos 44px da WCAG. */
-  min-height: 46px;
+  min-height: var(--btn-altura-compacto);
   border: 1px solid var(--acento);
   color: var(--acento);
-  font-size: .82rem;
-  font-weight: 750;
+  font-size: var(--btn-fonte);
+  font-weight: var(--btn-peso);
   letter-spacing: .02em;
   text-decoration: none;
 }
@@ -281,6 +280,8 @@
      em vez de em `:root` é o que impede que virem paleta da casa sem
      alguém ter decidido isso. */
   --chao: var(--escuro);
+  /* Chão escuro: o fio inverte junto, por superfície (regra 9.8). */
+  --fio: var(--fio-escuro);
   --chao-alto: var(--escuro-alto);
   --luz: #cfc6ba;
   --luz-fraca: #a89e93;
@@ -564,7 +565,7 @@
   aspect-ratio: 16 / 10;
   object-fit: cover;
   object-position: 50% 40%;
-  border: 1px solid rgba(244, 239, 230, .10);
+  border: 1px solid var(--fio);
   /* Rebaixadas de propósito: elas não competem com as placas acima, e a
      diferença de brilho é mais uma camada dizendo que estas são estudo. */
   filter: grayscale(.18) brightness(.88) contrast(1.02);
@@ -659,7 +660,7 @@
 .portfolio-chamada {
   margin-top: clamp(3.5rem, 6vw, 5.5rem);
   padding-top: clamp(2rem, 3vw, 3rem);
-  border-top: 1px solid rgba(233, 226, 213, .16);
+  border-top: 1px solid var(--fio);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -681,7 +682,7 @@
 .portfolio-vozes {
   margin-top: clamp(3.5rem, 6vw, 5.5rem);
   padding-top: clamp(2rem, 3vw, 3rem);
-  border-top: 1px solid rgba(233, 226, 213, .16);
+  border-top: 1px solid var(--fio);
 }
 
 .portfolio-voz {

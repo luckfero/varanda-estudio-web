@@ -213,9 +213,42 @@
   font-size: .79rem;
 }
 
-.is-featured ul { border-color: rgba(255,255,255,.2); color: #d8d0c4; }
-.price-card li::before { content: "✓"; margin-right: .65rem; color: var(--terracotta); font-weight: 800; }
-.is-featured li::before { color: var(--ochre); }
+.is-featured ul { border-color: var(--fio); color: #d8d0c4; }
+/* MARCADOR EM QUADRADO, e não em ✓.
+
+   O U+2713 não está em NENHUMA das cinco faixas Unicode declaradas nos
+   `@font-face` de `fonts.css` — conferido varrendo os `unicode-range` um a
+   um. Consequência: ele caía para a fonte do sistema, com negrito sintético,
+   e saía diferente em cada máquina. Um glifo que muda de forma conforme o
+   computador do visitante não é marcador, é sorte.
+
+   Junto disso, `::before` em linha não dá recuo pendente: a segunda linha do
+   item voltava para debaixo do marcador em vez de alinhar com a primeira. O
+   `grid` de duas colunas resolve as duas coisas de uma vez.
+
+   O quadrado de 5px é o mesmo das entregas do portfólio, que é a régua. */
+.price-card li,
+.pricing-escopo-incluso li,
+.pricing-escopo-extra li,
+.care-grid li {
+  display: grid;
+  grid-template-columns: 5px 1fr;
+  align-items: baseline;
+  gap: .75rem;
+}
+
+.price-card li::before,
+.pricing-escopo-incluso li::before,
+.care-grid li::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  /* `translateY` porque um quadrado alinhado pela linha de base fica no pé da
+     letra; subir metade da altura dele o põe na altura do olho. */
+  transform: translateY(-2px);
+  background: var(--terracotta);
+}
+.is-featured li::before { background: var(--ochre); }
 
 /**
  * Garantias da casa, fora dos cartoes.
@@ -328,16 +361,17 @@
    --terracotta-dark mede 5,35:1 sobre o creme; o tom medio ficaria em
    3,67:1. Mesmo marcador dos cartoes de preco, de proposito: repete o
    vocabulario de "isto esta incluso". */
-.pricing-escopo-incluso li::before {
-  content: "✓";
-  color: var(--acento);
-}
 
 /* O sinal de mais diz "soma-se ao pacote", que e exatamente a relacao
    comercial. Em --green-dark, 11,19:1 sobre o creme. */
+/* O "+" fica: ele é o ÚNICO marcador diferente da página e é ele que carrega
+   a informação numa leitura rápida — esta coluna é o que tem orçamento
+   próprio, a outra é o que já está no preço. Ele está na faixa latina básica,
+   então a fonte da casa o desenha. */
 .pricing-escopo-extra li::before {
   content: "+";
   color: var(--green-dark);
+  font-weight: 700;
 }
 
 /* Condição de pagamento, uma vez só para os três. Repetida em cada cartão
@@ -366,6 +400,7 @@
 .care {
   /* Mesma razão do botão: sobre --terracotta puro os textos de apoio desta
      seção mediam 3,17:1 e 3,23:1. */
+  --fio: var(--fio-escuro);
   /* Era --terracotta-dark #974d35, cujo TETO de contraste é 5,78:1 com o
      branco: o melhor elemento da seção perdia para o pior do portfólio, que
      é 6,84:1. O --terracotta-deep já existia declarado e nunca usado, e leva
@@ -385,13 +420,13 @@
   margin-top: 4rem;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  border-top: 1px solid rgba(255,255,255,.25);
-  border-bottom: 1px solid rgba(255,255,255,.25);
+  border-top: 1px solid var(--fio);
+  border-bottom: 1px solid var(--fio);
 }
 
 .care-grid article {
   padding: 2.2rem clamp(1.2rem, 3vw, 3rem);
-  border-right: 1px solid rgba(255,255,255,.25);
+  border-right: 1px solid var(--fio);
 }
 
 .care-grid article:last-child { border-right: 0; }
@@ -428,7 +463,7 @@
 .care-grid ul {
   margin: 1.4rem 0 0;
   padding: 1.3rem 0 0;
-  border-top: 1px solid rgba(255,255,255,.25);
+  border-top: 1px solid var(--fio);
   list-style: none;
   display: grid;
   gap: .7rem;
@@ -438,10 +473,7 @@
 }
 
 .care-grid li::before {
-  content: "✓";
-  margin-right: .6rem;
-  color: var(--ochre-light);
-  font-weight: 800;
+  background: var(--ochre-light);
 }
 
 .care-notes {

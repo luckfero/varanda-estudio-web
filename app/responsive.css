@@ -123,7 +123,7 @@
   .conceituais-cabecalho > .portfolio-aviso { margin-top: .4rem; }
 
   .service-grid { grid-template-columns: 1fr; }
-  .service-card { min-height: 0; border-right: 0; border-bottom: 1px solid rgba(255,255,255,.2); }
+  .service-card { min-height: 0; border-right: 0; border-bottom: 1px solid var(--fio); }
   .service-card:last-child { border-bottom: 0; }
   .service-icon { margin: 2rem 0; }
 
@@ -140,7 +140,7 @@
   .pricing-included ul { grid-template-columns: 1fr 1fr; gap: 1.5rem 2rem; }
   .pricing-escopo { grid-template-columns: 1fr; gap: 2.4rem; }
   .care-grid { grid-template-columns: 1fr; }
-  .care-grid article { border-right: 0; border-bottom: 1px solid rgba(255,255,255,.25); }
+  .care-grid article { border-right: 0; border-bottom: 1px solid var(--fio); }
   .care-grid article:last-child { border-bottom: 0; }
   /* Sem `min-height`: quem define a altura é a proporção do SVG da planta.
      O valor antigo, 560px, foi medido para a arte que existia até 26/08/2026

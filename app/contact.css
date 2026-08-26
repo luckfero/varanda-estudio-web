@@ -48,6 +48,7 @@
    de cor: sem fio, o formulário termina e a página continua escura sem nada
    dizer que virou outra coisa. */
 .footer {
+  --fio: var(--fio-escuro);
   position: relative;
   padding: 3.2rem clamp(1.25rem, 5vw, 5.5rem) 2rem;
   /* Mesmo chão do contato desde 25/08/2026. A página terminava abrindo de

@@ -291,7 +291,7 @@
   margin-top: 3.8rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  border-top: 1px solid rgba(40,35,31,.28);
+  border-top: 1px solid var(--fio);
 }
 
 .extras-list div {
@@ -299,13 +299,13 @@
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  border-bottom: 1px solid rgba(40,35,31,.28);
+  border-bottom: 1px solid var(--fio);
   color: #4f4943;
   font-size: .84rem;
 }
 
 .extras-list div:nth-child(odd) { padding-right: 2rem; }
-.extras-list div:nth-child(even) { padding-left: 2rem; border-left: 1px solid rgba(40,35,31,.28); }
+.extras-list div:nth-child(even) { padding-left: 2rem; border-left: 1px solid var(--fio); }
 .extras-list strong { color: var(--green); font-weight: 750; text-align: right; }
 .extras-note { margin: 2.1rem 0 0; color: var(--ink-muted); font-size: var(--c-apoio); line-height: var(--lh-apoio); }
 
@@ -391,7 +391,7 @@
 
 .contact-direct {
   margin-top: 3rem;
-  border-top: 1px solid rgba(255,255,255,.18);
+  border-top: 1px solid var(--fio);
 }
 
 .contact-direct a {
@@ -399,7 +399,7 @@
   display: flex;
   flex-direction: column;
   gap: .4rem;
-  border-bottom: 1px solid rgba(255,255,255,.18);
+  border-bottom: 1px solid var(--fio);
 }
 
 .contact-direct span { color: var(--ochre); font-size: .64rem; font-weight: 750; letter-spacing: .13em; text-transform: uppercase; }
@@ -457,7 +457,7 @@
 .contact-form textarea {
   width: 100%;
   border: 0;
-  border-bottom: 1px solid #aaa195;
+  border-bottom: 1px solid var(--fio);
   border-radius: 0;
   background: transparent;
   color: var(--charcoal);

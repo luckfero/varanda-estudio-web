@@ -29,7 +29,6 @@
 
   /* Unico raio retangular do site, so no card do portfolio (ver
      portfolio.css). O resto da linguagem visual e reta. */
-  --raio-portfolio: 14px;
   --green: #214d3b;
   --green-dark: #17382c;
   --terracotta: #b86749;
@@ -57,7 +56,24 @@
   /* Só para o hover do botão: com o fundo indo para --terracotta-dark, o
      hover precisava de um degrau abaixo para continuar sendo perceptível. */
   --terracotta-deep: #7d3f2b;
-  --line: rgba(40, 35, 31, 0.18);
+  /* OS DOIS FIOS.
+     Medido em 26/08/2026: a folha tinha VINTE cores de borda distintas, quase
+     todas de 1px, e a maioria usada uma ou duas vezes — `rgba(40,35,31,.28)`,
+     `rgba(255,255,255,.25)`, `rgba(255,255,255,.18)`, `#aaa195`,
+     `rgba(233,226,213,.16)`, e por aí. Nenhuma delas separava nada que as
+     outras não separassem: eram vinte decisões tomadas em vinte momentos.
+
+     Agora são dois, e a escolha é por SUPERFÍCIE, que é a regra 9.8: fio
+     escuro sobre chão claro, fio claro sobre chão escuro. Cada seção escura
+     redefine `--fio` para o claro, e quem desenha borda pede sempre `--fio`.
+
+     `--line` fica como apelido de `--fio-claro` porque ele aparece em dezoito
+     lugares e trocar todos de uma vez seria mexer em arquivo que esta rodada
+     não abriu. */
+  --fio-claro: rgba(40, 35, 31, 0.18);
+  --fio-escuro: rgba(244, 239, 230, 0.20);
+  --fio: var(--fio-claro);
+  --line: var(--fio-claro);
   /* Altura da barra do topo. Fonte unica de verdade: header.css a usa como
      `min-height`, responsive.css a usa como `top` do menu de celular, e o
      `scroll-padding-top` acima deriva dela. */
@@ -77,7 +93,6 @@
      famílias em títulos (Iowan em 16, Playfair em 15 e Geist em 1) sem regra
      nenhuma decidindo qual usar onde. Este alias fica para não quebrar
      arquivo que ainda o referencie, e aponta para a mesma pilha. */
-  --serif: var(--serif-titulo);
 
   /* ---- A escala tipográfica ----------------------------------------
      Medido em 25/08/2026, antes: 12 tamanhos de título (10, 26, 31, 32,
@@ -133,10 +148,50 @@
      deliberado. Interface fica abaixo de 300ms; superficie de marketing
      pode passar. */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --dur-press: 160ms;
+  --dur-press: 160ms;   /* usado por `:active`, ver a seção de estados */
+
+  /* O BOTÃO.
+     Três medidas e nada mais: altura, recuo lateral e corpo. O raio é zero em
+     todo o site, então ele não vira token — token de valor único é lugar a
+     mais para a decisão divergir.
+
+     A altura compacta existe para o botão do cabeçalho e para o do cartão de
+     serviço, que dividem a linha com outra coisa e não podem ter a altura
+     cheia. Ela é 44px porque esse é o piso de alvo de toque da WCAG: abaixo
+     disso não existe variante, existe defeito. */
+  --btn-altura: 52px;
+  --btn-altura-compacto: 46px;
+  --btn-pad-x: 1.3rem;
+  --btn-fonte: .82rem;
+  --btn-peso: 750;
+
+  /* A ESCALA DE ESPAÇO, em passo de 4px.
+     Medido em 26/08/2026: a folha tem 69 valores distintos de margem, recuo e
+     vão, e 29 deles aparecem UMA vez só — 2,35rem, 2,55rem, 3,1rem, 4,8rem,
+     9,5rem. Nenhum prospect vê a diferença entre 2,35rem e 2,4rem; o custo
+     não é visual, é que cada valor novo é uma decisão que ninguém tomou.
+
+     **A escala está aqui declarada e NÃO foi aplicada em varredura, de
+     propósito.** O plano da auditoria diz, com todas as letras: "não
+     reescrever os 68 valores de espaçamento como projeto, um a um são
+     invisíveis; o ganho aparece quando a seção inteira é aberta por outro
+     motivo". Trocar 69 valores de uma vez é arriscar deslocamento visível em
+     onze arquivos para ganhar arrumação que ninguém enxerga.
+
+     Como adotar: quando abrir uma seção por qualquer outro motivo, trocar os
+     valores DAQUELA seção pelo degrau mais próximo. Valor fora da escala
+     precisa de motivo escrito ao lado. */
+  --e1: 4px;
+  --e2: 8px;
+  --e3: 12px;
+  --e4: 16px;
+  --e5: 24px;
+  --e6: 32px;
+  --e7: 48px;
+  --e8: 64px;
+  --e9: 96px;
   --dur-fast: 200ms;
   --dur-base: 250ms;
-  --dur-slow: 300ms;
 }
 
 * {
