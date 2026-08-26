@@ -29,7 +29,20 @@
 .form-hint { margin: 1.15rem 0 0; color: var(--ink-soft); font-size: var(--c-apoio); line-height: var(--lh-apoio); text-align: center; }
 .form-success { padding: .8rem; background: rgba(33,77,59,.1); color: var(--green-dark); font-size: .75rem; text-align: center; }
 
+/* O fio que separa o rodapé do fim do formulário, a pedido em 25/08/2026, na
+   mesma cor daqueles textos (--ochre-light).
+
+   Ele é `::before` absoluto e não `border-top` porque precisa respeitar o
+   recuo lateral do rodapé: borda no elemento correria de ponta a ponta da
+   janela. É o mesmo recurso, e o mesmo motivo, do fio da apresentação lá em
+   cima; a diferença é a cor, porque aqui o chão é escuro e o fio de
+   `--line`, que é preto translúcido, simplesmente não apareceria.
+
+   Faz falta porque contato e rodapé compartilham o mesmo chão desde a rodada
+   de cor: sem fio, o formulário termina e a página continua escura sem nada
+   dizer que virou outra coisa. */
 .footer {
+  position: relative;
   padding: 3.2rem clamp(1.25rem, 5vw, 5.5rem) 2rem;
   /* Mesmo chão do contato desde 25/08/2026. A página terminava abrindo de
      novo: o contato escuro era interrompido por uma faixa clara de 219px que
@@ -37,6 +50,16 @@
      passam a ler como um bloco de fechamento só. */
   background: var(--escuro);
   color: var(--paper);
+}
+
+.footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: clamp(1.25rem, 5vw, 5.5rem);
+  right: clamp(1.25rem, 5vw, 5.5rem);
+  height: 1px;
+  background: var(--ochre-light);
 }
 
 .footer-top {
