@@ -78,8 +78,7 @@ const en: Dicionario = {
   servicos: {
     indice: "What we do",
     titulo: "The right format for where you are.",
-    resumo: "Three formats, from the most direct to the most complete. Each card carries its own starting price.",
-    aPartirDe: "from",
+    resumo: "Three formats, from the most direct to the most complete. Each button leads to what's included and the price.",
     verPlano: "See what's included",
     nota: "Need an online store, bookings, a members area or automation?",
     notaLink: "Let's look at it together.",

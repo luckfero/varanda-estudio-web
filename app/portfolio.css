@@ -184,48 +184,53 @@
   line-height: var(--lh-base);
 }
 
-/* O preço dentro do cartão de serviço.
-   Entre este cartão e o cartão de preço do mesmo nome havia 5.582px, e o
-   resumo da seção mandava o leitor procurar "mais abaixo". É um link, e não
-   um texto, porque a pergunta que ele responde ("quanto custa") vem colada da
-   pergunta seguinte ("o que entra"), e essa está a nove telas daqui.
+/* A porta de entrada do cartão de serviço.
+   Até 25/08/2026 aqui vivia o preço, com o "a partir de" à esquerda e o link
+   à direita. O dono pediu para tirar o valor e deixar só o botão, centrado.
 
    `margin-top: auto` prende ao pé do cartão: os três têm altura igual, e sem
-   isto o preço flutuaria na altura em que o texto de cada um terminou. */
-.service-preco {
-  margin-top: auto;
-  padding-top: 1.5rem;
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: .5rem;
-  color: var(--green-dark);
+   isto o botão flutuaria na altura em que o texto de cada um terminou.
+
+   A cor vem de `--acento`, que é o token de superfície: sobre a areia desta
+   seção ele resolve para --terracotta-deep, e o branco por cima dá 8,02:1. */
+.service-acao {
+  width: max-content;
+  margin: auto auto 0;
+  padding: .85rem 1.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Alvo de toque acima dos 44px da WCAG. */
+  min-height: 46px;
+  border: 1px solid var(--acento);
+  color: var(--acento);
+  font-size: .82rem;
+  font-weight: 750;
+  letter-spacing: .02em;
   text-decoration: none;
 }
 
-.service-preco span {
-  color: var(--ink-soft);
-  font-size: var(--c-apoio);
-}
-
-.service-preco strong {
-  font-family: var(--serif-titulo);
-  font-size: 1.65rem;
-  font-weight: 400;
-  letter-spacing: -.03em;
-}
-
-.service-preco em {
-  margin-left: auto;
-  color: var(--acento);
-  font-size: var(--c-apoio);
-  font-style: normal;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
+/* Só onde existe ponteiro de verdade: no toque, `:hover` gruda depois do
+   clique e o botão fica preso no estado invertido. */
 @media (hover: hover) and (pointer: fine) {
-  .service-preco:hover em { color: var(--green-dark); }
+  .service-acao:hover {
+    background: var(--acento);
+    color: #fff;
+  }
+}
+
+/* O clique vale nos dois, e no toque é a ÚNICA resposta que o botão dá. */
+.service-acao:active {
+  background: var(--acento);
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .service-acao {
+    transition:
+      background var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out);
+  }
 }
 
 .service-note {

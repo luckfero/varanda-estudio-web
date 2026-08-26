@@ -79,8 +79,7 @@ const pt = {
   servicos: {
     indice: "O que fazemos",
     titulo: "O formato certo para o seu momento.",
-    resumo: "Três formatos, do mais direto ao mais completo. O valor de entrada de cada um está no próprio cartão.",
-    aPartirDe: "a partir de",
+    resumo: "Três formatos, do mais direto ao mais completo. O botão de cada um leva ao que entra e ao investimento.",
     verPlano: "Ver o que entra",
     nota: "Precisa de loja virtual, agendamento, área de acesso ou automação?",
     notaLink: "Vamos avaliar juntos.",

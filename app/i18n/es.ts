@@ -89,8 +89,7 @@ const es: Dicionario = {
   servicos: {
     indice: "Qué hacemos",
     titulo: "El formato adecuado para tu momento.",
-    resumo: "Tres formatos, del más directo al más completo. El precio de entrada de cada uno está en su propia tarjeta.",
-    aPartirDe: "desde",
+    resumo: "Tres formatos, del más directo al más completo. El botón de cada uno lleva a lo que incluye y a la inversión.",
     verPlano: "Ver qué incluye",
     nota: "¿Necesitas tienda online, reservas, área privada o automatizaciones?",
     notaLink: "Lo valoramos juntos.",

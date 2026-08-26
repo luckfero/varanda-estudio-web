@@ -39,19 +39,7 @@ export default function Pagina({ locale }: { locale: Locale }) {
       <SiteHeader nav={t.nav} locale={locale} idiomas={outrosIdiomas(locale, "home")} />
 
       <main id="conteudo" tabIndex={-1}>
-        {/* O preço desce como três strings prontas, e não como a fatia
-            `investimento` inteira: a fatia já viaja para `SectionOferta`, e
-            mandá-la duas vezes duplicaria o bloco de preços no payload.
-            Formatado aqui porque o formato depende de `moedaAposValor`, que
-            é do dicionário e não do componente. */}
-        <SectionAbertura
-          hero={t.hero}
-          intro={t.intro}
-          servicos={t.servicos}
-          precos={t.investimento.pacotes.map((p) =>
-            t.moedaAposValor ? `${p.launch} ${t.moeda}` : `${t.moeda} ${p.launch}`,
-          )}
-        />
+        <SectionAbertura hero={t.hero} intro={t.intro} servicos={t.servicos} />
         <SectionPortfolio portfolio={t.portfolio} />
         <SectionOferta
           processo={t.processo}

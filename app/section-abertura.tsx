@@ -18,13 +18,10 @@ export default function SectionAbertura({
   hero,
   intro,
   servicos,
-  precos,
 }: {
   hero: Dicionario["hero"];
   intro: Dicionario["intro"];
   servicos: Dicionario["servicos"];
-  /** Já formatado em `pagina.tsx`, na ordem dos pacotes. */
-  precos: string[];
 }) {
   const t = { hero, intro, servicos };
   const handleNavClick = useAncoraSuave();
@@ -164,23 +161,16 @@ export default function SectionAbertura({
               <div className="service-icon" aria-hidden="true"><i /><i /></div>
               <h3>{service.title}</h3>
               <p>{service.text}</p>
-              {/* O preço aqui, e não só lá embaixo.
-                  Entre este cartão e o cartão de preço do mesmo nome havia
-                  5.582px de rolagem, e o resumo da seção mandava o leitor
-                  procurar ("mais abaixo"). Quem lê "Essencial" quer saber
-                  quanto custa no instante em que lê, não daqui a nove telas.
-
-                  A âncora leva ao cartão correspondente, por índice: os dois
-                  arrays são casados por posição, como `featuredAssets` e
-                  `portfolio.destaques`. */}
+              {/* O preço saiu daqui em 25/08/2026, a pedido, e ficou só a
+                  porta de entrada. Ele continua a um clique: a âncora leva ao
+                  cartão do plano correspondente, casado por índice, do mesmo
+                  jeito que `featuredAssets` e `portfolio.destaques`. */}
               <a
-                className="service-preco"
+                className="service-acao"
                 href={`#plano-${index + 1}`}
                 onClick={(event) => handleNavClick(event, `#plano-${index + 1}`)}
               >
-                <span>{t.servicos.aPartirDe}</span>
-                <strong>{precos[index]}</strong>
-                <em>{t.servicos.verPlano}</em>
+                {t.servicos.verPlano}
               </a>
             </article>
           ))}
