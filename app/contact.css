@@ -32,11 +32,17 @@
 /* O fio que separa o rodapé do fim do formulário, a pedido em 25/08/2026, na
    mesma cor daqueles textos (--ochre-light).
 
-   Ele é `::before` absoluto e não `border-top` porque precisa respeitar o
-   recuo lateral do rodapé: borda no elemento correria de ponta a ponta da
-   janela. É o mesmo recurso, e o mesmo motivo, do fio da apresentação lá em
-   cima; a diferença é a cor, porque aqui o chão é escuro e o fio de
-   `--line`, que é preto translúcido, simplesmente não apareceria.
+   **Atravessa a tela de ponta a ponta, a pedido em 25/08/2026.** Nasceu
+   recuado como o fio da apresentação lá em cima, e o dono pediu o contrário:
+   ali o fio separa dois assuntos dentro do mesmo bloco, e por isso ele
+   respeita a coluna de texto; aqui ele separa a página do rodapé, que é
+   divisão de documento, e divisão de documento vai de borda a borda.
+
+   Continua sendo `::before` e não `border-top` só para não competir com a
+   `border-bottom` que o `.footer-top` já usa por dentro.
+
+   A cor é `--ochre-light`, a mesma dos textos do rodapé: aqui o chão é
+   escuro e o `--line`, que é preto translúcido, não apareceria.
 
    Faz falta porque contato e rodapé compartilham o mesmo chão desde a rodada
    de cor: sem fio, o formulário termina e a página continua escura sem nada
@@ -56,8 +62,8 @@
   content: "";
   position: absolute;
   top: 0;
-  left: clamp(1.25rem, 5vw, 5.5rem);
-  right: clamp(1.25rem, 5vw, 5.5rem);
+  left: 0;
+  right: 0;
   height: 1px;
   background: var(--ochre-light);
 }

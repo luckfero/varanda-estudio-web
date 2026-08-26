@@ -161,23 +161,26 @@ export default function SectionAbertura({
               <div className="service-icon" aria-hidden="true"><i /><i /></div>
               <h3>{service.title}</h3>
               <p>{service.text}</p>
-              {/* O preço saiu daqui em 25/08/2026, a pedido, e ficou só a
-                  porta de entrada. Ele continua a um clique: a âncora leva ao
-                  cartão do plano correspondente, casado por índice, do mesmo
-                  jeito que `featuredAssets` e `portfolio.destaques`. */}
-              <a
-                className="service-acao"
-                href={`#plano-${index + 1}`}
-                onClick={(event) => handleNavClick(event, `#plano-${index + 1}`)}
-              >
-                {t.servicos.verPlano}
-              </a>
             </article>
           ))}
         </div>
-        <p className="service-note">
-          {t.servicos.nota} <a href="#contato" onClick={(event) => handleNavClick(event, "#contato")}>{t.servicos.notaLink}</a>
-        </p>
+        {/* Um par de botões no pé da seção, no lugar dos três que viviam
+            dentro dos cartões. O da esquerda leva ao investimento inteiro, e
+            não a um plano só: sem o preço no cartão, apontar para o cartão
+            certo deixou de ter sentido. O da direita é a saída para quem não
+            cabe em nenhum dos três, e a pergunta acima é o que dá sentido a
+            ele. */}
+        <div className="service-fecho" data-reveal>
+          <p>{t.servicos.nota}</p>
+          <div className="service-botoes">
+            <a className="service-acao" href="#investimento" onClick={(event) => handleNavClick(event, "#investimento")}>
+              {t.servicos.verPlano}
+            </a>
+            <a className="service-acao" href="#contato" onClick={(event) => handleNavClick(event, "#contato")}>
+              {t.servicos.notaLink}
+            </a>
+          </div>
+        </div>
       </section>
     </>
   );

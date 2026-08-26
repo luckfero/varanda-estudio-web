@@ -90,9 +90,9 @@ const es: Dicionario = {
     indice: "Qué hacemos",
     titulo: "El formato adecuado para tu momento.",
     resumo: "Tres formatos, del más directo al más completo. El botón de cada uno lleva a lo que incluye y a la inversión.",
-    verPlano: "Ver qué incluye",
+    verPlano: "Ver qué incluye cada uno",
     nota: "¿Necesitas tienda online, reservas, área privada o automatizaciones?",
-    notaLink: "Lo valoramos juntos.",
+    notaLink: "Lo valoramos juntos",
     lista: [
       {
         number: "01",

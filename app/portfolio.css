@@ -233,14 +233,34 @@
   }
 }
 
-.service-note {
-  margin: 2rem 0 0;
-  color: var(--ink-soft);
-  font-size: var(--c-apoio);
+/* O pé da seção: a pergunta e o par de botões.
+   Os três botões que viviam dentro dos cartões saíram em 25/08/2026, a
+   pedido. Um botão por cartão dava três portas quase idênticas, e as três
+   levavam ao mesmo lugar depois que o preço saiu do cartão. */
+.service-fecho {
+  margin-top: clamp(2.5rem, 4vw, 3.5rem);
+  display: grid;
+  justify-items: center;
+  gap: 1.4rem;
   text-align: center;
 }
 
-.service-note a { color: var(--acento); border-bottom: 1px solid rgba(125,63,43,.45); }
+.service-fecho p {
+  max-width: 58ch;
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: var(--c-base);
+  line-height: var(--lh-base);
+}
+
+.service-botoes {
+  display: flex;
+  /* Enrola em vez de espremer: em 375px os dois rótulos não cabem lado a
+     lado, e botão espremido perde o alvo de toque antes de perder a beleza. */
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
 
 /* ==================================================================
    PORTFÓLIO · redesenhado em 25/08/2026

@@ -80,9 +80,9 @@ const pt = {
     indice: "O que fazemos",
     titulo: "O formato certo para o seu momento.",
     resumo: "Três formatos, do mais direto ao mais completo. O botão de cada um leva ao que entra e ao investimento.",
-    verPlano: "Ver o que entra",
+    verPlano: "Ver o que entra em cada um",
     nota: "Precisa de loja virtual, agendamento, área de acesso ou automação?",
-    notaLink: "Vamos avaliar juntos.",
+    notaLink: "Vamos avaliar juntos",
     lista: [
       {
         number: "01",
