@@ -88,7 +88,7 @@ const es: Dicionario = {
 
   servicos: {
     indice: "Qué hacemos",
-    titulo: "El formato adecuado<br />para tu momento.",
+    titulo: "El formato adecuado para tu momento.",
     resumo: "Tres formatos, del más directo al más completo. El precio de entrada de cada uno está en su propia tarjeta.",
     aPartirDe: "desde",
     verPlano: "Ver qué incluye",
@@ -188,7 +188,7 @@ const es: Dicionario = {
 
   processo: {
     indice: "Cómo funciona",
-    titulo: "Un camino claro,<br />del primer “hola”<br />a la publicación.",
+    titulo: "Un camino claro, del primer “hola” a la publicación.",
     resumo: "Sigues las decisiones, apruebas cada etapa y sabes qué esperar hasta la publicación.",
     etapas: [
       {
@@ -216,7 +216,7 @@ const es: Dicionario = {
 
   investimento: {
     indice: "Inversión",
-    titulo: "Empieza por lo que<br />tu negocio necesita hoy.",
+    titulo: "Empieza por lo que tu negocio necesita hoy.",
     /* Era a condição de lançamento com data de validade ("até 30 de setembro
        de 2026"). Ela venceria em 36 dias em três idiomas, e site que anuncia
        condição vencida é pior que site sem condição nenhuma. A comparação com
@@ -373,7 +373,7 @@ const es: Dicionario = {
     fechamentoTexto: "Pregunta directamente. Respondemos con la orientación para tu caso, sin compromiso de contratar.",
     fechamentoBotao: "Hacer una pregunta",
     indice: "Preguntas frecuentes",
-    titulo: "Antes de empezar,<br />conviene saber.",
+    titulo: "Antes de empezar, conviene saber.",
     perguntas: [
       {
         question: "¿En cuánto tiempo estará lista mi web?",
@@ -420,7 +420,7 @@ const es: Dicionario = {
 
   contato: {
     indice: "Hablemos",
-    tituloAntes: "Tu negocio merece<br />un lugar donde ",
+    tituloAntes: "Tu negocio merece un lugar donde ",
     tituloDestaque: "crecer.",
     resumo: "Cuéntanos qué necesita tu negocio y en qué momento está. Analizamos la información y respondemos con la orientación para el siguiente paso.",
     emailLabel: "Correo",

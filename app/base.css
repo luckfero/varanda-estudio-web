@@ -8,6 +8,24 @@
 :root {
   --cream: #f4efe6;
   --paper: #fbf8f2;
+  /* O terceiro chão claro, novo em 25/08/2026.
+     A página tinha SETE seções seguidas na mesma cor e o dono resumiu assim:
+     "não quero o site inteiro com o fundo branco". O --paper e o --cream não
+     resolviam, porque estão a 1,08:1 um do outro e não separam nada.
+     Esta areia mede 1,22:1 contra o --paper: é pouco para ler como "seção
+     escura" e é bastante para o olho ver que trocou de chão.
+     Mais escuro do que isto não dá: em #e0d3ba o --ink-soft do corpo cai
+     para 4,52:1, e o mínimo é 4,5. Aqui ele fica em 4,79:1. */
+  --areia: #e5d9c3;
+
+  /* O acento quente, por SUPERFÍCIE e não por componente, que é a regra 9.8
+     do protocolo. O --terracotta-dark mede 5,35:1 sobre o --paper e 4,39:1
+     sobre a areia, ou seja, reprova nela por pouco. Em vez de repintar os
+     componentes um a um, a areia redefine o token e tudo que vive nela
+     escurece junto: o --terracotta-deep dá 5,75:1 ali.
+     Foi exatamente o erro que a rodada da Nívora custou: corrigir pelo
+     componente devolve o defeito do outro lado. */
+  --acento: var(--terracotta-dark);
 
   /* Unico raio retangular do site, so no card do portfolio (ver
      portfolio.css). O resto da linguagem visual e reta. */
@@ -69,10 +87,16 @@
 
      Quatro degraus de título e três de corpo. Tamanho novo aqui só entra
      com motivo escrito. */
-  --t-hero:  clamp(3.8rem, 6.25vw, 7.2rem);  /* só o h1 da home */
-  --t-secao: clamp(3.2rem, 5vw, 5.7rem);     /* o h2 que abre uma seção */
-  --t-bloco: clamp(1.9rem, 3.2vw, 2.8rem);   /* h3 de cartão e de bloco */
-  --t-item:  clamp(1.25rem, 2vw, 1.6rem);    /* h3 miúdo, pergunta, item */
+  /* Reduzida em 25/08/2026, a pedido: "diminua a fonte de todos os títulos
+     do site, está muito grande". Medido antes: TODOS os dez h2 da home em
+     64px, e o do processo quebrando em SEIS linhas.
+     A escala inteira desceu junta, e não título a título, para a hierarquia
+     entre os quatro degraus continuar a mesma. Em 1280px: 80 -> 56 no h1,
+     64 -> 44 no h2, 41 -> 28 no h3 de bloco, 26 -> 19 no h3 miúdo. */
+  --t-hero:  clamp(2.9rem, 4.4vw, 4.8rem);   /* só o h1 da home */
+  --t-secao: clamp(2.3rem, 3.4vw, 3.6rem);   /* o h2 que abre uma seção */
+  --t-bloco: clamp(1.5rem, 2.2vw, 1.95rem);  /* h3 de cartão e de bloco */
+  --t-item:  clamp(1.05rem, 1.45vw, 1.25rem);/* h3 miúdo, pergunta, item */
 
   --c-lead:  1.125rem;  /* 18px, a linha de apoio de uma seção */
   --c-base:  1rem;      /* 16px, o corpo de texto */
@@ -134,7 +158,7 @@ body::-webkit-scrollbar { width: 0; height: 0; display: none; }
 
 body {
   margin: 0;
-  background: var(--cream);
+  background: var(--paper);
   color: var(--charcoal);
   font-family: var(--font-sans), Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -252,8 +276,32 @@ img {
   border: 0 !important;
 }
 
+/* Era 8rem, ou seja, 128px em cima e 128px embaixo: entre duas seções
+   vizinhas isso dava 256px de nada, e em algumas emendas passava de 700px por
+   causa das margens internas. Medido em 1280px antes desta mudança, o vão
+   VAZIO de cada emenda: 188 · 350 · 293 · 733 · 355 · 469 · 465 · 301 · 295 ·
+   679. O pedido do dono foi "diminua drasticamente", repetido em quatro
+   emendas diferentes.
+
+   Agora é fluido: 44px na tela estreita, 65px em 1440px. Duas seções vizinhas
+   passam a somar 130px em vez de 256px. */
+/* As quebras dos títulos passaram a ser do navegador em 25/08/2026.
+   Antes elas eram `<br />` escrito à mão no dicionário, em três idiomas, e o
+   defeito que derrubou a solução foi este: "Um caminho claro,<br />do primeiro
+   "oi"<br />até a publicação." punha a palavra "oi" SOZINHA numa linha, com
+   aspas, no meio de um título de seis linhas.
+
+   Quebra à mão é uma decisão tomada numa largura só, e o site tem três
+   idiomas, um `clamp` de tamanho e telas de 320 a 2560px. `balance` distribui
+   as linhas de forma pareja e, onde não houver suporte, a quebra volta a ser a
+   comum, que é o pior caso aceitável. Os sete `<br />` saíram dos três
+   dicionários. */
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
 .section {
-  padding: 8rem clamp(1.25rem, 5vw, 5.5rem);
+  padding: clamp(2.75rem, 4.5vw, 4.5rem) clamp(1.25rem, 5vw, 5.5rem);
 }
 
 .section-index {

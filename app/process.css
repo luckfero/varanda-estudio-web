@@ -2,16 +2,19 @@
  * Processo de trabalho, planos e manutencao.
  */
 
+/* Ritmo de cor de 25/08/2026: o processo é claro e o investimento logo
+   abaixo é areia, para as duas não lerem como uma seção só de 2.000px. */
 .process {
+  background: var(--paper);
   display: grid;
   grid-template-columns: .82fr 1.18fr;
   gap: 8vw;
-  /* Um creme só no lado claro desde 25/08/2026. O --paper e o --cream estão
-     a 1,08:1 um do outro: eles não separam seção nenhuma, e a página tinha
-     três emendas onde a seção seguinte simplesmente não começava. O --paper
-     continua vivo em CARTÃO, onde 1,08:1 é justamente o efeito sutil que se
-     quer. */
-  background: var(--cream);
+  /* O creme fica, e agora é decisão e não sobra.
+     O ritmo de 25/08/2026 é: nenhuma emenda repete o chão da anterior. Aqui a
+     seção de cima é o portfólio, quase preto, e a de baixo é o investimento,
+     em areia. O creme separa das duas e é o meio-termo entre os três claros da
+     casa. Trocar por --paper também funcionaria; trocar por --areia não, e é
+     a única troca que quebra o ritmo. */
 }
 
 .process-heading {
@@ -50,7 +53,7 @@
 
 .process-list article > span {
   /* --terracotta media 3,88:1 sobre o creme; o tom escuro da 5,74:1. */
-  color: var(--terracotta-dark);
+  color: var(--acento);
   font-family: var(--serif-titulo);
   font-size: 1.3rem;
   font-style: italic;
@@ -72,8 +75,11 @@
   line-height: 1.7;
 }
 
+/* Areia desde 25/08/2026. O processo logo acima é claro, e as duas juntas
+   somavam quase 2.000px do mesmo chão: a seção do preço não se anunciava. */
 .pricing {
-  background: var(--cream);
+  background: var(--areia);
+  --acento: var(--terracotta-deep);
 }
 
 .pricing-heading h2 { color: var(--green-dark); }
@@ -92,10 +98,14 @@
   gap: 1rem;
 }
 
+/* Opaco desde 25/08/2026. Era `rgba(251,248,242,.5)`, ou seja, --paper a
+   meia força: sobre o creme antigo isso dava um cartão quase invisível, e
+   sobre a areia nova ele simplesmente sumiria no fundo. Opaco, o cartão
+   volta a ser um objeto em cima da seção. */
 .price-card {
   padding: 2.2rem;
   border: 1px solid var(--line);
-  background: rgba(251,248,242,.5);
+  background: var(--paper);
 }
 
 .price-card.is-featured {
@@ -111,15 +121,20 @@
      Os três cartões nasciam com topo idêntico e o "recomendado" não se
      destacava de nada.
 
-     `margin-block` faz o mesmo deslocamento e a revelação não toca nele. */
-  margin-block: -16px 16px;
+     `margin-block` faz o mesmo deslocamento e a revelação não toca nele.
+
+     **Retirado em 25/08/2026, a pedido: "alinhe o card verde para a mesma
+     altura que os cards brancos".** O destaque passa a ser só a cor, que já
+     era o mais forte dos dois sinais. Se um dia voltar, volta por aqui e não
+     por `transform`, pelo motivo escrito acima. */
+  margin-block: 0;
 }
 
 .price-eyebrow {
   margin: 0;
   /* --terracotta sobre o creme do cartão dá 3,67:1; o tom escuro dá 5,35:1
      e é a mesma família de cor. */
-  color: var(--terracotta-dark);
+  color: var(--acento);
   font-size: .72rem;
   font-weight: 800;
   letter-spacing: .14em;
@@ -221,7 +236,7 @@
 
 .pricing-included > h3 {
   margin: 0 0 2.2rem;
-  color: var(--terracotta-dark);
+  color: var(--acento);
   font-family: var(--font-sans), sans-serif;
   font-size: .72rem;
   font-weight: 800;
@@ -307,12 +322,15 @@
   font-weight: 800;
 }
 
-/* --terracotta-dark mede 5,35:1 sobre o creme; o tom medio ficaria em
+/* Pelo token de superfície: sobre a areia ele resolve para --terracotta-deep.
+   O comentário abaixo é de quando a seção era creme, e a conta continua a
+   mesma, só que agora feita pelo `--acento`.
+   --terracotta-dark mede 5,35:1 sobre o creme; o tom medio ficaria em
    3,67:1. Mesmo marcador dos cartoes de preco, de proposito: repete o
    vocabulario de "isto esta incluso". */
 .pricing-escopo-incluso li::before {
   content: "✓";
-  color: var(--terracotta-dark);
+  color: var(--acento);
 }
 
 /* O sinal de mais diz "soma-se ao pacote", que e exatamente a relacao

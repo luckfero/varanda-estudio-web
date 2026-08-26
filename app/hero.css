@@ -532,10 +532,11 @@
   :root {
     --altura-cabecalho: 88px;
     /* O h1 desce um degrau. Não é enfeite: em 1366px de largura ele ocupa
-       quatro linhas, e a 85px por linha isso são 362px só de título numa tela
-       de 768. A 68px são 290px, e os 72px de diferença são exatamente o que
-       faltava para a nota do rodapé caber acima da dobra. */
-    --t-hero: clamp(3.2rem, 5vw, 5rem);
+       quatro linhas a 85px, o que dava 362px só de título numa tela de 768.
+       Depois da redução geral da escala, em 25/08/2026, os números mudaram
+       mas a razão não: nesta faixa o título continua descendo um degrau a
+       mais que o resto. */
+    --t-hero: clamp(2.5rem, 3.6vw, 3.9rem);
   }
   .site-header { padding-block: 0.7rem; }
 

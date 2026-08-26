@@ -32,11 +32,11 @@ export default function SiteFooter({
         {/* O canal também aqui, e não só na seção de contato: quem chega ao
             rodapé passou por tudo e não clicou em nada, e mandá-lo rolar de
             volta é perder a única pessoa que leu a página inteira. */}
-        <a href={`mailto:${emailContato}`}>{emailContato}</a>
+        <a className="footer-email" href={`mailto:${emailContato}`}>{emailContato}</a>
         {/* O caminho da política muda com o idioma (`/privacidade`,
             `/es/privacidad`, `/en/privacy`), então vem do dicionário — link
             fixo mandaria o visitante espanhol para a versão portuguesa. */}
-        <a href={t.privacyPath}>{t.rodape.privacidade}</a>
+        <a className="footer-privacidade" href={t.privacyPath}>{t.rodape.privacidade}</a>
         <span className="footer-copyright">{t.rodape.direitos}</span>
       </div>
     </footer>

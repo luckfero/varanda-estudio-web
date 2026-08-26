@@ -6,8 +6,26 @@
  * animada propria, em hero.css.
  */
 
+/* A ÚNICA emenda da página que não troca de cor, porque o hero e a
+   apresentação são o mesmo bloco de abertura. Por isso, e só por isso, ela
+   ganha um fio.
+
+   O fio é `::before` absoluto, e não `border-top`, para respeitar o recuo
+   lateral da seção: borda no elemento correria de ponta a ponta da janela e
+   leria como divisão de página, não como emenda de assunto. Absoluto também
+   o tira do fluxo da grade, que aqui tem três colunas declaradas.
+
+   A `border-top` que existiu aqui até 25/08/2026 foi removida por ser a única
+   borda de seção das doze; agora ela volta com motivo, porque é a única
+   emenda sem cor para separar. */
+/* O `min-height: 620px` saiu em 25/08/2026.
+   Com `align-items: start`, ele não distribuía nada: sobrava como vazio no PÉ
+   da seção. Depois que os títulos encolheram, o conteúdo passou a ocupar
+   pouco mais de 300px e o resto virava buraco — medido, 338px entre o fim
+   deste texto e o começo dos serviços, o maior vão da página. Quem decide a
+   altura passa a ser o conteúdo. */
 .intro {
-  min-height: 620px;
+  position: relative;
   display: grid;
   grid-template-columns: 160px minmax(0, 1fr) 110px;
   gap: 4vw;
@@ -15,6 +33,16 @@
   /* A border-top saiu em 25/08/2026: era a única borda de seção das doze, e
      contradizia a mesma regra que fez a rampa do portfólio ser removida, de
      que seção se separa por cor e mais nada. */
+}
+
+.intro::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: clamp(1.25rem, 5vw, 5.5rem);
+  right: clamp(1.25rem, 5vw, 5.5rem);
+  height: 1px;
+  background: var(--line);
 }
 
 .intro-content {
@@ -52,10 +80,15 @@
    se anunciava. Em claro, a mesma emenda passa a 16,26:1.
 
    Com isso a página fica com dois momentos escuros e não quatro, e cada um
-   marca um papel: o portfólio é a prova, o contato é o pedido. */
+   marca um papel: o portfólio é a prova, o contato é o pedido.
+
+   **Em 25/08/2026 ela passou de --cream para --areia**, junto com o ritmo novo
+   de cor: era ela a "seção dos planos" que o dono pediu num fundo diferente, e
+   ela é a primeira troca de chão da página. */
 .services {
-  background: var(--cream);
+  background: var(--areia);
   color: var(--charcoal);
+  --acento: var(--terracotta-deep);
 }
 
 .section-heading,
@@ -184,7 +217,7 @@
 
 .service-preco em {
   margin-left: auto;
-  color: var(--terracotta-dark);
+  color: var(--acento);
   font-size: var(--c-apoio);
   font-style: normal;
   text-decoration: underline;
@@ -202,7 +235,7 @@
   text-align: center;
 }
 
-.service-note a { color: var(--terracotta-dark); border-bottom: 1px solid rgba(151,77,53,.45); }
+.service-note a { color: var(--acento); border-bottom: 1px solid rgba(125,63,43,.45); }
 
 /* ==================================================================
    PORTFÓLIO · redesenhado em 25/08/2026

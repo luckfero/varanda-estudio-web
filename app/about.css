@@ -12,12 +12,15 @@
      três emendas onde a seção seguinte simplesmente não começava. O --paper
      continua vivo em CARTÃO, onde 1,08:1 é justamente o efeito sutil que se
      quer. */
-  background: var(--cream);
+  background: var(--paper);
 }
 
+/* Era 590px, medido quando os títulos ao lado eram 50% maiores. Com a escala
+   nova o texto da direita encolheu e a arte passou a mandar na altura da
+   seção sozinha, empurrando 318px de vazio para a emenda seguinte. */
 .about-art {
   position: relative;
-  min-height: 590px;
+  min-height: 430px;
 }
 
 .about-sun {
@@ -149,13 +152,21 @@
    colocaria dois escuros quase colados. O que incomodava era a
    dessaturacao, nao a claridade.
    Contraste do texto miudo desta secao sobe de 5,14:1 para 5,51:1. */
+/* Areia, entre duas claras. Ver o ritmo em base.css. */
 .extras {
+  background: var(--areia);
+  --acento: var(--terracotta-deep);
   /* Era #e9dcc4, hex escrito à mão, fora da paleta e usado uma vez só na
      página inteira. Ele ficava a 1,28:1 do vizinho de cima e 1,18:1 do de
      baixo, ou seja, não separava nada e ainda era mais uma cor para a página
-     carregar. Sobre, extras e dúvidas assumem que são um bloco só, e a
-     separação passa a ser o título e o respiro. */
-  background: var(--cream);
+     carregar.
+
+     **Em 25/08/2026 a decisão foi revista pelo dono**: "mude a cor de fundo de
+     algumas dessas seções para não ficar o site inteiro com o fundo branco".
+     Ele estava certo, e a medição concorda: eram SETE seções seguidas no mesmo
+     chão. A separação por título e respiro só funciona quando as seções são
+     poucas. Agora a areia é token da paleta, com contraste medido, e não um
+     hex solto. */
 }
 
 .extras-heading {
@@ -205,10 +216,10 @@
 .extras-note { margin: 2.1rem 0 0; color: var(--ink-muted); font-size: var(--c-apoio); line-height: var(--lh-apoio); }
 
 .faq {
+  background: var(--paper);
   display: grid;
   grid-template-columns: .72fr 1.28fr;
   gap: 7vw;
-  background: var(--cream);
 }
 
 .faq-heading {

@@ -149,7 +149,10 @@ export default function SectionAbertura({
       <section className="services section" id="servicos" aria-labelledby="services-title">
         <div className="section-heading" data-reveal>
           <div>
-            <div className="section-index section-index--light">{t.servicos.indice}</div>
+            {/* Sem `--light`: aquela variante existe para chão ESCURO, e a seção era
+                verde escuro até 25/08. Sobre a areia ela media 1,6:1 e a
+                sobrancelha praticamente não aparecia na captura. */}
+            <div className="section-index">{t.servicos.indice}</div>
             <h2 id="services-title" dangerouslySetInnerHTML={{ __html: t.servicos.titulo }} />
           </div>
           <p>{t.servicos.resumo}</p>

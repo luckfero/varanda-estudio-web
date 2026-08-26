@@ -77,7 +77,7 @@ const en: Dicionario = {
 
   servicos: {
     indice: "What we do",
-    titulo: "The right format<br />for where you are.",
+    titulo: "The right format for where you are.",
     resumo: "Three formats, from the most direct to the most complete. Each card carries its own starting price.",
     aPartirDe: "from",
     verPlano: "See what's included",
@@ -177,7 +177,7 @@ const en: Dicionario = {
 
   processo: {
     indice: "How it works",
-    titulo: "A clear path,<br />from the first hello<br />to going live.",
+    titulo: "A clear path, from the first hello to going live.",
     resumo: "You follow the decisions, approve each stage and know what to expect all the way to launch.",
     etapas: [
       {
@@ -205,7 +205,7 @@ const en: Dicionario = {
 
   investimento: {
     indice: "Pricing",
-    titulo: "Start with what<br />your business needs today.",
+    titulo: "Start with what your business needs today.",
     /* Era a condição de lançamento com data de validade ("até 30 de setembro
        de 2026"). Ela venceria em 36 dias em três idiomas, e site que anuncia
        condição vencida é pior que site sem condição nenhuma. A comparação com
@@ -362,7 +362,7 @@ const en: Dicionario = {
     fechamentoTexto: "Just ask. We'll reply with guidance for your case, with no obligation to hire.",
     fechamentoBotao: "Ask a question",
     indice: "Frequently asked",
-    titulo: "Worth knowing<br />before we start.",
+    titulo: "Worth knowing before we start.",
     perguntas: [
       {
         question: "How long until my site is ready?",
@@ -409,7 +409,7 @@ const en: Dicionario = {
 
   contato: {
     indice: "Let's talk",
-    tituloAntes: "Your business deserves<br />a place to ",
+    tituloAntes: "Your business deserves a place to ",
     tituloDestaque: "grow.",
     resumo: "Tell us what your business needs and where it stands. We'll go through it and reply with a clear next step.",
     emailLabel: "Email",

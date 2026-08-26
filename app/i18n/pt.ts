@@ -78,7 +78,7 @@ const pt = {
 
   servicos: {
     indice: "O que fazemos",
-    titulo: "O formato certo<br />para o seu momento.",
+    titulo: "O formato certo para o seu momento.",
     resumo: "Três formatos, do mais direto ao mais completo. O valor de entrada de cada um está no próprio cartão.",
     aPartirDe: "a partir de",
     verPlano: "Ver o que entra",
@@ -191,7 +191,7 @@ const pt = {
 
   processo: {
     indice: "Como acontece",
-    titulo: "Um caminho claro,<br />do primeiro “oi”<br />até a publicação.",
+    titulo: "Um caminho claro, do primeiro “oi” até a publicação.",
     resumo: "Você acompanha as decisões, aprova cada etapa e sabe o que esperar até a publicação.",
     etapas: [
       {
@@ -219,7 +219,7 @@ const pt = {
 
   investimento: {
     indice: "Investimento",
-    titulo: "Comece com o que<br />seu negócio precisa hoje.",
+    titulo: "Comece com o que seu negócio precisa hoje.",
     /* Era a condição de lançamento com data de validade ("até 30 de setembro
        de 2026"). Ela venceria em 36 dias em três idiomas, e site que anuncia
        condição vencida é pior que site sem condição nenhuma. A comparação com
@@ -389,7 +389,7 @@ const pt = {
     fechamentoTexto: "Pergunte direto. Respondemos com a orientação para o seu caso, sem compromisso de contratar.",
     fechamentoBotao: "Fazer uma pergunta",
     indice: "Dúvidas frequentes",
-    titulo: "Antes de começar,<br />vale saber.",
+    titulo: "Antes de começar, vale saber.",
     perguntas: [
       {
         question: "Em quanto tempo meu site fica pronto?",
@@ -436,7 +436,7 @@ const pt = {
 
   contato: {
     indice: "Vamos conversar",
-    tituloAntes: "Seu negócio merece<br />um lugar para ",
+    tituloAntes: "Seu negócio merece um lugar para ",
     tituloDestaque: "crescer.",
     resumo: "Conte o que seu negócio precisa e em que momento ele está. Analisamos as informações e respondemos com a orientação para o próximo passo.",
     emailLabel: "E-mail",
