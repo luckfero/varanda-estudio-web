@@ -502,9 +502,26 @@
   .hero-art.is-visible .art-arco-sol,
   .hero-art.is-visible .art-janela,
   .hero-art.is-visible .art-recado {
-    animation-name: var-surge;
-    animation-duration: 420ms;
+    animation-name: var-surge !important;
+    animation-duration: 420ms !important;
   }
+  /* O `!important` NÃO é preguiça, e tirar ele quebra isto de novo.
+     `responsive.css` tem, dentro desta mesma consulta, um seletor universal
+     com `animation-duration: .01ms !important`. Ele existe para conter
+     animação que ninguém escreveu, e está certo em existir; o problema é que
+     ele também atropela as duas sequências que foram escritas justamente para
+     RESPEITAR a preferência.
+
+     Medido no Chrome com `prefers-reduced-motion: reduce` forçado, antes desta
+     linha: a duração computava 1e-05s enquanto os atrasos sobreviviam intactos
+     (0 · 60 · 100 · 140 · 200 · 240 · 280 · 320 · 380ms). Com
+     `animation-fill-mode: both`, cada peça ficava em opacidade 0 até a vez
+     dela e então aparecia de estalo. Ou seja: quem pediu MENOS movimento
+     recebia nove estalos em vez de um surgimento suave, que é pior que não
+     animar e é o oposto da regra 9.20.
+
+     Ler a folha dava a impressão contrária. Só o valor computado mostrou. */
+
   .hero-art.is-visible .art-luz__feixe--1 { animation-delay: 120ms; }
   .hero-art.is-visible .art-luz__feixe--2 { animation-delay: 180ms; }
   .hero-art.is-visible .art-luz__feixe--3 { animation-delay: 240ms; }

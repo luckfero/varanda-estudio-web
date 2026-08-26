@@ -265,6 +265,28 @@ img {
   filter: blur(0);
 }
 
+/* A planta do "sobre" fica FORA do desfoque e do deslocamento da revelação.
+   Ela tem sequência própria, e o assunto dela é traço de 1,1px correndo. Sob
+   `blur(2px)` uma linha de 1,1px não é linha, é mancha.
+
+   Medido com a classe entrando: aos 100ms o desfoque estava em 1,66px e o
+   bloco 28px abaixo do lugar; aos 402ms, 0,27px de desfoque com o contorno
+   externo já em 90 de 100. O gesto que é o assunto da peça acontecia enquanto
+   ela estava ilegível e ainda escorregando.
+
+   Some a isto que desfoque de ancestral re-rasteriza a subárvore inteira a
+   cada quadro, e aqui a subárvore são duas `pattern`, um `radialGradient`, um
+   `clipPath` e onze animações rodando juntas.
+
+   Fica só a opacidade, e curta: o que anuncia a entrada é o desenho, não o
+   invólucro. É a regra 9.26 fechada por completo — o `data-reveal` vira
+   gatilho e deixa de ser concorrente. */
+.reveal-ready .about-art {
+  transform: none;
+  filter: none;
+  transition: opacity .4s var(--ease-out);
+}
+
 .service-card:nth-child(2),
 .price-card:nth-child(2),
 .care-grid article:nth-child(2) { --reveal-delay: 110ms; }

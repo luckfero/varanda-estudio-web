@@ -169,14 +169,18 @@
   .section { padding: 4.8rem 1.15rem; }
   .hero { min-height: 0; padding: 7.5rem var(--recuo-topo) 4rem; }
   .hero::before { width: 90vw; height: 90vw; }
-  /* O ÚNICO tamanho de título ainda sobrescrito no responsivo, e é o h1.
-     As três sobrescritas de h2 saíram em 25/08/2026: elas davam TRÊS tamanhos
-     diferentes na mesma tela de 375px (34, 37 e 49px), que é exatamente o que
-     o pedido "todos os títulos devem ser iguais" proíbe. Agora quem manda é o
-     `--t-secao` em toda largura.
-     O h1 fica porque em 375px o piso do token (46px) deixa a frase de abertura
-     miúda demais para o papel que ela tem. */
-  .hero h1 { font-size: clamp(3.2rem, 13vw, 4.8rem); }
+  /* NENHUM tamanho de título é sobrescrito aqui, e a sobrescrita do h1 que
+     existia foi removida em 26/08/2026 porque ela passou a fazer o CONTRÁRIO
+     do que prometia. Medido em 375px: ela entregava 51,20px enquanto o próprio
+     `--t-hero` computa 53,60px, ou seja, encolhia o título em vez de proteger
+     o tamanho dele.
+
+     A causa é de manutenção, e vale guardar: o comentário dela citava um piso
+     de 46px, que era o valor da primeira redução do dia. O meio-termo subiu o
+     piso para 53,6px e a sobrescrita ficou para trás no mesmo dia em que foi
+     escrita. **Sobrescrita de tamanho que copia um número do token envelhece
+     no instante em que o token muda.** Quem manda em toda largura passa a ser
+     o token, como já acontece com os h2. */
   .hero-lead { font-size: .98rem; }
   .hero-actions { align-items: stretch; flex-direction: column; gap: 1rem; }
   .hero-actions .button { width: 100%; }

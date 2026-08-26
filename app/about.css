@@ -123,10 +123,27 @@
   .about-art.is-visible .planta-sol,
   .about-art.is-visible .planta-cota,
   .about-art.is-visible .planta-traco {
-    animation-name: planta-surge;
-    animation-duration: 420ms;
+    animation-name: planta-surge !important;
+    animation-duration: 420ms !important;
     animation-fill-mode: both;
   }
+  /* O `!important` NÃO é preguiça, e tirar ele quebra isto de novo.
+     `responsive.css` tem, dentro desta mesma consulta, um seletor universal
+     com `animation-duration: .01ms !important`. Ele existe para conter
+     animação que ninguém escreveu, e está certo em existir; o problema é que
+     ele também atropela as duas sequências que foram escritas justamente para
+     RESPEITAR a preferência.
+
+     Medido no Chrome com `prefers-reduced-motion: reduce` forçado, antes desta
+     linha: a duração computava 1e-05s enquanto os atrasos sobreviviam intactos
+     (0 · 60 · 100 · 140 · 200 · 240 · 280 · 320 · 380ms). Com
+     `animation-fill-mode: both`, cada peça ficava em opacidade 0 até a vez
+     dela e então aparecia de estalo. Ou seja: quem pediu MENOS movimento
+     recebia nove estalos em vez de um surgimento suave, que é pior que não
+     animar e é o oposto da regra 9.20.
+
+     Ler a folha dava a impressão contrária. Só o valor computado mostrou. */
+
   .about-art.is-visible .planta-chao          { animation-delay: 0ms; }
   .about-art.is-visible .planta-constru       { animation-delay: 60ms; }
   .about-art.is-visible .planta-traco--fora   { animation-delay: 100ms; }
