@@ -45,14 +45,29 @@ export function CarouselArrow({ direction }: { direction: "previous" | "next" })
  * quem decide a cor é a superfície, não a peça.
  */
 export function ArcoMark({ small = false }: { small?: boolean }) {
-  /* Versão de assinatura: a geometria do `public/favicon.svg`, letra por
-     letra, incluindo o quadrado de fundo.
-     O selo do topo do site e o ícone da aba do navegador passam a ser o mesmo
-     desenho, que era a intenção desde que o favicon foi refeito e não se
-     cumpria: o cabeçalho usava o arco aberto dentro de um círculo de CSS, com
-     proporções diferentes. O fundo agora é um `rect` do próprio SVG, e não
-     `background` mais `border-radius` no CSS, porque assim a forma acompanha
-     o desenho em qualquer tamanho sem depender de duas fontes de verdade. */
+  /* A MARCA NOVA, aprovada em 27/08/2026: a soleira.
+   *
+   * Três peças, e só três. Uma cobertura de ombros arredondados cujas pernas
+   * descem e PARAM antes do chão. Um piso reto e mais largo que ela. E entre
+   * os dois, a meia-lua de luz deitada no piso, a única peça cheia.
+   *
+   * A folga entre a ponta das pernas e o piso é a ideia inteira: arco que
+   * desce até o chão é porta, cobertura apoiada em parede é sala, e só
+   * cobertura suspensa sobre um piso é varanda, aberta dos dois lados. Quem
+   * for "arrumar" o desenho encostando as pernas no piso apaga o motivo dele
+   * existir.
+   *
+   * A geometria é a de `public/marca/simbolo.svg`, unidade por unidade, para
+   * o selo do topo e o arquivo que vai para proposta e assinatura serem o
+   * mesmo desenho. Duas cópias divergem na primeira mudança.
+   *
+   * O piso tem vão de 40 (x 12 a 52) e não 44: com 44 a ponta arredondada
+   * ficava a 30,30 do centro, e o recorte circular de perfil de rede social
+   * tem raio 32 com uma faixa de 8% em que a borda some. Era medida, não
+   * gosto.
+   *
+   * A meia-lua é meia de propósito: círculo inteiro fecha o vão e a marca lê
+   * como cadeado em 16px. */
   if (small) {
     return (
       <svg
@@ -62,26 +77,23 @@ export function ArcoMark({ small = false }: { small?: boolean }) {
         focusable="false"
       >
         <rect className="arco-mark-caixa" width="64" height="64" rx="14" />
-        <path className="arco-mark-traco" d="M20 45V31a12 12 0 0 1 24 0v14" />
-        {/* Meia-lua, e não círculo inteiro: o círculo fechava o vão e a marca
-            passava a ler como cadeado em tamanho pequeno. */}
-        <path className="arco-mark-sol" d="M26 42.5a6 6 0 0 1 12 0Z" />
-        <path className="arco-mark-traco" d="M14 45h36" />
+        <path className="arco-mark-traco" d="M20 37V28a7 7 0 0 1 7-7h10a7 7 0 0 1 7 7v9" />
+        <path className="arco-mark-sol" d="M26 45.5a6 6 0 0 1 12 0Z" />
+        <path className="arco-mark-traco" d="M16 47h32" />
       </svg>
     );
   }
 
-  /* Versão aberta, sem fundo: usada grande na seção de apresentação, onde o
-     arco respira sozinho e o traço fino é legível. */
+  /* Versão aberta, sem pastilha: usada grande, onde o traço fino é legível.
+     Aqui vale a geometria cheia do símbolo, de 64 unidades. */
   return (
     <svg className="arco-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-      <path className="arco-mark-traco" d="M15 53V28a17 17 0 0 1 34 0v25" />
-      <path className="arco-mark-sol" d="M22.5 50.5a9.5 9.5 0 0 1 19 0Z" />
-      <path className="arco-mark-traco" d="M7 53h50" />
+      <path className="arco-mark-traco" d="M16 35V24a9 9 0 0 1 9-9h14a9 9 0 0 1 9 9v11" />
+      <path className="arco-mark-sol" d="M24 46.5a8 8 0 0 1 16 0Z" />
+      <path className="arco-mark-traco" d="M12 49h40" />
     </svg>
   );
 }
-
 
 /**
  * O símbolo do WhatsApp, para o botão fixo do celular.

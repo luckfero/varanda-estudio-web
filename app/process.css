@@ -1,495 +1,229 @@
 /**
- * Processo de trabalho, planos e manutencao.
+ * PROCESSO, INVESTIMENTO E MANUTENÇÃO.
+ *
+ * Os blocos 14, 15 e 16 da identidade nova, na ordem em que o visitante os
+ * encontra: como o trabalho acontece, quanto custa e o que existe depois da
+ * publicação.
+ *
+ * Todo token consumido aqui vem de `app/base.css`, que é o contrato. Este
+ * arquivo não declara nenhum, de propósito: se faltar um valor, ele pertence
+ * ao alicerce e o certo é pedir lá, não criar um local (regra 9.8, quem sabe
+ * a cor de uma peça é a superfície onde ela cai).
+ *
+ * O corte de celular NÃO mora aqui. A tabela que vira cartão empilhado, a
+ * linha do tempo que vira vertical e a grade dos planos que vira coluna única
+ * vivem em `app/responsive.css`, junto com o resto dos cortes da página, para
+ * a página ter um lugar só onde se pergunta "o que acontece em 900px".
  */
 
-/* Ritmo de cor de 25/08/2026: o processo é claro e o investimento logo
-   abaixo é areia, para as duas não lerem como uma seção só de 2.000px. */
-.process {
-  background: var(--paper);
-  display: grid;
-  grid-template-columns: .82fr 1.18fr;
-  gap: 8vw;
-  /* O creme fica, e agora é decisão e não sobra.
-     O ritmo de 25/08/2026 é: nenhuma emenda repete o chão da anterior. Aqui a
-     seção de cima é o portfólio, quase preto, e a de baixo é o investimento,
-     em areia. O creme separa das duas e é o meio-termo entre os três claros da
-     casa. Trocar por --paper também funcionaria; trocar por --areia não, e é
-     a única troca que quebra o ritmo. */
+/* ---------------------------------------------------------------------
+   14. PROCESSO
+   A linha do tempo com os nós no acento. Os quatro nós são idênticos de
+   propósito: encher os dois primeiros afirmaria um estado que uma página de
+   apresentação não tem como ter.
+   --------------------------------------------------------------------- */
+.linha-tempo { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--e5); }
+.etapa { position: relative; padding-top: var(--e7); display: flex; flex-direction: column; gap: var(--e3); }
+.etapa::before { content: ""; position: absolute; top: 13px; left: 0; right: calc(var(--e5) * -1); height: 1px; background: var(--fio); }
+.etapa:last-child::before { right: 0; }
+.etapa::after { content: ""; position: absolute; top: 7px; left: 0; width: 13px; height: 13px; border-radius: 50%; background: var(--chao); border: 2px solid var(--acento); }
+.etapa-num { font-size: var(--t-numero); line-height: 1; color: var(--acento); }
+.etapa p:not(.mono) { font-size: var(--c-apoio); color: var(--tinta-media); }
+
+/* ---------------------------------------------------------------------
+   15. INVESTIMENTO, A TABELA
+   A porta de entrada da seção, e o item que mais importa acertar. Três
+   cartões lado a lado obrigam o visitante a comparar de memória; a tabela
+   deixa ele comparar com o olho, com preço embaixo de preço e prazo embaixo
+   de prazo.
+   O preço é grotesca tabular, e não mono nem serifada: mono naquele corpo
+   competiria com a Playfair, e serifada em número de preço vira ornamento
+   onde precisa haver dado.
+
+   O ESCOPO É LINHA, E ESSA É A DECISÃO PRINCIPAL DO DESENHO.
+   Antes o escopo era UMA linha com três listas de itens diferentes lado a
+   lado, e ela media 330px de altura contra 113 do investimento, 128 do
+   prazo e 101 das ações: 58% do corpo da tabela, sem nenhum item alinhado
+   com o item vizinho. Aquilo eram três cartões colocados dentro de uma
+   moldura de tabela, e ninguém lê na horizontal o que muda de um plano para
+   o outro num arranjo desses, que é a única razão de a tabela existir.
+   Agora são oito linhas, uma por dimensão que muda entre os planos, e cada
+   célula é valor curto ou marca de presente e ausente:
+
+     páginas ou seções · tratamento de texto · galeria e conteúdo ·
+     integrações · capacidade à escolha · SEO e dados estruturados ·
+     rodadas de ajuste · primeiro mês de plano
+
+   Os 14 itens de `investimento.pacotes[].items` foram distribuídos um a um
+   nessas oito linhas, sem inventar nem descartar nenhum, e por isso não foi
+   preciso nenhuma linha de observação. O mapa de qual item vai em qual
+   célula mora em `app/section-oferta.tsx`, na constante `COMPARACAO`.
+   O item "Tudo do pacote Negócio", do Profissional, é o que vira a marca de
+   PRESENTE nas quatro linhas em que o Profissional herda o Negócio. Ele
+   aparece escrito por extenso na PRIMEIRA delas, "Páginas ou seções", ao
+   lado da marca, e é ela que ensina o que a marca quer dizer nas três
+   seguintes; repetir a mesma frase quatro vezes na mesma coluna leria como
+   defeito, não como informação. O cabeçalho da coluna já diz o mesmo com as
+   palavras do dicionário ("Tudo do Negócio, mais uma capacidade..."), e a
+   marca carrega "Incluído" em `.so-leitor` para quem ouve.
+   A marca de AUSENTE é o outro lado da mesma conta: as listas de `items` são
+   o escopo por escrito de cada pacote, então dimensão que não aparece na
+   lista de um plano não está nele. Nenhuma célula ausente afirma nada além
+   disso, e nenhuma inventa motivo.
+   A legenda da comparação é VISÍVEL, e não `.so-leitor`. Ela descreve o que
+   a tabela compara, que é informação de leitura para todo mundo e não só
+   para quem ouve, e com o escopo virando oito linhas ela é o que diz de
+   saída que a leitura ali é horizontal.
+
+   OS RÓTULOS DE LINHA SÃO NOMES DE DIMENSÃO, e é de propósito. O rótulo
+   antigo era "Ver o que entra em cada um", que no dicionário é
+   `servicos.verPlano`, o texto do LINK dos cartões de formato: como
+   cabeçalho de linha ele mandava clicar em vez de nomear o que se compara, e
+   em caixa alta a 11,52px no topo do maior cartão da página isso ficava pior
+   ainda. Os rótulos novos são rótulo estrutural, e não dado comercial, e por
+   isso viraram chaves próprias em `investimento.comparacao.linhas`.
+   `verPlano` continua nos cartões de formato, que é onde ele foi escrito
+   para viver.
+   --------------------------------------------------------------------- */
+.rolagem-tabela { overflow-x: auto; }
+/* O min-width de 760px continua, e em uso normal ele nunca é acionado: o
+   corte de cartão está em 900px, e a 901px a caixa já dá 820px de largura
+   útil. A regra fica como rede, para zoom de 200% e larguras que ninguém
+   previu. */
+.tabela { width: 100%; text-align: left; min-width: 760px; }
+/* A grade da tabela é --fio-forte, e não --fio. O --fio está declarado no
+   alicerce como decorativo, "nunca sozinho como sinal", e isso é verdade nos
+   separadores de lista; aqui ele É a estrutura, porque é a grade que faz o
+   olho ler coluna e linha, e a 1,39:1 contra o chão ela sumia no escuro e a
+   tabela virava três blocos de texto flutuando. Agora são 1,75:1. Com o
+   escopo virando oito linhas comparáveis, a grade passou a trabalhar bem
+   mais do que trabalhava. */
+.tabela th, .tabela td { padding: var(--e5); border: 1px solid var(--fio-forte); vertical-align: top; }
+.tabela thead th { font-weight: 400; background: var(--nivel-1); }
+/* `.tabela td.tabela-canto`, e não `.tabela-canto`: é a regra 9.24 outra vez.
+   `.tabela th, .tabela td` é 0-1-1 e vencia `.tabela-canto`, que é 0-1-0, e
+   os dois cantos saíam com borda de 1px e 24px de recheio: dois retângulos
+   vazios emoldurados, o de baixo com cem pixels de altura, lendo como rótulo
+   de linha que faltou. A saída é a especificidade, e não `!important`. */
+.tabela td.tabela-canto { border: 0; padding: 0; background: transparent; }
+
+.tabela-perfil {
+  display: inline-block;
+  font-family: var(--fonte-mono); font-size: var(--c-mono); letter-spacing: var(--ls-mono); text-transform: uppercase;
+  color: var(--tinta-fraca);
+  border: 1px solid var(--fio-controle); border-radius: var(--raio-pilula);
+  padding: 3px 9px;
 }
+/* O perfil da coluna recomendada não pode ter o mesmo peso dos outros dois:
+   destaque que só existe em cor de fundo a 1,088:1 não é destaque. O acento
+   sobre o nível 2 mede 6,73:1 no pior caso, e a borda aqui é decoração de
+   pílula, e não borda de controle, então ela pode ser o próprio acento. */
+.tabela-perfil--recomendado { color: var(--acento); border-color: var(--acento); }
+/* Nome de PACOTE é rótulo de produto, e por isso grotesca: as mesmas três
+   palavras saíam em Playfair aqui e em Geist nos cartões de formato. */
+.tabela-nome { display: block; font-family: var(--fonte-interface); font-size: var(--t-bloco); font-weight: 600; letter-spacing: -0.02em; line-height: var(--lh-bloco); margin-block: var(--e3); }
+.tabela-resumo { display: block; font-weight: 400; color: var(--tinta-media); font-size: var(--c-apoio); }
 
-.process-heading {
-  position: sticky;
-  top: 120px;
-  align-self: start;
+/* min-width, e não width: o rótulo de linha é texto traduzível e cresce de
+   15 a 20% em espanhol e em inglês. */
+.tabela th[scope="row"] {
+  font-family: var(--fonte-mono); font-size: var(--c-mono); font-weight: 500;
+  letter-spacing: var(--ls-mono); text-transform: uppercase;
+  color: var(--tinta-fraca);
+  min-width: 150px;
+  background: transparent;
 }
+/* A coluna recomendada é destacada desde a PRIMEIRA linha, cabeçalho
+   incluído. Antes `.tabela thead th` pintava as três células do topo com
+   --nivel-1 e a faixa de destaque só começava abaixo dele: a coluna nascia
+   igual às vizinhas e virava diferente três linhas depois, justo na linha em
+   que o comprador lê os nomes. E o destaque usa o mesmo vocabulário do
+   `.cartao--destaque` dos planos de manutenção (nível 2 mais fio de acento),
+   para a página ter UMA linguagem de "este é o recomendado". */
+.tabela th.tabela-destaque, .tabela td.tabela-destaque { background: var(--nivel-2); border-color: var(--fio-acento); }
 
-.process-heading h2 {
-  margin: 1.5rem 0 0;
-  color: var(--green-dark);
-  font-family: var(--serif-titulo);
-  font-size: var(--t-secao);
-  font-weight: 400;
-  letter-spacing: var(--ls-titulo);
-  line-height: var(--lh-titulo);
+.preco { display: flex; align-items: baseline; gap: var(--e2); flex-wrap: wrap; }
+.preco-moeda { font-size: var(--c-base); font-weight: 600; color: var(--tinta-fraca); }
+.preco-valor { font-size: var(--t-numero); line-height: 1; color: var(--tinta); }
+.preco-unidade { display: block; margin-top: var(--e2); font-family: var(--fonte-mono); font-size: var(--c-mono); letter-spacing: var(--ls-mono); text-transform: uppercase; color: var(--tinta-fraca); }
+
+/* O valor curto de cada célula de escopo. Corpo de apoio, e não lista: cada
+   célula tem UM valor, que é o que torna a linha comparável na horizontal. */
+.tabela-valor { display: block; font-size: var(--c-apoio); color: var(--tinta-media); line-height: 1.5; }
+
+/* A MARCA DE PRESENTE E AUSENTE.
+   O desenho é `+` e `–`, e nunca está sozinho: cada um carrega a palavra em
+   `.so-leitor`, porque quem usa leitor de tela precisa ouvir "incluído" e
+   "não incluído", e não o nome de um glifo nem o silêncio de um traço. O `+`
+   repete o marcador que a coluna de integrações inclusas já usa na mesma
+   seção.
+   O ausente sai em --tinta-fraca (7,06:1 no chão, 5,45 no nível 3) e não num
+   cinza apagado: ausência é informação, e informação se lê. */
+.marca-escopo {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px;
+  font-family: var(--fonte-mono); font-size: var(--c-mono); font-weight: 500; line-height: 1;
 }
+.marca-escopo--sim { color: var(--acento); }
+.marca-escopo--nao { color: var(--tinta-fraca); }
 
-.process-heading > p {
-  max-width: 380px;
-  margin-top: 1.8rem;
-  color: var(--ink-soft);
-  line-height: 1.7;
+/* O nome do plano em cada célula. Texto de verdade, e não `content: attr()`:
+   conteúdo gerado não se seleciona, não se copia e não passa por tradutor
+   automático de página, que é justo o caminho de quem chega em espanhol ou
+   inglês. Acima de 900px ele é redundante com o `scope="col"` do cabeçalho,
+   e por isso sai da tela e da árvore de acessibilidade. */
+.celula-plano { display: none; }
+
+/* A legenda da comparação é um parágrafo ANTES da tabela, e não um
+   `caption`: abaixo de 900px o pai deixa de ser tabela e o `caption` vira um
+   parágrafo solto de 1px de altura, sem vínculo com nada. */
+.tabela-legenda { margin-bottom: var(--e5); }
+
+.incluido { margin-top: var(--e9); }
+.incluido h3, .escopo h3 { font-size: var(--t-item); font-weight: 600; letter-spacing: -0.015em; margin-bottom: var(--e5); padding-bottom: var(--e3); border-bottom: 1px solid var(--fio); }
+.incluido-grade { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--e5) var(--e6); }
+.incluido-item { border-top: 1px solid var(--fio); padding-top: var(--e4); }
+/* Sem o "01" a "06": era numeração inventada em cima de um conjunto que não
+   tem ordem. */
+.incluido-item strong { display: block; margin-bottom: var(--e2); font-size: var(--c-base); font-weight: 600; letter-spacing: -0.015em; }
+.incluido-item p:not(.mono) { font-size: var(--c-apoio); color: var(--tinta-media); }
+
+/* A coluna da esquerda está no preço, a da direita não. A diferença é
+   comercial antes de ser visual, então ela é dita pelo fundo e pelo
+   marcador, e não só pelo título. */
+.escopo { margin-top: var(--e8); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--e5); }
+.escopo-coluna { padding: var(--e6); border-radius: var(--raio-cartao); border: 1px solid var(--fio); }
+.escopo-coluna--incluso { background: var(--nivel-2); border-color: var(--fio-acento); }
+.escopo li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: var(--e3); align-items: start; padding-block: var(--e2); font-size: var(--c-apoio); color: var(--tinta-media); }
+.escopo li b { font-family: var(--fonte-mono); font-size: var(--c-mono); line-height: 1.9; font-weight: 500; color: var(--acento); }
+.escopo-coluna--orcado li b { color: var(--tinta-fraca); }
+
+.pagamento {
+  margin-top: var(--e6);
+  padding: var(--e5) var(--e6);
+  border-left: 2px solid var(--acento);
+  background: rgba(232, 163, 60, 0.07);
+  border-radius: 0 var(--raio-peca) var(--raio-peca) 0;
+  color: var(--tinta-media); font-size: var(--c-apoio);
 }
+.nota-secao { margin-top: var(--e5); }
 
-.process-list article {
-  min-height: 180px;
-  padding: 2rem 0;
-  display: grid;
-  grid-template-columns: 80px 1fr;
-  gap: 1.2rem;
-  border-top: 1px solid var(--line);
-}
-
-.process-list article:last-child { border-bottom: 1px solid var(--line); }
-
-.process-list article > span {
-  /* --terracotta media 3,88:1 sobre o creme; o tom escuro da 5,74:1. */
-  color: var(--acento);
-  font-family: var(--serif-titulo);
-  font-size: 1.3rem;
-  font-style: italic;
-}
-
-.process-list h3 {
-  margin: 0;
-  color: var(--green);
-  font-family: var(--serif-titulo);
-  font-size: var(--t-bloco);
-  font-weight: 400;
-  line-height: var(--lh-titulo);
-}
-
-.process-list p {
-  max-width: 550px;
-  margin: .85rem 0 0;
-  color: var(--ink-soft);
-  line-height: 1.7;
-}
-
-/* Areia desde 25/08/2026. O processo logo acima é claro, e as duas juntas
-   somavam quase 2.000px do mesmo chão: a seção do preço não se anunciava. */
-.pricing {
-  background: var(--areia);
-  --acento: var(--terracotta-deep);
-}
-
-.pricing-heading h2 { color: var(--green-dark); }
-
-.pricing-heading > p {
-  max-width: 350px;
-  color: var(--ink-soft);
-  line-height: 1.7;
-}
-
-.pricing-grid {
-  margin-top: 4.5rem;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  align-items: stretch;
-  gap: 1rem;
-}
-
-/* Opaco desde 25/08/2026. Era `rgba(251,248,242,.5)`, ou seja, --paper a
-   meia força: sobre o creme antigo isso dava um cartão quase invisível, e
-   sobre a areia nova ele simplesmente sumiria no fundo. Opaco, o cartão
-   volta a ser um objeto em cima da seção. */
-.price-card {
-  padding: 2.2rem;
-  border: 1px solid var(--line);
-  background: var(--paper);
-}
-
-.price-card.is-featured {
-  /* Verde escuro em vez do verde médio: o rótulo em ochre deste cartão
-     media 3,71:1 sobre o --green e passa a 4,96:1 sobre o --green-dark.
-     Foi o único jeito de manter o ochre, que é o acento do cartão. */
-  background: var(--green-dark);
-  color: var(--paper);
-  border-color: var(--green);
-  /* Era `transform: translateY(-16px)`, e não funcionava: a regra da
-     revelação, `.reveal-ready [data-reveal].is-visible`, tem especificidade
-     (0,3,0) contra (0,2,0) daqui e sobrescreve o transform com `translate(0)`.
-     Os três cartões nasciam com topo idêntico e o "recomendado" não se
-     destacava de nada.
-
-     `margin-block` faz o mesmo deslocamento e a revelação não toca nele.
-
-     **Retirado em 25/08/2026, a pedido: "alinhe o card verde para a mesma
-     altura que os cards brancos".** O destaque passa a ser só a cor, que já
-     era o mais forte dos dois sinais. Se um dia voltar, volta por aqui e não
-     por `transform`, pelo motivo escrito acima. */
-  margin-block: 0;
-}
-
-.price-eyebrow {
-  margin: 0;
-  /* --terracotta sobre o creme do cartão dá 3,67:1; o tom escuro dá 5,35:1
-     e é a mesma família de cor. */
-  color: var(--acento);
-  font-size: .72rem;
-  font-weight: 800;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-}
-
-.is-featured .price-eyebrow { color: var(--ochre); }
-
-.price-card h3 {
-  margin: 1.1rem 0 0;
-  font-family: var(--serif-titulo);
-  font-size: var(--t-bloco);
-  font-weight: 400;
-  line-height: var(--lh-titulo);
-}
-
-.price-description {
-  min-height: 55px;
-  color: var(--ink-soft);
-  font-size: var(--c-apoio);
-  line-height: var(--lh-apoio);
-}
-
-.is-featured .price-description { color: #cfc7bb; }
-
-.price {
-  margin-top: 2rem;
-  display: flex;
-  align-items: baseline;
-  gap: .35rem;
-}
-
-.price small { font-size: .8rem; }
-.price strong { font-family: var(--serif-titulo); font-size: clamp(3.1rem, 4.5vw, 5rem); font-weight: 400; letter-spacing: -.05em; }
-.price span { color: var(--ink-soft); font-size: .68rem; }
-.is-featured .price span { color: #cfc7bb; }
-
-/* No lugar da segunda coluna de preço ("valor regular: 1.500"), que saiu em
-   25/08/2026 junto com a data de validade, entra a informação que o cliente
-   de fato precisa e que a página não dava em lugar nenhum: quanto tempo leva.
-
-   O rótulo em bloco próprio, e não em linha, porque "Prazo típico" precisa
-   ser lido como rótulo e não como parte da frase. */
-.price-entrega {
-  /* Duas linhas de texto mais o rótulo. Sem piso, o cartão cujo prazo cabe em
-     uma linha sobe o botão 22px e os três deixam de alinhar — mesmo remédio
-     que `.price-description` já usa logo acima. */
-  min-height: 66px;
-  margin: -.35rem 0 1.8rem;
-  color: var(--ink-soft);
-  font-size: var(--c-apoio);
-  line-height: var(--lh-apoio);
-}
-
-.price-entrega span {
-  display: block;
-  margin-bottom: .25rem;
-  color: var(--terracotta-dark);
-  font-size: .68rem;
-  font-weight: 800;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-}
-
-.is-featured .price-entrega { color: #cfc7bb; }
-.is-featured .price-entrega span { color: var(--ochre); }
-
-.price-card ul {
-  margin: 2rem 0 0;
-  padding: 1.6rem 0 0;
-  border-top: 1px solid var(--line);
-  list-style: none;
-  display: grid;
-  gap: .85rem;
-  color: var(--ink-soft);
-  font-size: .79rem;
-}
-
-.is-featured ul { border-color: var(--fio); color: #d8d0c4; }
-/* MARCADOR EM QUADRADO, e não em ✓.
-
-   O U+2713 não está em NENHUMA das cinco faixas Unicode declaradas nos
-   `@font-face` de `fonts.css` — conferido varrendo os `unicode-range` um a
-   um. Consequência: ele caía para a fonte do sistema, com negrito sintético,
-   e saía diferente em cada máquina. Um glifo que muda de forma conforme o
-   computador do visitante não é marcador, é sorte.
-
-   Junto disso, `::before` em linha não dá recuo pendente: a segunda linha do
-   item voltava para debaixo do marcador em vez de alinhar com a primeira. O
-   `grid` de duas colunas resolve as duas coisas de uma vez.
-
-   O quadrado de 5px é o mesmo das entregas do portfólio, que é a régua. */
-.price-card li,
-.pricing-escopo-incluso li,
-.pricing-escopo-extra li,
-.care-grid li {
-  display: grid;
-  grid-template-columns: 5px 1fr;
-  align-items: baseline;
-  gap: .75rem;
-}
-
-.price-card li::before,
-.pricing-escopo-incluso li::before,
-.care-grid li::before {
-  content: "";
-  width: 5px;
-  height: 5px;
-  /* `translateY` porque um quadrado alinhado pela linha de base fica no pé da
-     letra; subir metade da altura dele o põe na altura do olho. */
-  transform: translateY(-2px);
-  background: var(--terracotta);
-}
-.is-featured li::before { background: var(--ochre); }
-
-/**
- * Garantias da casa, fora dos cartoes.
- *
- * Enquanto viviam dentro da lista de cada pacote, pareciam variar entre
- * eles — e "direcao visual personalizada" so no mais caro dizia, na
- * pratica, que os outros dois eram modelo pronto.
- *
- * Fica sobre --cream, entao vale a mesma paleta ja conferida nos cartoes:
- * --green-dark no titulo, --ink-soft no corpo, --terracotta-dark no acento
- * (5,35:1 sobre este fundo).
- */
-.pricing-included {
-  margin-top: 4rem;
-  padding-top: 2.6rem;
-  border-top: 1px solid var(--line);
-}
-
-.pricing-included > h3 {
-  margin: 0 0 2.2rem;
-  color: var(--acento);
-  font-family: var(--font-sans), sans-serif;
-  font-size: .72rem;
-  font-weight: 800;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-}
-
-.pricing-included ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.8rem 2.5rem;
-}
-
-.pricing-included li {
-  display: grid;
-  gap: .4rem;
-}
-
-.pricing-included strong {
-  color: var(--green-dark);
-  font-family: var(--serif-titulo);
-  font-size: 1.32rem;
-  font-weight: 400;
-}
-
-.pricing-included span {
-  color: var(--ink-soft);
-  font-size: .8rem;
-  line-height: 1.6;
-}
-
-/**
- * O que entra no pacote, e o que fazemos com orcamento proprio.
- *
- * Duas colunas de largura cheia. Era um paragrafo corrido de 760px que
- * subaproveitava a faixa e escondia metade do que o estudio entrega.
- *
- * A separacao e comercial antes de ser visual: a esquerda esta no preco do
- * pacote, a direita nao. Por isso o marcador difere — ✓ para incluso, + para
- * adicional — e nao so a coluna. Numa leitura rapida, que e como esta secao
- * costuma ser lida, e o marcador que carrega a informacao.
- */
-.pricing-escopo {
-  margin-top: 3.4rem;
-  padding-top: 2.6rem;
-  border-top: 1px solid var(--line);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem 4vw;
-}
-
-.pricing-escopo-col h3 {
-  margin: 0 0 1.5rem;
-  color: var(--green-dark);
-  font-family: var(--serif-titulo);
-  font-size: var(--t-item);
-  font-weight: 400;
-  letter-spacing: -.02em;
-  line-height: var(--lh-titulo-miudo);
-}
-
-.pricing-escopo ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: .8rem;
-  color: var(--ink-soft);
-  font-size: .84rem;
-  line-height: 1.5;
-}
-
-.pricing-escopo li {
-  display: grid;
-  grid-template-columns: 1.4rem 1fr;
-  align-items: baseline;
-}
-
-.pricing-escopo li::before {
-  font-weight: 800;
-}
-
-/* Pelo token de superfície: sobre a areia ele resolve para --terracotta-deep.
-   O comentário abaixo é de quando a seção era creme, e a conta continua a
-   mesma, só que agora feita pelo `--acento`.
-   --terracotta-dark mede 5,35:1 sobre o creme; o tom medio ficaria em
-   3,67:1. Mesmo marcador dos cartoes de preco, de proposito: repete o
-   vocabulario de "isto esta incluso". */
-
-/* O sinal de mais diz "soma-se ao pacote", que e exatamente a relacao
-   comercial. Em --green-dark, 11,19:1 sobre o creme. */
-/* O "+" fica: ele é o ÚNICO marcador diferente da página e é ele que carrega
-   a informação numa leitura rápida — esta coluna é o que tem orçamento
-   próprio, a outra é o que já está no preço. Ele está na faixa latina básica,
-   então a fonte da casa o desenha. */
-.pricing-escopo-extra li::before {
-  content: "+";
-  color: var(--green-dark);
-  font-weight: 700;
-}
-
-/* Condição de pagamento, uma vez só para os três. Repetida em cada cartão
-   leria como se variasse entre eles, que foi o defeito que tirou as garantias
-   de dentro da lista dos pacotes na rodada de 10/08. */
-.pricing-pagamento {
-  max-width: 1040px;
-  margin: 2.4rem auto 0;
-  padding: 1.1rem 1.4rem;
-  border: 1px solid var(--line);
-  color: var(--ink-soft);
-  font-size: var(--c-base);
-  line-height: var(--lh-base);
-  text-align: center;
-}
-
-.launch-note {
-  max-width: 1040px;
-  margin: 2.6rem auto 0;
-  color: var(--ink-muted);
-  font-size: var(--c-apoio);
-  line-height: var(--lh-apoio);
-  text-align: center;
-}
-
-.care {
-  /* Mesma razão do botão: sobre --terracotta puro os textos de apoio desta
-     seção mediam 3,17:1 e 3,23:1. */
-  --fio: var(--fio-escuro);
-  /* Era --terracotta-dark #974d35, cujo TETO de contraste é 5,78:1 com o
-     branco: o melhor elemento da seção perdia para o pior do portfólio, que
-     é 6,84:1. O --terracotta-deep já existia declarado e nunca usado, e leva
-     o branco a 7,57:1, dentro da faixa da régua. */
-  background: var(--terracotta-deep);
-  color: var(--paper);
-}
-
-.care-heading {
-  max-width: 880px;
-}
-
-.care-heading h2 em { color: var(--ochre-light); font-weight: 400; }
-.care-heading > p { max-width: 600px; margin-top: 2.35rem; color: var(--paper); line-height: 1.7; }
-
-.care-grid {
-  margin-top: 4rem;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border-top: 1px solid var(--fio);
-  border-bottom: 1px solid var(--fio);
-}
-
-.care-grid article {
-  padding: 2.2rem clamp(1.2rem, 3vw, 3rem);
-  border-right: 1px solid var(--fio);
-}
-
-.care-grid article:last-child { border-right: 0; }
-.care-grid h3 { margin: 0; font-family: var(--serif-titulo); font-size: var(--t-bloco); font-weight: 400; }
-
-.care-price { margin: 1.3rem 0; display: flex; align-items: baseline; gap: .25rem; }
-.care-price strong { font-family: var(--serif-titulo); font-size: 3.5rem; font-weight: 400; }
-.care-price small, .care-price span { color: var(--paper); font-size: .72rem; }
-.care-grid p {
-  margin: .65rem 0;
-  color: var(--paper);
-  font-size: .87rem;
-  font-weight: 650;
-  line-height: 1.5;
-}
-
-/* O plano do meio e o recomendado, como no bloco de pacotes. Aqui o
-   destaque nao pode ser fundo claro: o cartao vive sobre
-   --terracotta-dark e qualquer ilha clara exigiria repintar o texto
-   inteiro. Uma faixa de acento no topo resolve sem mexer em contraste. */
-.care-grid article.is-featured {
-  position: relative;
-  background: rgba(255,255,255,.07);
-}
-
-.care-grid article.is-featured::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: 3px;
-  background: var(--ochre-light);
-}
-
-.care-grid ul {
-  margin: 1.4rem 0 0;
-  padding: 1.3rem 0 0;
-  border-top: 1px solid var(--fio);
-  list-style: none;
-  display: grid;
-  gap: .7rem;
-  color: var(--paper);
-  font-size: .79rem;
-  line-height: 1.5;
-}
-
-.care-grid li::before {
-  background: var(--ochre-light);
-}
-
-.care-notes {
-  margin-top: 1.5rem;
-  display: flex;
-  /* Era `justify-content: space-between` com dois parágrafos. Com o botão
-     como terceiro filho, o `space-between` o jogaria para a borda direita e
-     ele leria como legenda solta. `align-items: flex-start` mantém as duas
-     notas fluindo e o botão alinhado pelo topo delas. */
-  flex-wrap: wrap;
-  align-items: flex-start;
-  gap: 2rem;
-  color: #f0d9ce;
-  font-size: var(--c-apoio);
-  line-height: 1.6;
-}
-
-.care-notes p { flex: 1 1 20rem; margin: 0; }
-.care-notes .button { flex: 0 0 auto; }
+/* ---------------------------------------------------------------------
+   16. MANUTENÇÃO
+   Aqui os três planos continuam sendo cartões, e não tabela. O motivo é de
+   conteúdo: eles são uma ESCADA ("Tudo do plano Cuidado", "Tudo do plano
+   Presença"), e escada se lê de baixo para cima em coluna. A tabela serve
+   onde as linhas são comparáveis item a item, que é o caso do investimento.
+   --------------------------------------------------------------------- */
+.planos { display: grid; gap: var(--e5); grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.plano { display: flex; flex-direction: column; gap: var(--e3); }
+/* Nome de PACOTE é rótulo de produto, e por isso grotesca, igual ao nome
+   dos três formatos e ao da tabela de investimento. */
+.plano h3 { font-family: var(--fonte-interface); font-weight: 600; font-size: var(--t-bloco); line-height: var(--lh-bloco); letter-spacing: -0.02em; }
+.plano .preco { margin-block: var(--e2) var(--e1); }
+.plano-resumo { font-size: var(--c-apoio); color: var(--tinta-media); margin-bottom: var(--e2); }
+.plano-lista { border-top: 1px solid var(--fio); padding-top: var(--e4); display: grid; gap: var(--e2); flex: 1; }
+.plano-lista li { display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: var(--e3); font-size: var(--c-apoio); color: var(--tinta-media); line-height: 1.5; }
+.plano-lista li::before { content: ""; width: 6px; height: 6px; margin-top: 8px; background: var(--acento); }
+.manutencao-notas { margin-top: var(--e7); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--e5); }
+.manutencao-acao { margin-top: var(--e6); }

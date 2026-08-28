@@ -1,10 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Varanda Estúdio Web">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-label="Varanda Estúdio Web">
   <title>Varanda Estúdio Web</title>
-  <!-- O arco: cobertura e dois pilares, aberto embaixo. -->
-  <path d="M15 53V28a17 17 0 0 1 34 0v25" fill="none" stroke="#214d3b" stroke-width="5" stroke-linecap="round"/>
-  <!-- O sol nascendo, visto de dentro da varanda. Meia-lua, e não círculo
-       inteiro: o círculo fechava o vão e a marca lia como cadeado. -->
-  <path d="M22.5 50.5a9.5 9.5 0 0 1 19 0Z" fill="#c79a43"/>
-  <!-- O piso. É o que impede o arco de virar túnel ou ponte. -->
-  <path d="M7 53h50" fill="none" stroke="#214d3b" stroke-width="5" stroke-linecap="round"/>
+  <!-- A soleira. Cobertura de vao 32 (x 16 a 48), coroa reta em y 15, ombros
+       de raio 9, pernas de y 24 a y 35, onde PARAM. Piso de vao 40 (x 12 a
+       52) em y 49. Luz de raio 8 deitada sobre o piso.
+
+       A folga entre a perna e o piso e a ideia: cobertura suspensa sobre um
+       piso e varanda, e nao porta nem sala.
+
+       O contorno sai por currentColor para o simbolo herdar a superficie:
+       creme sobre o chao escuro do site, quase preto sobre papel de proposta.
+       ISSO SO FUNCIONA COM O SVG EMBUTIDO NA PAGINA. Como img, como
+       background-image ou como favicon o arquivo e documento isolado e o
+       currentColor cai em preto; nesses lugares vai o selo.
+
+       A luz herda tambem, e nao fica travada em ocre, porque o #e8a33c mede
+       2,16:1 sobre papel branco e reprova os 3:1 de elemento grafico. O ocre
+       vive no selo e no favicon, onde o fundo e controlado. -->
+  <path d="M16 35V24a9 9 0 0 1 9-9h14a9 9 0 0 1 9 9v11"
+        stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M12 49h40" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+  <path d="M24 46.5a8 8 0 0 1 16 0Z" style="fill: var(--marca-luz, currentColor)"/>
 </svg>

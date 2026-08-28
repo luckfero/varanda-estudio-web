@@ -69,24 +69,55 @@ function cartoes(html, marcador) {
   return html
     .split(marcador)
     .slice(1)
+    .map((pedaco) => ate(pedaco))
     .map((pedaco) => ({
       nome: pedaco.match(/<h3[^>]*>([\s\S]*?)<\/h3>/i)?.[1]?.trim() ?? null,
-      host: pedaco.match(/^[\s\S]{0,600}?href="https?:\/\/([^/"]+)/i)?.[1] ?? null,
+      host: pedaco.match(/href="https?:\/\/([^/"]+)/i)?.[1] ?? null,
       imagem: pedaco.match(/\/images\/r\/([a-z0-9-]+?)-\d+\.(?:avif|webp)/i)?.[1] ?? null,
     }));
 }
 
 /**
+ * Corta o pedaço onde o PRÓXIMO cartão começa, de qualquer um dos dois tipos.
+ *
+ * O `split` já termina cada pedaço no próximo cartão do MESMO tipo, então
+ * sobrava um vazamento só: o último publicado seguia até o fim do documento e
+ * enxergava o endereço do primeiro estudo conceitual.
+ *
+ * Isto substitui a janela de 600 caracteres que existia aqui. Ela funcionava
+ * quando o cartão inteiro era um link e o `href` vinha na primeira linha; no
+ * markup de 27/08/2026 o endereço passou a ser a ÚLTIMA peça do cartão, depois
+ * da imagem, do rótulo, do título, da descrição e da lista de entregas, e a
+ * janela cortava antes de chegar nele. Limite por conteúdo, e não por contagem
+ * de caractere, não envelhece quando o cartão muda de forma.
+ */
+function ate(pedaco) {
+  const fim = [/class="placa[" ]/, /class="cartao cartao--interativo estudo"/]
+    .map((m) => pedaco.search(m))
+    .filter((i) => i >= 0);
+  return fim.length ? pedaco.slice(0, Math.min(...fim)) : pedaco;
+}
+
+/**
  * Os marcadores são expressão regular, e não texto solto, por um motivo que
- * já custou uma rodada: `class="portfolio-placa` casa também com
- * `class="portfolio-placas"`, que é o `<ol>` em volta. O recorte pegava três
- * cartões onde existem dois, e o teste acusava defeito onde não havia.
+ * já custou uma rodada: `class="placa` casa também com `class="placas"`, que
+ * é o `<ol>` em volta, e com `placa-corpo` e `placa-endereco` que vivem
+ * dentro do cartão. O recorte pegava mais cartões do que existem e o teste
+ * acusava defeito onde não havia. Por isso a classe é seguida de aspas ou de
+ * espaço, sempre.
+ *
+ * OS NOMES MUDARAM NO PORTE DA IDENTIDADE, em 27/08/2026, e o teste ficou
+ * vermelho antes de o defeito existir, que é exatamente o trabalho dele. Ao
+ * atualizar, apareceu uma regressão de verdade: o selo de conceitual tinha
+ * virado `.selo` genérico, a mesma classe do rótulo de subseção, e com isso
+ * o aviso de que a empresa NÃO EXISTE deixava de ser distinguível de um
+ * título qualquer. Ele voltou a ter gancho próprio, `selo--conceitual`.
  *
  * O href vem ANTES do `h3` nos dois casos, porque é o `<a>` que abre o
  * cartão. Por isso o recorte começa no atributo de classe do link.
  */
-const PLACA = /class="portfolio-placa[" ]/;
-const ESTUDO = /class="portfolio-estudo"/;
+const PLACA = /class="placa[" ]/;
+const ESTUDO = /class="cartao cartao--interativo estudo"/;
 
 /** `lastIndexOf` não aceita regex, então a posição sai daqui. */
 function ultimaOcorrencia(html, marcador) {
@@ -139,7 +170,7 @@ test("o aviso de conceitual não descreve os trabalhos publicados", async () => 
   for (const { locale, home } of HOMES) {
     const html = await htmlDe(home);
     const ultimaPlaca = ultimaOcorrencia(html, PLACA);
-    const aviso = html.indexOf('class="portfolio-aviso"');
+    const aviso = html.indexOf('class="aviso"');
     assert.ok(ultimaPlaca > 0, `${locale}: nenhum publicado no documento`);
     assert.ok(aviso > 0, `${locale}: aviso de conceitual sumiu do documento`);
     assert.ok(
@@ -156,7 +187,7 @@ test("cada estudo carrega o selo de conceitual, e nenhum publicado carrega", asy
      um estudo não tem como saber que a empresa não existe. */
   for (const { locale, home } of HOMES) {
     const html = await htmlDe(home);
-    const selos = (html.match(/class="portfolio-selo"/g) ?? []).length;
+    const selos = (html.match(/class="selo selo--conceitual"/g) ?? []).length;
     assert.equal(
       selos,
       ESTUDOS_ESPERADOS.length,
@@ -169,7 +200,7 @@ test("cada estudo carrega o selo de conceitual, e nenhum publicado carrega", asy
        placas vêm antes, basta cobrar que o primeiro selo venha depois da
        última delas. */
     assert.ok(
-      html.indexOf('class="portfolio-selo"') > ultimaOcorrencia(html, PLACA),
+      html.indexOf('class="selo selo--conceitual"') > ultimaOcorrencia(html, PLACA),
       `${locale}: um selo de conceitual aparece dentro da área dos publicados`,
     );
   }

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Varanda Estúdio Web">
+  <title>Varanda Estúdio Web</title>
+  <!-- O selo: o simbolo dentro da pastilha, com cor literal. E esta versao
+       que vai para perfil de rede social, aba de navegador, assinatura de
+       e-mail e capa de proposta, ou seja, todo lugar em que o arquivo viaja
+       sozinho e nao ha folha para herdar. -->
+  <rect width="64" height="64" rx="14" fill="#262019"/>
+  <path d="M18 36V26a8 8 0 0 1 8-8h12a8 8 0 0 1 8 8v10" fill="none" stroke="#f4efe6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M25 46.5a7 7 0 0 1 14 0Z" fill="#e8a33c"/>
+  <path d="M14 48h36" fill="none" stroke="#f4efe6" stroke-width="5" stroke-linecap="round"/>
+</svg>

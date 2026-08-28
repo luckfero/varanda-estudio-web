@@ -1,133 +1,165 @@
-@media (max-width: 860px) {
-  #menu-principal[aria-hidden="true"] {
-    visibility: hidden;
-  }
+/**
+ * 24. MOVIMENTO REDUZIDO, e o pouco de acessibilidade que a folha das
+ * seções não tem como cobrir.
+ *
+ * Vem por último na cascata de `app/raiz.tsx`, depois do responsivo, e é o
+ * único lugar da folha que responde a `prefers-reduced-motion` de forma
+ * geral. Não declara token: consome os de `base.css`.
+ *
+ * O ARQUIVO ENCOLHEU, e vale registrar o que saiu e por quê, senão alguém
+ * repõe achando que faltou:
+ *
+ * 1. As nove regras de `padding-block: 15px` que engordavam alvo de toque
+ *    (`.text-link`, `.legal-link`, `.back-top`, `.site-footer a`, `.consent`
+ *    e companhia) saíram porque a identidade nova resolve isso na origem: o
+ *    `--alvo-toque` de 44px é pedido por `.botao`, `.menu a`, `.idiomas a`,
+ *    `.rodape-baixo a`, `.canal-texto`, `.consentimento` e `.pular`, cada um
+ *    no arquivo da própria seção. Alvo de toque virou regra da casa em vez de
+ *    remendo no fim da folha.
+ * 2. `.carousel-dots` saiu com o carrossel do portfólio, que deixou de
+ *    existir em 25/08/2026.
+ * 3. `#menu-principal[aria-hidden]` saiu porque o painel do celular agora é
+ *    ligado e desligado por `display`, que já tira os links da árvore de
+ *    acessibilidade e do Tab. O `aria-hidden` era necessário quando o menu
+ *    era escondido por `transform` e continuava focável atrás da tela.
+ * 4. O foco dos campos do formulário saiu porque `base.css` tem um
+ *    `:focus-visible` só, medido, para o chão único da identidade nova. A
+ *    folha anterior precisava de cinco regras por seção porque metade da
+ *    página era clara e metade escura.
+ */
 
-  #menu-principal[aria-hidden="false"] {
-    visibility: visible;
-  }
-}
+/* ---------------------------------------------------------------------
+   MOVIMENTO REDUZIDO
+   Reduz, e não zera. A opacidade continua acontecendo, em 240ms e sem
+   deslocamento, e o estado final é SEMPRE visível: nenhum elemento fica
+   preso em opacidade zero quando a preferência está ligada.
 
-.contact-form input:not([type="checkbox"]):focus-visible,
-.contact-form select:focus-visible,
-.contact-form textarea:focus-visible {
-  outline: 3px solid var(--ochre);
-  outline-offset: 3px;
-  border-color: var(--terracotta);
-}
+   O que se MOVE nesta folha é só `transform` e `opacity`. As outras
+   transições são de pintura (`color`, `background`, `border-color`) e
+   nenhuma toca largura, altura, `top` ou `left`, que obrigariam o navegador
+   a refazer o arranjo a cada quadro. Nenhuma regra usa `transition: all` e
+   nenhuma curva é `ease-in`: a única curva da peça é a de saída da casa,
+   `--ease-out`, e ela vale também aqui dentro.
 
-.carousel-dots button {
-  position: relative;
-  min-width: 28px;
-  min-height: 28px;
-  background: transparent;
-}
-
-.carousel-dots button::before {
-  content: "";
-  position: absolute;
-  inset: 50% 0 auto;
-  height: 5px;
-  transform: translateY(-50%);
-  background: rgba(33, 77, 59, .28);
-  transition: width .25s ease, background .25s ease;
-}
-
-.carousel-dots button.is-active::before {
-  background: var(--green-dark);
-}
-
+   NÃO HÁ SELETOR UNIVERSAL AQUI, e isso é decisão, não esquecimento. A
+   folha anterior tinha `* { animation-duration: .01ms !important }` dentro
+   desta mesma consulta, e ele atropelava a única sequência do site escrita
+   para respeitar a preferência: a planta do "sobre", em `about.css`, que
+   reduz a própria escada de atrasos em vez de zerá-la. Com o universal, a
+   duração computava 1e-05s enquanto os atrasos sobreviviam, e cada peça
+   ficava invisível até a vez dela e então aparecia de estalo. Quem pediu
+   menos movimento recebia uma fila de estalos.
+   Quem tiver sequência própria declara aqui embaixo, ou no arquivo da
+   própria seção, o que ela vira sob a preferência. Nada é desligado por
+   varredura.
+   --------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-  [data-reveal] {
-    opacity: 1 !important;
-    transform: none !important;
-    filter: none !important;
-    transition: none !important;
+  html { scroll-behavior: auto; }
+
+  /* Longhand, e não o atalho `transition: opacity 240ms var(--ease-out)`.
+     Atalho com `var()` dentro vira substituição pendente: ele funciona, mas
+     o CSSOM devolve as quatro longhands VAZIAS, e aí não há como conferir a
+     curva medindo, só lendo o CSS, que é exatamente o que a casa não aceita
+     como prova. Escrito assim, `transitionTimingFunction` computa
+     cubic-bezier(0.23, 1, 0.32, 1) e a afirmação do comentário acima é
+     verificável.
+     O seletor é `.reveal-ready [data-reveal]` porque é ele que a revelação
+     deste site usa (`app/use-reveal.ts` e o bloco 22 de `base.css`). O
+     protótipo escreve `.com-js [data-revelar]`, que são os nomes do script
+     avulso dele e não existem aqui: copiado ao pé da letra, este bloco não
+     alcançaria um único elemento e a preferência não teria efeito nenhum
+     sobre a revelação. */
+  .reveal-ready [data-reveal] {
+    transform: none;
+    transition-property: opacity;
+    transition-duration: 240ms;
+    transition-timing-function: var(--ease-out);
+    transition-delay: 0ms;
   }
+
+  /* O PRIMEIRO ELEMENTO FOCÁVEL DA PÁGINA, e o que mais importa aqui.
+     O percurso dele é `translateY(calc(-100% - var(--e6)))`, cerca de 76px,
+     e ele entra no primeiro Tab: sem esta linha, quem pediu movimento
+     reduzido recebia justamente o movimento que pediu para não receber, no
+     primeiro gesto de teclado da visita.
+     `.skip-link` está junto porque é o nome que `app/pagina.tsx` ainda
+     escreve, e `base.css` veste os dois. Citar só `.pular` deixaria a regra
+     mirando um seletor que a página não usa, ou seja, sem efeito algum, e o
+     sintoma disso é silencioso.
+     Duração zero, e não reduzida: são 76px de percurso para um elemento que
+     precisa estar legível no instante em que recebe o foco. Aqui aparecer é
+     o comportamento certo, e é a mesma decisão que a folha anterior já
+     tinha registrado. */
+  .pular,
+  .skip-link { transition-duration: 0ms; }
+
+  .cartao, .botao, .canal-texto, .endereco { transition-duration: 120ms; }
+  .cartao--interativo:hover { transform: none; }
+  .botao:active { transform: none; }
+  .link-texto::after { transition: none; }
+  .duvidas-lista summary i::before, .duvidas-lista summary i::after { transition-duration: 100ms; }
+  .abrir-menu i::before, .abrir-menu i::after { transition-duration: 100ms; }
 }
 
-/* ------------------------------------------------------------------
-   Alvo de toque · medido em 25/08/2026
+/* ---------------------------------------------------------------------
+   O BOTÃO FIXO DE WHATSAPP, e a faixa de gestos do celular.
+   `bottom: var(--e4)` puro deixa o botão embaixo da barra de gestos do
+   iPhone, onde o toque é interceptado pelo sistema e não chega no link.
+   `env(safe-area-inset-bottom)` vale 0 em aparelho que não tem a barra,
+   então o valor não muda em lugar nenhum além de onde precisa. É a única
+   parte do botão que nem `contact.css` nem `responsive.css` têm como
+   saber, e por isso ela mora aqui.
+   --------------------------------------------------------------------- */
+.zap,
+.zap-flutuante { bottom: calc(var(--e4) + env(safe-area-inset-bottom, 0px)); }
 
-   Dez elementos focáveis mediam menos de 44px de altura em 390px, o pior
-   deles o link da política de privacidade com 14px. Num dedo isso é erro
-   de toque, não é acessibilidade abstrata.
+/* PONTE, E ELA TEM DATA PARA MORRER.
+   `app/pagina.tsx` ainda escreve `zap-flutuante`, que é o nome da folha
+   antiga, enquanto o desenho do botão foi portado em `contact.css` sob
+   `.zap`, que é o nome do protótipo. Nenhum dos dois está errado sozinho;
+   juntos, nenhuma regra alcança o elemento. Medido no Chrome a 360px, com
+   emulação de celular: o link saía com 360px de largura e 22px de altura,
+   no fluxo, no fim do documento, sem cor e sem forma, e o botão de
+   WhatsApp que os três pacotes prometem simplesmente não existia na tela
+   do visitante de celular. Não dá erro em lugar nenhum.
 
-   `padding-block` em elemento INLINE aumenta a área de clique sem mexer
-   na altura da linha, então o desenho não muda nem um pixel. É por isso
-   que a correção pode ser genérica sem risco de quebrar layout.
-   ------------------------------------------------------------------ */
-
-/* O cálculo por `em` não fechava nos textos menores: no link de 14px do
-   consentimento ele dava 22px de altura total. O valor fixo garante os 44px
-   em qualquer corpo, e continua sem mexer na altura da linha. */
-.text-link,
-.service-note a,
-.legal-link,
-.back-top,
-.site-footer a,
-.footer-bottom a,
-.consent a,
-.contact-form label a,
-.brand {
-  padding-block: 15px;
+   As seis declarações abaixo são CÓPIA de `.zap` em `contact.css`, e cópia
+   é uma segunda fonte de verdade: se o desenho do botão mudar lá e não
+   aqui, os dois divergem em silêncio. Está escrito assim mesmo porque a
+   alternativa é publicar sem o botão.
+   APAGAR ESTE BLOCO no dia em que `pagina.tsx` escrever `zap`. Os outros
+   três seletores deste arquivo que citam os dois nomes podem ir junto. */
+.zap-flutuante {
+  position: fixed; right: var(--e4); z-index: 90;
+  width: 56px; height: 56px;
+  align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: var(--acento); color: var(--acento-tinta);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
 }
-
-/* A caixa de seleção tinha 24x24. Pseudo-elemento em `input` não é opção
-   confiável, porque input é elemento substituído e vários navegadores não
-   renderizam ::before nele. O caminho certo é o próprio rótulo: clicar no
-   texto já marca a caixa, então basta o rótulo ter altura de alvo. */
-.consent {
-  display: flex;
-  align-items: flex-start;
-  gap: .6rem;
-  min-height: 44px;
-  padding-block: 10px;
-  cursor: pointer;
-}
-
-/* O quadrado desenhado não muda de tamanho; ele só ganha folga em volta,
-   para o dedo ter onde cair mesmo mirando torto. */
-.consent input[type="checkbox"] {
-  flex: 0 0 auto;
-  margin: 10px;
-}
-
-/* ==========================================================================
-   Botão fixo de WhatsApp, só no celular             (rodada de 25/08/2026)
-   ==========================================================================
-   É um dos itens que os três pacotes prometem ("botão de WhatsApp em todas as
-   páginas") e que o nosso próprio site não tinha. No desktop ele não aparece:
-   lá o cabeçalho fica visível o tempo todo e já leva ao contato.
-
-   `min-width`/`min-height` de 56px, acima dos 44px que a WCAG pede para alvo
-   de toque, porque este é usado com o polegar em movimento.
-
-   O deslocamento inferior soma `env(safe-area-inset-bottom)`: sem isso o
-   botão fica embaixo da barra de gestos do iPhone e não recebe o toque. */
+/* O piso de `display` é o de `.zap`: escondido, porque no desktop o
+   cabeçalho fica visível o tempo todo e já leva ao contato. Ligar e
+   desligar mora aqui dentro, e não em `responsive.css`, por dois motivos:
+   este arquivo vem DEPOIS na cascata, então um `display: none` aqui
+   apagaria o `display: flex` de lá com a mesma especificidade; e assim a
+   ponte inteira sai de uma vez, sem deixar meia regra para trás em outro
+   arquivo. A largura é a mesma de `.zap`, e as duas precisam continuar
+   iguais enquanto os dois nomes existirem. */
 .zap-flutuante { display: none; }
-
-@media (max-width: 880px) {
-  .zap-flutuante {
-    position: fixed;
-    right: 1rem;
-    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
-    z-index: 60;
-    min-width: 56px;
-    min-height: 56px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    /* --green-dark, e não o verde do WhatsApp: a marca aqui é a nossa, e o
-       verde da outra empresa no canto da tela lê como widget colado. */
-    background: var(--green-dark);
-    color: var(--cream);
-    box-shadow: 0 10px 26px rgba(8, 24, 18, .3);
-  }
+@media (max-width: 960px) {
+  .zap-flutuante { display: flex; }
 }
 
+/* O único `:active` que a identidade nova não cobre, e ele é o que mais
+   precisa: no toque não existe `:hover`, então o afundar é a única resposta
+   que este botão dá entre o dedo encostar e a aba abrir, e ele é usado com
+   o polegar em movimento. `scale`, e não `translateY`, pelo mesmo motivo do
+   `:active` de `.botao`: descer parece o contrário de apertar.
+   Dentro de `no-preference` porque é movimento, e a consulta acima não o
+   alcançaria sem uma segunda regra. */
 @media (prefers-reduced-motion: no-preference) {
-  .zap-flutuante { transition: transform 180ms cubic-bezier(0.23, 1, 0.32, 1); }
+  .zap,
+  .zap-flutuante { transition: transform var(--dur-press) var(--ease-out); }
+  .zap:active,
   .zap-flutuante:active { transform: scale(0.94); }
 }

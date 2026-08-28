@@ -1,219 +1,184 @@
 /**
- * Variaveis, reset, utilidades e a revelacao por rolagem.
- * Vem primeiro: traz o `@import` do Tailwind e os tokens que o resto usa.
+ * O ALICERCE da identidade nova.
+ *
+ * Tokens, reset, grade, rótulo de seção, tipografia, ação, superfície,
+ * textura e revelação. É o contrato: todo o resto da folha consome daqui e
+ * não declara token próprio. Se faltar um valor, ele pertence a este
+ * arquivo, não ao arquivo que sentiu falta.
+ *
+ * Vem primeiro na cascata (ver a ordem dos `import` em `app/raiz.tsx`) e
+ * traz o `@import` do Tailwind.
+ *
+ * A identidade passou de clara para escura em 27/08/2026, na íntegra. Os
+ * nomes dos tokens de cor mudaram junto, de propósito: manter os antigos
+ * como apelido deixaria a folha com duas gramáticas e faria uma seção não
+ * portada parecer certa quando não está. As três exceções declaradas com os
+ * dois nomes estão marcadas uma a uma abaixo.
  */
 
 @import "tailwindcss";
 
+/* ---------------------------------------------------------------------
+   1. TOKENS
+   --------------------------------------------------------------------- */
 :root {
-  --cream: #f4efe6;
-  --paper: #fbf8f2;
-  /* O terceiro chão claro, novo em 25/08/2026.
-     A página tinha SETE seções seguidas na mesma cor e o dono resumiu assim:
-     "não quero o site inteiro com o fundo branco". O --paper e o --cream não
-     resolviam, porque estão a 1,08:1 um do outro e não separam nada.
-     Esta areia mede 1,22:1 contra o --paper: é pouco para ler como "seção
-     escura" e é bastante para o olho ver que trocou de chão.
-     Mais escuro do que isto não dá: em #e0d3ba o --ink-soft do corpo cai
-     para 4,52:1, e o mínimo é 4,5. Aqui ele fica em 4,79:1. */
-  --areia: #e5d9c3;
+  /* Chão e elevação */
+  --chao: #14110e;
+  --chao-alto: #1b1714;
+  --nivel-1: #1e1a16;
+  --nivel-2: #262019;
+  --nivel-3: #2f2822;
 
-  /* O acento quente, por SUPERFÍCIE e não por componente, que é a regra 9.8
-     do protocolo. O --terracotta-dark mede 5,35:1 sobre o --paper e 4,39:1
-     sobre a areia, ou seja, reprova nela por pouco. Em vez de repintar os
-     componentes um a um, a areia redefine o token e tudo que vive nela
-     escurece junto: o --terracotta-deep dá 5,75:1 ali.
-     Foi exatamente o erro que a rodada da Nívora custou: corrigir pelo
-     componente devolve o defeito do outro lado. */
-  --acento: var(--terracotta-dark);
+  /* Tinta */
+  --tinta: #f4efe6;
+  --tinta-media: #cabfb1;
+  --tinta-fraca: #a89d8f;
 
-  /* Unico raio retangular do site, so no card do portfolio (ver
-     portfolio.css). O resto da linguagem visual e reta. */
-  --green: #214d3b;
-  --green-dark: #17382c;
-  --terracotta: #b86749;
-  --terracotta-dark: #974d35;
-  --ochre: #c79a43;
-  --charcoal: #28231f;
+  /* O acento, um só. O hover é estado do mesmo acento, não um segundo. */
+  --acento: #e8a33c;
+  --acento-hover: #f4b862;
+  --acento-tinta: #14110e;
 
-  /* O chão escuro da página. Nasceu local no portfólio em 25/08/2026 e subiu
-     para cá quando o contato passou a usá-lo também: a partir de duas seções,
-     a cor deixa de ser detalhe de uma e vira decisão da casa.
+  /* Cor da obra, nunca da interface */
+  --terracota: #b86749;
 
-     A página tem exatamente DOIS momentos neste chão, e cada um tem papel: o
-     portfólio é a prova, o contato é o pedido. Um terceiro os enfraquece. */
-  --escuro: #16120f;
-  --escuro-alto: #1d1815;
-  --ink-soft: #625b54;
-  /* Cinza de apoio para texto miúdo. O #625b54 acima passa no creme mas
-     encosta no limite sobre o bege mais fechado; este cobre os dois fundos
-     com folga (6,62:1 e 4,90:1) e a diferença a olho nu é mínima. */
-  --ink-muted: #5a544e;
-  /* O ochre para texto grande sobre o terracota escuro. O ochre normal mede
-     2,37:1 ali, abaixo do minimo de 3 mesmo em corpo grande; este chega a
-     3,19:1 e continua sendo dourado, o que trocar por creme nao seria. */
-  --ochre-light: #dcb668;
-  /* Só para o hover do botão: com o fundo indo para --terracotta-dark, o
-     hover precisava de um degrau abaixo para continuar sendo perceptível. */
-  --terracotta-deep: #7d3f2b;
-  /* OS DOIS FIOS.
-     Medido em 26/08/2026: a folha tinha VINTE cores de borda distintas, quase
-     todas de 1px, e a maioria usada uma ou duas vezes — `rgba(40,35,31,.28)`,
-     `rgba(255,255,255,.25)`, `rgba(255,255,255,.18)`, `#aaa195`,
-     `rgba(233,226,213,.16)`, e por aí. Nenhuma delas separava nada que as
-     outras não separassem: eram vinte decisões tomadas em vinte momentos.
+  /* Fios. Os três primeiros são decorativos e nunca são sinal sozinhos.
+     Só o --fio-controle carrega significado, e por isso ele é sólido e
+     medido: 3,89:1 no chão, 3,58:1 no nível 1, 3,34:1 no nível 2.
+     Os três reconferidos no porte, compondo o alfa sobre a superfície real
+     num Chromium de verdade, e os três bateram no centésimo. */
+  --fio: rgba(244, 239, 230, 0.13);
+  --fio-forte: rgba(244, 239, 230, 0.20);
+  --fio-acento: rgba(232, 163, 60, 0.34);
+  --fio-controle: #777168;
 
-     Agora são dois, e a escolha é por SUPERFÍCIE, que é a regra 9.8: fio
-     escuro sobre chão claro, fio claro sobre chão escuro. Cada seção escura
-     redefine `--fio` para o claro, e quem desenha borda pede sempre `--fio`.
+  /* Texturas, medidas junto com o texto que cai por cima delas */
+  --trama: rgba(244, 239, 230, 0.06);
+  --brilho: rgba(232, 163, 60, 0.13);
 
-     `--line` fica como apelido de `--fio-claro` porque ele aparece em dezoito
-     lugares e trocar todos de uma vez seria mexer em arquivo que esta rodada
-     não abriu. */
-  --fio-claro: rgba(40, 35, 31, 0.18);
-  --fio-escuro: rgba(244, 239, 230, 0.20);
-  --fio: var(--fio-claro);
-  --line: var(--fio-claro);
-  /* Altura da barra do topo. Fonte unica de verdade: header.css a usa como
-     `min-height`, responsive.css a usa como `top` do menu de celular, e o
-     `scroll-padding-top` acima deriva dela. */
-  --altura-cabecalho: 100px;
-  /* Recuo lateral do topo. O cabecalho e o hero usam o mesmo, para a marca
-     ficar alinhada com o titulo logo abaixo dela. Eram dois valores
-     diferentes (4vw no cabecalho, 6vw no hero) e a marca sentava 29px a
-     esquerda do titulo em 1440px. */
-  --recuo-topo: clamp(1.25rem, 6vw, 6.5rem);
-  /* A serifada geral do site: nome da marca, olho de secao, maquete do
-     navegador, titulo do hero e a pagina de privacidade. E do sistema, entao
-     nao custa download.
-     **Nao trocar esta variavel para mudar a fonte de um lugar so.** Ela e
-     usada em mais de trinta pontos, e foi exatamente assim que uma troca
-     pensada para o titulo do hero mudou o site inteiro. */
-  /* Uma serifada só. A Iowan saiu em 25/08/2026, quando o site tinha TRÊS
-     famílias em títulos (Iowan em 16, Playfair em 15 e Geist em 1) sem regra
-     nenhuma decidindo qual usar onde. Este alias fica para não quebrar
-     arquivo que ainda o referencie, e aponta para a mesma pilha. */
+  /* Amostras de capa: cor média real de cada arquivo, calculada com sharp
+     sobre os originais em assets/originais/. A plaquinha é preto a 78%:
+     sobre a amostra mais clara (#76776f) ela resulta em #21201e, e o hex em
+     acento por cima mede 7,55:1. Pior caso das cinco. */
+  --amostra-casa: #4c513f;      /* casa-conexao-hero.png */
+  --amostra-milenio: #151a17;   /* milenio-hero.png */
+  --amostra-nivora: #76776f;    /* nivora-casa-patio-alto.webp */
+  --amostra-nascente: #2b1b09;  /* nascente-hero-central.webp */
+  --amostra-brasa: #3a2621;     /* brasa-do-vale-hero.png */
+  --placa: rgba(9, 8, 7, 0.78);
 
-  /* ---- A escala tipográfica ----------------------------------------
-     Medido em 25/08/2026, antes: 12 tamanhos de título (10, 26, 31, 32,
-     35, 42, 50, 58, 59, 64, 68 e 80px) e 8 de corpo. Havia pares quase
-     iguais competindo, como 31 contra 32 e 58 contra 59, que o olho lê
-     como erro e não como hierarquia.
+  /* Tipografia: três famílias, e o teto é três.
+     A grotesca aponta para `--font-sans`, que é declarado em `fonts.css`
+     junto dos `@font-face` da Geist. Assim o nome da família vive num lugar
+     só: quem trocar a fonte mexe onde ela é servida, e não em dois arquivos
+     que podem divergir. */
+  --fonte-display: "Playfair Display Variable", "Playfair Display", Georgia, "Times New Roman", serif;
+  --fonte-interface: var(--font-sans, "Geist"), "Geist Variable", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* PENDÊNCIA CONHECIDA: a IBM Plex Mono não está instalada no projeto (não
+     há `@fontsource-variable/ibm-plex-mono` no package.json e não há
+     `@font-face` dela em `fonts.css`). Hoje a monoespaçada cai para a do
+     sistema, que é Consolas ou Cascadia Mono no Windows e SF Mono no Mac.
+     Isso importa mais aqui do que pareceria: o mono carrega o rótulo de
+     cada seção, o selo, o endereço de projeto e o `.pular`, e letra que
+     muda de desenho e de largura conforme a máquina do visitante não é
+     etiqueta, é sorte. É o mesmo defeito do glifo de visto fora de todas as
+     fontes, achado em 26/08/2026.
+     A pilha fica escrita como está para funcionar no dia em que o pacote
+     entrar, e o pacote precisa vir por npm, nunca por CDN (regra 9.1). */
+  --fonte-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", "Segoe UI Mono", "SF Mono", Menlo, Consolas, monospace;
 
-     Quatro degraus de título e três de corpo. Tamanho novo aqui só entra
-     com motivo escrito. */
-  /* Reduzida em 25/08/2026, a pedido: "diminua a fonte de todos os títulos
-     do site, está muito grande". Medido antes: TODOS os dez h2 da home em
-     64px, e o do processo quebrando em SEIS linhas.
-     A escala inteira desceu junta, e não título a título, para a hierarquia
-     entre os quatro degraus continuar a mesma.
+  /* Os quatro degraus de título da casa. O ajuste está na entrelinha e no
+     aperto, e não no corpo: as referências não são maiores que nós, são
+     mais justas. */
+  --t-hero: clamp(3rem, 5.4vw, 5.25rem);
+  --t-secao: clamp(2.2rem, 3.8vw, 3.5rem);
+  --t-bloco: clamp(1.45rem, 2.2vw, 1.85rem);
+  --t-item: clamp(1.05rem, 1.4vw, 1.18rem);
+  /* O quinto degrau, e ele é declarado e não avulso: o NUMERAL grande, que
+     é dado e não título. Os quatro de cima não serviam. O preço em
+     --t-bloco fica miúdo demais para ser o dado que a seção existe para
+     dar, e em --t-secao ele disputaria com o h2 três linhas acima. Vale
+     para os três lugares em que aparece número grande: o preço, o número do
+     cartão de formato e o número da etapa. Antes eram 1,75rem, 1,5rem,
+     2rem, 2,1rem e um clamp de 2,1 a 2,7, cinco valores para a mesma
+     coisa. */
+  --t-numero: clamp(1.75rem, 2.6vw, 2.25rem);
 
-     **Corrigida no mesmo dia, e este é o valor bom.** A primeira redução foi
-     longe demais: "agora está muito pequeno, ache um meio termo". Ela é
-     exatamente o meio do caminho entre os dois extremos, degrau por degrau.
-     Em 1280px: o h1 era 80, foi a 56 e ficou em 68; o h2 era 64, foi a 44 e
-     ficou em 54; o h3 de bloco era 41, foi a 28 e ficou em 35; o h3 miúdo era
-     26, foi a 19 e ficou em 22.
+  --c-lead: 1.125rem;
+  --c-base: 1rem;
+  --c-apoio: 0.875rem;
+  /* O teto do mono na peça inteira. Ele não sobe daqui em lugar nenhum. */
+  --c-mono: 0.72rem;
 
-     Mexer num degrau sozinho quebra a razão entre eles, que é o que faz a
-     página ter hierarquia. Se precisar mexer de novo, mexer nos quatro. */
-  --t-hero:  clamp(3.35rem, 5.3vw, 6rem);    /* só o h1 da home */
-  --t-secao: clamp(2.7rem, 4.2vw, 4.4rem);   /* o h2 que abre uma seção */
-  --t-bloco: clamp(1.75rem, 2.7vw, 2.35rem); /* h3 de cartão e de bloco */
-  --t-item:  clamp(1.2rem, 1.72vw, 1.45rem); /* h3 miúdo, pergunta, item */
+  --lh-hero: 0.94;
+  --lh-titulo: 1.0;
+  --lh-bloco: 1.15;
+  --lh-base: 1.65;
+  --ls-hero: -0.035em;
+  --ls-titulo: -0.03em;
+  --ls-mono: 0.12em;
 
-  --c-lead:  1.125rem;  /* 18px, a linha de apoio de uma seção */
-  --c-base:  1rem;      /* 16px, o corpo de texto */
-  --c-apoio: .875rem;   /* 14px, legenda, nota e rótulo */
+  --raio-pilula: 999px;
+  --raio-cartao: 14px;
+  --raio-painel: 18px;
+  --raio-peca: 10px;
 
-  /* Entrelinha e aperto de TÍTULO. Sem estes, 17 dos 32 títulos herdavam o
-     1.5 que o preflight do Tailwind põe no html para corpo de texto, ou seja,
-     nunca tinham sido escolhidos. E o aperto variava de -0.05em no site
-     inteiro contra -0.01em na régua aprovada, cinco vezes mais no mesmo
-     corpo e na mesma fonte. */
-  --lh-titulo: 1.06;
-  --lh-titulo-miudo: 1.12;
-  --ls-titulo: -0.01em;
-
-  --lh-base:  1.7;
-  --lh-lead:  1.6;
-  --lh-apoio: 1.6;
-  /* Playfair Display, so nos titulos de secao. Auto-hospedada por npm, nao
-     por CDN (regra 9.1). O contraste alto entre traco grosso e fino aparece
-     bem nos corpos grandes dos titulos e seria ruido em texto de leitura,
-     e e por isso que ela vive numa variavel propria e nao na de cima. */
-  --serif-titulo: "Playfair Display Variable", "Iowan Old Style",
-    "Baskerville", "Times New Roman", serif;
-  /* Movimento. As curvas nativas do CSS sao fracas demais para movimento
-     deliberado. Interface fica abaixo de 300ms; superficie de marketing
-     pode passar. */
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --dur-press: 160ms;   /* usado por `:active`, ver a seção de estados */
-
-  /* O BOTÃO.
-     Três medidas e nada mais: altura, recuo lateral e corpo. O raio é zero em
-     todo o site, então ele não vira token — token de valor único é lugar a
-     mais para a decisão divergir.
-
-     A altura compacta existe para o botão do cabeçalho e para o do cartão de
-     serviço, que dividem a linha com outra coisa e não podem ter a altura
-     cheia. Ela é 44px porque esse é o piso de alvo de toque da WCAG: abaixo
-     disso não existe variante, existe defeito. */
   --btn-altura: 52px;
   --btn-altura-compacto: 46px;
-  --btn-pad-x: 1.3rem;
-  --btn-fonte: .82rem;
-  --btn-peso: 750;
+  /* 44px é o piso de alvo de toque da WCAG. Abaixo disso não existe
+     variante compacta, existe defeito. */
+  --alvo-toque: 44px;
 
   /* A ESCALA DE ESPAÇO, em passo de 4px.
-     Medido em 26/08/2026: a folha tem 69 valores distintos de margem, recuo e
-     vão, e 29 deles aparecem UMA vez só — 2,35rem, 2,55rem, 3,1rem, 4,8rem,
-     9,5rem. Nenhum prospect vê a diferença entre 2,35rem e 2,4rem; o custo
-     não é visual, é que cada valor novo é uma decisão que ninguém tomou.
+     Continua sendo a mesma da folha anterior, e continua valendo a decisão
+     de 26/08/2026: ela não se aplica em varredura. Ao abrir uma seção por
+     outro motivo, trocar os valores DAQUELA seção pelo degrau mais próximo.
+     Valor fora da escala precisa de motivo escrito ao lado. */
+  --e1: 4px;  --e2: 8px;  --e3: 12px; --e4: 16px; --e5: 24px;
+  --e6: 32px; --e7: 48px; --e8: 64px; --e9: 96px;
 
-     **A escala está aqui declarada e NÃO foi aplicada em varredura, de
-     propósito.** O plano da auditoria diz, com todas as letras: "não
-     reescrever os 68 valores de espaçamento como projeto, um a um são
-     invisíveis; o ganho aparece quando a seção inteira é aberta por outro
-     motivo". Trocar 69 valores de uma vez é arriscar deslocamento visível em
-     onze arquivos para ganhar arrumação que ninguém enxerga.
+  /* Fonte única de verdade da altura da barra do topo. Três coisas
+     dependem dela: o `min-height` do próprio cabeçalho, o `top` do menu de
+     celular no responsivo e o `scroll-padding-top` logo abaixo. Quando os
+     três eram números soltos, bastou subir a barra para o menu do celular
+     descolar 10px. */
+  --altura-cabecalho: 76px;
+  --recuo: clamp(1.25rem, 4.5vw, 4rem);
+  --largura: 1300px;
 
-     Como adotar: quando abrir uma seção por qualquer outro motivo, trocar os
-     valores DAQUELA seção pelo degrau mais próximo. Valor fora da escala
-     precisa de motivo escrito ao lado. */
-  --e1: 4px;
-  --e2: 8px;
-  --e3: 12px;
-  --e4: 16px;
-  --e5: 24px;
-  --e6: 32px;
-  --e7: 48px;
-  --e8: 64px;
-  --e9: 96px;
+  /* A curva de saída da casa. Nunca ease-in em interface. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --dur-press: 160ms;
   --dur-fast: 200ms;
-  --dur-base: 250ms;
+  --dur-base: 280ms;
+  --dur-revelar: 700ms;
+
+  /* APELIDO, e o único de família de fonte.
+     O nome preferido é `--fonte-display`. Este fica porque a página de
+     privacidade (`app/politica.tsx`) não existe no protótipo: não há
+     marcação de referência para ela, o estilo dela mora hoje em
+     `contact.css` e ela pede `--serif-titulo` em 31 pontos da folha. Sem o
+     apelido, a única página que a LGPD obriga a existir perderia a serifada
+     no meio do porte, sem ninguém ver. Some quando a política for portada. */
+  --serif-titulo: var(--fonte-display);
 }
 
-* {
-  box-sizing: border-box;
-}
-
-/* `picture` sai do fluxo para que o `img` continue sendo o filho que as
-   regras de layout esperam. Sem isso ele é `inline` e a caixa dele briga
-   com as proporções escritas para o `img`. */
-picture { display: contents; }
+/* ---------------------------------------------------------------------
+   2. BASE
+   --------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
 
 html {
   scroll-behavior: smooth;
-  /* Deriva da altura do cabecalho, com uma folga. Nao repetir o numero:
-     tres coisas dependem dessa altura (o proprio cabecalho, o `top` do menu
-     de celular e este `scroll-padding`), e quando os tres eram numeros
-     soltos bastou subir a barra para o menu do celular descolar 10px. */
-  scroll-padding-top: calc(var(--altura-cabecalho) + 0.75rem);
+  /* Derivado, e não um número solto: ver o comentário de
+     `--altura-cabecalho` acima. */
+  scroll-padding-top: calc(var(--altura-cabecalho) + 16px);
+  -webkit-text-size-adjust: 100%;
 
-  /* Barra de rolagem oculta a pedido — decisão estética consciente. O custo é
-     perder o indicador de posição na página; a rolagem por roda, toque e
-     teclado continua intacta. */
+  /* Barra de rolagem nativa oculta, a pedido, e é peça do estúdio: quem
+     desenha a barra é `barra-rolagem.css` mais `public/barra-rolagem.js`.
+     O custo é perder o indicador nativo de posição; a rolagem por roda,
+     toque e teclado continua intacta. */
   scrollbar-width: none;
 }
 
@@ -222,191 +187,462 @@ body::-webkit-scrollbar { width: 0; height: 0; display: none; }
 
 body {
   margin: 0;
-  background: var(--paper);
-  color: var(--charcoal);
-  font-family: var(--font-sans), Arial, sans-serif;
+  background: var(--chao);
+  color: var(--tinta);
+  font-family: var(--fonte-interface);
+  font-size: var(--c-base);
+  line-height: var(--lh-base);
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-body,
-button,
-input,
-select,
-textarea {
-  font-family: var(--font-sans), Arial, sans-serif;
-}
+h1, h2, h3, h4, p, ul, ol, dl, figure, blockquote { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+a { color: inherit; text-decoration: none; }
+img, svg { display: block; max-width: 100%; }
+button, input, select, textarea { font: inherit; color: inherit; }
+table { border-collapse: collapse; }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
+/* `picture` sai do fluxo para que o `img` continue sendo o filho que as
+   regras de layout esperam. Sem isto ele é `inline` e a caixa dele briga
+   com as proporções escritas para o `img`. O componente `Picture` de
+   `app/picture.tsx` depende desta linha. */
+picture { display: contents; }
 
-button,
-input,
-select,
-textarea {
-  font: inherit;
-}
+/* Endereço e e-mail são palavras longas sem ponto de quebra, e em 390px uma
+   delas sozinha estica a página. Quebrar dentro da palavra SÓ aqui, e não no
+   corpo, onde cortaria palavra comum no meio. Vale também para espanhol e
+   inglês, em que os mesmos rótulos crescem 15 a 20%. */
+.endereco, .canal-texto b, .rodape-baixo a, .prova-marcas span { overflow-wrap: anywhere; }
 
-img {
-  display: block;
-  max-width: 100%;
-}
+::selection { background: var(--acento); color: var(--acento-tinta); }
 
-::selection {
-  background: var(--ochre);
-  color: var(--green-dark);
-}
-
-/* O contorno de foco tem cor por superfície, e não uma só para o site.
-   O --ochre media 2,25:1 sobre o creme, 2,44:1 sobre o papel e 1,91:1 sobre
-   os extras, reprovando o critério 1.4.11 da WCAG, que pede 3:1 para
-   indicador de interface, em 27 das 35 paradas de Tab no celular.
-
-   Pesa dobrado aqui: a página vende "acessível de verdade, verificado com
-   ferramenta e não no olho". */
+/* Uma cor de foco só, porque agora existe um chão só. Medido: o acento dá
+   8,72:1 sobre o chão e 6,73:1 sobre a superfície mais clara da peça
+   (--nivel-3), bem acima dos 3:1 que o critério 1.4.11 pede para indicador
+   de interface. Na folha anterior isso precisava de cinco regras por seção
+   (`.services :focus-visible`, `.portfolio`, `.care`, `.contact`,
+   `.site-footer`), porque metade da página era clara e o verde do foco
+   sumia na outra metade. */
 :focus-visible {
-  outline: 3px solid var(--green-dark);
-  outline-offset: 4px;
+  outline: 2px solid var(--acento);
+  outline-offset: 3px;
+  border-radius: 6px;
 }
 
-/* Nas seções escuras o verde some, e quem cumpre os 3:1 é o ocre claro. */
-.services :focus-visible,
-.portfolio :focus-visible,
-.care :focus-visible,
-.contact :focus-visible,
-.site-footer :focus-visible {
-  outline-color: var(--ochre-light);
+/* Texto só de leitor de tela.
+   DOIS NOMES, de propósito. `.so-leitor` é o nome novo e é o que a
+   marcação de referência usa (22 ocorrências em `corpo.html`); `.sr-only` é
+   o que os componentes de hoje escrevem (`pagina.tsx`, `site-header.tsx`).
+   Enquanto os dois existirem, o texto continua escondido dos olhos e
+   presente para quem ouve. Ao portar uma seção, escrever `.so-leitor`. */
+.so-leitor,
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
 
+/* O pular para o conteúdo, aparência nova.
+   Mesma história dos dois nomes: `.pular` é o do protótipo, `.skip-link` é
+   o que `pagina.tsx` e `politica.tsx` escrevem hoje.
+   Só `transform`, porque `top` é propriedade de layout e obrigaria o
+   navegador a refazer o arranjo a cada quadro. */
+.pular,
 .skip-link {
-  position: fixed;
-  z-index: 200;
-  left: 1rem;
-  /* Fica na posicao final e sobe para fora da tela por transform, em vez de
-     animar `top`, que recalcula layout. O deslocamento e maior que a altura
-     do elemento para ele sair da tela por inteiro. */
-  top: 1rem;
-  transform: translateY(-6rem);
-  background: var(--charcoal);
-  color: var(--paper);
-  padding: 0.8rem 1rem;
-  border-radius: 2px;
+  position: absolute; left: var(--e4); top: var(--e3); z-index: 200;
+  display: inline-flex; align-items: center;
+  min-height: var(--alvo-toque); padding-inline: var(--e5);
+  background: var(--acento); color: var(--acento-tinta);
+  border-radius: var(--raio-pilula);
+  font-family: var(--fonte-mono);
+  font-size: var(--c-mono); letter-spacing: 0.06em; text-transform: uppercase;
+  transform: translateY(calc(-100% - var(--e6)));
   transition: transform var(--dur-fast) var(--ease-out);
 }
+.pular:focus,
+.skip-link:focus { transform: translateY(0); }
 
-.skip-link:focus {
-  transform: none;
+/* ---------------------------------------------------------------------
+   3. A GRADE VISÍVEL
+   Uma coluna emoldurada por dois fios verticais que atravessam a página
+   inteira, e um fio horizontal por seção, de sangria completa. A
+   profundidade vem da elevação do cartão, e nunca de troca de cor de faixa:
+   é o contrário da folha anterior, que alternava creme, areia e verde
+   escuro para separar seção de seção.
+
+   ATENÇÃO DE PORTE: o recuo vertical mudou de dono. Ele morava em
+   `.section` e agora mora em `.secao > .caixa`. Uma seção portada para
+   `.secao` cujo invólucro interno NÃO seja `.caixa` nasce com recuo
+   vertical zero, sem erro em lugar nenhum.
+   --------------------------------------------------------------------- */
+.caixa {
+  width: 100%;
+  max-width: var(--largura);
+  margin-inline: auto;
+  padding-inline: var(--recuo);
+  border-inline: 1px solid var(--fio);
 }
 
-/* A revelação só começa a esconder depois que o JavaScript avisa que está
-   vivo, marcando `.reveal-ready`. Sem essa trava a página nascia com o
-   conteúdo em `opacity: 0` e dependia do script para aparecer: se ele
-   falhasse, demorasse ou fosse bloqueado, o visitante via uma página em
-   branco. Animação nunca pode custar o conteúdo. */
-.reveal-ready [data-reveal] {
-  opacity: 0;
-  transform: translate3d(0, 34px, 0) scale(.992);
-  filter: blur(2px);
-  transition:
-    opacity 0.85s ease var(--reveal-delay, 0ms),
-    transform 0.95s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
-    filter 0.7s ease var(--reveal-delay, 0ms);
+/* `.section` continua existindo com o corpo do `.secao`, para as seções
+   ainda não portadas não perderem o chão no meio do caminho. O nome novo é
+   `.secao`. O `:is()` cobre as emendas mistas: enquanto durar a mistura,
+   uma `.section` seguida de uma `.secao` precisa do mesmo fio. */
+:is(.secao, .section) { position: relative; }
+:is(.secao, .section) > .caixa { padding-block: clamp(4rem, 8vw, 7.5rem); }
+:is(.secao, .section) + :is(.secao, .section) { border-top: 1px solid var(--fio); }
+:is(.secao--curta, .section--curta) > .caixa { padding-block: clamp(3rem, 5.5vw, 5rem); }
+
+/* O conteúdo sobe acima da textura, que é irmã dele e vive em z-index 0. */
+.acima { position: relative; z-index: 1; }
+
+/* ---------------------------------------------------------------------
+   4. O RÓTULO DE SEÇÃO, NUMERADO
+   Onze seções numeradas, o índice em monoespaçada caixa alta com tracking
+   positivo, o número em acento.
+   Ele vive em LINHA PRÓPRIA acima do título e separado por 24px, que é uma
+   das três travas que fazem a serifada mandar: a etiqueta nomeia a gaveta,
+   não faz parte da frase.
+   --------------------------------------------------------------------- */
+.rotulo {
+  display: flex; align-items: center; gap: var(--e3);
+  font-family: var(--fonte-mono);
+  font-size: var(--c-mono);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--tinta-fraca);
+  margin-bottom: var(--e5);
+}
+.rotulo b { color: var(--acento); font-weight: 500; }
+.rotulo i {
+  display: block; flex: 1 1 32px; min-width: 20px; max-width: 76px;
+  height: 1px; background: var(--fio-acento);
 }
 
-.reveal-ready [data-reveal].is-visible {
-  opacity: 1;
-  transform: translate3d(0, 0, 0) scale(1);
-  filter: blur(0);
+/* O mono de uso geral. Trava de tamanho: nada nesta peça sobe daqui. */
+.mono {
+  font-family: var(--fonte-mono);
+  font-size: var(--c-mono);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--tinta-fraca);
 }
+.mono--acento { color: var(--acento); }
 
-/* A planta do "sobre" fica FORA do desfoque e do deslocamento da revelação.
-   Ela tem sequência própria, e o assunto dela é traço de 1,1px correndo. Sob
-   `blur(2px)` uma linha de 1,1px não é linha, é mancha.
+/* ---------------------------------------------------------------------
+   5. TIPOGRAFIA
+   A REGRA DA SERIFADA, escrita para casar com o que o código faz, e valendo
+   na página inteira. A serifada é a VOZ, e voz são três coisas:
 
-   Medido com a classe entrando: aos 100ms o desfoque estava em 1,66px e o
-   bloco 28px abaixo do lugar; aos 402ms, 0,27px de desfoque com o contorno
-   externo já em 90 de 100. O gesto que é o assunto da peça acontecia enquanto
-   ela estava ilegível e ainda escorregando.
+     1. h1 e h2 (`.titulo-secao`);
+     2. NOME PRÓPRIO: a marca ("Varanda"), o nome de cada projeto
+        (`.placa-corpo h3`, `.estudo-corpo h3`, `.amostra-nome`,
+        `.prova-marcas strong`, a assinatura da seção sobre) e o título
+        dentro da maquete, que é arte imitando o h1 de outro site;
+     3. FRASE DE FECHO (`.chamada p`, `.rodape-alto p`).
 
-   Some a isto que desfoque de ancestral re-rasteriza a subárvore inteira a
-   cada quadro, e aqui a subárvore são duas `pattern`, um `radialGradient`, um
-   `clipPath` e onze animações rodando juntas.
+   Nome de PACOTE não é nome próprio: "Essencial", "Negócio" e
+   "Profissional" são rótulos de produto, aparecem em botão, em opção de
+   `select` e em cabeçalho de tabela, e por isso são grotesca. Antes eles
+   saíam em Playfair a 26,4px na tabela e em Geist a 29,6px nos cartões de
+   formato, as mesmas três palavras em duas famílias na mesma página. O
+   mesmo vale para os três planos de manutenção e para o h3 do fecho de
+   dúvidas, que é pergunta de interface e não nome nem fecho.
 
-   Fica só a opacidade, e curta: o que anuncia a entrada é o desenho, não o
-   invólucro. É a regra 9.26 fechada por completo — o `data-reveal` vira
-   gatilho e deixa de ser concorrente. */
-.reveal-ready .about-art {
-  transform: none;
-  filter: none;
-  transition: opacity .4s var(--ease-out);
-}
+   Todo o resto (h3, rótulo, número grande, preço e botão) é grotesca.
 
-.service-card:nth-child(2),
-.price-card:nth-child(2),
-.care-grid article:nth-child(2) { --reveal-delay: 110ms; }
-
-.service-card:nth-child(3),
-.price-card:nth-child(3),
-.care-grid article:nth-child(3) { --reveal-delay: 220ms; }
-
-.sr-only {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  margin: -1px !important;
-  overflow: hidden !important;
-  clip: rect(0, 0, 0, 0) !important;
-  white-space: nowrap !important;
-  border: 0 !important;
-}
-
-/* Era 8rem, ou seja, 128px em cima e 128px embaixo: entre duas seções
-   vizinhas isso dava 256px de nada, e em algumas emendas passava de 700px por
-   causa das margens internas. Medido em 1280px antes desta mudança, o vão
-   VAZIO de cada emenda: 188 · 350 · 293 · 733 · 355 · 469 · 465 · 301 · 295 ·
-   679. O pedido do dono foi "diminua drasticamente", repetido em quatro
-   emendas diferentes.
-
-   Agora é fluido: 44px na tela estreita, 65px em 1440px. Duas seções vizinhas
-   passam a somar 130px em vez de 256px. */
-/* As quebras dos títulos passaram a ser do navegador em 25/08/2026.
-   Antes elas eram `<br />` escrito à mão no dicionário, em três idiomas, e o
-   defeito que derrubou a solução foi este: "Um caminho claro,<br />do primeiro
-   "oi"<br />até a publicação." punha a palavra "oi" SOZINHA numa linha, com
-   aspas, no meio de um título de seis linhas.
-
-   Quebra à mão é uma decisão tomada numa largura só, e o site tem três
-   idiomas, um `clamp` de tamanho e telas de 320 a 2560px. `balance` distribui
-   as linhas de forma pareja e, onde não houver suporte, a quebra volta a ser a
-   comum, que é o pior caso aceitável. Os sete `<br />` saíram dos três
-   dicionários. */
-h1, h2, h3 {
+   E O CORPO DE CADA UM SAI DE UM DOS CINCO DEGRAUS. Nenhum componente
+   declara corpo próprio acima de 17px: onde o degrau não servia, ele virou
+   token (`--t-numero`) e passou a valer para todos.
+   --------------------------------------------------------------------- */
+h1, .titulo-secao {
+  font-family: var(--fonte-display);
+  font-weight: 500;
   text-wrap: balance;
 }
+h1 {
+  font-size: var(--t-hero);
+  line-height: var(--lh-hero);
+  letter-spacing: var(--ls-hero);
+}
+.titulo-secao {
+  font-size: var(--t-secao);
+  line-height: var(--lh-titulo);
+  letter-spacing: var(--ls-titulo);
+  max-width: 21ch;
+}
+.titulo-secao--largo { max-width: 27ch; }
 
-.section {
-  padding: clamp(2.75rem, 4.5vw, 4.5rem) clamp(1.25rem, 5vw, 5.5rem);
+/* A palavra em destaque. Itálico da Playfair no acento, o único lugar em que
+   cor e itálico aparecem juntos, e por isso ele funciona sem ser grande.
+   O itálico é de verdade, não fabricado: `raiz.tsx` importa
+   `playfair-display/wght-italic.css` junto do romano. Sem esse import o
+   navegador inclina o romano e o "a" de um andar do itálico real não
+   aparece. */
+h1 em, .titulo-secao em { font-style: italic; color: var(--acento); font-weight: 500; }
+
+h3, .titulo-bloco {
+  font-family: var(--fonte-interface);
+  font-size: var(--t-bloco);
+  font-weight: 600;
+  line-height: var(--lh-bloco);
+  letter-spacing: -0.02em;
+}
+.titulo-item {
+  font-family: var(--fonte-interface);
+  font-size: var(--t-item);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
 }
 
-.section-index {
-  color: var(--green);
-  font-size: 0.72rem;
-  font-weight: 750;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+/* A VARREDURA DE REGRA DE SEÇÃO MIRANDO ELEMENTO NU (regra 9.24).
+   Varridos os 355 blocos da folha do protótipo, seletor a seletor. As duas
+   que atropelavam classe de componente de verdade estão corrigidas onde
+   moram (`.formato p` e `.tabela td` contra `.tabela-canto`), e as quatro
+   que miravam elemento nu sem ter guarda nenhuma ganharam `:not()`:
+   `.chamada p`, `.rodape-alto p`, `.duvidas-lista details p` e, no SVG da
+   planta, `.planta text`, que fica declarada porque ali dentro não existe
+   classe de componente para atropelar.
+   O resto das regras com elemento no fim mira PEÇA DENTRO DE COMPONENTE
+   (`.campo input`, `.abrir-menu i`, `.janela-barra span`, `.rotulo b`) e não
+   seção sobre componente, que é o caso que a 9.24 descreve. */
+
+.sobrancelha { font-size: var(--c-apoio); font-weight: 600; color: var(--tinta-media); margin-bottom: var(--e3); }
+.lead { font-size: var(--c-lead); line-height: 1.6; color: var(--tinta-media); max-width: 56ch; }
+.corpo { color: var(--tinta-media); max-width: 64ch; }
+.apoio { font-size: var(--c-apoio); color: var(--tinta-fraca); max-width: 76ch; }
+
+/* Numeral de dado: SEMPRE grotesca, sempre tabular, sempre apertado.
+   Esta regra é o que impede o mono de virar título: todo número acima de
+   1rem cai aqui, e o mono fica travado em 0,72rem como etiqueta. */
+.numeral {
+  font-family: var(--fonte-interface);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  font-weight: 700;
 }
 
-.section-index--light {
-  /* Era #d8cbb8, com 3,84:1 sobre o terracota escuro. */
-  color: var(--cream);
+/* ---------------------------------------------------------------------
+   6. AÇÃO
+   --------------------------------------------------------------------- */
+.botao {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--e2);
+  min-height: var(--btn-altura);
+  padding-inline: 1.5rem;
+  border-radius: var(--raio-pilula);
+  border: 1px solid transparent;
+  font-size: var(--c-apoio); font-weight: 650; letter-spacing: 0.02em;
+  text-align: center; cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out),
+              transform var(--dur-press) var(--ease-out);
+}
+.botao svg { width: 17px; height: 17px; flex: none; }
+/* Fora de `@media (hover: hover)` de propósito: no toque não existe
+   `:hover`, então o pressionado é a única resposta que o botão dá entre o
+   dedo encostar e a página mudar. */
+.botao:active { transform: translateY(1px); }
+
+.botao--acento { background: var(--acento); color: var(--acento-tinta); }
+.botao--acento:hover { background: var(--acento-hover); }
+
+/* Borda de controle NEUTRA e sólida, porque ela precisa dos 3:1 da 1.4.11.
+   O fio de acento composto sobre o chão mede 2,24:1 e reprovaria aqui. */
+.botao--contorno { border-color: var(--fio-controle); color: var(--acento); background: transparent; }
+.botao--contorno:hover { border-color: var(--acento); background: rgba(232, 163, 60, 0.09); }
+
+.botao--fantasma { border-color: var(--fio-controle); color: var(--tinta); background: transparent; }
+.botao--fantasma:hover { background: rgba(244, 239, 230, 0.06); }
+
+.botao--compacto { min-height: var(--btn-altura-compacto); padding-inline: 1.15rem; }
+/* A largura é pedido do LUGAR, e por isso mora numa classe própria e nunca
+   junto da cor. Na folha anterior o `width: 100%` morava em `.button--cream`
+   e `.button--outline`, e toda chamada nova que pedisse aquela cor nascia
+   esticada de ponta a ponta sem ninguém ter pedido. */
+.botao--bloco { width: 100%; }
+
+.link-texto {
+  display: inline-flex; align-items: center; gap: var(--e2);
+  min-height: var(--alvo-toque);
+  font-size: var(--c-apoio); font-weight: 600;
+  color: var(--acento);
+  position: relative;
+}
+.link-texto svg { width: 15px; height: 15px; flex: none; }
+.link-texto::after {
+  content: ""; position: absolute; left: 0; bottom: 10px;
+  width: 100%; height: 1px; background: currentColor;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.link-texto:hover::after { transform: scaleX(1); }
+
+/* Endereço de projeto: mono, porque é dado, e com alvo de toque de verdade. */
+.endereco {
+  display: inline-flex; align-items: center; gap: var(--e2);
+  min-height: var(--alvo-toque);
+  font-family: var(--fonte-mono);
+  font-size: var(--c-mono); letter-spacing: 0.04em;
+  color: var(--acento);
+  border-bottom: 1px solid transparent;
+}
+.endereco svg { width: 12px; height: 12px; flex: none; }
+/* A transição precisa estar declarada AQUI, e não só no bloco de movimento
+   reduzido. Medido no Chrome: com `transition-duration` sozinho lá e nenhuma
+   transição na base, o navegador cai no valor inicial de
+   `transition-property`, que é `all`, com a curva `ease` do padrão. Ou seja,
+   os dois links passavam a animar TUDO, com uma curva que a casa não usa, e
+   só para quem pede movimento reduzido: exatamente ao contrário do que o
+   bloco existe para fazer. Ler o CSS dava a impressão contrária. */
+.endereco, .canal-texto { transition: border-color var(--dur-fast) var(--ease-out); }
+.endereco:hover { border-bottom-color: var(--acento); }
+
+/* ---------------------------------------------------------------------
+   7. SUPERFÍCIE
+   --------------------------------------------------------------------- */
+.cartao {
+  background: var(--nivel-1);
+  border: 1px solid var(--fio);
+  border-radius: var(--raio-cartao);
+  padding: var(--e6);
+  transition: background var(--dur-base) var(--ease-out),
+              border-color var(--dur-base) var(--ease-out),
+              transform var(--dur-base) var(--ease-out);
+}
+.cartao--destaque { background: var(--nivel-2); border-color: var(--fio-acento); }
+.cartao--interativo:hover { background: var(--nivel-2); border-color: var(--fio-forte); transform: translateY(-3px); }
+
+.selo {
+  display: inline-flex; align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--raio-pilula);
+  background: rgba(232, 163, 60, 0.14);
+  font-family: var(--fonte-mono);
+  font-size: var(--c-mono); letter-spacing: var(--ls-mono); text-transform: uppercase;
+  color: var(--acento);
+}
+.selo--neutro { background: rgba(244, 239, 230, 0.08); color: var(--tinta-fraca); }
+
+/* ---------------------------------------------------------------------
+   8. TEXTURA
+   A grade fina como sotaque, e não como assunto: a trama vive a 0,06 e o
+   brilho a 0,13, e os dois foram medidos JUNTOS, compostos, contra o rótulo
+   que cai por cima deles (pior caso #3c3021, tinta-fraca a 4,82:1).
+   Os dois são ancorados pelo TOPO e nunca pela base: com `bottom` mais
+   `overflow: hidden`, o gradiente ainda tem alfa na linha em que a seção
+   acaba, e o recorte vira uma faixa reta atravessando a página.
+   --------------------------------------------------------------------- */
+.luz { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.luz::before {
+  content: ""; position: absolute; border-radius: 50%;
+  width: 62vw; height: 62vw; max-width: 780px; max-height: 780px;
+  top: -22vw; right: -12vw;
+  background: radial-gradient(circle, var(--brilho) 0%, rgba(232, 163, 60, 0.04) 42%, rgba(232, 163, 60, 0) 68%);
+}
+.luz--baixa::before { top: -18vw; left: -12vw; right: auto; }
+
+/* Trama de pontos, presa a duas seções só, para não virar papel de parede. */
+.trama { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+.trama::before {
+  content: ""; position: absolute; inset: 0;
+  background-image: radial-gradient(var(--trama) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse 80% 62% at 50% 0%, #000 0%, transparent 76%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 62% at 50% 0%, #000 0%, transparent 76%);
 }
 
-.eyebrow {
-  color: var(--terracotta-dark);
-  font-family: var(--serif-titulo);
-  font-size: clamp(1.15rem, 2vw, 1.5rem);
-  font-style: italic;
-  margin: 0 0 1.25rem;
+/* A grade milimetrada, o sotaque técnico da peça. Vive só na abertura e no
+   contato, e nunca encosta em título. */
+.grade-fina { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+.grade-fina::before {
+  content: ""; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(to right, var(--fio) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--fio) 1px, transparent 1px);
+  background-size: 96px 96px;
+  opacity: 0.5;
+  mask-image: linear-gradient(to bottom, #000 0%, transparent 70%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 70%);
 }
+
+/* ---------------------------------------------------------------------
+   22. REVELAÇÃO
+   O MECANISMO É O DO SITE, e só a aparência é nova.
+
+   Quem esconde é o CSS, e ele só esconde depois que o JavaScript avisa que
+   está vivo, marcando `reveal-ready` no `body` (ver `app/use-reveal.ts`).
+   Sem essa trava a página nasceria com o conteúdo em `opacity: 0` e
+   dependeria do script para aparecer: se ele falhasse, demorasse ou fosse
+   bloqueado, o visitante veria uma página em branco. Animação nunca pode
+   custar o conteúdo.
+
+   O ATRIBUTO É `data-reveal`, e a classe de chegada é `is-visible`. O
+   protótipo usa `data-revelar` e `visivel`, que são os nomes do script
+   avulso dele e NÃO existem aqui. Ao portar uma seção, escrever
+   `data-reveal`: o observador de `use-reveal.ts` procura por esse atributo,
+   e um elemento marcado com o nome do protótipo simplesmente não anima, o
+   que é o pior caso aceitável. Estilizar `data-revelar` aqui seria pior,
+   porque aí ele nasceria escondido e nada o traria de volta.
+
+   O DESFOQUE SAIU DE VEZ. Ele custou um defeito registrado: desfoque de
+   ancestral re-rasteriza a subárvore inteira a cada quadro e borra traço
+   fino, e a planta do "sobre" é feita de linhas de 1,1px. Sobram opacidade
+   e 18px de deslocamento, que é o que o protótipo faz.
+
+   O ATRASO tem dois nomes pelo mesmo motivo dos outros dois: `--atraso` é o
+   do protótipo, que o escreve em `style=` na própria marcação, e
+   `--reveal-delay` é o que a folha anterior usava. O preferido é
+   `--atraso`. A escada por `nth-child` saiu junto com as classes que ela
+   mirava (`.service-card`, `.price-card`, `.care-grid`): agora o atraso vem
+   escrito por elemento, que é como o protótipo faz.
+   --------------------------------------------------------------------- */
+.reveal-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity var(--dur-revelar) var(--ease-out),
+              transform var(--dur-revelar) var(--ease-out);
+  transition-delay: var(--atraso, var(--reveal-delay, 0ms));
+}
+
+.reveal-ready [data-reveal].is-visible { opacity: 1; transform: none; }
+
+/* =====================================================================
+   OS TOKENS DESTE ARQUIVO, agrupados, para quem for consumir.
+   Nenhum outro arquivo da folha declara token. Se faltar um, ele pertence
+   aqui, e o certo é pedir, não criar um local (regra 9.8: quem sabe a cor
+   de uma peça é a superfície onde ela cai, não a peça).
+
+   CHÃO E ELEVAÇÃO   --chao · --chao-alto · --nivel-1 · --nivel-2 · --nivel-3
+   TINTA             --tinta · --tinta-media · --tinta-fraca
+   ACENTO            --acento · --acento-hover · --acento-tinta
+   COR DA OBRA       --terracota
+                     (só ilustração e marca, nunca interface)
+   FIOS              --fio · --fio-forte · --fio-acento · --fio-controle
+                     (só o --fio-controle é sinal, e por isso é sólido)
+   TEXTURA           --trama · --brilho
+   AMOSTRAS          --amostra-casa · --amostra-milenio · --amostra-nivora ·
+                     --amostra-nascente · --amostra-brasa · --placa
+   FAMÍLIAS          --fonte-display · --fonte-interface · --fonte-mono
+                     (apelido: --serif-titulo, que aponta para a display)
+   DEGRAUS DE TÍTULO --t-hero · --t-secao · --t-bloco · --t-item · --t-numero
+   CORPO DE TEXTO    --c-lead · --c-base · --c-apoio · --c-mono
+   ENTRELINHA        --lh-hero · --lh-titulo · --lh-bloco · --lh-base
+   APERTO            --ls-hero · --ls-titulo · --ls-mono
+   RAIO              --raio-pilula · --raio-cartao · --raio-painel · --raio-peca
+   CONTROLE          --btn-altura · --btn-altura-compacto · --alvo-toque
+   ESPAÇO            --e1 a --e9, em passo de 4px
+   LAYOUT            --altura-cabecalho · --recuo · --largura
+   MOVIMENTO         --ease-out · --dur-press · --dur-fast · --dur-base ·
+                     --dur-revelar
+                     (e --atraso, que não se declara aqui: ele é escrito por
+                      elemento, em `style=`, e a revelação o lê com 0ms de
+                      padrão)
+
+   OS NOMES QUE VALEM PELOS DOIS, enquanto o porte não fecha:
+   .secao / .section · .so-leitor / .sr-only · .pular / .skip-link ·
+   --fonte-display / --serif-titulo · --atraso / --reveal-delay
+   O primeiro de cada par é o preferido.
+   ===================================================================== */

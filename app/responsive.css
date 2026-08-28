@@ -1,298 +1,245 @@
 /**
- * Todas as media queries, na ordem original.
- * Por ultimo de proposito: e o que sobrescreve o resto.
+ * 23. RESPONSIVO. Todas as consultas de mídia da folha, num lugar só.
+ *
+ * Vem depois das seções na cascata de `app/raiz.tsx`, de propósito: é o que
+ * sobrescreve o resto. Não declara token, só redefine os que `base.css`
+ * publica, e nenhuma regra aqui existe sem ter sido medida no navegador.
+ *
+ * Os pontos de corte saem do conteúdo, e não do aparelho. Nada aqui depende
+ * de uma frase ter tamanho exato: toda coluna é minmax(0, 1fr), todo limite
+ * de linha é em ch e toda linha de ação usa flex-wrap. É o que permite os
+ * três idiomas na mesma folha, com espanhol e inglês 15 a 20% mais longos.
+ *
+ * O SELETOR UNIVERSAL DE MOVIMENTO REDUZIDO SAIU DAQUI. A folha anterior
+ * tinha, dentro de `prefers-reduced-motion`, um `*` com
+ * `animation-duration: .01ms !important`, e ele atropelava as sequências
+ * escritas para RESPEITAR a preferência: a duração computava 1e-05s
+ * enquanto os atrasos sobreviviam, e com `animation-fill-mode: both` a
+ * planta do "sobre" virava uma fila de estalos. Quem pediu menos movimento
+ * recebia o pior dos dois. Agora quem manda em movimento reduzido é um
+ * bloco só, em `accessibility.css`, e cada sequência declara a própria
+ * duração. O `!important` que `about.css` guarda virou cinto e suspensório,
+ * e o comentário de lá pode perdê-lo com segurança.
  */
 
-/**
- * Menu entre 861px e 1100px.
- *
- * Aqui vivia `.nav a:nth-child(3), .nav a:nth-child(5) { display: none }`, que
- * escondia Processo e Sobre para a barra nao estourar. Duas coisas erradas:
- *
- * 1. O seletor era descendente (`.nav a`), nao filho direto. Dentro de
- *    `.nav-idiomas` os filhos sao PT, ES e EN, entao o terceiro filho e o
- *    **EN** — que sumia junto. Quem estivesse em portugues nesta faixa nao
- *    tinha como chegar ao ingles. Item de navegacao sumindo e ruim; idioma
- *    inteiro inalcancavel e defeito.
- * 2. Escondia a partir de 1100px, e a barra so aperta perto de 880px. Medido:
- *    a marca ocupa 145px, os seis rotulos em portugues somam 448px (o idioma
- *    mais largo dos tres) e o seletor de idioma 107px.
- *
- * A saida foi apertar o espacamento em vez de remover navegacao. Nada some.
- */
+/* ---------------------------------------------------------------------
+   A BARRA COMPACTA, de 961 a 1160px.
+   NÃO existe no protótipo, e está aqui porque a medição achou o defeito
+   que ele escondia. Medido no Chrome, em português, que é o idioma de
+   rótulos mais largos dos três:
+
+     a 921px o cabeçalho pedia 1.081px de conteúdo rígido para 906
+     disponíveis, e NADA transbordava, porque a marca é o único item com
+     `flex: 0 1 auto` e `min-width: 0`: ela absorve o déficit inteiro.
+     Medida: `.marca` com largura ZERO entre 921 e 960px, 15,9px a
+     1.000px e 107px a 1.100px, contra 120,6px de tamanho natural. Com
+     `img, svg { max-width: 100% }` na base, o próprio símbolo encolhe
+     junto. Ou seja: em toda tela entre 921 e cerca de 1.105px o visitante
+     via um cabeçalho SEM LOGOTIPO, sem barra de rolagem horizontal e sem
+     nada que denunciasse. É por isso que este bloco existe e é por isso
+     que o defeito não aparecia em captura de 1280 nem de 375.
+
+   A causa é a numeração da navegação, que é justamente o que a identidade
+   nova trouxe para a barra: os cinco números somam cerca de 104px entre o
+   glifo e o vão. Como eles são decorativos (`aria-hidden` na marcação), a
+   faixa apertada os dispensa e a NAVEGAÇÃO fica inteira, que é a troca
+   certa. Eles continuam aparecendo no painel do celular e acima de
+   1.160px.
+
+   Medido depois, a 961px: 40 de recuo + 48 de vão + 120,6 de marca +
+   363,9 de menu + 301,9 de ações = 874,4 contra 946 disponíveis, e a
+   marca no tamanho natural em toda a faixa.
+
+   `min-width` no piso, e não só `max-width`: sem ele estas regras entram
+   também no painel do celular, onde o número é o marcador de cada item da
+   lista e há largura de sobra. */
+@media (min-width: 961px) and (max-width: 1160px) {
+  .menu-num { display: none; }
+  .menu { gap: 0; }
+  .menu a { gap: 0; padding-inline: var(--e2); }
+  .topo-acoes { gap: var(--e2); }
+}
+
 @media (max-width: 1100px) {
-  .nav { gap: clamp(0.8rem, 1.7vw, 1.6rem); }
-  .nav-idiomas { margin-left: 0; }
-  .hero { grid-template-columns: 1fr .8fr; }
-  .hero-art { min-height: 500px; }
-  .art-arco { min-height: 460px; }
-  .project { grid-template-columns: 1.15fr .85fr; }
-  .project-info { padding: 2.5rem; }
-  .extras-heading { grid-template-columns: 1.2fr .8fr; }
+  .abertura-grade, .apresentacao-grade, .sobre-grade, .duvidas-grade, .contato-grade { grid-template-columns: minmax(0, 1fr); }
+  .formatos-grade, .estudos-lista, .planos, .incluido-grade { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .linha-tempo { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--e7); }
+  .placa, .placa--invertida { grid-template-columns: minmax(0, 1fr); }
+  .placa--invertida .amostra { order: 0; border-left: 0; }
+  .amostra { border-right: 0; border-bottom: 1px solid var(--fio); min-height: 240px; }
+  .sobre-arte { max-width: 460px; }
 }
 
-/**
- * A faixa mais apertada, logo acima do menu de celular.
- *
- * Entre 861px e 960px a marca, os seis rotulos e o seletor de idioma quase
- * nao cabem. Em vez de remover itens, encolhe-se o respiro: padding lateral
- * do cabecalho e padding horizontal do botao. Medido em 861px, o pior caso
- * (portugues, o idioma de rotulos mais largos) sobra folga.
- */
+/* ---------------------------------------------------------------------
+   O MENU VIRA PAINEL A 960px, E NÃO A 920px COMO NO PROTÓTIPO.
+   É a outra metade da medição acima: mesmo com a numeração fora e os vãos
+   apertados, o menor cabeçalho que ainda cabe com a marca inteira pede
+   cerca de 935px. Deixar o corte em 920 devolveria, numa faixa de 40px, o
+   mesmo cabeçalho sem logotipo que o bloco acima existe para fechar. 960 é
+   o primeiro degrau redondo acima disso e deixa 25px de folga em
+   português; em espanhol e em inglês a folga é maior, porque os rótulos de
+   lá são mais curtos ("Proyectos" e "Work" contra "Portfólio", "Hablemos"
+   e "Let us talk" contra "Vamos conversar").
+   --------------------------------------------------------------------- */
 @media (max-width: 960px) {
-  /* Encolher a variavel, e nao so o cabecalho: assim o hero acompanha e a
-     marca continua alinhada com o titulo. */
-  :root { --recuo-topo: clamp(1rem, 2.5vw, 2rem); }
-  .nav-cta { padding-left: 0.9rem; padding-right: 0.9rem; }
+  .menu, .topo-acoes > .botao { display: none; }
+  .abrir-menu { display: inline-flex; }
+  .topo.aberto .menu {
+    display: flex; flex-direction: column; align-items: stretch;
+    position: absolute; left: 0; right: 0; top: 100%;
+    background: var(--chao-alto);
+    border-bottom: 1px solid var(--fio);
+    padding: var(--e4) var(--recuo) var(--e6);
+    gap: 0;
+  }
+  .topo.aberto .menu a { min-height: 54px; padding-inline: var(--e3); border-bottom: 1px solid var(--fio); border-radius: 0; }
+  .topo.aberto .menu > .botao { display: inline-flex; margin-top: var(--e4); border-bottom: 0; border-radius: var(--raio-pilula); }
+  .escopo { grid-template-columns: minmax(0, 1fr); }
+  /* O botão fixo de WhatsApp acende exatamente onde a chamada da barra
+     apaga: daqui para baixo o cabeçalho deixa de ter ação, e sem ele volta
+     o deserto medido em 25/08/2026, 7.839px sem nada clicável, 9,3 telas.
+     Só `.zap`, que é o nome do protótipo. O nome antigo que `pagina.tsx`
+     ainda escreve é tratado inteiro em `accessibility.css`, numa ponte
+     escrita para ser apagada de uma vez; espalhar meia regra aqui deixaria
+     um caco para trás no dia da remoção. */
+  .zap { display: flex; }
 }
 
-@media (min-width: 861px) {
-  .reveal-ready [data-reveal] {
-    transform: translate3d(var(--reveal-x, 0), 58px, 0) scale(.985);
-  }
+/* -------------------------------------------------------------------
+   A TABELA VIRA CARTÃO A 900px, E NÃO A 760px. O corte antigo deixava uma
+   faixa cega entre 761 e cerca de 900px: ali a tabela nem virava cartão
+   nem cabia, e rolava na horizontal dentro do `.rolagem-tabela` com a
+   coluna de rótulo `static`, ou seja, o visitante arrastava para ver a
+   terceira coluna e perdia de vista se estava lendo preço, prazo ou
+   escopo. Medido a 800px: 711px de largura útil contra 760 de conteúdo,
+   49px escondidos à direita, sem sombra, sem esmaecimento e sem nota
+   dizendo que ali rolava. Subir o corte fecha a faixa em vez de tratá-la,
+   e a 901px a caixa já dá 820px, com folga sobre o min-width.
 
-  .section-heading[data-reveal],
-  .portfolio-intro[data-reveal],
-  .pricing-heading[data-reveal],
-  .care-heading[data-reveal],
-  .faq-heading[data-reveal],
-  .contact-copy[data-reveal] {
-    --reveal-x: -28px;
-  }
+   O CABEÇALHO NÃO SOME. Ele vira três cartões de plano, um por coluna,
+   cada um abrindo com perfil, nome e resumo: são seis textos que vêm de
+   `investimento.pacotes[]` nos três dicionários, estão publicados hoje e
+   não existem em nenhum outro lugar da peça. Com `thead { display: none }`
+   os seis mediam altura 0 a 390px, e o comprador de celular via três
+   preços sem saber qual é o recomendado nem o que cada pacote é em uma
+   linha. Só depois deles vêm os cartões de linha, agrupados por DIMENSÃO e
+   não por plano, que é o que deixa comparar os três valores um sob o
+   outro.
+   ------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .rolagem-tabela { overflow-x: visible; }
+  .tabela, .tabela thead, .tabela tbody, .tabela tr, .tabela th, .tabela td { display: block; width: auto; min-width: 0; }
 
-  .process-list article[data-reveal],
-  .contact-form[data-reveal] {
-    --reveal-x: 30px;
+  /* Os três cartões de plano, que são o `thead` deitado. */
+  .tabela thead tr { display: grid; gap: var(--e4); margin-bottom: var(--e6); }
+  .tabela thead th {
+    border: 1px solid var(--fio); border-radius: var(--raio-cartao);
+    padding: var(--e5); background: var(--nivel-1);
   }
+  .tabela thead th.tabela-destaque { background: var(--nivel-2); border-color: var(--fio-acento); }
 
+  .tabela tbody tr { margin-bottom: var(--e6); border: 1px solid var(--fio); border-radius: var(--raio-cartao); overflow: hidden; }
+  .tabela th[scope="row"] {
+    width: auto; border: 0; border-bottom: 1px solid var(--fio);
+    padding: var(--e4) var(--e5);
+    background: var(--nivel-1);
+    color: var(--acento);
+    min-width: 0;
+  }
+  .tabela td { border: 0; border-top: 1px solid var(--fio); padding: var(--e4) var(--e5); }
+  /* Sem colunas, o destaque de coluna não tem o que destacar: ele viraria
+     uma célula de cor diferente no meio de um cartão, sem nada dizendo por
+     quê. Quem carrega o "Recomendado" no celular é o cartão de plano lá em
+     cima, que traz a pílula em acento e a borda de acento. */
+  .tabela td.tabela-destaque { background: transparent; border-color: var(--fio); }
+  /* O primeiro td VISÍVEL de cada cartão não leva fio de topo. Nas linhas
+     comuns ele vem depois do `th[scope="row"]`, que já traz o fio de baixo;
+     na linha de ações ele vem depois do canto, que está escondido, e sem a
+     segunda regra o primeiro botão nascia com um fio de 1px sobrando. */
+  .tabela tbody tr > td:first-of-type,
+  .tabela td.tabela-canto + td { border-top: 0; }
+
+  /* O nome do plano acima de cada valor, texto de verdade. Vale TAMBÉM na
+     linha de ações: sem ele aquele cartão virava três botões idênticos
+     lendo "Quero este plano", sem nada visível dizendo de qual plano é, e o
+     cartão imediatamente acima mede mais de uma tela de rolagem. */
+  .celula-plano {
+    display: block; margin-bottom: var(--e3);
+    font-family: var(--fonte-mono); font-size: var(--c-mono);
+    letter-spacing: var(--ls-mono); text-transform: uppercase;
+    color: var(--tinta-fraca);
+  }
+  /* O canto de cruzamento não tem o que dizer quando não há colunas. A
+     especificidade casa com a de `.tabela th, .tabela td { display: block }`,
+     senão ele computa `block` e o cartão de ações abre com uma tarja vazia
+     de 28px seguida de um fio de 1px sem nada em cima. */
+  .tabela td.tabela-canto { display: none; }
+  .tabela tr.tabela-acoes td { padding-top: var(--e3); }
+
+  /* No cartão, a marca de presente e de ausente ganha a palavra AO LADO. É
+     a mesma palavra que o leitor de tela ouve no desktop, e ela vem de
+     `investimento.comparacao.incluido` e `.naoIncluido` nos três
+     dicionários; aqui ela sai do `.so-leitor` porque um sinal sozinho numa
+     linha de cartão, sem a coluna vizinha para comparar, não diz o que diz
+     numa grade.
+     Os dois nomes da classe estão no seletor porque a base declara os dois
+     enquanto o porte não fecha, e quem só cita o novo deixa a palavra
+     escondida onde a marcação ainda usa o antigo. */
+  .marca-escopo { width: auto; height: auto; gap: var(--e2); }
+  .marca-escopo .so-leitor,
+  .marca-escopo .sr-only {
+    position: static; width: auto; height: auto;
+    margin: 0; overflow: visible; clip: auto;
+    letter-spacing: var(--ls-mono); text-transform: uppercase;
+  }
 }
 
-@media (max-width: 860px) {
-  .section { padding-top: 6rem; padding-bottom: 6rem; }
-  /* Redefinir a variavel, e nao o `min-height`: assim o `top` do menu abaixo
-     e o `scroll-padding-top` do html acompanham sozinhos. Antes eram tres
-     numeros soltos, e subir a barra no desktop deixou o menu do celular
-     descolado do cabecalho. */
-  :root { --altura-cabecalho: 84px; }
-  .menu-toggle { display: flex; }
-  .nav {
-    position: fixed;
-    top: var(--altura-cabecalho);
-    left: 0;
-    right: 0;
-    padding: 1.5rem;
-    display: grid;
-    gap: .25rem;
-    background: var(--cream);
-    border-bottom: 1px solid var(--line);
-    box-shadow: 0 18px 30px rgba(40,35,31,.1);
-    transform: translateY(-130%);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .25s ease, transform .25s ease;
-  }
-  .nav.is-open { opacity: 1; transform: translateY(0); pointer-events: auto; }
-  /* Os `nth-child` que existiam aqui so serviam para desfazer o `display:none`
-     da faixa de cima, que nao existe mais. E o `.nav a:nth-child(3)` alcancava
-     tambem o link EN dentro de `.nav-idiomas`, aplicando nele um `display:
-     block` com padding `!important` que o ES nao recebia: os dois botoes de
-     idioma ficavam diferentes um do outro no menu do celular. */
-  .nav > a { display: block; padding: .85rem .4rem !important; }
-  .nav-cta { margin-top: .4rem; text-align: center; }
+@media (max-width: 760px) {
+  :root { --altura-cabecalho: 68px; }
+  .caixa { border-inline: 0; }
+  .formatos-grade, .estudos-lista, .planos, .incluido-grade, .dupla,
+  .manutencao-notas, .janela-leituras { grid-template-columns: minmax(0, 1fr); }
+  .janela-leitura + .janela-leitura { border-left: 0; border-top: 1px solid var(--fio); }
+  .linha-tempo { grid-template-columns: minmax(0, 1fr); gap: var(--e6); }
+  .etapa { padding-top: 0; padding-left: var(--e6); }
+  .etapa::before { top: 6px; bottom: calc(var(--e6) * -1); left: 6px; right: auto; width: 1px; height: auto; }
+  .etapa:last-child::before { bottom: 0; }
+  .etapa::after { top: 0; left: 0; }
+  .prova-rotulo { min-width: 100%; }
+  .rodape-baixo .direitos { margin-left: 0; }
+  .cabeca-secao, .fecho, .chamada, .duvidas-fecho, .rodape-alto { align-items: flex-start; }
+  .abertura-acoes .botao, .chamada .botao, .duvidas-fecho .botao, .fecho .botao, .manutencao-acao .botao { width: 100%; }
+  .janela-corpo { padding: var(--e5) var(--e5) var(--e6); }
 
-  .hero {
-    padding-top: 8.5rem;
-    grid-template-columns: 1fr;
-    gap: 4rem;
-  }
-  .hero-art { min-height: 560px; max-width: 600px; width: 100%; margin: 0 auto; height: auto; }
-  .art-arco { min-height: 500px; }
-
-  .intro { grid-template-columns: 120px 1fr; }
-  .intro > .arco-mark { display: none; }
-
-  .section-heading,
-  .pricing-heading,
-  .subsecao-cabecalho,
-  .process,
-  .about,
-  .faq,
-  .contact { grid-template-columns: 1fr; }
-  .section-heading, .pricing-heading, .subsecao-cabecalho { align-items: start; gap: 1rem; }
-  .section-heading > p, .pricing-heading > p,
-  .conceituais-cabecalho > .portfolio-aviso { margin-top: .4rem; }
-
-  .service-grid { grid-template-columns: 1fr; }
-  .service-card { min-height: 0; border-right: 0; border-bottom: 1px solid var(--fio); }
-  .service-card:last-child { border-bottom: 0; }
-  .service-icon { margin: 2rem 0; }
-
-  .project { grid-template-columns: 1fr; }
-  .project-visual { min-height: 480px; }
-
-  .process-heading, .faq-heading { position: static; }
-  /* Coluna única aqui: `grid-column: 2` inventaria uma segunda coluna vazia. */
-  .faq-fechamento { grid-column: 1; }
-  .process-list { margin-top: 2rem; }
-  .pricing-grid { grid-template-columns: 1fr; gap: 1.25rem; }
-  .price-card.is-featured { margin-block: 0; }
-  .price-description { min-height: 0; }
-  .pricing-included ul { grid-template-columns: 1fr 1fr; gap: 1.5rem 2rem; }
-  .pricing-escopo { grid-template-columns: 1fr; gap: 2.4rem; }
-  .care-grid { grid-template-columns: 1fr; }
-  .care-grid article { border-right: 0; border-bottom: 1px solid var(--fio); }
-  .care-grid article:last-child { border-bottom: 0; }
-  /* Sem `min-height`: quem define a altura é a proporção do SVG da planta.
-     O valor antigo, 560px, foi medido para a arte que existia até 26/08/2026
-     e é justamente o tipo de altura calibrada à mão que a rodada anterior
-     registrou como armadilha. */
-  .about-art { max-width: 580px; }
-  .extras-heading { grid-template-columns: 1fr; }
-  .extras-heading > p { max-width: 620px; }
-  .extras-list { grid-template-columns: 1fr; }
-  .extras-list div:nth-child(odd), .extras-list div:nth-child(even) { padding-left: .5rem; padding-right: .5rem; border-left: 0; }
-  .contact { gap: 4rem; }
-  .footer-top { grid-template-columns: 1fr 1fr; row-gap: 2rem; }
-  .footer-top > p { display: none; }
-  .footer-bottom { grid-template-columns: 1fr auto; }
-  .footer-location { grid-column: 1; grid-row: 1; }
-  .footer-bottom a { grid-column: 2; grid-row: 1; }
-  .footer-copyright { grid-column: 1 / -1; grid-row: 2; justify-self: start; text-align: left; }
+  /* A POLÍTICA DE PRIVACIDADE não está no protótipo e não tem marcação de
+     referência, mas ela é obrigatória por LGPD e RGPD e continua sendo
+     lida no celular. Os dois valores são os que a folha anterior já usava,
+     traduzidos para a escala de espaço: sem eles o documento abre com 6rem
+     de vazio acima do título numa tela cujo cabeçalho tem 68px. O desenho
+     dela mora em `contact.css`; aqui fica só o que muda com a largura. */
+  .legal-page { padding-top: var(--e5); }
+  .legal-page > article { margin-top: var(--e8); }
 }
 
-@media (max-width: 600px) {
-  .brand strong { font-size: 1.25rem; }
-  /* Era .51rem (8,2px), o menor texto do site inteiro. */
-  .brand small { font-size: .64rem; }
-  .arco-mark--small { width: 40px; height: 40px; }
-
-  .section { padding: 4.8rem 1.15rem; }
-  .hero { min-height: 0; padding: 7.5rem var(--recuo-topo) 4rem; }
-  .hero::before { width: 90vw; height: 90vw; }
-  /* NENHUM tamanho de título é sobrescrito aqui, e a sobrescrita do h1 que
-     existia foi removida em 26/08/2026 porque ela passou a fazer o CONTRÁRIO
-     do que prometia. Medido em 375px: ela entregava 51,20px enquanto o próprio
-     `--t-hero` computa 53,60px, ou seja, encolhia o título em vez de proteger
-     o tamanho dele.
-
-     A causa é de manutenção, e vale guardar: o comentário dela citava um piso
-     de 46px, que era o valor da primeira redução do dia. O meio-termo subiu o
-     piso para 53,6px e a sobrescrita ficou para trás no mesmo dia em que foi
-     escrita. **Sobrescrita de tamanho que copia um número do token envelhece
-     no instante em que o token muda.** Quem manda em toda largura passa a ser
-     o token, como já acontece com os h2. */
-  .hero-lead { font-size: .98rem; }
-  .hero-actions { align-items: stretch; flex-direction: column; gap: 1rem; }
-  .hero-actions .button { width: 100%; }
-  .hero-actions .text-link { width: max-content; }
-  .hero-footnote { margin-top: 2.8rem; flex-direction: column; gap: .35rem; }
-  /* Composicao da direita no celular: tudo encolhe junto e os `min-` de
-     hero.css sao afrouxados, senao o desenho estoura a largura da tela. */
-  .hero-art { min-height: 430px; height: auto; }
-  .art-arco {
-    left: 3%;
-    width: 94%;
-    height: 380px;
-    min-height: 380px;
-    border-radius: 150px 150px 3px 3px;
-  }
-  .art-sol { width: 74px; height: 74px; min-width: 0; min-height: 0; left: -4px; top: 12px; }
-  .art-arco-sol { width: 110px; height: 58px; min-width: 0; min-height: 0; }
-  /* O limite aqui e a quina superior ESQUERDA do card, que a rotacao de -2
-     graus empurra para baixo. Com raio de abobada de 150px nesta largura, em
-     `left: 7%` e `top: 88px` essa quina caia 2px fora do verde. */
-  .art-janela { left: 8%; top: 96px; width: 82%; min-width: 0; }
-  .art-janela-conteudo { padding: 1.5rem; }
-  .art-janela-titulo { margin-top: 1.8rem; font-size: 1.7rem; }
-  .art-recado--topo { right: -6px; top: 60px; padding: .7rem .85rem; font-size: .85rem; }
-  .art-recado--base {
-    left: -4px;
-    bottom: 18px;
-    min-width: 120px;
-    min-height: 78px;
-    padding: .7rem .9rem;
-  }
-  .art-recado--base strong { font-size: 1.25rem; }
-
-  .intro { min-height: 0; grid-template-columns: 1fr; gap: 2rem; }
-  .intro-columns { grid-template-columns: 1fr; gap: 1rem; margin-top: 2rem; }
-  .service-grid { margin-top: 3rem; }
-  .service-card { padding: 1.6rem 1rem 2rem; }
-
-  .project { margin-top: 3rem; }
-  .project-carousel { margin-top: 3rem; }
-  .project-carousel .project { margin-top: 0; }
-  .project-visual { min-height: 360px; }
-  .project-info { padding: 2rem 1.3rem; }
-  .project-stamp { width: 76px; height: 76px; }
-  .project-stamp:not(.project-stamp--soon) { padding: .45rem; gap: .12rem; letter-spacing: 0; }
-  .project-stamp svg { width: 13px; height: 13px; }
-  .project-placeholder-content { width: 64%; padding: 1.5rem; }
-  .carousel-footer { min-height: 66px; padding-left: .75rem; grid-template-columns: auto 1fr auto; }
-  .carousel-dots { justify-self: center; }
-  .carousel-dots button { width: 20px; }
-  .carousel-dots button.is-active { width: 32px; }
-  .carousel-buttons button { width: 52px; }
-
-  .process-list article { grid-template-columns: 46px 1fr; }
-  .process-list p { font-size: .9rem; }
-  .price-card { padding: 1.6rem 1.25rem; }
-  .price strong { font-size: 4rem; }
-  .pricing-included ul { grid-template-columns: 1fr; gap: 1.4rem; }
-  .care-notes { flex-direction: column; gap: .3rem; }
-  /* As três regras que viviam aqui (`.about-arch`, `.about-sun`,
-     `.about-leaves`) saíram em 26/08/2026 junto com os elementos que elas
-     miravam. Regra órfã não dá erro: fica pesando na folha e engana quem
-     procurar depois. E o `min-height: 420px` saiu pelo mesmo motivo do de
-     cima. */
-  .signature span { display: block; margin: .55rem 0 0; }
-  .extras-list div { flex-direction: column; gap: .35rem; }
-  .extras-list strong { text-align: left; }
-  .faq-list summary { min-height: 78px; padding-left: 0; font-size: 1.18rem; }
-  .faq-list details > p { margin-left: 0; margin-right: 1rem; }
-  .field-row { grid-template-columns: 1fr; }
-  .contact-form { padding: 1.5rem 1rem; }
-  .footer-top { grid-template-columns: 1fr; }
-  .back-top { justify-self: start; }
-  .footer-bottom { grid-template-columns: 1fr; }
-  .footer-location,
-  .footer-bottom a,
-  .footer-copyright { grid-column: 1; grid-row: auto; }
-  .footer-bottom a { margin-top: .4rem; justify-self: center; }
-  .footer-copyright { justify-self: start; text-align: left; }
-  .legal-page { padding-top: 1.5rem; }
-  .legal-page > article { margin-top: 4rem; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
-
-  /* Este bloco nunca zerou `transition-duration`, e por isso não cegava o
-     visitante como os dos outros três sites. Mas ele também não tirava o
-     movimento: os quatro hovers com `transform` continuavam se deslocando
-     para quem pediu menos movimento. Medido em produção em 2026-08-17, com
-     `transition-property` saindo como `transform, background, color`.
-     Restringir a lista tira o deslocamento e mantém a resposta. */
-  *, *::before, *::after {
-    transition-property: opacity, color, background-color, border-color, fill, stroke !important;
-  }
-
-  /* Sem transição, um transform de hover viraria pulo instantâneo. Estes são
-     anulados de vez. O `.skip-link` fica de fora: ele precisa do transform
-     para entrar na tela, e sem transição simplesmente aparece, que é o
-     comportamento certo. */
-  .nav-cta:hover,
-  .button:hover,
-  .project-visual:hover img,
-  .project-visual:hover .project-stamp { transform: none; }
-
-  .reveal-ready [data-reveal] {
-    opacity: 0;
-    transform: none;
-    filter: none;
-    transition: opacity .3s linear !important;
-  }
-  .reveal-ready [data-reveal].is-visible { opacity: 1; }
-  .project-track { transition: none; }
+/* -------------------------------------------------------------------
+   400px, E É SÓ O CABEÇALHO.
+   Medido antes: 40px de recuo + 131 de marca + 24 de vão + 192 do bloco de
+   ações = 347 de conteúdo rígido, e o botão de menu terminando em x=367.
+   Em 375px passava por 3px; em 360px, que é largura comum de Android no
+   Brasil, ele ficava 7px fora da tela, e o `overflow-x: hidden` do corpo
+   cortava sem barra de rolagem e sem aviso. O alvo cortado era justamente o
+   botão que abre o menu, que nessa largura é o único caminho para a
+   navegação.
+   A saída é o bloco de texto da marca sair abaixo de 400px, ficando o
+   símbolo: o nome continua anunciado pelo `aria-label` do próprio link,
+   então o leitor de tela não perde nada, e o alvo de toque continua nos
+   44px. Medido depois, a 360px: 40 + 34 + 24 + 192 = 290 de conteúdo
+   rígido, com 70px de folga, e zero elementos fora da janela em 320, 360,
+   375, 390, 400 e 401px.
+   ------------------------------------------------------------------- */
+@media (max-width: 400px) {
+  /* `.topo .marca-nome`, e não `.marca-nome`: a mesma marca aparece no
+     rodapé, onde não existe disputa de largura nenhuma e o nome escrito é o
+     fecho da página. */
+  .topo .marca-nome { display: none; }
 }

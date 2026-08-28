@@ -1,177 +1,260 @@
 /**
- * Formulario de contato e rodape.
+ * CONTATO E RODAPÉ.
+ *
+ * Blocos 20 e 21 da identidade nova. Todos os valores saem dos tokens de
+ * `app/base.css`, que é o contrato: nenhum token é declarado aqui.
+ *
+ * No fim do arquivo mora o estilo da PÁGINA DE POLÍTICA
+ * (`app/politica.tsx`). Ela não existe no protótipo, então não há marcação de
+ * referência para ela; o estilo dela já vivia aqui antes do porte e ficou,
+ * porque sem ele a única página que a LGPD obriga a existir sairia sem cor,
+ * sem serifada e sem margem. É por causa dele que `base.css` mantém o apelido
+ * `--serif-titulo`.
  */
 
-.consent {
-  margin: .6rem 0 1.4rem;
-  display: flex;
-  align-items: flex-start;
-  gap: .7rem;
-  color: #6e6760;
-  font-size: .69rem;
-  line-height: 1.55;
+/* ---------------------------------------------------------------------
+   20. CONTATO, O FORMULÁRIO COMO PAINEL
+   A porta 2 na sua forma mais literal: barra de topo, rótulo em mono caixa
+   alta, borda de campo medida em 3,89:1 e seta desenhada em CSS.
+   --------------------------------------------------------------------- */
+.contato-grade { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: clamp(2.5rem, 5vw, 4.5rem); align-items: start; }
+/* Era `style="margin-top:var(--e5)"` no elemento, e estilo em linha não
+   alcança `:focus`, consulta de mídia nem `prefers-reduced-motion`. Os
+   outros `style=` da peça são todos `--atraso`, que é custom property e
+   sobrevive porque o bloco de movimento reduzido zera o `transition-delay`
+   que a consome. Este era layout cru. */
+.contato-lead { margin-top: var(--e5); }
+.canais { margin-top: var(--e7); border-top: 1px solid var(--fio); }
+.canal { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--e3); padding-block: var(--e3); border-bottom: 1px solid var(--fio); }
+/* O link do canal é o alvo, então ele carrega os 44px, e não a linha em
+   volta: alvo de toque se mede no que se clica. */
+.canal-texto {
+  display: inline-flex; align-items: center; min-height: var(--alvo-toque);
+  /* A exceção escrita ao teto do mono: aqui ele não é etiqueta, é o valor que
+     a pessoa vai ler e copiar, e 11,52px é pequeno demais para um e-mail. */
+  font-family: var(--fonte-mono); font-size: var(--c-apoio); letter-spacing: 0.02em;
+  color: var(--acento);
+  border-bottom: 1px solid transparent;
+}
+.canal-texto:hover { border-bottom-color: var(--acento); }
+
+/* grid-template-columns: minmax(0, 1fr), e não a coluna implícita. Com a
+   coluna automática, a trilha é medida pelo conteúdo máximo, e o conteúdo
+   máximo do formulário é a opção mais longa do `select` ("Profissional (site
+   completo e mais uma capacidade)"). Ela sozinha empurrava o formulário para
+   além dos 375 e a página inteira ganhava rolagem lateral. Medido, não
+   estimado. O mesmo motivo vale para min-width: 0 nos campos. */
+.formulario {
+  background: var(--nivel-1);
+  border: 1px solid var(--fio);
+  border-radius: var(--raio-painel);
+  overflow: hidden;
+  display: grid; grid-template-columns: minmax(0, 1fr);
+}
+.formulario-topo { display: flex; align-items: center; justify-content: space-between; gap: var(--e3); padding: var(--e4) var(--e5); background: var(--nivel-2); border-bottom: 1px solid var(--fio); }
+
+/* A SAUDAÇÃO NÃO É ETIQUETA, e por isso não é `.mono`.
+   No protótipo ela saía com a classe `.mono`, ou seja, 11,52px em CAIXA ALTA
+   com 0,12em de tracking: "OLÁ! VIM PELO SITE DA VARANDA ESTÚDIO WEB." Caixa
+   alta come a pontuação de uma frase de conversa (o ponto de exclamação some
+   no meio de um bloco de maiúsculas) e transforma a primeira coisa que a
+   pessoa lê no painel num carimbo. É o mesmo raciocínio da exceção logo
+   acima, no `.canal-texto`, e o do `.rodape-email` lá embaixo: o mono fica
+   como família, porque a barra do painel é técnica, mas o corpo, a caixa e o
+   tracking passam a ser de VALOR e não de rótulo.
+   A cor sobe de `--tinta-fraca` para `--tinta-media` pelo mesmo motivo:
+   8,90:1 sobre o `--nivel-2` contra 6,05:1, e quem lê uma frase merece o
+   contraste de quem lê, não o de quem só reconhece um rótulo.
+   Classe própria em vez de `.formulario-topo .mono`, que seria seletor de
+   lugar atropelando classe de componente (regra 9.24). */
+.formulario-saudacao {
+  font-family: var(--fonte-mono);
+  font-size: var(--c-apoio);
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  color: var(--tinta-media);
 }
 
-/* 16px é o padrão do sistema e fica apertado para o dedo. `flex-shrink: 0`
-   impede que a caixa achate ao lado do texto longo do consentimento. */
-.consent input {
-  width: 24px;
-  height: 24px;
-  flex-shrink: 0;
-  margin-top: 1px;
-  accent-color: var(--terracotta-dark);
+.formulario-corpo { padding: clamp(1.25rem, 3vw, 2.25rem); display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--e4); }
+.dupla { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--e4); }
+.campo { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--e2); min-width: 0; }
+.campo > span { font-family: var(--fonte-mono); font-size: var(--c-mono); letter-spacing: var(--ls-mono); text-transform: uppercase; color: var(--tinta-fraca); }
+.campo > span em { font-style: normal; color: var(--acento); text-transform: none; letter-spacing: 0.04em; }
+.campo input, .campo select, .campo textarea {
+  width: 100%; min-width: 0;
+  min-height: var(--btn-altura);
+  padding: var(--e3) var(--e4);
+  background: var(--chao);
+  border: 1px solid var(--fio-controle);
+  border-radius: var(--raio-peca);
+  color: var(--tinta);
+  font-size: var(--c-base);
+  transition: border-color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
 }
-/* O formulário é um cartão CLARO dentro da seção escura, então o texto dele
-   NÃO acompanha a inversão da seção. Quem decide é a superfície imediata, e
-   não a seção em volta. */
-.consent a { color: var(--terracotta-dark); text-decoration: underline; }
-.contact-form .button { width: 100%; }
-.form-hint { margin: 1.15rem 0 0; color: var(--ink-soft); font-size: var(--c-apoio); line-height: var(--lh-apoio); text-align: center; }
-.form-success { padding: .8rem; background: rgba(33,77,59,.1); color: var(--green-dark); font-size: .75rem; text-align: center; }
-
-/* O fio que separa o rodapé do fim do formulário, a pedido em 25/08/2026, na
-   mesma cor daqueles textos (--ochre-light).
-
-   **Atravessa a tela de ponta a ponta, a pedido em 25/08/2026.** Nasceu
-   recuado como o fio da apresentação lá em cima, e o dono pediu o contrário:
-   ali o fio separa dois assuntos dentro do mesmo bloco, e por isso ele
-   respeita a coluna de texto; aqui ele separa a página do rodapé, que é
-   divisão de documento, e divisão de documento vai de borda a borda.
-
-   Continua sendo `::before` e não `border-top` só para não competir com a
-   `border-bottom` que o `.footer-top` já usa por dentro.
-
-   A cor é `--ochre-light`, a mesma dos textos do rodapé: aqui o chão é
-   escuro e o `--line`, que é preto translúcido, não apareceria.
-
-   Faz falta porque contato e rodapé compartilham o mesmo chão desde a rodada
-   de cor: sem fio, o formulário termina e a página continua escura sem nada
-   dizer que virou outra coisa. */
-.footer {
-  --fio: var(--fio-escuro);
-  position: relative;
-  padding: 3.2rem clamp(1.25rem, 5vw, 5.5rem) 2rem;
-  /* Mesmo chão do contato desde 25/08/2026. A página terminava abrindo de
-     novo: o contato escuro era interrompido por uma faixa clara de 219px que
-     não carregava mensagem nenhuma, só endereço e copyright. Contato e rodapé
-     passam a ler como um bloco de fechamento só. */
-  background: var(--escuro);
-  color: var(--paper);
+.campo textarea { min-height: 132px; resize: vertical; line-height: 1.55; padding-top: var(--e4); }
+.campo input::placeholder, .campo textarea::placeholder { color: var(--tinta-fraca); opacity: 1; }
+.campo input:hover, .campo select:hover, .campo textarea:hover { background: var(--nivel-1); }
+.campo input:focus, .campo select:focus, .campo textarea:focus { border-color: var(--acento); outline: none; box-shadow: 0 0 0 3px rgba(232, 163, 60, 0.2); }
+.campo select { appearance: none; cursor: pointer; padding-right: var(--e7); }
+.campo-seletor { position: relative; }
+/* Seta desenhada em CSS, sem arquivo e sem endereço. */
+.campo-seletor::after {
+  content: ""; position: absolute; right: var(--e5); bottom: 22px;
+  width: 0; height: 0; pointer-events: none;
+  border-left: 5px solid transparent; border-right: 5px solid transparent;
+  border-top: 6px solid var(--acento);
 }
 
-.footer::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: var(--ochre-light);
-}
+/* 22px é acima do piso de alvo mínimo da WCAG 2.5.8, e a etiqueta inteira em
+   volta chega aos 44px. */
+.consentimento { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: var(--e3); align-items: start; align-content: center; min-height: var(--alvo-toque); font-size: var(--c-apoio); color: var(--tinta-media); cursor: pointer; }
+.consentimento input { width: 24px; height: 24px; margin: 1px 0 0; accent-color: var(--acento); }
+/* Link dentro de frase: a 2.5.8 dispensa o alvo de 44px quando o destino
+   está no meio de texto corrido, porque a entrelinha manda. O recuo com
+   margem negativa engorda a área de toque sem empurrar a linha. */
+.consentimento a { color: var(--acento); text-decoration: underline; text-underline-offset: 3px; padding: 8px 3px; margin: -8px -3px; }
 
-.footer-top {
-  padding-bottom: 2.5rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  align-items: center;
-  border-bottom: 1px solid var(--line);
-}
+/* --c-apoio, e não --c-mono. São duas frases corridas de interface, em
+   Geist, que a pessoa precisa LER: o --c-mono existe para etiqueta em caixa
+   alta com tracking, e a 11,52px isso vira um parágrafo com cara de rótulo
+   que esqueceu de ir para caixa alta. O próprio arquivo escreve que 11,52px
+   é pequeno demais para o e-mail do contato; a exceção tinha uma linha e o
+   código tinha três. */
+.dica-formulario { font-size: var(--c-apoio); color: var(--tinta-fraca); line-height: 1.55; }
+/* A região viva NASCE NO FLUXO e vazia, e o componente escreve dentro dela.
+   Elemento com `display: none` sai da árvore de acessibilidade, e quando o
+   script o traz de volta parte das combinações de navegador e leitor de tela
+   trata como inserção de região nova em vez de mudança dentro de uma região
+   já observada: o anúncio deixa de ser confiável e a pessoa aperta o botão e
+   não recebe retorno nenhum. */
+.estado-formulario { display: block; padding: var(--e4) var(--e5); border-radius: var(--raio-peca); background: rgba(232, 163, 60, 0.12); border: 1px solid var(--fio-acento); font-size: var(--c-apoio); color: var(--tinta); }
+.estado-formulario a { color: var(--acento); text-decoration: underline; text-underline-offset: 3px; }
+/* Vazia ela não pinta nada, mas continua ocupando trilha da grade, e o vão
+   antes dela apareceria como 16px de sobra no pé do painel em TODA visita
+   que não enviasse o formulário, que é a maioria. A margem negativa cancela
+   exatamente o `gap` do `.formulario-corpo` logo acima; se aquele vão mudar,
+   este número precisa acompanhar. É o preço de manter a região no fluxo, e
+   ele é menor que o de perder o anúncio. */
+.estado-formulario:empty { padding: 0; border: 0; background: none; margin-top: calc(var(--e4) * -1); }
 
-.brand--footer { justify-self: start; }
-.footer-top > p { margin: 0; color: var(--ochre-light); font-family: var(--serif-titulo); font-size: var(--c-lead); font-style: italic; text-align: center; }
-/* `padding-block` para o alvo chegar aos 24px mínimos: o link media
-   18px de altura. */
-.back-top { justify-self: end; padding-block: 5px; color: var(--ochre-light); font-size: .75rem; font-weight: 700; }
+/* ---------------------------------------------------------------------
+   21. RODAPÉ
+   --------------------------------------------------------------------- */
+.rodape { border-top: 1px solid var(--fio); background: var(--chao-alto); }
+.rodape-alto { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--e5); padding-block: var(--e8); }
+/* Frase de fecho: serifada, e é o único `p` deste bloco. A guarda `:not(.mono)`
+   está aqui pela regra 9.24, e não porque falte hoje. */
+.rodape-alto p:not(.mono) { font-family: var(--fonte-display); font-size: var(--t-bloco); letter-spacing: -0.02em; line-height: 1.15; max-width: 26ch; }
 
-.footer-bottom {
-  padding-top: 1.5rem;
+/* A LINHA DE BAIXO É GRADE, E NÃO O FLEX DO PROTÓTIPO.
+   O protótipo enfileira os quatro itens e empurra o copyright para a direita
+   com `margin-left: auto`. O arranjo do site é outro, e foi pedido em
+   25/08/2026: local à esquerda, e-mail no centro da PÁGINA, privacidade no
+   canto direito, copyright centrado embaixo do e-mail. Ele resolve um
+   defeito concreto — com quatro filhos numa grade de três colunas o
+   copyright caía sozinho e ficava centrado na COLUNA, uns 60px à esquerda do
+   centro real. O `1fr auto 1fr` é o que garante o centro de verdade: as duas
+   colunas laterais são iguais por definição, então o miolo cai no meio da
+   página e o copyright em `grid-column: 2` herda esse mesmo centro.
+
+   `align-items: baseline`, e não `center`: os dois links têm 44px de alvo de
+   toque e o local ao lado é um `span` sem recuo nenhum. Centrados pela
+   CAIXA, os três textos saíam em alturas diferentes, medido em 15px. Pela
+   linha de base, o alvo de toque deixa de interferir no alinhamento. */
+.rodape-baixo {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
-  /* `baseline`, e não `center`.
-     Os dois links têm `padding-block: 5px` para o alvo de toque chegar aos
-     24px mínimos, e o local ao lado é um `span` sem recuo nenhum. Centrados
-     pela CAIXA, os três textos saíam em alturas diferentes: medido, 15px
-     entre o local e os outros dois. Pela linha de base, o recuo do alvo de
-     toque deixa de interferir no alinhamento do texto. */
   align-items: baseline;
-  gap: 1rem;
-  /* Era .62rem (9,9px) em caixa alta. Aqui vivem a área de atendimento, o
-     link de privacidade e o aviso de direitos — conteúdo que alguém pode
-     precisar ler, não ornamento de rodapé. */
-  /* Sobre o chão escuro desde 25/08. */
-  color: #a89e93;
-  font-size: .7rem;
-  letter-spacing: .05em;
-  text-transform: uppercase;
+  gap: var(--e2) var(--e6);
+  padding-block: var(--e4);
+  border-top: 1px solid var(--fio);
+  font-family: var(--fonte-mono); font-size: var(--c-mono); letter-spacing: var(--ls-mono); text-transform: uppercase;
+  color: var(--tinta-fraca);
+}
+/* Linha e coluna escritas nos quatro, e não deixadas para a colocação
+   automática: com posição explícita, acrescentar ou tirar um item da linha
+   não reorganiza os outros em silêncio. */
+.rodape-baixo > span:first-child { grid-column: 1; grid-row: 1; justify-self: start; }
+.rodape-email { grid-column: 2; grid-row: 1; justify-self: center; }
+/* O link de privacidade não tem classe na marcação de referência, e o `:not`
+   é o que o separa do e-mail sem inventar nome que o protótipo não deu. */
+.rodape-baixo > a:not(.rodape-email) { grid-column: 3; grid-row: 1; justify-self: end; text-align: right; }
+.rodape-baixo .direitos { grid-column: 2; grid-row: 2; justify-self: center; text-align: center; }
+
+.rodape-baixo a { display: inline-flex; align-items: center; min-height: var(--alvo-toque); border-bottom: 1px solid transparent; transition: color var(--dur-fast) var(--ease-out); }
+/* O MESMO e-mail que o bloco de contato trata como exceção escrita ao teto
+   do mono saía aqui a 11,52px E em caixa alta, com 0,12em de tracking:
+   "VARANDAESTUDIOWEB@GMAIL.COM". Caixa alta em endereço atrapalha ler e
+   atrapalha copiar, que é exatamente o uso. Agora ele recebe o mesmo
+   tratamento do `.canal-texto`: 14px, caixa baixa, tracking de valor e não
+   de etiqueta. A regra tinha uma exceção; agora ela vale nos dois lugares
+   em que o mesmo dado aparece. */
+.rodape-email { font-size: var(--c-apoio); letter-spacing: 0.02em; text-transform: none; }
+.rodape-baixo a:hover { color: var(--acento); border-bottom-color: var(--acento); }
+
+/* Uma coluna só quando o centro deixa de caber. O corte é o mesmo 760px do
+   bloco responsivo, e a regra mora aqui porque a grade acima também mora:
+   arranjo e desmonte do arranjo na mesma vizinhança. */
+@media (max-width: 760px) {
+  .rodape-baixo { grid-template-columns: minmax(0, 1fr); }
+  .rodape-baixo > span:first-child,
+  .rodape-email,
+  .rodape-baixo > a:not(.rodape-email),
+  .rodape-baixo .direitos { grid-column: 1; grid-row: auto; justify-self: start; text-align: left; }
 }
 
-/* Três colunas na primeira linha e o copyright centrado embaixo do e-mail,
-   a pedido em 25/08/2026: "centralize o 2026 no meio do site abaixo do link
-   do email, a privacidade no canto direito, e todos alinhados na mesma altura
-   verticalmente e horizontalmente".
-
-   Antes, com quatro filhos numa grade de três colunas, o copyright caía
-   sozinho numa segunda linha e ficava centrado na COLUNA, não na página: ele
-   aparecia deslocado uns 60px para a esquerda do centro real.
-
-   O `1fr auto 1fr` é o que garante o centro de verdade: as duas colunas
-   laterais são iguais por definição, então o miolo cai no meio da página, e o
-   copyright em `grid-column: 2` herda esse mesmo centro. */
-.footer-location { justify-self: start; grid-column: 1; }
-.footer-email     { justify-self: center; grid-column: 2; }
-.footer-privacidade { justify-self: end; grid-column: 3; text-align: right; }
-
-.footer-bottom a {
-  display: inline-block;
-  /* `padding-block` para o alvo de toque chegar aos 24px mínimos. */
-  padding-block: 5px;
-  color: var(--ochre-light);
+/* O botão fixo de WhatsApp, só no celular. É um dos itens que os três
+   pacotes prometem, então o site do estúdio precisa cumprir. Quem o liga a
+   partir de 920px para baixo é o bloco responsivo. */
+.zap {
+  position: fixed; right: var(--e4); bottom: var(--e4); z-index: 90;
+  display: none;
+  width: 56px; height: 56px;
+  align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: var(--acento); color: var(--acento-tinta);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
 }
 
-.footer-copyright {
-  grid-column: 2;
-  justify-self: center;
-  text-align: center;
-}
-
+/* ---------------------------------------------------------------------
+   A PÁGINA DE POLÍTICA (`app/politica.tsx`)
+   Não existe no protótipo, então não tem marcação de referência e não é uma
+   das onze seções. Continua aqui, com os tokens novos: ela é obrigatória por
+   LGPD e RGPD, é o único lugar do site com o nome da pessoa física, e sair
+   do porte com `--cream`, `--ink-soft` e `--green-dark` — que deixaram de
+   existir — a deixaria com cor de sistema sobre o chão escuro.
+   --------------------------------------------------------------------- */
 .legal-page {
   min-height: 100vh;
   padding: 3rem clamp(1.25rem, 8vw, 9rem) 5rem;
   background:
-    radial-gradient(circle at 92% 5%, rgba(199,154,67,.25) 0 9%, transparent 9.2%),
-    var(--cream);
+    radial-gradient(circle at 92% 5%, var(--brilho) 0 9%, transparent 9.2%),
+    var(--chao);
 }
 
-.legal-page > article {
-  max-width: 820px;
-  margin: 6rem auto 2.5rem;
-}
+.legal-page > article { max-width: 820px; margin: 6rem auto 2.5rem; }
 
-.legal-page h1 {
-  margin: 0;
-  color: var(--green-dark);
+/* Só a margem: família, corpo, entrelinha, aperto e cor do `h1` já vêm da
+   base, e repeti-los aqui criaria um segundo lugar para a escala divergir. */
+.legal-page h1 { margin: 0; }
+
+.legal-updated {
+  margin: var(--e4) 0 var(--e9);
+  font-family: var(--fonte-mono); font-size: var(--c-mono);
+  letter-spacing: var(--ls-mono); text-transform: uppercase;
+  color: var(--tinta-fraca);
+}
+/* `h2` nu não é `.titulo-secao`, e a base só veste o `h1` e a classe. Aqui os
+   títulos são divisões de um documento legal, não aberturas de seção: a
+   serifada é a mesma, o degrau é o de bloco. */
+.legal-page h2 {
+  margin: 2.4rem 0 var(--e3);
   font-family: var(--serif-titulo);
-  font-size: var(--t-hero);
-  font-weight: 400;
-  letter-spacing: var(--ls-titulo);
+  font-size: var(--t-bloco);
+  font-weight: 500;
+  line-height: var(--lh-bloco);
+  letter-spacing: -0.02em;
 }
-
-.legal-updated { margin: 1rem 0 3rem; color: #756e66; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; }
-.legal-page h2 { margin: 2.4rem 0 .7rem; color: var(--green); font-family: var(--serif-titulo); font-size: var(--t-item); font-weight: 500; }
-.legal-page article p:not(.kicker) { color: var(--ink-soft); line-height: var(--lh-base); }
-.legal-page article a { color: var(--terracotta-dark); text-decoration: underline; }
+.legal-page article p:not(.kicker) { color: var(--tinta-media); line-height: var(--lh-base); }
+.legal-page article a { color: var(--acento); text-decoration: underline; text-underline-offset: 3px; }
 .legal-back { margin: 0 auto; display: flex; width: max-content; }
-
-/* A marca no rodapé, agora sobre o chão escuro.
-
-   Ela herdava as cores da barra do topo, que vive sobre claro, e o resultado
-   era verde escuro sobre quase preto: ilegível. Quem decide a cor é a
-   superfície (regra 9.8), e aqui a superfície mudou. */
-/* A segunda linha da marca junto com a primeira.
-   Quando o rodapé virou escuro, em 25/08/2026, o `strong` foi corrigido e o
-   `small` ficou para trás em `--ink-soft`, que é cor de texto sobre claro:
-   2,79:1 a 10px, ou seja, ilegível. Passou despercebido na varredura da
-   rodada porque o seletor dela não incluía `small`. */
-.footer .brand strong { color: var(--cream); }
-.footer .brand small { color: #a89e93; }
-.footer .brand span:last-child span { color: #a89e93; }

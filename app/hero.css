@@ -1,598 +1,192 @@
 /**
- * Hero da abertura e os botoes, que aparecem por toda parte.
+ * Abertura, apresentação e formatos: as três seções acima do portfólio.
+ *
+ * O nome do arquivo continua `hero.css` porque quem o importa é
+ * `app/raiz.tsx`, que não é aberto nesta rodada. O conteúdo, esse sim, é
+ * outro: são os blocos 10 (ABERTURA), 11 (APRESENTAÇÃO) e 12 (FORMATOS) da
+ * identidade nova, portados do protótipo aprovado.
+ *
+ * TUDO que havia aqui antes saiu, e não foi limpeza de estilo. A folha
+ * anterior pedia `--recuo-topo`, `--green`, `--paper`, `--ochre`, `--cream`,
+ * `--ink-soft`, `--line`, `--btn-pad-x`, `--btn-fonte` e `--btn-peso`, e
+ * NENHUM desses tokens existe em `base.css` depois do porte. Regra que valia
+ * para valor de cor continuava valendo aqui: token que não existe cai no
+ * valor inicial da propriedade, sem erro em lugar nenhum, e o resultado é
+ * botão sem cor e texto sem tamanho. Manter as regras antigas seria manter
+ * uma segunda gramática morta em cima da nova.
+ *
+ * O QUE SAIU E PRECISA SER SABIDO POR QUEM ABRIR OUTRO ARQUIVO:
+ *
+ * - A arte da hero era CSS puro (`.art-arco`, `.art-sol`, `.art-arco-sol`,
+ *   `.art-janela`, `.art-recado`, mais o SVG `.art-luz` e as cinco
+ *   `@keyframes` da entrada). No lugar dela entra a maquete da direção nova
+ *   (`.maquete`, `.maquete-arco`, `.maquete-sol`, `.janela`), que é
+ *   composição de caixas e não tem animação própria: quem a revela é o
+ *   `data-reveal` de sempre. Regra órfã não dá erro, fica pesando e engana
+ *   quem for procurar depois, então as regras da arte antiga foram apagadas
+ *   e não comentadas.
+ * - `.button`, `.button--primary`, `.button--terracotta`, `.button--outline`,
+ *   `.button--cream`, `.button--bloco` e `.text-link` moravam aqui e valiam
+ *   para a página inteira. A seção 6 de `base.css` (AÇÃO) é a dona disso
+ *   agora, com os nomes novos: `.botao`, `.botao--acento`, `.botao--contorno`,
+ *   `.botao--fantasma`, `.botao--compacto`, `.botao--bloco` e `.link-texto`.
+ *   Seção ainda não portada que escreva `.button` fica sem estilo até trocar
+ *   o nome, e isso é sintoma do porte pela metade, não defeito deste arquivo.
+ * - `.intro`, `.intro-content`, `.intro-columns`, `.services`,
+ *   `.section-heading`, `.service-grid`, `.service-card`, `.service-icon`,
+ *   `.service-acao`, `.service-fecho` e `.service-botoes` desenhavam a
+ *   apresentação e os formatos e moram em `app/portfolio.css`, que não é
+ *   deste porte. Elas ficaram órfãs neste momento: a marcação nova não as
+ *   escreve mais.
+ *
+ * `.cabeca-secao` é declarada aqui, no bloco 12, e é usada por outras
+ * seções (portfólio, processo, investimento, dúvidas). É assim no protótipo
+ * e fica assim: ela nasce onde aparece primeiro. Quem for portar essas
+ * seções consome daqui e não redeclara.
+ *
+ * Nenhum token é declarado neste arquivo. Todos vêm de `app/base.css`.
  */
 
-.hero {
-  position: relative;
-  /* Faz do hero a referencia das medidas `cqw` da composicao da direita:
-     1cqw passa a ser 1% da largura daqui. E o que permite a composicao
-     acompanhar a tela sem depender de uma moldura de tamanho fixo. */
-  container-type: inline-size;
-  min-height: 760px;
-  /* Mesmo recuo do cabecalho, por `--recuo-topo`: e o que mantem a marca
-     alinhada com este titulo. */
-  padding: 9.5rem var(--recuo-topo) 5rem;
+/* ---------------------------------------------------------------------
+   10. ABERTURA
+   --------------------------------------------------------------------- */
+.abertura > .caixa { padding-block: clamp(3rem, 6vw, 6rem) clamp(3rem, 5vw, 4.5rem); }
+.abertura-grade {
   display: grid;
-  grid-template-columns: minmax(0, .92fr) minmax(520px, 1.08fr);
+  grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
+  gap: clamp(2.5rem, 5vw, 4.5rem);
   align-items: center;
-  gap: 4vw;
-  overflow: hidden;
 }
-
-/* O círculo de contorno que ficava aqui saiu em 25/08/2026.
-   Ele media 38vw (547px em 1440px), estava em rgba(184,103,73,.15) — 1,18:1
-   contra o creme, ou seja, invisível — e o traço passava por dentro do h1, do
-   lead e da quina do botão principal. Enfeite que não se vê e que atravessa
-   texto é só ruído sob a tipografia. A geometria da página fica por conta do
-   arco, que está do outro lado e é visível de verdade. */
-
-.hero-copy {
-  position: relative;
-  z-index: 2;
-  max-width: 720px;
+.abertura h1 { margin-bottom: var(--e5); max-width: 15ch; }
+.abertura .lead { margin-bottom: var(--e6); }
+.abertura-acoes { display: flex; flex-wrap: wrap; align-items: center; gap: var(--e3) var(--e5); margin-bottom: var(--e6); }
+.abertura-pe {
+  display: flex; flex-wrap: wrap; gap: var(--e3) var(--e6);
+  padding-top: var(--e5); border-top: 1px solid var(--fio);
 }
+.abertura-pe span { display: inline-flex; align-items: center; gap: var(--e2); }
+.ponto { width: 5px; height: 5px; border-radius: 50%; background: var(--acento); flex: none; }
 
-.kicker {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin: 0 0 1.8rem;
-  color: var(--green);
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.20em;
-  line-height: 1.5;
-  text-transform: uppercase;
-}
-
-/* Quadrado de 7px, o mesmo marcador das entregas do portfólio.
-   Era um traço de 34x1px, e o comentário do `portfolio.css` explica por que
-   ele não podia ficar: marcador em traço desenha um travessão em cada item, e
-   travessão é a marca que o texto da casa não usa. Aqui ele aparecia dois
-   centímetros acima do h1, contradizendo a regra na primeira tela. */
-.kicker > span {
-  width: 7px;
-  height: 7px;
-  background: var(--terracotta);
-}
-
-.hero h1 {
-  max-width: 680px;
-  margin: 0;
-  color: var(--green-dark);
-  font-family: var(--serif-titulo);
-  font-size: var(--t-hero);
-  font-weight: 500;
-  /* O h1 fica mais apertado que o resto de propósito: é o único título em
-     corpo tão grande, e nele o aperto lê como desenho, não como erro. */
-  letter-spacing: -0.055em;
-  /* Era 0.9, herdado de quando isto renderizava em Times New Roman, porque a
-     pilha pedia Iowan Old Style e Baskerville, que só existem em macOS. Na
-     Playfair, "ãçó" a 80px ocupa 81px de altura real contra os 72px que 0.9
-     dava, e as linhas encavalavam 9px em cima do acento e da cedilha. */
-  line-height: var(--lh-titulo);
-}
-
-.hero h1 em {
-  color: var(--terracotta);
-  font-weight: 400;
-}
-
-.hero-lead {
-  max-width: 610px;
-  margin: 2rem 0 0;
-  color: var(--ink-soft);
-  font-size: var(--c-lead);
-  line-height: var(--lh-lead);
-}
-
-.hero-actions {
-  margin-top: 2.3rem;
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-}
-
-.button {
-  min-height: var(--btn-altura);
-  /* Recuo vertical ZERO, de propósito: quem define a altura é o
-     `min-height` mais o `align-items: center` do flex. Com recuo vertical, um
-     rótulo de duas linhas ou um ícone mais alto empurra o botão para cima do
-     token — foi assim que quatro alturas diferentes apareceram onde o plano
-     pedia duas. */
-  padding: 0 var(--btn-pad-x);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  border: 1px solid transparent;
-  border-radius: 0;
-  font-size: var(--btn-fonte);
-  font-weight: var(--btn-peso);
-  letter-spacing: 0.02em;
-  cursor: pointer;
-  transition: transform var(--dur-fast) var(--ease-out),
-    background var(--dur-fast) var(--ease-out),
-    color var(--dur-fast) var(--ease-out);
-}
-
-/* Toque dispara :hover e o deixa preso: movimento de mouse so aqui. */
-@media (hover: hover) and (pointer: fine) {
-  .button:hover {
-    transform: translateY(-2px);
-  }
-}
-
-.button svg,
-.text-link svg {
-  width: 18px;
-  height: 18px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.5;
-}
-
-.button--primary {
-  background: var(--green);
-  color: var(--paper);
-}
-
-.button--primary:hover {
-  background: var(--green-dark);
-}
-
-.button--terracotta {
-  /* --terracotta puro deixava o texto claro em 4,12:1, abaixo do mínimo de
-     4,5. O tom escuro já estava na paleta e leva a 5,78:1. */
-  background: var(--terracotta-dark);
-  color: var(--paper);
-}
-
-.button--terracotta:hover {
-  background: var(--terracotta-deep);
-}
-
-/* A LARGURA saiu daqui em 25/08/2026, para `.button--bloco`.
-   `width: 100%` numa classe de COR é armadilha: o modificador diz de que cor
-   é o botão, e quem herdava a largura junto era todo lugar novo que pedisse a
-   mesma cor. Foi o que aconteceu com a chamada do portfólio e com a da
-   manutenção, que nasceram esticadas de ponta a ponta da seção. */
-.button--outline {
-  border-color: var(--green);
-  color: var(--green);
-}
-
-.button--outline:hover {
-  background: var(--green);
-  color: var(--paper);
-}
-
-.button--cream {
-  background: var(--cream);
-  color: var(--green-dark);
-}
-
-/* O ESTADO DE PRESSIONADO.
-   O site inteiro não tinha nenhum, e `--dur-press: 160ms` estava declarado e
-   usado zero vezes desde que foi escrito. No toque isso pesa mais que no
-   mouse: lá não existe `:hover`, então **o pressionado é a única resposta que
-   o botão dá** entre o dedo encostar e a página mudar.
-
-   `scale(0.985)` e não `translateY`: afundar é o gesto de apertar, e descer
-   parece o contrário do que o `:hover` faz, que é subir 2px.
-
-   Fora de `@media (hover: hover)` de propósito: `:active` não gruda no toque
-   como `:hover` gruda, e é exatamente ali que ele precisa existir. */
-.button:active,
-.text-link:active,
-.nav-cta:active {
-  transform: scale(0.985);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .button,
-  .text-link,
-  .nav-cta {
-    transition:
-      transform var(--dur-press) var(--ease-out),
-      background var(--dur-fast) var(--ease-out),
-      color var(--dur-fast) var(--ease-out);
-  }
-}
-
-/* Botão que ocupa a linha inteira. É pedido do LUGAR, não da cor: no cartão
-   de preço a coluna é a unidade de leitura e o botão fecha a coluna. */
-.button--bloco { width: 100%; }
-
-.text-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.65rem;
-  color: var(--green);
-  /* Tingido de propósito: é o sublinhado do link, não um fio de
-     separação. Fio separa; este marca que a palavra é clicável. */
-  border-bottom: 1px solid rgba(33, 77, 59, 0.35);
-  padding-bottom: 0.35rem;
-  font-size: var(--btn-fonte);
-  font-weight: var(--btn-peso);
-}
-
-.hero-footnote {
-  margin-top: 3.8rem;
-  padding-top: 1rem;
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  border-top: 1px solid var(--line);
-  color: var(--ink-muted);
-  font-size: 0.7rem;
-  font-weight: 650;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-/* ==========================================================
-   A composicao da direita, estatica.
-
-   Teve animacao de entrada por uma rodada e voltou a ser parada. O desenho
-   ficou: arco cheio, sol nascendo dentro dele e a janela sobreposta ao arco,
-   em vez de contida como era antes.
-
-   As medidas usam `cqw`, que e 1% da largura do `.hero` (ver o
-   `container-type` la em cima): a composicao acompanha a largura da tela em
-   vez de depender de uma moldura fixa. Os `min-` seguram o desenho quando a
-   coluna fica estreita demais.
-   ========================================================== */
-
-.hero-art {
-  position: relative;
-  height: 37cqw;
-  min-height: 560px;
-}
-
-.art-sol {
-  position: absolute;
-  left: 0;
-  top: 34px;
-  width: 8.4cqw;
-  height: 8.4cqw;
-  min-width: 90px;
-  min-height: 90px;
-  background: var(--ochre);
-  border-radius: 50%;
-}
-
-.art-arco {
-  position: absolute;
-  left: 3%;
-  top: 0;
-  width: 88%;
-  height: 33cqw;
-  min-height: 520px;
-  background: var(--green);
-  border-radius: 210px 210px 3px 3px;
-  overflow: hidden;
-}
-
-.art-arco-sol {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
-  width: 18cqw;
-  height: 9cqw;
-  min-width: 150px;
-  min-height: 80px;
-  background: var(--ochre);
+/* A maquete de navegador, com o arco e o sol da marca por trás.
+   A altura é calc(100% + 64px), e não uma proporção: com proporção as duas
+   pernas do arco desciam abaixo do cartão e o desenho lia como caixa solta.
+   Assim só a coroa aparece, que é a parte que identifica a marca. */
+.maquete { position: relative; margin-top: 64px; }
+.maquete-arco {
+  position: absolute; z-index: 0;
+  left: 50%; top: -64px; transform: translateX(-50%);
+  width: 76%; height: calc(100% + 64px);
   border-radius: 999px 999px 0 0;
+  border: 1px solid var(--fio-acento); border-bottom: 0;
+  background: linear-gradient(180deg, rgba(232, 163, 60, 0.1) 0%, rgba(232, 163, 60, 0) 46%);
 }
-
-/* A janela sobe ate perto do meio do arco.
-   Nao da para centralizar de vez: o arco e uma abobada de 210px de raio, e
-   acima de certa altura a curva fecha para dentro e a quina do card apareceria
-   fora do verde.
-   Quem manda no limite e a quina, nao a caixa: a rotacao de -2 graus baixa a
-   quina esquerda e sobe a direita, entao a caixa pode estar 17px mais alta que
-   a quina que de fato precisa caber. Conferido calculando os quatro cantos
-   contra a curva; com este valor os quatro assentam dentro. */
-.art-janela {
-  position: absolute;
-  left: 8%;
-  top: 8cqw;
-  z-index: 2;
-  width: 76%;
-  min-width: 290px;
-  transform: rotate(-2deg);
-  background: var(--paper);
-  box-shadow: 0 26px 60px rgba(8, 24, 18, 0.28);
+.maquete-sol {
+  position: absolute; z-index: 0;
+  left: 50%; top: -52px; transform: translateX(-50%);
+  width: 22%; aspect-ratio: 2 / 1;
+  border-radius: 999px 999px 0 0;
+  background: linear-gradient(180deg, var(--acento) 0%, rgba(232, 163, 60, 0.3) 100%);
+  opacity: 0.55;
 }
-
-.art-janela-topo {
-  height: 34px;
-  padding: 0 0.7rem;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  border-bottom: 1px solid var(--fio);
+.janela {
+  position: relative; z-index: 1;
+  background: var(--nivel-2);
+  border: 1px solid var(--fio-forte);
+  border-radius: var(--raio-painel);
+  overflow: hidden;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
 }
-
-.art-janela-topo i {
-  width: 5px;
-  height: 5px;
-  background: var(--terracotta);
-  border-radius: 50%;
+.janela-barra { display: flex; align-items: center; gap: var(--e2); padding: var(--e3) var(--e4); background: var(--nivel-3); border-bottom: 1px solid var(--fio); }
+.janela-barra i { width: 8px; height: 8px; border-radius: 50%; background: var(--fio-forte); flex: none; }
+.janela-barra span { margin-left: var(--e2); font-family: var(--fonte-mono); font-size: var(--c-mono); letter-spacing: 0.04em; color: var(--tinta-fraca); }
+.janela-corpo { padding: var(--e6) var(--e6) var(--e7); }
+.janela-marca { font-family: var(--fonte-mono); font-size: var(--c-mono); letter-spacing: var(--ls-mono); text-transform: uppercase; color: var(--acento); margin-bottom: var(--e6); }
+/* Serifada aqui é regra e não exceção: este é o título de OUTRO site dentro
+   da nossa peça, ou seja, arte imitando um h1. A regra da serifada em
+   `base.css` prevê esse caso por escrito. */
+.janela-titulo { font-family: var(--fonte-display); font-size: var(--t-bloco); line-height: 1.02; letter-spacing: -0.03em; margin-bottom: var(--e5); }
+.janela-linhas { display: grid; gap: var(--e2); margin-bottom: var(--e6); }
+.janela-linhas i { display: block; height: 7px; border-radius: 4px; background: var(--fio); }
+.janela-linhas i:nth-child(2) { width: 62%; }
+.janela-botao {
+  display: inline-flex; align-items: center; min-height: 38px; padding-inline: var(--e4);
+  border-radius: var(--raio-pilula); background: var(--acento); color: var(--acento-tinta);
+  font-size: var(--c-mono); font-weight: 650; letter-spacing: 0.06em; text-transform: uppercase;
 }
+/* As duas leituras embaixo da maquete, no lugar dos dois recados girados que
+   a versão anterior punha POR CIMA da janela. O texto é o mesmo dos recados
+   (as quatro chaves de `hero` seguem valendo), e o que mudou é a leitura:
+   deixam de ser adesivo colado na arte e viram a linha de leitura de um
+   instrumento. */
+.janela-leituras { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--fio); background: var(--nivel-1); }
+.janela-leitura { padding: var(--e4) var(--e5); }
+.janela-leitura + .janela-leitura { border-left: 1px solid var(--fio); }
+.janela-leitura strong { display: block; margin-top: var(--e1); font-size: var(--t-item); font-weight: 600; letter-spacing: -0.015em; }
 
-.art-janela-topo i:nth-child(2) { background: var(--ochre); }
-.art-janela-topo i:nth-child(3) { background: var(--green); }
-
-.art-janela-topo span {
-  margin-left: auto;
-  /* Era #89827a a 0.48rem, que dava 3,58:1 e reprovava. É conteúdo de
-     maquete, mas texto legível na tela é texto que alguém tenta ler. */
-  color: #6b655d;
-  font-size: 0.55rem;
+/* A prova, logo abaixo da abertura.
+   O muro de logotipo das referências, aqui feito de nome tipografado e de
+   endereço que qualquer um confere em um clique, porque o estúdio não tem
+   marca de cliente em arquivo.
+   A FAIXA DE NÚMEROS DO PROTÓTIPO NÃO FOI PORTADA, de propósito. Ela mostrava
+   "02 No ar" e "03 Estudos conceituais" como estatística de vitrine: os dois
+   rótulos existem no dicionário (`noArIndice` e `estudosIndice`), os dois
+   NÚMEROS não. Eram a contagem escrita à mão, nada no build a segura, e no
+   dia em que o terceiro site subir a página passa a afirmar um número falso
+   em três idiomas sem nenhum teste quebrar. Os endereços ao lado são prova
+   mais forte e se conferem em um clique. */
+.prova { margin-top: var(--e8); padding-top: var(--e6); border-top: 1px solid var(--fio); display: grid; gap: var(--e6); }
+.prova-linha { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--e4) var(--e7); }
+.prova-rotulo { flex: none; min-width: 8rem; }
+.prova-marcas { display: flex; flex-wrap: wrap; gap: var(--e4) var(--e7); }
+.prova-marcas a { display: inline-flex; flex-direction: column; gap: 3px; min-height: var(--alvo-toque); justify-content: center; }
+.prova-marcas strong {
+  font-family: var(--fonte-display); font-size: var(--t-item); font-weight: 600; letter-spacing: -0.02em;
+  color: var(--tinta);
+  transition: color var(--dur-fast) var(--ease-out);
 }
+.prova-marcas a:hover strong { color: var(--acento); }
+.prova-marcas span { font-family: var(--fonte-mono); font-size: var(--c-mono); letter-spacing: 0.04em; color: var(--tinta-fraca); }
 
-.art-janela-conteudo {
-  position: relative;
-  padding: 2.55rem;
-  background:
-    linear-gradient(90deg, transparent 72%, rgba(199, 154, 67, .16) 72%),
-    radial-gradient(circle at 85% 22%, rgba(184, 103, 73, .55) 0 15%, transparent 15.5%);
+/* ---------------------------------------------------------------------
+   11. APRESENTAÇÃO
+   --------------------------------------------------------------------- */
+.apresentacao-grade { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+.colunas { display: grid; gap: var(--e6); }
+/* O fio de topo é o que separa as duas colunas, e ele basta.
+   O protótipo tinha "01" e "02" em mono acima de cada uma, e eles não foram
+   portados: no dicionário só `servicos.lista` tem campo `number`, e estes
+   dois seriam numeração inventada num conjunto SEM ORDEM. Pior, nasceriam
+   dentro da seção 02 repetindo o mesmo par de dígitos que a seção 03 usa
+   para outra coisa a 200px de distância. Etiqueta que não diz nada que o
+   texto já não diga é ruído com cara de precisão. */
+.coluna { border-top: 1px solid var(--fio); padding-top: var(--e4); }
+
+/* ---------------------------------------------------------------------
+   12. FORMATOS
+   `.cabeca-secao` nasce aqui e vale para a página inteira: ver o cabeçalho
+   deste arquivo.
+   --------------------------------------------------------------------- */
+.cabeca-secao { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--e5) var(--e7); margin-bottom: var(--e8); }
+.cabeca-secao > div { min-width: 0; }
+.cabeca-secao .lead { max-width: 44ch; }
+
+.formatos-grade { display: grid; gap: var(--e5); grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.formato { display: flex; flex-direction: column; gap: var(--e4); }
+/* O número grande é grotesca tabular (`.numeral`), e não mono: mono é
+   etiqueta e fica travado em 0,72rem.
+   `:not(.formato-numero)` na regra de baixo não é enfeite, é a regra 9.24:
+   `.formato p` é 0-1-1 e vence `.formato-numero`, que é 0-1-0, então sem o
+   `:not()` os três números saem a 14px, o mesmo corpo do texto de apoio logo
+   abaixo, e o degrau de tamanho que existe para separar os dois deixa de
+   existir na tela. */
+.formato-numero { font-size: var(--t-numero); line-height: 1; color: var(--acento); }
+.formato p:not(.formato-numero) { color: var(--tinta-media); font-size: var(--c-apoio); flex: 1; }
+
+.fecho {
+  margin-top: var(--e7);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--e4) var(--e6);
+  padding: var(--e5) var(--e6);
+  background: var(--nivel-1); border: 1px solid var(--fio); border-radius: var(--raio-cartao);
 }
-
-.art-janela-marca {
-  color: var(--green);
-  font-family: var(--serif-titulo);
-  font-size: 0.72rem;
-  font-weight: 700;
-}
-
-.art-janela-titulo {
-  margin-top: 2.6rem;
-  color: var(--green-dark);
-  font-family: var(--serif-titulo);
-  font-size: clamp(1.8rem, 3.55cqw, 4.4rem);
-  line-height: 0.95;
-  letter-spacing: -0.05em;
-}
-
-.art-janela-linhas {
-  margin-top: 1.4rem;
-  display: grid;
-  gap: 6px;
-}
-
-.art-janela-linhas i {
-  display: block;
-  width: 43%;
-  height: 3px;
-  background: #d9d1c7;
-}
-
-.art-janela-linhas i:last-child { width: 33%; }
-
-.art-janela-botao {
-  width: max-content;
-  margin-top: 1.6rem;
-  padding: 0.55rem 0.75rem;
-  background: var(--terracotta);
-  color: white;
-  font-size: 0.5rem;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.art-recado {
-  position: absolute;
-  z-index: 4;
-  padding: 1rem 1.15rem;
-  font-family: var(--serif-titulo);
-  font-size: 1rem;
-  line-height: 1.15;
-  box-shadow: 0 14px 30px rgba(40, 35, 31, .14);
-}
-
-.art-recado--topo {
-  right: 0;
-  top: 97px;
-  transform: rotate(4deg);
-  /* Branco sobre --terracotta dava 4,37:1, logo abaixo do minimo. Sobre o
-     tom escuro vai a 6,12:1. */
-  background: var(--terracotta-dark);
-  color: white;
-}
-
-.art-recado--topo strong {
-  font-style: italic;
-  font-weight: 400;
-}
-
-.art-recado--base {
-  left: 1%;
-  bottom: 50px;
-  transform: rotate(-5deg);
-  min-width: 150px;
-  min-height: 96px;
-  padding: 1rem 1.25rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background: var(--ochre);
-  color: var(--green-dark);
-}
-
-.art-recado--base small {
-  display: block;
-  font-family: var(--font-sans), sans-serif;
-  font-size: 0.64rem;
-  font-weight: 800;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-}
-
-.art-recado--base strong {
-  display: block;
-  margin-top: .28rem;
-  font-family: var(--serif-titulo);
-  font-size: 1.55rem;
-  font-weight: 400;
-  line-height: 1;
-}
-
-/* ==========================================================================
-   Luz do arco e entrada da composição            (rodada de 19/08/2026)
-   ==========================================================================
-   O mesmo efeito da hero da Casa Conexão, trazido para cá a pedido: a luz
-   entra por dentro do arco, os feixes abrem um atrás do outro e a composição
-   se apoia depois. A diferença é que aqui a arte já existia e é ela que
-   ganhou a luz — o arco, o sol e a janela continuam sendo os mesmos.
-
-   O comentário no `section-abertura.tsx` conta que esta hero JÁ TEVE animação
-   de entrada e voltou a ser parada. Voltou a ter, agora com três diferenças
-   que eram o problema da vez anterior:
-
-   1. o TEXTO não anima. Subida escalonada em título, lead e botões é a
-      assinatura genérica de site gerado por IA, e faz o conteúdo depender da
-      animação para existir. Aqui quem entra é a luz; o texto já estava lá.
-   2. nada nasce escondido fora de `no-preference`. Se a animação não rodar,
-      o primeiro quadro é a composição inteira, montada.
-   3. a arte perdeu o `data-reveal`, então não há duas animações disputando
-      o mesmo elemento.
-   ========================================================================== */
-
-.art-luz {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  pointer-events: none;
-}
-
-@keyframes var-surge {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-@keyframes var-surge-feixe {
-  from { opacity: 0; transform: translate3d(-38px, -26px, 0); }
-  to   { opacity: 1; transform: translate3d(0, 0, 0); }
-}
-@keyframes var-surge-baixo {
-  from { opacity: 0; transform: translate3d(0, 24px, 0); }
-  to   { opacity: 1; transform: translate3d(0, 0, 0); }
-}
-
-/* Curva de entrada do manual do estúdio em tudo. Nada de `ease-in`.
-
-   TUDO daqui para baixo está sob `.hero-art.is-visible`: a sequência começa
-   quando o bloco entra na tela, não quando a página carrega. No celular a
-   arte fica abaixo do texto, e disparar no carregamento fazia o visitante
-   chegar nela depois de a animação ter terminado.
-
-   Enquanto a classe não chega, nenhuma regra abaixo se aplica e a composição
-   fica no estado natural, montada. O revelar já esconde o bloco inteiro nesse
-   intervalo, então não há salto quando a animação começa do zero. */
-
-.hero-art.is-visible .art-luz__brilho,
-.hero-art.is-visible .art-luz__feixe,
-.hero-art.is-visible .art-sol,
-.hero-art.is-visible .art-arco-sol,
-.hero-art.is-visible .art-janela,
-.hero-art.is-visible .art-recado {
-  animation-duration: 820ms;
-  animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
-  animation-fill-mode: both;
-}
-
-.hero-art.is-visible .art-luz__brilho { animation-name: var-surge; animation-duration: 1100ms; }
-.hero-art.is-visible .art-luz__feixe  { animation-name: var-surge-feixe; animation-duration: 900ms; }
-.hero-art.is-visible .art-luz__feixe--1 { animation-delay: 240ms; }
-.hero-art.is-visible .art-luz__feixe--2 { animation-delay: 380ms; }
-.hero-art.is-visible .art-luz__feixe--3 { animation-delay: 520ms; }
-
-.hero-art.is-visible .art-sol       { animation-name: var-surge-baixo; animation-delay: 120ms; animation-duration: 700ms; }
-.hero-art.is-visible .art-arco-sol  { animation-name: var-surge-baixo; animation-delay: 620ms; animation-duration: 700ms; }
-.hero-art.is-visible .art-recado--topo { animation-name: var-surge; animation-delay: 1020ms; animation-duration: 620ms; }
-.hero-art.is-visible .art-recado--base { animation-name: var-surge; animation-delay: 1120ms; animation-duration: 620ms; }
-
-/* A janela tem `transform: rotate(-2deg)` no repouso, e o `translate3d` do
-   quadro inicial sobrescreveria a rotação. Por isso o quadro carrega as duas
-   transformações, na ordem em que elas se compõem. */
-@keyframes var-surge-janela {
-  from { opacity: 0; transform: translate3d(0, 24px, 0) rotate(-2deg); }
-  to   { opacity: 1; transform: translate3d(0, 0, 0) rotate(-2deg); }
-}
-.hero-art.is-visible .art-janela { animation-name: var-surge-janela; animation-delay: 700ms; animation-duration: 760ms; }
-
-/* Reduz, não zera: o surgimento continua, porque é ele que explica que a luz
-   entra — só perde o deslocamento e encurta. */
-@media (prefers-reduced-motion: reduce) {
-  .hero-art.is-visible .art-luz__brilho,
-  .hero-art.is-visible .art-luz__feixe,
-  .hero-art.is-visible .art-sol,
-  .hero-art.is-visible .art-arco-sol,
-  .hero-art.is-visible .art-janela,
-  .hero-art.is-visible .art-recado {
-    animation-name: var-surge !important;
-    animation-duration: 420ms !important;
-  }
-  /* O `!important` NÃO é preguiça, e tirar ele quebra isto de novo.
-     `responsive.css` tem, dentro desta mesma consulta, um seletor universal
-     com `animation-duration: .01ms !important`. Ele existe para conter
-     animação que ninguém escreveu, e está certo em existir; o problema é que
-     ele também atropela as duas sequências que foram escritas justamente para
-     RESPEITAR a preferência.
-
-     Medido no Chrome com `prefers-reduced-motion: reduce` forçado, antes desta
-     linha: a duração computava 1e-05s enquanto os atrasos sobreviviam intactos
-     (0 · 60 · 100 · 140 · 200 · 240 · 280 · 320 · 380ms). Com
-     `animation-fill-mode: both`, cada peça ficava em opacidade 0 até a vez
-     dela e então aparecia de estalo. Ou seja: quem pediu MENOS movimento
-     recebia nove estalos em vez de um surgimento suave, que é pior que não
-     animar e é o oposto da regra 9.20.
-
-     Ler a folha dava a impressão contrária. Só o valor computado mostrou. */
-
-  .hero-art.is-visible .art-luz__feixe--1 { animation-delay: 120ms; }
-  .hero-art.is-visible .art-luz__feixe--2 { animation-delay: 180ms; }
-  .hero-art.is-visible .art-luz__feixe--3 { animation-delay: 240ms; }
-  .hero-art.is-visible .art-sol,
-  .hero-art.is-visible .art-arco-sol,
-  .hero-art.is-visible .art-janela { animation-delay: 300ms; }
-  .hero-art.is-visible .art-recado--topo,
-  .hero-art.is-visible .art-recado--base { animation-delay: 380ms; }
-}
-
-/* ==========================================================================
-   A dobra do laptop                              (rodada de 25/08/2026)
-   ==========================================================================
-   Numa tela de 1366x768, que ainda é o segundo tamanho mais comum, o botão
-   principal terminava em y=646 — dentro da tela, mas com 122px de sobra, e a
-   nota de rodapé do hero caía fora. A altura vinha de dois lugares fixos que
-   foram medidos em tela grande: o cabeçalho de 100px e o recuo de 9,5rem.
-
-   A consulta é por ALTURA, não por largura: um monitor 1920x800 tem o mesmo
-   problema e uma janela estreita e alta não tem nenhum. */
-@media (max-height: 800px) and (min-width: 881px) {
-  /* O token não é o que mede o cabeçalho: ele é `min-height`, e a marca em
-     duas linhas passa dos 100px sozinha. Quem encolhe de verdade é o recuo
-     vertical daqui. Medido: 112px -> 97px. */
-  :root {
-    --altura-cabecalho: 88px;
-    /* O h1 desce um degrau. Não é enfeite: em 1366px de largura ele ocupa
-       quatro linhas a 85px, o que dava 362px só de título numa tela de 768.
-       Depois da redução geral da escala, em 25/08/2026, os números mudaram
-       mas a razão não: nesta faixa o título continua descendo um degrau a
-       mais que o resto. */
-    --t-hero: clamp(2.9rem, 4.3vw, 4.6rem);
-  }
-  .site-header { padding-block: 0.7rem; }
-
-  /* 128px = os 97px do cabeçalho mais 31px de respiro. O valor antigo, de
-     9,5rem, foi medido em tela alta e aqui empurrava tudo para baixo. */
-  .hero { padding-top: 8rem; padding-bottom: 3.5rem; min-height: 0; }
-}
+.fecho p:not(.mono) { color: var(--tinta-media); font-size: var(--c-apoio); }
+.fecho-acoes { display: flex; flex-wrap: wrap; gap: var(--e3); }

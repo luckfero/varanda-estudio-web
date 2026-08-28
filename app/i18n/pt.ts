@@ -261,6 +261,40 @@ const pt = {
       "A segunda capacidade, quando o projeto pedir mais de uma",
     ],
     nota: "Cada rodada de ajustes deve chegar em uma lista consolidada. Qualquer necessidade fora do pacote é informada e orçada antes do início, nunca durante.",
+    /* A TABELA COMPARÁVEL, que substituiu os três cartões lado a lado.
+       Nada aqui é dado comercial: o valor de cada célula continua saindo de
+       `pacotes[].items`, `launch` e `entrega`, palavra por palavra. O que
+       mora nesta chave é só o andaime da tabela, que antes não existia
+       porque a comparação não existia.
+
+       `linhas` é POSICIONAL, na mesma ordem em que a tabela desenha as dez
+       linhas, e a ordem está escrita na constante `COMPARACAO` de
+       `app/section-oferta.tsx`. Tirar, acrescentar ou trocar de lugar um
+       item aqui desloca todos os rótulos abaixo dele e cola o nome de uma
+       dimensão nos valores de outra, em silêncio e em um idioma só. Mexer
+       nos três dicionários e na constante junto, sempre.
+
+       `incluido` e `naoIncluido` são as duas palavras que a marca gráfica
+       carrega em `.so-leitor`. Elas existem porque o sinal de presente e o de ausente, sozinhos, não
+       dizem nada a quem ouve a página: o leitor de tela anunciaria o nome
+       do glifo, ou silêncio. */
+    comparacao: {
+      legenda: "Comparação dos três pacotes, linha a linha: investimento, prazo e o que muda no escopo de um para o outro.",
+      linhas: [
+        "Investimento",
+        "Prazo típico",
+        "Páginas ou seções",
+        "Tratamento de texto",
+        "Galeria e conteúdo",
+        "Integrações",
+        "Capacidade à escolha",
+        "SEO e dados estruturados",
+        "Rodadas de ajuste",
+        "Primeiro mês de plano",
+      ],
+      incluido: "Incluído",
+      naoIncluido: "Não incluído",
+    },
     pacotes: [
       {
         name: "Essencial",

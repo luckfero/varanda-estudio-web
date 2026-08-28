@@ -237,6 +237,43 @@ const en: Dicionario = {
       "A second capability, when the project calls for more than one",
     ],
     nota: "Each revision round should arrive as one consolidated list. Anything outside the package is flagged and quoted before we start, never during.",
+    /* A TABELA COMPARÁVEL, espelho de `comparacao` no português. Nada aqui
+       é dado comercial: o valor de cada célula continua saindo de
+       `pacotes[].items`, `launch` e `entrega`. O que mora nesta chave é só o
+       andaime da tabela.
+
+       `linhas` é POSICIONAL, na mesma ordem da constante `COMPARACAO` de
+       `app/section-oferta.tsx`. Aqui a posição É o significado: tirar,
+       acrescentar ou trocar de lugar um item desloca todos os rótulos
+       abaixo dele e cola o nome de uma dimensão nos valores de outra, em
+       silêncio e em um idioma só.
+
+       "Copy handling" e não "Text treatment": no vocabulário de quem compra
+       site em inglês, copy é o texto que vende, e é disso que a linha trata.
+       O mais longo dos dez é "Capability of your choice", e ele cabe em uma
+       linha a 360px, que é onde cada rótulo vira cabeçalho de cartão.
+
+       `incluido` e `naoIncluido` são as duas palavras que a marca gráfica
+       carrega em `.so-leitor`, porque o sinal de presente e o de ausente, sozinhos, não dizem nada a
+       quem ouve a página. Abaixo de 900px elas saem do `.so-leitor` e viram
+       texto visível ao lado do sinal. */
+    comparacao: {
+      legenda: "The three packages compared row by row: investment, timeline and what changes in scope from one to the next.",
+      linhas: [
+        "Investment",
+        "Typical timeline",
+        "Pages or sections",
+        "Copy handling",
+        "Gallery and content",
+        "Integrations",
+        "Capability of your choice",
+        "SEO and structured data",
+        "Revision rounds",
+        "First month of a plan",
+      ],
+      incluido: "Included",
+      naoIncluido: "Not included",
+    },
     pacotes: [
       {
         name: "Essential",

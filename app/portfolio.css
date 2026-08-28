@@ -1,714 +1,368 @@
 /**
- * A introducao e o carrossel de projetos.
+ * PORTFÓLIO — a terceira porta da página.
  *
- * A maquete de navegador, os recados flutuantes e as folhagens viviam aqui e
- * sairam: eram usados so pelo hero, e o hero passou a ter a composicao
- * animada propria, em hero.css.
+ * Bloco 13 da identidade nova, portado do protótipo aprovado em 27/08/2026.
+ * Todos os tokens saem de `app/base.css`, que é o contrato: nenhum valor de
+ * cor, corpo, espaço ou curva nasce aqui.
+ *
+ * ESTE ARQUIVO PASSOU A CONTER SÓ O PORTFÓLIO. Até a troca de identidade ele
+ * carregava também `.intro`, `.services`, `.service-*` e a regra compartilhada
+ * de `.section-heading h2`, que são a apresentação e os formatos. Essas duas
+ * seções têm marcação nova e arquivo próprio no porte, e manter as regras
+ * velhas aqui deixaria a folha com duas gramáticas ao mesmo tempo, que é
+ * exatamente o que a troca existe para acabar.
+ *
+ * A SEPARAÇÃO ENTRE "NO AR" E "ESTUDOS CONCEITUAIS" É ESTRUTURAL, e não de
+ * rótulo: publicado ocupa uma placa de largura inteira, conceitual ocupa um
+ * terço de uma grade. É decisão registrada no CLAUDE.md do projeto e é ela
+ * que impede trabalho fictício de parecer trabalho de cliente para quem não
+ * lê o aviso. O selo confirma o que o tamanho já disse.
+ *
+ * A ÚNICA DIFERENÇA DELIBERADA CONTRA O PROTÓTIPO, e ela é o ponto delicado
+ * deste arquivo: o protótipo desenhava a capa de cada projeto como AMOSTRA de
+ * cor média, com o hexadecimal impresso na plaquinha, porque era um HTML
+ * solto e não tinha como carregar imagem. Aqui as capas existem de verdade,
+ * otimizadas em AVIF e WebP e servidas pelo `Picture` a partir de
+ * `app/image-manifest.ts`. Então a foto volta para dentro da `.amostra` e a
+ * cor média vira o CHÃO da caixa, que é o que o visitante vê enquanto o
+ * arquivo chega: o quadro nasce na cor certa em vez de piscar branco. Ganho, e
+ * não perda.
+ * O hexadecimal impresso saiu junto, e é a consequência disto: com a foto por
+ * cima, ele passaria a rotular uma cor que ninguém mais enxerga.
  */
 
-/* A ÚNICA emenda da página que não troca de cor, porque o hero e a
-   apresentação são o mesmo bloco de abertura. Por isso, e só por isso, ela
-   ganha um fio.
-
-   O fio é `::before` absoluto, e não `border-top`, para respeitar o recuo
-   lateral da seção: borda no elemento correria de ponta a ponta da janela e
-   leria como divisão de página, não como emenda de assunto. Absoluto também
-   o tira do fluxo da grade, que aqui tem três colunas declaradas.
-
-   A `border-top` que existiu aqui até 25/08/2026 foi removida por ser a única
-   borda de seção das doze; agora ela volta com motivo, porque é a única
-   emenda sem cor para separar. */
-/* O `min-height: 620px` saiu em 25/08/2026.
-   Com `align-items: start`, ele não distribuía nada: sobrava como vazio no PÉ
-   da seção. Depois que os títulos encolheram, o conteúdo passou a ocupar
-   pouco mais de 300px e o resto virava buraco — medido, 338px entre o fim
-   deste texto e o começo dos serviços, o maior vão da página. Quem decide a
-   altura passa a ser o conteúdo. */
-.intro {
-  position: relative;
-  display: grid;
-  grid-template-columns: 160px minmax(0, 1fr) 110px;
-  gap: 4vw;
-  align-items: start;
-  /* A border-top saiu em 25/08/2026: era a única borda de seção das doze, e
-     contradizia a mesma regra que fez a rampa do portfólio ser removida, de
-     que seção se separa por cor e mais nada. */
-}
-
-.intro::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: clamp(1.25rem, 5vw, 5.5rem);
-  right: clamp(1.25rem, 5vw, 5.5rem);
-  height: 1px;
-  background: var(--line);
-}
-
-.intro-content {
-  max-width: 970px;
-}
-
-.intro h2 {
-  max-width: 920px;
-  margin: 0;
-  color: var(--green-dark);
-  font-family: var(--serif-titulo);
-  font-size: var(--t-secao);
-  font-weight: 400;
-  letter-spacing: var(--ls-titulo);
-  line-height: var(--lh-titulo);
-}
-
-.intro-columns {
-  margin-top: 3rem;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-  max-width: 760px;
-  color: var(--ink-soft);
-  font-size: 1rem;
-  line-height: var(--lh-base);
-}
-
-.intro-columns p { margin: 0; }
-
-/* Serviços subiu para claro em 25/08/2026, e não foi decisão estética.
-
-   Ela ficava logo acima do portfólio, e verde escuro contra o chão quase
-   preto de lá mede 1,94:1: a seção mais importante do site simplesmente não
-   se anunciava. Em claro, a mesma emenda passa a 16,26:1.
-
-   Com isso a página fica com dois momentos escuros e não quatro, e cada um
-   marca um papel: o portfólio é a prova, o contato é o pedido.
-
-   **Em 25/08/2026 ela passou de --cream para --areia**, junto com o ritmo novo
-   de cor: era ela a "seção dos planos" que o dono pediu num fundo diferente, e
-   ela é a primeira troca de chão da página. */
-.services {
-  background: var(--areia);
-  color: var(--charcoal);
-  --acento: var(--terracotta-deep);
-}
-
-.section-heading,
-.pricing-heading {
-  display: grid;
-  grid-template-columns: 1.4fr .6fr;
-  align-items: end;
-  gap: 4rem;
-}
-
-.section-heading h2,
-.pricing-heading h2,
-.care-heading h2,
-.portfolio-intro h2,
-.faq-heading h2,
-.contact-copy h2 {
-  margin: 1.4rem 0 0;
-  font-family: var(--serif-titulo);
-  font-size: var(--t-secao);
-  font-weight: 400;
-  letter-spacing: var(--ls-titulo);
-  line-height: var(--lh-titulo);
-}
-
-.section-heading > p {
-  max-width: 430px;
-  color: var(--ink-soft);
-  font-size: 1rem;
-  line-height: 1.7;
-}
-
-.service-grid {
-  margin-top: 5rem;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-}
-
-.service-card {
-  /* Coluna flexível para que o `margin-top: auto` do preço encoste no pé do
-     cartão. Sem isto os três preços ficariam na altura em que o texto de cada
-     um terminou, que é altura diferente em cada. */
+/* ---------------------------------------------------------------------
+   O TRILHO QUE ABRE CADA GRUPO
+   Selo à esquerda, nota à direita, fio embaixo. Ele é o rótulo do que vem
+   logo abaixo, então mora perto do grupo e não equidistante entre o título
+   da seção e ele.
+   --------------------------------------------------------------------- */
+.trilho {
   display: flex;
-  flex-direction: column;
-  /* Era 400px, medida para caber o ornamento de 78px mais 6,1rem de margem
-     que ele carregava. Sem ele, os 400px viravam buraco no fim do cartão. */
-  min-height: 290px;
-  padding: 2rem clamp(1.5rem, 3vw, 3rem) 2.6rem;
-  border-right: 1px solid var(--line);
-}
-
-.service-card:last-child { border-right: 0; }
-
-.service-card > span {
-  /* Sobre claro desde 25/08. O --ink-soft dá 5,74:1 sobre o creme. */
-  color: var(--ink-soft);
-  font-size: .68rem;
-  font-weight: 750;
-  letter-spacing: .12em;
-}
-
-/* O ornamento dos cartões de serviço foi REMOVIDO em 25/08/2026.
-
-   Ele era um círculo de 78px com uma diagonal de 96px atravessando e sobrando
-   nas duas pontas, ou seja, o desenho do sinal de PROIBIDO, e estava idêntico
-   nos três cartões (0,03 de diferença média em 255 níveis de cinza). Ficava na
-   primeira seção depois da dobra.
-
-   Não foi substituído por três SVG novos de propósito: quem carrega o ritmo
-   aqui passa a ser o 01/02/03, do mesmo jeito que no portfólio quem separa os
-   grupos é a sobrancelha, e não um ícone. Menos peça, mesma leitura.
-
-   Se um dia entrar ícone aqui, ele nasce em `app/icons.tsx`, no padrão que o
-   `ArcoMark` já fixou, e não desenhado com `<i>` vazios posicionados por
-   left/top. */
-.service-icon { display: none; }
-
-.service-card h3 {
-  /* Herda o respiro que o ornamento removido ocupava (3,1rem acima). */
-  margin: 3.1rem 0 0;
-  font-family: var(--serif-titulo);
-  font-size: var(--t-bloco);
-  font-weight: 400;
-  line-height: var(--lh-titulo);
-}
-
-.service-card p {
-  margin: 1.2rem 0 0;
-  /* Sobre claro desde 25/08: o #c9c2b7 vinha de quando a seção era verde. */
-  color: var(--ink-soft);
-  font-size: var(--c-base);
-  line-height: var(--lh-base);
-}
-
-/* A porta de entrada do cartão de serviço.
-   Até 25/08/2026 aqui vivia o preço, com o "a partir de" à esquerda e o link
-   à direita. O dono pediu para tirar o valor e deixar só o botão, centrado.
-
-   `margin-top: auto` prende ao pé do cartão: os três têm altura igual, e sem
-   isto o botão flutuaria na altura em que o texto de cada um terminou.
-
-   A cor vem de `--acento`, que é o token de superfície: sobre a areia desta
-   seção ele resolve para --terracotta-deep, e o branco por cima dá 8,02:1. */
-.service-acao {
-  width: max-content;
-  margin: auto auto 0;
-  padding: 0 var(--btn-pad-x);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: var(--btn-altura-compacto);
-  border: 1px solid var(--acento);
-  color: var(--acento);
-  font-size: var(--btn-fonte);
-  font-weight: var(--btn-peso);
-  letter-spacing: .02em;
-  text-decoration: none;
-}
-
-/* Só onde existe ponteiro de verdade: no toque, `:hover` gruda depois do
-   clique e o botão fica preso no estado invertido. */
-@media (hover: hover) and (pointer: fine) {
-  .service-acao:hover {
-    background: var(--acento);
-    color: #fff;
-  }
-}
-
-/* O clique vale nos dois, e no toque é a ÚNICA resposta que o botão dá. */
-.service-acao:active {
-  background: var(--acento);
-  color: #fff;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .service-acao {
-    transition:
-      background var(--dur-fast) var(--ease-out),
-      color var(--dur-fast) var(--ease-out);
-  }
-}
-
-/* O pé da seção: a pergunta e o par de botões.
-   Os três botões que viviam dentro dos cartões saíram em 25/08/2026, a
-   pedido. Um botão por cartão dava três portas quase idênticas, e as três
-   levavam ao mesmo lugar depois que o preço saiu do cartão. */
-.service-fecho {
-  margin-top: clamp(2.5rem, 4vw, 3.5rem);
-  display: grid;
-  justify-items: center;
-  gap: 1.4rem;
-  text-align: center;
-}
-
-.service-fecho p {
-  max-width: 58ch;
-  margin: 0;
-  color: var(--ink-soft);
-  font-size: var(--c-base);
-  line-height: var(--lh-base);
-}
-
-.service-botoes {
-  display: flex;
-  /* Enrola em vez de espremer: em 375px os dois rótulos não cabem lado a
-     lado, e botão espremido perde o alvo de toque antes de perder a beleza. */
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
+  align-items: baseline;
+  gap: var(--e3) var(--e5);
+  padding-bottom: var(--e4);
+  border-bottom: 1px solid var(--fio);
+  margin-bottom: var(--e6);
 }
 
-/* ==================================================================
-   PORTFÓLIO · redesenhado em 25/08/2026
+.trilho-nota { font-size: var(--c-apoio); color: var(--tinta-fraca); }
 
-   A versão anterior foi rejeitada inteira: fundo ocre, cartões claros
-   com barra de navegador falsa e carrossel com setas. Nada dela
-   sobreviveu, e é por isso que este bloco não tem herança nenhuma dos
-   seletores `.project-*` e `.destaque-*`, removidos junto.
+/* ---------------------------------------------------------------------
+   AS PLACAS DOS PUBLICADOS
+   --------------------------------------------------------------------- */
+.placas { display: grid; gap: var(--e6); }
 
-   A ideia: a faixa é uma sala escura e as telas dos próprios sites são
-   a única fonte de luz. O fundo é um quase preto QUENTE, derivado do
-   `--charcoal` da paleta, e não um cinza neutro: cinza neutro brigaria
-   com o verde e o terracota do resto da página.
-   ================================================================== */
-
-.portfolio {
-  /* Escopo local. Estas cores só existem aqui, e declará-las na seção
-     em vez de em `:root` é o que impede que virem paleta da casa sem
-     alguém ter decidido isso. */
-  --chao: var(--escuro);
-  /* Chão escuro: o fio inverte junto, por superfície (regra 9.8). */
-  --fio: var(--fio-escuro);
-  --chao-alto: var(--escuro-alto);
-  --luz: #cfc6ba;
-  --luz-fraca: #a89e93;
-  --brasa: #d9906f;
-  --fio: rgba(244, 239, 230, 0.14);
-
-  position: relative;
-  background: var(--chao);
-  /* Sem fio e sem degradê na borda: a página inteira separa seção por troca
-     de cor, e esta não tem por que ser exceção. Havia aqui uma rampa que
-     esfriava o verde de cima até o preto; ela foi removida a pedido, em
-     25/08/2026, junto com os dois fios de ocre. */
+.placa {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr);
+  background: var(--nivel-1);
+  border: 1px solid var(--fio);
+  border-radius: var(--raio-cartao);
   overflow: hidden;
 }
 
-.portfolio-wrap {
-  width: min(1180px, 100%);
-  margin-inline: auto;
-}
-
-/* ---------- cabeçalho ---------- */
-
-.portfolio-cabeca {
-  padding-top: clamp(28px, 4vw, 54px);
-  display: grid;
-  grid-template-columns: minmax(0, 1.45fr) minmax(0, .9fr);
-  gap: clamp(20px, 4vw, 60px);
-  align-items: end;
-}
-
-.portfolio-cabeca .section-index {
-  /* O `--green` global desaparece no chão escuro. O ocre claro dá 9,7:1. */
-  color: var(--ochre-light);
-}
-
-.portfolio-cabeca h2 {
-  margin: 22px 0 0;
-  max-width: 17ch;
-  color: var(--cream);
-  font-family: var(--serif-titulo);
-  font-size: var(--t-secao);
-  font-weight: 400;
-  line-height: 1.06;
-  letter-spacing: -0.01em;
-  text-wrap: balance;
-}
-
-.portfolio-cabeca h2 em {
-  font-style: italic;
-  color: var(--ochre-light);
-}
-
-.portfolio-resumo {
-  margin: 0;
-  max-width: 34ch;
-  padding: 0 0 10px 22px;
+/* A segunda placa inverte os lados. Com as duas iguais, a segunda lê como
+   repetição da primeira em vez de segundo trabalho. A inversão só vale
+   enquanto houver duas colunas: em coluna única ela deixaria a ordem de
+   leitura imagem-texto num cartão e texto-imagem no outro, e quem desliga
+   isso é o responsivo. */
+.placa--invertida .amostra {
+  order: 2;
+  border-right: 0;
   border-left: 1px solid var(--fio);
-  color: var(--luz);
-  font-size: .94rem;
-  line-height: 1.6;
 }
 
-/* ---------- o trilho que abre cada grupo ---------- */
-
-.portfolio-trilho {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  /* Era clamp(56px, 8vw, 104px), e abria um buraco entre o título da seção e
-     o primeiro grupo. O trilho é o rótulo do que vem logo abaixo, então ele
-     precisa estar perto do grupo, não equidistante entre os dois. */
-  margin-top: clamp(30px, 4vw, 52px);
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--fio);
-}
-
-.portfolio-marca {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  font-size: .75rem;
-  font-weight: 500;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.portfolio-marca::before {
-  content: "";
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: currentColor;
-}
-
-.portfolio-marca--no-ar { color: var(--ochre-light); }
-
-/* Quadrado, e não redondo: a forma do marcador é a segunda pista de que
-   os dois grupos são coisas diferentes, e ela funciona antes da cor,
-   inclusive para quem não distingue ocre de terracota. */
-.portfolio-marca--estudo { color: var(--brasa); }
-.portfolio-marca--estudo::before { border-radius: 1px; }
-
-.portfolio-trilho-nota {
-  color: var(--luz-fraca);
-  font-size: .875rem;
-}
-
-/* ---------- as placas dos publicados ---------- */
-
-.portfolio-placas {
-  display: grid;
-  gap: clamp(64px, 9vw, 132px);
-  margin: clamp(44px, 6vw, 80px) 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.portfolio-placa {
-  display: grid;
-  grid-template-columns: minmax(0, 1.32fr) minmax(0, .88fr);
-  gap: clamp(26px, 4.4vw, 66px);
-  align-items: center;
-  color: inherit;
-  text-decoration: none;
-}
-
-/* A segunda placa inverte os lados. Com as duas iguais, a segunda lê
-   como repetição da primeira em vez de segundo trabalho. */
-.portfolio-placa--invertida {
-  grid-template-columns: minmax(0, .88fr) minmax(0, 1.32fr);
-}
-.portfolio-placa--invertida .portfolio-figura { order: 2; }
-.portfolio-placa--invertida .portfolio-corpo { order: 1; }
-
-.portfolio-figura {
+/* ---------------------------------------------------------------------
+   A CAIXA DA CAPA
+   O `min-height` é piso e não altura: quem manda na linha é a coluna de
+   texto ao lado, e a foto acompanha por `cover`.
+   --------------------------------------------------------------------- */
+.amostra {
   position: relative;
-  margin: 0;
+  min-height: 320px;
+  border-right: 1px solid var(--fio);
+  overflow: hidden;
+}
+
+/* A cor média real de cada capa, medida sobre o arquivo original e declarada
+   em `base.css`. Ela é o CHÃO da caixa: aparece enquanto o AVIF não chegou e
+   fica por baixo da foto depois. */
+.amostra--casa { background-color: var(--amostra-casa); }
+.amostra--milenio { background-color: var(--amostra-milenio); }
+.amostra--nivora { background-color: var(--amostra-nivora); }
+.amostra--nascente { background-color: var(--amostra-nascente); }
+.amostra--brasa { background-color: var(--amostra-brasa); }
+
+/* A CAPA DA PLACA ENTRA INTEIRA, e isto foi medido antes de ser decidido.
+   A caixa é uma coluna de grade: a altura dela vem da coluna de TEXTO ao
+   lado, que em 1440px dá 392px contra os 590px de largura, ou seja proporção
+   1,50. As capas são a faixa da hero, 1600/758 ≈ 2,11. Com `object-fit:
+   cover` a diferença sai toda pelos lados: 29% da LARGURA some, uns 14% em
+   cada borda, e o que ela come é justamente o começo e o fim do título do
+   site fotografado. Medido na captura: "Seu atendimento merece um espaço à
+   altura do seu trabalho" saía como "eu atendimento / erece um espaço à /
+   ltura do seu trabalho". Título cortado no meio da palavra é defeito, e num
+   portfólio ele acontece no único lugar em que o visitante avalia o trabalho.
+   Então a capa fica NO FLUXO, presa ao alto e com a largura inteira, na
+   própria proporção. A folga que sobrar embaixo é a cor média da capa, que é
+   para isso que ela existe: vira o passe-partout do quadro, e é sobre ela que
+   a plaquinha com o nome cai. Nada é recortado em largura nenhuma, e se a
+   coluna de texto for mais curta que a capa é ela que estica. */
+.amostra img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* A MOLDURA E O VÉU VIVEM NO PSEUDOELEMENTO, e não no próprio elemento.
+   `box-shadow: inset` é pintado na camada de fundo, ou seja, ABAIXO do
+   conteúdo dos filhos: com a foto dentro da caixa, a moldura de terracota do
+   protótipo simplesmente desapareceria embaixo dela. Aqui ela volta a ser o
+   que era, acima da foto e sem capturar ponteiro.
+   O terracota a 22% é a peça que reconcilia obra quente com chão escuro, e é
+   o único lugar da seção em que a cor da obra encosta na interface. */
+.amostra::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.06), transparent 55%);
+  box-shadow: inset 0 0 0 8px rgba(184, 103, 73, 0.22);
+}
+
+/* A plaquinha com o nome do projeto sobre a capa.
+   O preto a 78% (`--placa`) foi escolhido medindo, e ele segura o pior caso
+   possível: mesmo sobre um pixel branco da foto, a tinta por cima fica em
+   9,2:1. Ou seja, o nome é legível seja qual for a capa que estiver embaixo.
+   `aria-hidden` na marcação: o nome já é o h3 ao lado, e o `alt` da foto já
+   descreve a imagem. */
+.amostra-placa {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--e3);
+  padding: var(--e4) var(--e5);
+  background: var(--placa);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+/* Serifada porque é NOME PRÓPRIO, que é uma das três coisas que a regra da
+   serifada em `base.css` reserva para a display. */
+.amostra-nome {
+  font-family: var(--fonte-display);
+  font-size: var(--t-bloco);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--tinta);
+}
+
+/* ---------------------------------------------------------------------
+   O CORPO DA PLACA
+   --------------------------------------------------------------------- */
+.placa-corpo {
+  padding: var(--e7) var(--e6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--e4);
   min-width: 0;
 }
 
-/* O halo por trás da tela é o que faz a imagem parecer acesa em vez de
-   colada no fundo. Vive no ::before e nunca em texto: opacidade em
-   texto quebra a extração no PDF e prejudica o antialiasing. */
-.portfolio-figura::before {
-  content: "";
-  position: absolute;
-  inset: -10px -10px -22px;
-  z-index: 0;
-  background: radial-gradient(58% 58% at 50% 46%, rgba(220, 182, 104, .20), rgba(220, 182, 104, 0) 72%);
-  filter: blur(18px);
-  pointer-events: none;
-  transition: opacity .5s var(--ease-out);
-}
-
-.portfolio-figura img {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  height: auto;
-  box-shadow:
-    0 0 0 1px rgba(244, 239, 230, .09),
-    0 34px 70px -22px rgba(0, 0, 0, .9),
-    0 8px 24px -10px rgba(0, 0, 0, .7);
-  transition: transform .5s var(--ease-out), box-shadow .5s var(--ease-out);
-}
-
-.portfolio-corpo { min-width: 0; }
-
-.portfolio-meta {
-  margin: 0;
-  color: var(--luz-fraca);
-  font-size: .78rem;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-}
-
-.portfolio-corpo h3 {
-  margin: 14px 0 0;
-  color: var(--cream);
-  font-family: var(--serif-titulo);
+.placa-corpo h3 {
+  font-family: var(--fonte-display);
+  font-weight: 500;
   font-size: var(--t-bloco);
-  font-weight: 400;
-  line-height: 1.06;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
 }
 
-.portfolio-descricao {
-  margin: 18px 0 0;
-  max-width: 46ch;
-  color: var(--luz);
-  font-size: 1rem;
-  line-height: var(--lh-base);
+/* `:not(.mono)` não é enfeite. Medido no protótipo: `.placa-corpo p` é 0-1-1
+   e vence `.mono`, que é 0-1-0, então os rótulos de projeto saíam em
+   monoespaçada a 14px em vez dos 11,52px do teto. É a regra 9.24 do
+   protocolo, e ela só aparece lendo o valor computado elemento a elemento.
+   Regra de seção não deve mirar elemento nu. */
+.placa-corpo p:not(.mono) { color: var(--tinta-media); font-size: var(--c-apoio); }
+
+.entregas { display: flex; flex-wrap: wrap; gap: var(--e2); }
+
+.entregas li {
+  padding: 5px 11px;
+  border: 1px solid var(--fio-forte);
+  border-radius: var(--raio-pilula);
+  font-family: var(--fonte-mono);
+  font-size: var(--c-mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--tinta-media);
 }
 
-.portfolio-entregas {
+/* Prende o endereço ao pé da placa: sem isto ele flutuaria na altura em que
+   o texto de cada projeto terminou, que é altura diferente em cada um. */
+.placa-endereco { margin-top: auto; }
+
+/* ---------------------------------------------------------------------
+   ESTUDOS CONCEITUAIS
+   --------------------------------------------------------------------- */
+.estudos { margin-top: var(--e9); }
+
+/* O aviso de que empresa, texto e dado são fictícios. A barra de acento à
+   esquerda existe para ele não ler como legenda do trilho de cima: é
+   ressalva, e ressalva precisa ser vista antes dos cartões, não depois. */
+.aviso {
+  font-size: var(--c-apoio);
+  color: var(--tinta-media);
+  max-width: 74ch;
+  padding-left: var(--e4);
+  border-left: 2px solid var(--acento);
+  margin-bottom: var(--e6);
+}
+
+.estudos-lista {
+  display: grid;
+  gap: var(--e5);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* Herda `.cartao` da base e zera o recuo, porque aqui a capa encosta na
+   borda. `overflow: hidden` é o que faz o raio do cartão recortar a foto. */
+.estudo {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* A capa do estudo é menor e a moldura acompanha: 6px contra os 8px da
+   placa. Ela ganha fio embaixo, e não à direita, porque aqui a divisão entre
+   imagem e texto é horizontal.
+
+   AQUI A CAPA VOLTA A SER RECORTE, ao contrário da placa, e a razão é que os
+   três cartões vivem numa linha de grade: se cada caixa tomasse a altura da
+   própria capa, as três descrições começariam em alturas diferentes, e a
+   ondulação apareceria antes do conteúdo. A proporção é a faixa real da hero
+   (1600/758), a mesma em que as capas são capturadas: a Casa Conexão, a
+   Milênio e a Nívora entram sem perder um pixel. As outras duas são mais
+   altas e o recorte sai pela ALTURA, não pela largura, que é a perda barata:
+   sobra e falta em cima e embaixo não parte título no meio.
+   Por isso o recorte puxa para o terço de cima. É lá que mora o cabeçalho e o
+   título do site fotografado; centralizar joga fora justamente essa parte.
+
+   Era `min-height: 176px` no protótipo, que é o valor que esta proporção dá
+   na largura de hoje. Em proporção ele acompanha a coluna em vez de ficar
+   defasado na primeira mudança de grade. */
+.estudo .amostra {
+  flex: none;
+  aspect-ratio: 1600 / 758;
+  min-height: 0;
+  border-right: 0;
+  border-bottom: 1px solid var(--fio);
+}
+
+.estudo .amostra img {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 35%;
+}
+
+.estudo .amostra::after { box-shadow: inset 0 0 0 6px rgba(184, 103, 73, 0.22); }
+
+.estudo .amostra-nome { font-size: var(--t-item); }
+
+.estudo-corpo {
+  padding: var(--e5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--e3);
+  flex: 1;
+}
+
+/* Nome e selo na mesma linha, e o selo enrola para baixo quando o nome for
+   longo. É a linha que faz o "Conceitual" chegar ao olho junto do nome, e não
+   depois da descrição. */
+.estudo-alto { display: flex; flex-wrap: wrap; align-items: center; gap: var(--e3); }
+
+.estudo-corpo h3 {
+  font-family: var(--fonte-display);
+  font-weight: 500;
+  font-size: var(--t-item);
+  letter-spacing: -0.02em;
+}
+
+.estudo-corpo p:not(.mono) { font-size: var(--c-apoio); color: var(--tinta-media); }
+
+.estudo-endereco { margin-top: auto; }
+
+/* ---------------------------------------------------------------------
+   DEPOIMENTOS
+   Não existe no protótipo, e não por esquecimento: `depoimentos` em
+   `app/data.ts` está VAZIO de propósito, então não havia o que desenhar. O
+   bloco continua só aparecendo quando houver frase dita por gente de verdade,
+   e o motivo está escrito lá: frase entre aspas com nome embaixo é a pessoa
+   falando, e escrever no lugar dela é depoimento fabricado.
+   O vocabulário aqui é o da própria seção: trilho para abrir, serifada porque
+   é voz, e nada de peça nova.
+   --------------------------------------------------------------------- */
+.depoimentos { margin-top: var(--e9); }
+
+.depoimento { display: grid; gap: var(--e4); max-width: 62ch; }
+.depoimento + .depoimento { margin-top: var(--e6); }
+
+.depoimento blockquote {
+  font-family: var(--fonte-display);
+  font-size: var(--t-bloco);
+  font-style: italic;
+  font-weight: 500;
+  line-height: var(--lh-bloco);
+  letter-spacing: -0.02em;
+}
+
+.depoimento figcaption {
   display: flex;
   flex-wrap: wrap;
-  gap: 9px 20px;
-  margin: 22px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.portfolio-entregas li {
-  position: relative;
-  padding-left: 15px;
-  color: var(--luz-fraca);
-  font-size: .8rem;
-}
-
-/* Quadrado, e nunca traço: marcador em traço desenha um travessão por
-   item, e travessão é marca que este estúdio não usa. */
-.portfolio-entregas li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: .52em;
-  width: 5px;
-  height: 5px;
-  border-radius: 1px;
-  background: var(--ochre);
-}
-
-.portfolio-endereco {
-  display: inline-flex;
   align-items: baseline;
-  gap: 10px;
-  margin: 26px 0 0;
-  padding-bottom: 4px;
-  border-bottom: 1px solid rgba(220, 182, 104, .45);
-  color: var(--ochre-light);
-  font-size: .875rem;
-  transition: border-color .3s var(--ease-out);
+  gap: var(--e2) var(--e4);
+  font-size: var(--c-apoio);
+  color: var(--tinta-fraca);
 }
 
-.portfolio-placa:focus-visible {
-  outline: 2px solid var(--ochre-light);
-  outline-offset: 14px;
-}
+.depoimento figcaption strong { color: var(--tinta); font-weight: 600; }
 
-/* ---------- estudos conceituais ---------- */
-
-.portfolio-estudos {
-  margin-top: clamp(72px, 10vw, 132px);
-  padding: clamp(24px, 4vw, 44px);
-  background: var(--chao-alto);
-  border: 1px solid var(--fio);
-}
-
-.portfolio-estudos .portfolio-trilho { margin-top: 0; }
-
-.portfolio-aviso {
-  margin: 18px 0 0;
-  max-width: 64ch;
-  color: var(--luz);
-  font-size: .9rem;
-  line-height: 1.6;
-}
-
-.portfolio-estudos-lista {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(18px, 2.6vw, 32px);
-  margin: clamp(28px, 4vw, 42px) 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.portfolio-estudo a {
-  display: block;
-  color: inherit;
-  text-decoration: none;
-}
-
-.portfolio-estudo figure { margin: 0; }
-
-.portfolio-estudo img {
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
-  object-position: 50% 40%;
-  border: 1px solid var(--fio);
-  /* Rebaixadas de propósito: elas não competem com as placas acima, e a
-     diferença de brilho é mais uma camada dizendo que estas são estudo. */
-  filter: grayscale(.18) brightness(.88) contrast(1.02);
-  transition: filter .4s var(--ease-out);
-}
-
-.portfolio-estudo h3 {
-  margin: 16px 0 0;
-  color: var(--cream);
-  font-family: var(--serif-titulo);
-  font-size: var(--t-item);
-  font-weight: 400;
-  line-height: 1.12;
-}
-
-.portfolio-estudo .portfolio-meta {
-  display: block;
-  margin-top: 8px;
-  font-size: .72rem;
-}
-
-.portfolio-selo {
-  display: inline-block;
-  margin-top: 14px;
-  padding: 5px 10px;
-  border: 1px solid rgba(217, 144, 111, .45);
-  color: var(--brasa);
-  font-size: .69rem;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-}
-
-/* ---------- movimento ---------- */
-
-@media (hover: hover) and (pointer: fine) {
-  .portfolio-placa:hover .portfolio-figura img {
-    transform: translateY(-4px) scale(1.012);
-    box-shadow:
-      0 44px 90px -22px rgba(0, 0, 0, .95),
-      0 10px 28px -12px rgba(0, 0, 0, .75);
-  }
-  .portfolio-placa:hover .portfolio-endereco { border-color: var(--ochre-light); }
-  .portfolio-estudo a:hover img { filter: grayscale(0) brightness(1) contrast(1); }
-}
-
-.portfolio-estudo a:focus-visible {
-  outline: 2px solid var(--brasa);
-  outline-offset: 8px;
-}
-
-/* ---------- telas estreitas ---------- */
-
-@media (max-width: 880px) {
-  .portfolio-cabeca {
-    grid-template-columns: minmax(0, 1fr);
-    align-items: start;
-    gap: 28px;
-  }
-  .portfolio-cabeca h2 { max-width: none; }
-  .portfolio-resumo { max-width: none; padding-bottom: 0; }
-
-  .portfolio-placa,
-  .portfolio-placa--invertida {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 26px;
-  }
-  /* A inversão só existe onde há duas colunas. Em uma coluna ela
-     inverteria a ordem de leitura: imagem depois do texto num cartão e
-     antes no outro. */
-  .portfolio-placa--invertida .portfolio-figura,
-  .portfolio-placa--invertida .portfolio-corpo { order: 0; }
-
-  .portfolio-estudos-lista { grid-template-columns: minmax(0, 1fr); gap: 36px; }
-}
-
-@media (max-width: 420px) {
-  .portfolio-trilho { gap: 10px; }
-  .portfolio-trilho-nota { font-size: .84rem; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .portfolio-figura img,
-  .portfolio-figura::before,
-  .portfolio-endereco,
-  .portfolio-estudo img { transition: none; }
-  .portfolio-placa:hover .portfolio-figura img { transform: none; }
-}
-
-/* Chamada que fecha a seção do portfólio.
-   Fica no chão escuro da seção, então o botão é o creme, não o verde: verde
-   sobre #16120f mediria mal e o creme é o acento que a seção já usa. */
-.portfolio-chamada {
-  margin-top: clamp(3.5rem, 6vw, 5.5rem);
-  padding-top: clamp(2rem, 3vw, 3rem);
-  border-top: 1px solid var(--fio);
+/* ---------------------------------------------------------------------
+   A CHAMADA QUE FECHA A SEÇÃO
+   O lugar não é decorativo: aqui é onde a objeção "será que eles conseguem
+   fazer isso?" acabou de morrer, olhando cinco projetos. Sem ela, a próxima
+   coisa clicável no celular ficava a 7.839px, 9,3 telas de rolagem.
+   --------------------------------------------------------------------- */
+.chamada {
+  margin-top: var(--e8);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 1.6rem 2.5rem;
+  gap: var(--e5);
+  padding: var(--e6);
+  background: var(--nivel-2);
+  border: 1px solid var(--fio-acento);
+  border-radius: var(--raio-cartao);
 }
 
-.portfolio-chamada p {
-  max-width: 44ch;
-  margin: 0;
-  color: #cfc7bb;
-  font-size: var(--c-lead);
-  line-height: var(--lh-lead);
-}
-
-/* Depoimento no chão escuro do portfólio.
-   Só existe na tela quando `depoimentos` em data.ts tiver alguma coisa; até
-   lá o componente nem renderiza. Ver o comentário lá, que explica por quê. */
-.portfolio-vozes {
-  margin-top: clamp(3.5rem, 6vw, 5.5rem);
-  padding-top: clamp(2rem, 3vw, 3rem);
-  border-top: 1px solid var(--fio);
-}
-
-.portfolio-voz {
-  max-width: 62ch;
-  margin: 1.8rem 0 0;
-}
-
-.portfolio-voz blockquote {
-  margin: 0;
-  color: var(--cream);
-  font-family: var(--serif-titulo);
+/* Serifada porque é FRASE DE FECHO, a terceira das três coisas que a regra da
+   serifada reserva para a display. O `:not(.mono)` segue a 9.24. */
+.chamada p:not(.mono) {
+  font-family: var(--fonte-display);
   font-size: var(--t-bloco);
-  font-style: italic;
-  font-weight: 400;
-  line-height: var(--lh-titulo-miudo);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  max-width: 34ch;
 }
-
-.portfolio-voz figcaption {
-  margin-top: 1.4rem;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: .2rem 1rem;
-  font-size: var(--c-apoio);
-}
-
-.portfolio-voz figcaption strong { color: var(--ochre-light); font-weight: 700; }
-.portfolio-voz figcaption span { color: #cfc7bb; }
-.portfolio-voz figcaption a { color: #cfc7bb; text-decoration: underline; text-underline-offset: 4px; }

@@ -248,6 +248,43 @@ const es: Dicionario = {
       "La segunda capacidad, cuando el proyecto pida más de una",
     ],
     nota: "Cada ronda de ajustes debe llegar en una lista consolidada. Cualquier necesidad fuera del paquete se comunica y se presupuesta antes de empezar, nunca durante.",
+    /* A TABELA COMPARÁVEL, espelho de `comparacao` no português. Nada aqui
+       é dado comercial: o valor de cada célula continua saindo de
+       `pacotes[].items`, `launch` e `entrega`. O que mora nesta chave é só o
+       andaime da tabela.
+
+       `linhas` é POSICIONAL, na mesma ordem da constante `COMPARACAO` de
+       `app/section-oferta.tsx`. Aqui a posição É o significado: tirar,
+       acrescentar ou trocar de lugar um item desloca todos os rótulos
+       abaixo dele e cola o nome de uma dimensão nos valores de outra, em
+       silêncio e em um idioma só.
+
+       Os rótulos foram traduzidos curtos de propósito. Abaixo de 900px cada
+       um vira o cabeçalho de um cartão, e o espanhol cresce de 15 a 20%
+       sobre o português: "Tratamiento de los textos" já é o mais longo dos
+       dez e cabe em uma linha a 360px.
+
+       `incluido` e `naoIncluido` são as duas palavras que a marca gráfica
+       carrega em `.so-leitor`, porque o sinal de presente e o de ausente, sozinhos, não dizem nada a
+       quem ouve a página. Abaixo de 900px elas saem do `.so-leitor` e viram
+       texto visível ao lado do sinal. */
+    comparacao: {
+      legenda: "Comparación de los tres paquetes, línea a línea: inversión, plazo y lo que cambia en el alcance de uno a otro.",
+      linhas: [
+        "Inversión",
+        "Plazo habitual",
+        "Páginas o secciones",
+        "Tratamiento de los textos",
+        "Galería y contenido",
+        "Integraciones",
+        "Capacidad a elegir",
+        "SEO y datos estructurados",
+        "Rondas de ajustes",
+        "Primer mes de plan",
+      ],
+      incluido: "Incluido",
+      naoIncluido: "No incluido",
+    },
     pacotes: [
       {
         name: "Esencial",

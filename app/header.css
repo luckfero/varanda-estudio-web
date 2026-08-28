@@ -1,323 +1,216 @@
 /**
- * Cabecalho: marca, folha, navegacao e o botao de menu.
+ * 9. TOPO
+ *
+ * A barra do topo da identidade nova: marca, navegação numerada, seletor de
+ * idioma como três alvos e o botão de conversa em acento.
+ *
+ * Consome os tokens de `app/base.css` e não declara nenhum. Se faltar um
+ * valor aqui, ele pertence ao alicerce, não a este arquivo.
+ *
+ * A INVERSÃO POR SUPERFÍCIE SAIU DAQUI. Ela existia porque metade da página
+ * era clara e a outra metade escura, e a barra precisava trocar de tinta ao
+ * atravessar a emenda. Na identidade nova existe um chão só (`--chao`), então
+ * a máquina inteira deixou de ter função: saíram as nove regras de
+ * `.cabecalho-escuro` e o observador de rolagem que ligava a classe, em
+ * `site-header.tsx`. Nada substitui, porque não há mais o que inverter.
  */
 
-.site-header {
-  position: fixed;
-  z-index: 100;
+/* CHÃO OPACO, e é decisão medida, não gosto.
+   A barra do protótipo era `rgba(27,23,20,.82)` com desfoque, ou seja, o chão
+   dela era o que estivesse rolando por baixo. Abaixo de 760px vários botões
+   em acento ocupam a largura inteira e passam sob a barra: composto, o
+   cabeçalho vira #40301b, e a ÚNICA borda do botão de menu, o
+   `--fio-controle` #777168, mede 2,62:1, abaixo dos 3:1 que o critério
+   1.4.11 exige de borda de controle. Sobre a amostra da Nívora ela já caía a
+   3,04:1, na casa dos décimos.
+   Das duas saídas possíveis (chão opaco, ou subir a borda para vencer o pior
+   composto, o que exigiria algo em torno de #8f8880), a escolhida é a
+   primeira: o pior composto de uma barra translúcida depende do que o
+   visitante rolar, e um número que depende disso não é número. Com o
+   `--chao-alto` opaco a borda mede 3,69:1 sempre. O `backdrop-filter` saiu
+   junto, porque desfocar o que não se vê é só custo de composição.
+
+   `sticky`, e não `fixed`: assim a barra ocupa lugar no fluxo e a abertura
+   não precisa reservar altura para ela. É também o que dá bloco contêiner ao
+   painel de menu do celular, que é `position: absolute` com `top: 100%` no
+   responsivo. */
+.topo {
+  position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
-  /* Barra mais alta: 82px era justo para um selo de 44px mais o nome em duas
-     linhas, e o conteudo encostava nas bordas. Com 100px o topo ganha ar, que
-     e o que faz a barra parecer de estudio e nao de painel.
-     Quem depende deste numero e o `scroll-padding-top` do html, em base.css:
-     se ele ficar menor, o titulo da secao para embaixo da barra ao clicar
-     num link do menu. */
-  min-height: var(--altura-cabecalho);
-  padding: 1.15rem var(--recuo-topo);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: rgba(244, 239, 230, 0.91);
+  z-index: 100;
+  background: var(--chao-alto);
   border-bottom: 1px solid var(--fio);
-  backdrop-filter: blur(14px);
 }
 
-.brand {
+/* O recuo vertical da grade não vale aqui: quem manda na altura da barra é o
+   `--altura-cabecalho`, que o `scroll-padding-top` do `html` também lê. Se os
+   dois divergirem, o título da seção para embaixo da barra ao clicar num link
+   do menu. */
+.topo-interno {
+  display: flex;
+  align-items: center;
+  gap: var(--e5);
+  min-height: var(--altura-cabecalho);
+}
+.topo-interno.caixa { padding-block: 0; }
+
+/* `flex: 0 1 auto` com `min-width: 0`: a marca CEDE. Antes ela e o bloco de
+   ações eram os dois `flex: 0 0 auto`, ninguém encolhia, e o cabeçalho somava
+   367px de conteúdo rígido contra os 360 de boa parte dos Android. O
+   `overflow-x: hidden` do corpo cortava em silêncio, sem barra de rolagem e
+   sem aviso, e o que ficava serrilhado era justo o botão que abre o menu, que
+   naquela largura é o único caminho para a navegação.
+   A segunda metade da correção mora no responsivo, que esconde o nome escrito
+   abaixo de 400px e deixa só o símbolo. */
+.marca {
   display: inline-flex;
   align-items: center;
-  gap: 0.72rem;
-  min-width: max-content;
+  gap: var(--e3);
+  min-height: var(--alvo-toque);
+  margin-right: auto;
+  flex: 0 1 auto;
+  min-width: 0;
 }
-
-.brand > span:last-child {
-  display: flex;
-  flex-direction: column;
-  line-height: 1;
+.marca svg { width: 34px; height: 34px; flex: none; }
+.marca-nome { display: flex; flex-direction: column; line-height: 1.05; min-width: 0; }
+.marca-nome strong {
+  font-family: var(--fonte-display);
+  font-size: var(--t-item);
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
-
-/* Peso 500, no lugar do 600 original: tira o ar pesado sem deixar o nome
-   leve demais ao lado do selo verde. Tamanho e espacamento voltaram ao que
-   eram; tinham sido ajustados para compensar o olho menor da Playfair, que
-   nao esta mais aqui. */
-.brand strong {
-  color: var(--green);
-  font-family: var(--serif-titulo);
-  font-size: 1.45rem;
-  font-weight: 500;
-  letter-spacing: -0.03em;
-}
-
-/* Peso 500 e cinza quente, nao 750 em carvao.
-   Em 0,64rem com 0,18em de espacamento, peso 750 fecha o desenho das letras e
-   o rotulo compete com o nome da marca logo acima. O papel dele e o contrario:
-   qualificar o nome sem disputar com ele.
-
-   **O cinza era #6b6b60, e a conta que o aprovou estava errada.** Ela media
-   4,70:1 "sobre o creme do cabecalho", supondo o cabecalho opaco. Ele nao e:
-   o fundo e `rgba(244,239,230,.91)` com desfoque, entao 9% da secao que rola
-   por baixo atravessa. Quando passa a faixa em carvao, o fundo efetivo cai
-   para rgb(224,222,213) e o rotulo mede 3,98:1 — abaixo do minimo, e sem
-   nenhuma media query envolvida, so rolagem.
-
-   O `--ink-soft` mantem o tom quente e o peso visual, e o pior caso passa a
-   ser 4,94:1. Medido compondo o alfa contra as quatro superficies que passam
-   sob o cabecalho: creme 5,83 · terracota 5,15 · verde 4,99 · carvao 4,94.
-
-   Vale como regra: **cabecalho translucido nao tem uma cor de fundo, tem uma
-   faixa de cores.** A conta precisa ser feita contra a pior delas. */
-.brand small {
-  margin-top: 0.25rem;
-  color: var(--ink-soft);
-  font-size: 0.64rem;
-  font-weight: 500;
-  letter-spacing: 0.18em;
+.marca-nome small {
+  font-family: var(--fonte-mono);
+  font-size: 0.6rem;
+  letter-spacing: var(--ls-mono);
   text-transform: uppercase;
+  color: var(--tinta-fraca);
 }
 
 /**
- * A marca.
+ * O SÍMBOLO.
  *
- * As cores vem de variaveis com valor padrao para fundo claro. Uma secao
- * escura redefine `--marca-traco` e `--marca-sol` e a marca acompanha, sem
- * precisar de um segundo componente — a licao da secao 9.8 do protocolo:
- * quem decide a cor e a superficie, nao a peca.
+ * O protótipo inlina a geometria dentro do `<a class="marca">` e pinta por
+ * atributo. Aqui ela continua vindo de `ArcoMark`, em `app/icons.tsx`, que é
+ * a mesma de `public/favicon.svg` e de `public/marca/simbolo.svg`: uma quarta
+ * cópia colada à mão seria mais um lugar para as três divergirem. Então só a
+ * COR vem para o CSS, e são as cores do protótipo.
  *
- * A geometria e a mesma de `public/marca/simbolo.svg`. Mudou uma, muda a
- * outra.
+ * As regras ficam neste arquivo porque é aqui que elas moravam e porque a
+ * mesma marca aparece no rodapé e na política de privacidade. Se saírem daqui
+ * antes de `icons.tsx` ser reconciliado, `fill` e `stroke` caem para o valor
+ * inicial e o selo sai preto sobre o chão escuro.
  */
-.arco-mark {
-  display: inline-block;
-  width: 88px;
-  height: 88px;
-}
-
+/* A pastilha do selo: --nivel-2, que é exatamente o #262019 que o
+   `marca-D-selo.svg` usa. Era --verde, e o verde saiu da identidade. */
+.arco-mark-caixa { fill: var(--nivel-2); }
 .arco-mark-traco {
   fill: none;
-  stroke: var(--marca-traco, var(--green));
+  stroke: var(--tinta);
   stroke-width: 5;
   stroke-linecap: round;
 }
+.arco-mark-sol { fill: var(--acento); }
 
-.arco-mark-sol {
-  fill: var(--marca-sol, var(--ochre));
-}
+/* O traço fino é a versão selada, a única que o protótipo desenha: 2,6 no
+   `viewBox` de 64, que a 34px de caixa dá pouco mais de um pixel. O 5 acima
+   fica valendo para a versão aberta e grande, que ainda vive na apresentação:
+   afinada para 2,6 num desenho de 88px o arco vira fio de cabelo. */
+.arco-mark--small .arco-mark-traco { stroke-width: 2.6; }
 
-/* Versao de assinatura: disco verde com a marca em creme, como era antes.
-   O `padding` com `border-box` e o que da respiro dentro do disco; sem ele o
-   arco encosta na borda e o simbolo perde o ar de selo. */
-/* O quadrado, o respiro e os cantos vivem no `rect` do proprio SVG, e nao
-   mais em `background`, `padding` e `border-radius` do CSS. Ver o comentario
-   em `icons.tsx`: a forma passou a ser a mesma do favicon, e ter uma fonte de
-   verdade so evita que as duas voltem a divergir. */
-.arco-mark--small {
-  width: 44px;
-  height: 44px;
-  --marca-traco: var(--cream);
-  /* --ochre puro mede 2,37:1 sobre o verde; o claro chega a 3,19:1 e
-     continua sendo dourado. Mesma troca do resto do site. */
-  --marca-sol: var(--ochre-light);
-}
-
-.arco-mark-caixa {
-  fill: var(--green);
-}
-
-/* Verde da marca e peso 500, no lugar do marrom escuro em 650.
-   O menu passa a pertencer a paleta em vez de ser texto neutro, e sem o peso
-   alto ele para de competir com o nome da marca e com o botao verde do fim da
-   linha. Medido no navegador: 8,37:1 sobre o creme do cabecalho. */
-.nav {
-  display: flex;
+.menu { display: flex; align-items: center; gap: var(--e1); }
+.menu a {
+  display: inline-flex;
   align-items: center;
-  gap: clamp(1.1rem, 2.4vw, 2.4rem);
-  color: var(--green);
-  font-size: 0.8rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
+  gap: var(--e2);
+  min-height: var(--alvo-toque);
+  padding-inline: var(--e3);
+  border-radius: var(--raio-pilula);
+  font-size: var(--c-apoio);
+  font-weight: 550;
+  color: var(--tinta-media);
+  transition: color var(--dur-fast) var(--ease-out),
+              background var(--dur-fast) var(--ease-out);
+}
+.menu a:hover { color: var(--tinta); background: rgba(244, 239, 230, 0.06); }
+
+/* A numeração da navegação, que é a mesma numeração dos rótulos de seção
+   chegando na barra. Decorativa, e por isso `aria-hidden` na marcação: o
+   leitor de tela não precisa ouvir "zero quatro" antes de "Portfólio". */
+.menu-num {
+  font-family: var(--fonte-mono);
+  font-size: 0.6rem;
+  letter-spacing: var(--ls-mono);
+  color: var(--acento);
 }
 
-/* O botao continua com peso proprio: e o unico item de acao da barra, e sem
-   isso ele viraria mais um link verde no meio dos outros. */
-.nav-cta { font-weight: 650; }
+/* A pílula dentro do menu existe SÓ para o painel do celular, onde a de
+   `.topo-acoes` está escondida. No desktop as duas apareceriam lado a lado.
+   Quem a revela é o responsivo, dentro de `.topo.aberto`. */
+.menu > .botao { display: none; }
 
-.nav > a:not(.nav-cta) {
+.topo-acoes { display: flex; align-items: center; gap: var(--e3); flex: 0 0 auto; }
+
+.idiomas { display: flex; align-items: center; gap: 2px; }
+
+/* 44x44 em cada alvo, porque são três alvos colados e dedo em tela de celular
+   erra. E o idioma atual não se distingue só pela cor: ele carrega
+   `aria-current` e ganha fundo próprio. */
+.idiomas a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--alvo-toque);
+  min-height: var(--alvo-toque);
+  border-radius: var(--raio-pilula);
+  font-family: var(--fonte-mono);
+  font-size: var(--c-mono);
+  letter-spacing: 0.08em;
+  color: var(--tinta-media);
+  transition: color var(--dur-fast) var(--ease-out),
+              background var(--dur-fast) var(--ease-out);
+}
+.idiomas a:hover { color: var(--tinta); background: rgba(244, 239, 230, 0.06); }
+.idiomas a[aria-current="page"] { color: var(--acento); background: rgba(232, 163, 60, 0.12); }
+
+/* Escondido no desktop e revelado pelo responsivo a 920px. A borda é
+   `--fio-controle` porque ela é o único contorno do alvo, ou seja, é sinal e
+   não enfeite: é dela que vem a exigência de chão opaco lá em cima. */
+.abrir-menu {
+  display: none;
+  width: var(--alvo-toque);
+  height: var(--alvo-toque);
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--fio-controle);
+  border-radius: var(--raio-pilula);
+  cursor: pointer;
+}
+.abrir-menu i {
+  display: block;
+  width: 17px;
+  height: 1.5px;
+  background: var(--tinta);
   position: relative;
-  padding: 0.6rem 0;
+  transition: background var(--dur-fast) var(--ease-out);
 }
-
-.nav > a:not(.nav-cta)::after {
+.abrir-menu i::before,
+.abrir-menu i::after {
   content: "";
   position: absolute;
   left: 0;
-  right: 0;
-  bottom: 0.25rem;
-  height: 1px;
-  background: var(--terracotta);
-  /* A barra existe na largura final e e revelada por escala. Antes ela
-     crescia animando `right`, que recalcula layout a cada quadro do hover
-     na navegacao principal. */
-  transform: scaleX(0);
-  transform-origin: left;
+  width: 17px;
+  height: 1.5px;
+  background: var(--tinta);
   transition: transform var(--dur-base) var(--ease-out);
 }
+.abrir-menu i::before { top: -6px; }
+.abrir-menu i::after { top: 6px; }
 
-/* Toque dispara :hover e o deixa preso: movimento de mouse so aqui. */
-@media (hover: hover) and (pointer: fine) {
-  .nav > a:not(.nav-cta):hover::after {
-    transform: scaleX(1);
-  }
-}
-
-/* Altura compacta: ele divide a linha com o seletor de idioma, que tem 44px
-   de alvo de toque. Com a altura cheia de 52px os dois saíam desalinhados. */
-.nav-cta {
-  min-height: var(--btn-altura-compacto);
-  display: inline-flex;
-  align-items: center;
-  padding: 0 1.2rem;
-  background: var(--green);
-  color: white;
-  transition: background var(--dur-fast) var(--ease-out),
-    transform var(--dur-fast) var(--ease-out);
-}
-
-/* Toque dispara :hover e o deixa preso: movimento de mouse so aqui. */
-@media (hover: hover) and (pointer: fine) {
-  .nav-cta:hover { transform: translateY(-2px); }
-}
-
-.nav-cta:hover {
-  background: var(--green-dark);
-}
-
-/**
- * Seletor de idioma.
- *
- * Fica fora do `.nav > a` para nao herdar o sublinhado animado dos itens de
- * menu: aqui o alvo e pequeno e o traco por baixo confundiria com o item
- * ativo. O idioma atual e um `<span>`, nao um link — nao ha para onde ir.
- *
- * O alvo tem 44px de altura mesmo com a fonte pequena. Abaixo disso, dedo em
- * tela de celular erra, e sao tres alvos colados.
- */
-.nav-idiomas {
-  display: flex;
-  align-items: center;
-  gap: 0.15rem;
-  margin-left: 0.25rem;
-  font-size: 0.68rem;
-  font-weight: 750;
-  letter-spacing: 0.08em;
-}
-
-.nav-idiomas > span,
-.nav-idiomas > a {
-  min-width: 34px;
-  min-height: 44px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 2px;
-}
-
-/* --ink-muted da 7,00:1 sobre o creme do cabecalho; o atual usa o verde
-   escuro, que da 9,84:1 e nao depende de cor para se distinguir — tem
-   tambem o fundo e o `aria-current`. */
-.nav-idiomas > span {
-  background: rgba(33, 77, 59, 0.08);
-  color: var(--green-dark);
-}
-
-.nav-idiomas > a {
-  color: var(--ink-muted);
-  transition: color 0.2s ease, background 0.2s ease;
-}
-
-.nav-idiomas > a:hover {
-  background: rgba(33, 77, 59, 0.06);
-  color: var(--green-dark);
-}
-
-.menu-toggle {
-  display: none;
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--line);
-  background: transparent;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.menu-toggle span {
-  width: 20px;
-  height: 1px;
-  background: var(--charcoal);
-}
-
-/* ------------------------------------------------------------------
-   A barra sobre seção escura
-
-   Quem liga a classe é `site-header.tsx`, lendo a superfície que está
-   embaixo da barra. Aqui mora só a aparência.
-
-   A transição é curta de propósito: a barra atravessa a emenda em poucos
-   quadros, e uma transição longa deixa a cor errada visível justamente no
-   momento em que o olho está olhando para a divisa.
-   ------------------------------------------------------------------ */
-
-.site-header {
-  transition: background-color .25s var(--ease-out), color .25s var(--ease-out);
-}
-
-.cabecalho-escuro .site-header {
-  background: rgba(22, 18, 15, .91);
-  color: var(--cream);
-}
-
-/* Os SELETORES desta parte estavam errados desde que a inversão nasceu, em
-   25/08/2026, e o defeito passou por duas verificações porque as duas
-   olhavam a coisa errada: uma conferia se a CLASSE entrava, e a outra media
-   contraste com o painel de preview, onde transição de CSS não anda e o
-   `getComputedStyle` devolve o valor de partida para sempre.
-
-   Não existe `.nav-link` nem `.lang-link` no HTML. A navegação é `.nav > a` e
-   o seletor de idioma é `.nav-idiomas > span` e `> a`. Medido no Chrome de
-   verdade com a classe forçada: os cinco itens do menu davam 1,57:1 e o
-   seletor de idioma, 1,14:1 — texto escuro sobre a barra escura, ilegível
-   por toda a faixa do portfólio, do contato e do rodapé. */
-.cabecalho-escuro .site-header .brand strong,
-.cabecalho-escuro .site-header .brand span,
-/* O `small` não herda do `span`: ele tem cor própria (`--ink-soft`, que é de
-   texto sobre claro). */
-.cabecalho-escuro .site-header .brand small,
-.cabecalho-escuro .site-header .nav > a:not(.nav-cta) {
-  color: var(--cream);
-}
-
-/* O fio do sublinhado some sobre o escuro: o terracota puro dá 2,4:1 contra
-   #16120f, e ele é a única marca de "onde o ponteiro está". */
-.cabecalho-escuro .site-header .nav > a:not(.nav-cta)::after {
-  background: var(--ochre);
-}
-
-.cabecalho-escuro .site-header .nav-idiomas > a {
-  color: #cfc7bb;
-}
-
-.cabecalho-escuro .site-header .nav-idiomas > a:hover {
-  background: rgba(244, 239, 230, .10);
-  color: var(--cream);
-}
-
-.cabecalho-escuro .site-header .nav-idiomas > span {
-  background: rgba(244, 239, 230, .14);
-  color: var(--cream);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .site-header { transition-duration: .01ms; }
-}
+/* O X é derivado do `aria-expanded`, e não de uma classe própria: assim o que
+   o leitor de tela anuncia e o que o olho vê saem da mesma fonte, e não há
+   como um ficar verdadeiro com o outro falso. */
+.abrir-menu[aria-expanded="true"] i { background: transparent; }
+.abrir-menu[aria-expanded="true"] i::before { transform: translateY(6px) rotate(45deg); }
+.abrir-menu[aria-expanded="true"] i::after { transform: translateY(-6px) rotate(-45deg); }

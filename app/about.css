@@ -1,63 +1,120 @@
 /**
- * Sobre, extras e perguntas frequentes.
+ * SOBRE, EXTRAS e DÚVIDAS. Blocos 17, 18 e 19 da identidade nova.
+ *
+ * Nenhum token nasce aqui: todos vêm de `app/base.css`, que é o contrato.
+ * Se faltar um valor, ele pertence lá, e não a este arquivo.
+ *
+ * O que saiu daqui em 27/08/2026, e não é esquecimento:
+ *
+ *   - As três seções trocaram de gramática inteira. `.about`, `.about-art`,
+ *     `.about-copy`, `.signature`, `.extras`, `.extras-heading`,
+ *     `.extras-list`, `.faq`, `.faq-heading`, `.faq-list` e
+ *     `.faq-fechamento` deixaram de existir. A separação por COR DE FAIXA
+ *     (creme, areia, creme) foi junto: agora quem separa seção de seção é o
+ *     fio da grade, e o chão é um só na página inteira.
+ *   - O bloco `.contact*`, que morava neste arquivo por acúmulo e não por
+ *     assunto. Ele é o bloco 20 do protótipo e tem dono próprio,
+ *     `app/contact.css`.
  */
 
-.about {
+/* ---------------------------------------------------------------------
+   17. SOBRE
+   A planta do arco já era desenho técnico, e por isso é exatamente onde as
+   duas direções se encontram sem atrito: linha fina, cota e nó de um lado,
+   massa no verde da marca e sol em acento do outro.
+   --------------------------------------------------------------------- */
+.sobre-grade {
   display: grid;
-  grid-template-columns: .85fr 1.15fr;
-  gap: 8vw;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: clamp(2.5rem, 5vw, 4.5rem);
   align-items: center;
-  /* Um creme só no lado claro desde 25/08/2026. O --paper e o --cream estão
-     a 1,08:1 um do outro: eles não separam seção nenhuma, e a página tinha
-     três emendas onde a seção seguinte simplesmente não começava. O --paper
-     continua vivo em CARTÃO, onde 1,08:1 é justamente o efeito sutil que se
-     quer. */
-  background: var(--paper);
 }
 
-/* ==========================================================================
-   A PLANTA DO ARCO                                  (26/08/2026)
-   ==========================================================================
-   Substituiu o arco verde com o "V" gigante, o círculo ocre na quina e o ramo
-   de folhas feito de `<i>` vazios. A marcação está em `section-sobre.tsx`, com
-   o porquê do desenho; aqui mora só a aparência e o movimento.
+.sobre-texto { display: grid; gap: var(--e4); }
 
-   O `min-height` saiu junto. Ele era 590px, medido quando os títulos ao lado
-   eram 50% maiores, e depois virou 430px; agora quem define a altura é a
-   proporção do próprio desenho, então ele não pode mais ficar defasado de uma
-   mudança de tipografia. É a mesma armadilha que a rodada anterior registrou:
-   altura mínima calibrada para um tamanho de fonte vira buraco quando a fonte
-   muda. */
-.about-art {
-  position: relative;
-  /* Nunca maior que o desenho: acima disso o traço de 1,1px começa a parecer
-     grosso e a peça perde o ar de prancha. */
-  max-width: 560px;
-  /* SEM `margin-inline: auto`.
-     Margem automática num item de grade com `justify-self: stretch`, que é o
-     padrão, faz a margem engolir o espaço livre e a caixa encolher até o
-     conteúdo. Medido: a coluna tem 495px e o desenho saía com 300px, que é a
-     largura intrínseca padrão de um `svg` sem atributo de tamanho. O desenho
-     ficava perdido no meio da coluna e a hachura virava sujeira. */
+/* `:not(.mono):not(.rotulo)` porque as duas trazem cor própria e são
+   etiqueta, não corpo. A regra 9.24 é sobre seção atropelando COMPONENTE, e
+   é por isso que as exceções estão escritas: sem elas, `.sobre-texto p`
+   venceria `.rotulo` por especificidade e a etiqueta perderia a cor. */
+.sobre-texto p:not(.mono):not(.rotulo) { color: var(--tinta-media); max-width: 56ch; }
+
+/* O painel embaixo do desenho. Ele é o que faz a planta ler como PRANCHA
+   sobre a mesa, e não como desenho solto no escuro: o `--nivel-1` sobe um
+   degrau em relação ao chão e a borda fecha a folha. */
+.sobre-arte {
+  border: 1px solid var(--fio);
+  border-radius: var(--raio-painel);
+  background: var(--nivel-1);
+  padding: var(--e5);
 }
 
-.planta {
-  display: block;
-  width: 100%;
-  height: auto;
+/* SEM `margin-inline: auto`, e isto já quebrou uma vez.
+   Margem automática num item de grade com `justify-self: stretch`, que é o
+   padrão, faz a margem engolir o espaço livre e a caixa encolher até o
+   conteúdo. Medido em 26/08/2026: a coluna tinha 495px e o desenho saía com
+   300px, que é a largura intrínseca padrão de um `svg` sem atributo de
+   tamanho. E não há `min-height` em lugar nenhum: quem define a altura é a
+   proporção do próprio SVG, então ela não pode ficar defasada de uma
+   mudança de tipografia, que foi o defeito da versão anterior. */
+.planta { width: 100%; height: auto; }
+
+/* As duas cotas escritas do desenho. Elas escreviam a família e o corpo à
+   mão, fora dos tokens: no dia em que a IBM Plex Mono de verdade entrar,
+   todas as etiquetas da página trocam de fonte e as duas cotas ficam para
+   trás. Regra de elemento nu, e aqui ela é aceitável porque dentro deste SVG
+   não existe classe de componente nenhuma para atropelar (regra 9.24). */
+.planta text {
+  font-family: var(--fonte-mono);
+  font-size: var(--c-mono);
+  fill: var(--tinta-fraca);
+  letter-spacing: 0.12em;
+}
+
+/* A assinatura da seção. O nome do estúdio é NOME PRÓPRIO, então é serifada,
+   que é a regra da voz declarada em base.css; o lugar é etiqueta, e etiqueta
+   é mono.
+   `align-items: baseline` porque os dois têm corpos muito diferentes: pela
+   caixa, eles saem com a base desencontrada. */
+.assinatura {
+  margin-top: var(--e4);
+  padding-top: var(--e4);
+  border-top: 1px solid var(--fio);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--e3) var(--e5);
+}
+
+.assinatura strong {
+  font-family: var(--fonte-display);
+  font-size: var(--t-item);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--tinta);
+}
+
+.assinatura span {
+  font-family: var(--fonte-mono);
+  font-size: var(--c-mono);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--tinta-fraca);
 }
 
 /* --------------------------------------------------------------------------
-   O movimento: a prancha sendo desenhada, e depois limpa
+   O MOVIMENTO: a prancha sendo desenhada, e depois limpa
 
-   TUDO daqui para baixo está sob `.about-art.is-visible`, que é a classe que o
-   revelar por rolagem põe quando o bloco entra na tela. É a regra 9.26 do
-   protocolo. Aqui ela importa mais que na hero, porque esta seção fica na
-   metade de baixo da página e nunca é a primeira coisa que o visitante vê.
+   A sequência é a de 26/08/2026, intacta. O que mudou nesta rodada foi o
+   nome do gancho, que acompanhou a marcação: era `.about-art.is-visible` e
+   agora é `.sobre-arte.is-visible`. Os quadros-chave, as durações e a escada
+   de atrasos não foram tocados.
 
-   A narrativa, pedida em 26/08/2026: **a conta aparece primeiro, como se o
-   arco estivesse sendo calculado, e some no fim.** Então a ordem é a de quem
-   projeta:
+   TUDO daqui para baixo está sob `.is-visible`, que é a classe que o revelar
+   por rolagem põe quando o bloco entra na tela. É a regra 9.26 do protocolo.
+   Aqui ela importa mais que na abertura, porque esta seção fica na metade de
+   baixo da página e nunca é a primeira coisa que o visitante vê.
+
+   A narrativa é a de quem projeta:
 
      1. o papel quadriculado
      2. A CONTA: o círculo gerador, os eixos, o raio, os nós e as cotas
@@ -65,8 +122,8 @@
      4. os dois contornos do arco, traçados
      5. a alvenaria enchendo de verde
      6. a luz e o sol
-     7. a conta SOMINDO, que é o que acontece com linha de construção quando o
-        desenho vira obra
+     7. a conta SUMINDO, que é o que acontece com linha de construção quando
+        o desenho vira obra
 
    O estado final, e é ele que fica em pé 99% do tempo, é o arco verde cheio
    com o sol na linha do chão sobre o quadriculado. Por isso `.planta-calculo`
@@ -111,32 +168,32 @@
   stroke-dashoffset: 0;
 }
 
-.about-art.is-visible .planta-grade,
-.about-art.is-visible .planta-calculo,
-.about-art.is-visible .planta-poche,
-.about-art.is-visible .planta-brilho,
-.about-art.is-visible .planta-sol,
-.about-art.is-visible .planta-traco {
+.sobre-arte.is-visible .planta-grade,
+.sobre-arte.is-visible .planta-calculo,
+.sobre-arte.is-visible .planta-poche,
+.sobre-arte.is-visible .planta-brilho,
+.sobre-arte.is-visible .planta-sol,
+.sobre-arte.is-visible .planta-traco {
   animation-timing-function: var(--ease-out);
   animation-fill-mode: both;
 }
 
-.about-art.is-visible .planta-grade { animation-name: planta-surge; animation-duration: 700ms; }
+.sobre-arte.is-visible .planta-grade { animation-name: planta-surge; animation-duration: 700ms; }
 
 /* A conta: entra cedo e sai depois de o arco estar de pé. As durações são
    diferentes de propósito, e os atrasos também: o que precisa coincidir é o
    FIM das duas, para elas sumirem juntas. 40 + 2200 = 140 + 2100 = 2240ms. */
-.about-art.is-visible .planta-constru { animation-name: planta-calcula; animation-duration: 2200ms; animation-delay: 40ms; }
-.about-art.is-visible .planta-cota    { animation-name: planta-calcula; animation-duration: 2100ms; animation-delay: 140ms; }
-.about-art.is-visible .planta-constru--sol { animation-name: planta-calcula; animation-duration: 2100ms; animation-delay: 140ms; }
+.sobre-arte.is-visible .planta-constru { animation-name: planta-calcula; animation-duration: 2200ms; animation-delay: 40ms; }
+.sobre-arte.is-visible .planta-cota    { animation-name: planta-calcula; animation-duration: 2100ms; animation-delay: 140ms; }
+.sobre-arte.is-visible .planta-constru--sol { animation-name: planta-calcula; animation-duration: 2100ms; animation-delay: 140ms; }
 
-.about-art.is-visible .planta-chao          { animation-name: planta-pinta; animation-duration: 520ms; animation-delay: 300ms; }
-.about-art.is-visible .planta-traco--fora   { animation-name: planta-pinta; animation-duration: 780ms; animation-delay: 460ms; }
-.about-art.is-visible .planta-traco--dentro { animation-name: planta-pinta; animation-duration: 780ms; animation-delay: 580ms; }
+.sobre-arte.is-visible .planta-chao          { animation-name: planta-pinta; animation-duration: 520ms; animation-delay: 300ms; }
+.sobre-arte.is-visible .planta-traco--fora   { animation-name: planta-pinta; animation-duration: 780ms; animation-delay: 460ms; }
+.sobre-arte.is-visible .planta-traco--dentro { animation-name: planta-pinta; animation-duration: 780ms; animation-delay: 580ms; }
 
-.about-art.is-visible .planta-poche  { animation-name: planta-surge; animation-duration: 520ms; animation-delay: 1300ms; }
-.about-art.is-visible .planta-brilho { animation-name: planta-surge; animation-duration: 700ms; animation-delay: 1420ms; }
-.about-art.is-visible .planta-sol    { animation-name: planta-sobe;  animation-duration: 700ms; animation-delay: 1500ms; }
+.sobre-arte.is-visible .planta-poche  { animation-name: planta-surge; animation-duration: 520ms; animation-delay: 1300ms; }
+.sobre-arte.is-visible .planta-brilho { animation-name: planta-surge; animation-duration: 700ms; animation-delay: 1420ms; }
+.sobre-arte.is-visible .planta-sol    { animation-name: planta-sobe;  animation-duration: 700ms; animation-delay: 1500ms; }
 
 /* Reduz, não zera: o surgimento continua, porque é ele que conta que a prancha
    está sendo desenhada. O que sai é o traço correndo, que é o deslocamento, e
@@ -145,373 +202,164 @@
    A conta continua aparecendo e sumindo, porque isso é NARRATIVA e não
    enfeite: ela só faz o ciclo inteiro mais rápido. */
 @media (prefers-reduced-motion: reduce) {
-  .about-art.is-visible .planta-grade,
-  .about-art.is-visible .planta-poche,
-  .about-art.is-visible .planta-brilho,
-  .about-art.is-visible .planta-sol,
-  .about-art.is-visible .planta-traco {
+  .sobre-arte.is-visible .planta-grade,
+  .sobre-arte.is-visible .planta-poche,
+  .sobre-arte.is-visible .planta-brilho,
+  .sobre-arte.is-visible .planta-sol,
+  .sobre-arte.is-visible .planta-traco {
     animation-name: planta-surge !important;
     animation-duration: 420ms !important;
     animation-fill-mode: both;
   }
-  .about-art.is-visible .planta-constru,
-  .about-art.is-visible .planta-cota,
-  .about-art.is-visible .planta-constru--sol {
+  .sobre-arte.is-visible .planta-constru,
+  .sobre-arte.is-visible .planta-cota,
+  .sobre-arte.is-visible .planta-constru--sol {
     animation-name: planta-calcula !important;
     animation-duration: 900ms !important;
     animation-fill-mode: both;
   }
-  /* O `!important` NÃO é preguiça, e tirar ele quebra isto de novo.
-     `responsive.css` tem, dentro desta mesma consulta, um seletor universal
-     com `animation-duration: .01ms !important`. Ele existe para conter
-     animação que ninguém escreveu, e está certo em existir; o problema é que
-     ele também atropela as duas sequências que foram escritas justamente para
-     RESPEITAR a preferência.
+  /* O `!important` NÃO é preguiça, e ele fica.
+     A folha antiga tinha, dentro desta mesma consulta, um seletor universal
+     com `animation-duration: .01ms !important` em `responsive.css`. Medido no
+     Chrome antes desta linha: a duração computava 1e-05s enquanto os atrasos
+     sobreviviam intactos, e com `animation-fill-mode: both` cada peça ficava
+     em opacidade 0 até a vez dela e então aparecia de estalo. Ou seja, quem
+     pediu MENOS movimento recebia uma sequência de estalos, que é pior que
+     não animar e é o oposto da regra 9.20.
 
-     Medido no Chrome com `prefers-reduced-motion: reduce` forçado, antes desta
-     linha: a duração computava 1e-05s enquanto os atrasos sobreviviam intactos.
-     Com `animation-fill-mode: both`, cada peça ficava em opacidade 0 até a vez
-     dela e então aparecia de estalo. Ou seja: quem pediu MENOS movimento
-     recebia uma sequência de estalos em vez de um surgimento suave, que é pior
-     que não animar e é o oposto da regra 9.20.
+     O bloco 24 da identidade nova não traz mais o seletor universal, então em
+     tese isto virou cinto e suspensório. Fica escrito assim mesmo até o
+     `responsive.css` estar portado e MEDIDO com a consulta emulada: a
+     alternativa é tirar a proteção antes de saber se ela ainda é necessária,
+     e o sintoma dela faltando é silencioso. */
 
-     Ler a folha dava a impressão contrária. Só o valor computado mostrou. */
-
-  .about-art.is-visible .planta-constru       { animation-delay: 0ms; }
-  .about-art.is-visible .planta-cota,
-  .about-art.is-visible .planta-constru--sol  { animation-delay: 60ms; }
-  .about-art.is-visible .planta-chao          { animation-delay: 0ms; }
-  .about-art.is-visible .planta-traco--fora   { animation-delay: 100ms; }
-  .about-art.is-visible .planta-traco--dentro { animation-delay: 140ms; }
-  .about-art.is-visible .planta-poche         { animation-delay: 420ms; }
-  .about-art.is-visible .planta-brilho        { animation-delay: 500ms; }
-  .about-art.is-visible .planta-sol           { animation-delay: 560ms; }
+  .sobre-arte.is-visible .planta-constru       { animation-delay: 0ms; }
+  .sobre-arte.is-visible .planta-cota,
+  .sobre-arte.is-visible .planta-constru--sol  { animation-delay: 60ms; }
+  .sobre-arte.is-visible .planta-chao          { animation-delay: 0ms; }
+  .sobre-arte.is-visible .planta-traco--fora   { animation-delay: 100ms; }
+  .sobre-arte.is-visible .planta-traco--dentro { animation-delay: 140ms; }
+  .sobre-arte.is-visible .planta-poche         { animation-delay: 420ms; }
+  .sobre-arte.is-visible .planta-brilho        { animation-delay: 500ms; }
+  .sobre-arte.is-visible .planta-sol           { animation-delay: 560ms; }
 }
 
-.about-copy h2 {
-  max-width: 780px;
-  margin: 0;
-  color: var(--green-dark);
-  font-family: var(--serif-titulo);
-  font-size: var(--t-secao);
-  font-weight: 400;
-  letter-spacing: var(--ls-titulo);
-  line-height: var(--lh-titulo);
-}
+/* ---------------------------------------------------------------------
+   18. EXTRAS
+   --------------------------------------------------------------------- */
+.extras-lista { display: grid; border-top: 1px solid var(--fio); }
 
-.about-copy .eyebrow { margin-top: 2.4rem; }
-
-.about-copy > p:not(.eyebrow) {
-  max-width: 680px;
-  color: var(--ink-soft);
-  line-height: var(--lh-base);
-}
-
-.about-copy h2 + p {
-  margin-top: 2.35rem;
-}
-
-/* Dois parágrafos seguidos nasciam com margem zero entre si e liam como um
-   bloco só. O primeiro tem a margem que o separa do título; do segundo em
-   diante, a margem é o que os separa entre si. */
-.about-copy > p:not(.eyebrow) + p {
-  margin-top: 1.15rem;
-}
-
-.signature {
-  margin-top: 2.2rem;
-  padding-top: 1.4rem;
-  border-top: 1px solid var(--line);
-  color: var(--green);
-  font-family: var(--serif-titulo);
-  font-size: 1.55rem;
-  font-style: italic;
-}
-
-.signature span {
-  margin-left: .5rem;
-  /* #7d756e media 4,24:1; --ink-muted da 7,00:1. */
-  color: var(--ink-muted);
-  font-family: var(--font-sans), sans-serif;
-  font-size: .67rem;
-  font-style: normal;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-
-/* Areia quente. Era #ded5c8, que lia como cinza ao lado de uma paleta toda
-   quente — 25% de saturacao contra os 46% deste.
-   A claridade foi mantida de proposito (0,67 para 0,72): o ritmo da pagina
-   alterna claro e escuro nas secoes 3, 7 e 11, e escurecer esta faixa
-   colocaria dois escuros quase colados. O que incomodava era a
-   dessaturacao, nao a claridade.
-   Contraste do texto miudo desta secao sobe de 5,14:1 para 5,51:1. */
-/* Areia, entre duas claras. Ver o ritmo em base.css. */
-.extras {
-  background: var(--areia);
-  --acento: var(--terracotta-deep);
-  /* Era #e9dcc4, hex escrito à mão, fora da paleta e usado uma vez só na
-     página inteira. Ele ficava a 1,28:1 do vizinho de cima e 1,18:1 do de
-     baixo, ou seja, não separava nada e ainda era mais uma cor para a página
-     carregar.
-
-     **Em 25/08/2026 a decisão foi revista pelo dono**: "mude a cor de fundo de
-     algumas dessas seções para não ficar o site inteiro com o fundo branco".
-     Ele estava certo, e a medição concorda: eram SETE seções seguidas no mesmo
-     chão. A separação por título e respiro só funciona quando as seções são
-     poucas. Agora a areia é token da paleta, com contraste medido, e não um
-     hex solto. */
-}
-
-.extras-heading {
-  display: grid;
-  grid-template-columns: 1.4fr .6fr;
-  gap: 4rem;
-  align-items: end;
-}
-
-.extras-heading h2 {
-  margin: 1.4rem 0 0;
-  color: var(--green-dark);
-  font-family: var(--serif-titulo);
-  font-size: var(--t-secao);
-  font-weight: 400;
-  letter-spacing: var(--ls-titulo);
-  line-height: var(--lh-titulo);
-}
-
-.extras-heading > p {
-  max-width: 430px;
-  margin: 0;
-  color: var(--ink-soft);
-  line-height: 1.7;
-}
-
-.extras-list {
-  margin-top: 3.8rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border-top: 1px solid var(--fio);
-}
-
-.extras-list div {
-  padding: 1.3rem .5rem;
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  border-bottom: 1px solid var(--fio);
-  color: #4f4943;
-  font-size: .84rem;
-}
-
-.extras-list div:nth-child(odd) { padding-right: 2rem; }
-.extras-list div:nth-child(even) { padding-left: 2rem; border-left: 1px solid var(--fio); }
-.extras-list strong { color: var(--green); font-weight: 750; text-align: right; }
-.extras-note { margin: 2.1rem 0 0; color: var(--ink-muted); font-size: var(--c-apoio); line-height: var(--lh-apoio); }
-
-.faq {
-  background: var(--paper);
-  display: grid;
-  grid-template-columns: .72fr 1.28fr;
-  gap: 7vw;
-}
-
-.faq-heading {
-  position: sticky;
-  top: 120px;
-  align-self: start;
-}
-
-.faq-heading h2 { color: var(--green-dark); }
-
-.faq-list details {
-  border-top: 1px solid var(--line);
-}
-
-.faq-list details:last-child { border-bottom: 1px solid var(--line); }
-
-.faq-list summary {
-  position: relative;
-  min-height: 88px;
-  padding: 1.5rem 3rem 1.5rem 0;
-  display: flex;
-  align-items: center;
-  gap: 1.3rem;
-  color: var(--green-dark);
-  font-family: var(--serif-titulo);
-  font-size: var(--t-item);
-  cursor: pointer;
-  list-style: none;
-  line-height: var(--lh-titulo-miudo);
-}
-
-.faq-list summary::-webkit-details-marker { display: none; }
-.faq-list summary span { color: var(--terracotta-dark); font-family: var(--font-sans), sans-serif; font-size: .65rem; font-weight: 750; }
-
-.faq-list summary i,
-.faq-list summary i::after {
-  position: absolute;
-  right: .3rem;
-  width: 16px;
-  height: 1px;
-  background: var(--green);
-  content: "";
-  transition: transform .2s ease;
-}
-
-.faq-list summary i::after { right: 0; transform: rotate(90deg); }
-.faq-list details[open] summary i::after { transform: rotate(0); }
-
-.faq-list details > p {
-  max-width: 650px;
-  margin: -.4rem 3.5rem 1.8rem 2.7rem;
-  color: var(--ink-soft);
-  font-size: .9rem;
-  line-height: var(--lh-base);
-}
-
-.contact {
-  display: grid;
-  grid-template-columns: .85fr 1.15fr;
-  gap: 8vw;
-  /* Mesmo chão do portfólio desde 25/08/2026. A página passa a ter dois
-     âncoras escuros iguais, um na prova e outro no pedido, com o corpo claro
-     entre eles. Antes eram quatro escuros diferentes e nenhum repetido, então
-     nada marcava o que é um momento escuro neste site. */
-  background: var(--escuro);
-  color: var(--paper);
-}
-
-.contact-copy {
-  align-self: start;
-}
-
-.contact-copy h2 em { color: var(--ochre); font-weight: 400; }
-.contact-copy > p { max-width: 520px; margin-top: 2.35rem; color: #c9c1b5; line-height: var(--lh-base); }
-
-.contact-direct {
-  margin-top: 3rem;
-  border-top: 1px solid var(--fio);
-}
-
-.contact-direct a {
-  padding: 1.2rem 0;
-  display: flex;
-  flex-direction: column;
-  gap: .4rem;
-  border-bottom: 1px solid var(--fio);
-}
-
-.contact-direct span { color: var(--ochre); font-size: .64rem; font-weight: 750; letter-spacing: .13em; text-transform: uppercase; }
-.contact-direct strong { font-size: .94rem; font-weight: 600; }
-
-.contact-form {
-  padding: clamp(1.8rem, 4vw, 3.8rem);
-  background: var(--cream);
-  color: var(--charcoal);
-}
-
-.field-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-/* `block`, e não `grid`.
-   Com `display: grid` o "opcional" ao lado do rótulo virava uma LINHA da
-   grade e caía embaixo dele, o que empurrava o campo 17px para baixo — e como
-   só três dos seis campos têm a marca, as duas colunas do formulário
-   deixavam de alinhar. Em bloco, ele flui na mesma linha do texto. */
-.contact-form label:not(.consent) {
-  display: block;
-  margin-bottom: 1.1rem;
-  color: var(--green-dark);
-  font-size: .72rem;
-  font-weight: 750;
-}
-
-/* "opcional" ao lado do rótulo.
-   Até 25/08/2026 os sete campos eram obrigatórios e todos carregavam um `*`.
-   Sete perguntas obrigatórias para abrir conversa é pedágio, não formulário:
-   ficaram nome, WhatsApp e a mensagem. Marcar o que é OPCIONAL, e não o que é
-   obrigatório, é o que faz o formulário parecer curto na primeira olhada. */
-.contact-form label:not(.consent) input,
-.contact-form label:not(.consent) select,
-.contact-form label:not(.consent) textarea {
-  /* O respiro que o `gap` da grade dava. */
-  margin-top: .55rem;
-}
-
-.contact-form label:not(.consent) i {
-  margin-left: .4rem;
-  color: var(--ink-muted);
-  font-size: .68rem;
-  font-style: normal;
-  font-weight: 500;
-  letter-spacing: 0;
-  text-transform: lowercase;
-}
-
-.contact-form input:not([type="checkbox"]),
-.contact-form select,
-.contact-form textarea {
-  width: 100%;
-  border: 0;
-  border-bottom: 1px solid var(--fio);
-  border-radius: 0;
-  background: transparent;
-  color: var(--charcoal);
-  padding: .8rem .15rem;
-  font-size: .88rem;
-  outline: none;
-  transition: border-color .2s ease;
-}
-
-.contact-form input:not([type="checkbox"]):focus,
-.contact-form select:focus,
-.contact-form textarea:focus { border-color: var(--terracotta); }
-.contact-form textarea { resize: vertical; min-height: 120px; }
-.contact-form input::placeholder, .contact-form textarea::placeholder { color: #948c84; }
-
-/* Fechamento das dúvidas frequentes.
-   As oito perguntas terminavam sem nada para clicar, que é exatamente onde a
-   última objeção acabou de ser respondida. */
-/* Fica na COLUNA DAS PERGUNTAS, e não atravessando as duas.
-   Medido em 1440px: com `grid-column: 1 / -1` o título da seção e este bloco
-   saíam impressos um sobre o outro, ilegíveis os dois. A causa é que o
-   `.faq-heading` é `position: sticky`, e **no Chrome a moldura que prende um
-   item de grade grudado é o CONTAINER da grade, não a área dele**. Enquanto a
-   seção tinha uma linha só, container e área coincidiam e o defeito não
-   existia; a linha nova esticou o container e o título passou a poder
-   escorregar para dentro dela.
-
-   Pôr o bloco na coluna 2 resolve sem mexer no `sticky`, e é onde ele deveria
-   estar de qualquer jeito: ele fecha a lista de perguntas, e é ali que o olho
-   de quem acabou de ler a oitava está. */
-.faq-fechamento {
-  grid-column: 2;
-  margin-top: clamp(2rem, 3.5vw, 3rem);
-  padding-top: clamp(2rem, 3vw, 2.8rem);
-  border-top: 1px solid var(--line);
+.extras-lista li {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
-  gap: 1.4rem 2.5rem;
+  gap: var(--e3) var(--e5);
+  padding: var(--e5) 0;
+  border-bottom: 1px solid var(--fio);
 }
 
-.faq-fechamento h3 {
-  margin: 0;
-  font-family: var(--serif-titulo);
+/* Sem o "01" a "05": era o terceiro conjunto sem ordem nenhuma que carregava
+   número. Ficaram numerados só a seção, a etapa do processo e a dúvida, que
+   têm ordem de verdade. E `min-width: 0` porque o nome é o item que encolhe:
+   sem ele, um rótulo longo em espanhol empurra o preço para fora da linha. */
+.extra-nome {
+  display: flex;
+  align-items: baseline;
+  gap: var(--e4);
+  font-size: var(--t-item);
+  font-weight: 550;
+  letter-spacing: -0.01em;
+  min-width: 0;
+}
+
+.extra-preco { font-size: var(--c-lead); color: var(--acento); }
+
+/* ---------------------------------------------------------------------
+   19. DÚVIDAS
+   `details` nativo: abre sem JavaScript, funciona no teclado e no leitor de
+   tela, e continua aberto quando a página é impressa.
+   --------------------------------------------------------------------- */
+.duvidas-grade {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: start;
+}
+
+.duvidas-lista { display: grid; border-top: 1px solid var(--fio); }
+.duvidas-lista details { border-bottom: 1px solid var(--fio); }
+
+/* 68px de altura mínima, bem acima dos 44px de alvo de toque: a linha inteira
+   é clicável, e não só a palavra. */
+.duvidas-lista summary {
+  display: flex; align-items: center; gap: var(--e4);
+  min-height: 68px; padding: var(--e4) 0;
+  cursor: pointer; list-style: none;
+  font-size: var(--t-item); font-weight: 550; letter-spacing: -0.01em;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+/* `list-style: none` sozinho não tira o triângulo no Safari e no Chrome
+   antigo, e `display: flex` também não basta em toda versão. */
+.duvidas-lista summary::-webkit-details-marker { display: none; }
+
+.duvidas-lista summary:hover { color: var(--acento); }
+
+.duvidas-lista summary b {
+  flex: none; width: 1.7rem;
+  font-family: var(--fonte-mono);
+  font-size: var(--c-mono); font-weight: 500;
+  letter-spacing: var(--ls-mono);
+  color: var(--acento);
+}
+
+.duvidas-lista summary i { margin-left: auto; flex: none; width: 24px; height: 24px; position: relative; }
+
+/* O mais e o menos, e não uma seta que gira: o mais diz "tem mais coisa aqui"
+   sem depender de o visitante saber para que lado a seta apontava antes. */
+.duvidas-lista summary i::before, .duvidas-lista summary i::after {
+  content: ""; position: absolute; top: 50%; left: 0; width: 100%; height: 1.5px;
+  background: var(--acento);
+  transform: translateY(-50%);
+  transition: transform var(--dur-base) var(--ease-out), opacity var(--dur-fast) var(--ease-out);
+}
+
+.duvidas-lista summary i::after { transform: translateY(-50%) rotate(90deg); }
+.duvidas-lista details[open] summary i::after { transform: translateY(-50%) rotate(0deg); opacity: 0; }
+
+/* O recuo alinha a resposta com a pergunta, e não com o número: 1,7rem da
+   coluna do número mais o vão entre eles. `:not(.mono)` guarda a regra de
+   seção contra classe de componente (regra 9.24). */
+.duvidas-lista details p:not(.mono) {
+  padding: 0 0 var(--e5) calc(1.7rem + var(--e4));
+  color: var(--tinta-media);
+  font-size: var(--c-apoio);
+  max-width: 66ch;
+}
+
+/* O fecho.
+   As oito dúvidas terminavam sem nada para clicar, que é exatamente onde a
+   última objeção acabou de ser respondida. Ele fica dentro da COLUNA DAS
+   PERGUNTAS, e não atravessando as duas: é ali que está o olho de quem acabou
+   de ler a oitava. */
+.duvidas-fecho {
+  margin-top: var(--e7);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--e5);
+  padding: var(--e6);
+  background: var(--nivel-1); border: 1px solid var(--fio); border-radius: var(--raio-cartao);
+}
+
+/* Pergunta de interface: grotesca. Não é nome próprio nem frase de fecho, que
+   são os dois casos em que a serifada manda (ver a regra da voz em
+   base.css). */
+.duvidas-fecho h3 {
+  font-family: var(--fonte-interface);
+  font-weight: 600;
   font-size: var(--t-bloco);
-  font-weight: 400;
-  line-height: var(--lh-titulo);
+  line-height: var(--lh-bloco);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--e2);
 }
 
-.faq-fechamento p {
-  max-width: 52ch;
-  margin: .7rem 0 0;
-  color: var(--ink-soft);
-  font-size: var(--c-base);
-  line-height: var(--lh-base);
-}
+.duvidas-fecho p:not(.mono) { font-size: var(--c-apoio); color: var(--tinta-media); max-width: 48ch; }
