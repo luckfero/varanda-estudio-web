@@ -74,18 +74,26 @@
      que podem divergir. */
   --fonte-display: "Playfair Display Variable", "Playfair Display", Georgia, "Times New Roman", serif;
   --fonte-interface: var(--font-sans, "Geist"), "Geist Variable", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  /* PENDÊNCIA CONHECIDA: a IBM Plex Mono não está instalada no projeto (não
-     há `@fontsource-variable/ibm-plex-mono` no package.json e não há
-     `@font-face` dela em `fonts.css`). Hoje a monoespaçada cai para a do
-     sistema, que é Consolas ou Cascadia Mono no Windows e SF Mono no Mac.
-     Isso importa mais aqui do que pareceria: o mono carrega o rótulo de
-     cada seção, o selo, o endereço de projeto e o `.pular`, e letra que
-     muda de desenho e de largura conforme a máquina do visitante não é
-     etiqueta, é sorte. É o mesmo defeito do glifo de visto fora de todas as
-     fontes, achado em 26/08/2026.
-     A pilha fica escrita como está para funcionar no dia em que o pacote
-     entrar, e o pacote precisa vir por npm, nunca por CDN (regra 9.1). */
+  /* A monoespaçada carrega o rótulo de cada seção, o selo, o endereço de
+     projeto, os números do menu e o `.pular`. Ela ficou DECLARADA e NÃO
+     INSTALADA desde o porte da identidade: as etiquetas caíam na mono do
+     sistema, Cascadia no Windows e SF Mono no Mac, ou seja, mudavam de
+     desenho e de largura conforme a máquina do visitante. Instalada por npm
+     em 28/08/2026 (regra 9.1, nunca CDN), nos dois pesos que a página aplica
+     de fato: 400 e 500, medidos no navegador e não lidos na folha. */
   --fonte-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", "Segoe UI Mono", "SF Mono", Menlo, Consolas, monospace;
+
+  /* A QUARTA FAMÍLIA, e ela é da MARCA, não do texto.
+     Escolhida pelo Lucca em 28/08/2026 entre doze monoespaçadas montadas no
+     cabeçalho de verdade e comparadas em captura. Ela desenha a palavra
+     "Varanda" no cabeçalho e no rodapé, e mais nada.
+     Por que token próprio e não `--fonte-mono`: a etiqueta "ESTÚDIO WEB" logo
+     abaixo do nome também é monoespaçada, e se as duas fossem a MESMA fonte a
+     marca viraria dois tamanhos do mesmo tecido. Sendo famílias diferentes, o
+     nome se separa da etiqueta sem precisar de peso nem de corpo maior.
+     Quem usar isto para texto corrido está usando errado: só tem o peso 600
+     importado, porque a marca é uma palavra em um tamanho. */
+  --fonte-marca: "Kode Mono", "IBM Plex Mono", ui-monospace, "Cascadia Mono", Menlo, Consolas, monospace;
 
   /* Os quatro degraus de título da casa. O ajuste está na entrelinha e no
      aperto, e não no corpo: as referências não são maiores que nós, são

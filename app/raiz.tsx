@@ -27,6 +27,31 @@ import "@fontsource-variable/playfair-display/wght.css";
  * Custo: 38,8 KB no subconjunto latino, que é o único que os três idiomas
  * baixam. */
 import "@fontsource-variable/playfair-display/wght-italic.css";
+/* Kode Mono, a tipografia do LOGOTIPO, escolhida em 28/08/2026.
+ *
+ * Ela desenha o nome "Varanda" no cabeçalho e no rodapé, e nada mais: quem
+ * manda no resto continua sendo `--fonte-display` (Playfair, nos títulos),
+ * `--fonte-interface` (Geist, no corpo) e `--fonte-mono` (IBM Plex, nas
+ * etiquetas). Por isso ela tem token próprio, `--fonte-marca`.
+ *
+ * Um peso só, o 600. A marca é uma palavra em um tamanho, e importar 400 ou
+ * 700 seria mandar arquivo que nenhum elemento pede. Os outros três pesos
+ * existem na família e entram no dia em que houver uso escrito para eles.
+ *
+ * OFL-1.1, livre inclusive para trabalho de cliente. */
+import "@fontsource/kode-mono/600.css";
+/* IBM Plex Mono, que `--fonte-mono` declara desde o porte da identidade e que
+ * NUNCA foi instalada.
+ *
+ * Até esta linha, as 175 etiquetas do site caíam na monoespacada do sistema:
+ * Cascadia no Windows, SF Mono no Mac, outra coisa no Android. Ou seja, a
+ * etiqueta mudava de desenho conforme a máquina do visitante, que é o mesmo
+ * defeito do glifo de visto achado em 26/08.
+ *
+ * Dois pesos porque são dois os que a página aplica de fato, medidos no
+ * navegador com as dúvidas abertas: 400 em 97 elementos e 500 em 73. */
+import "@fontsource/ibm-plex-mono/400.css";
+import "@fontsource/ibm-plex-mono/500.css";
 import "./fonts.css";
 /* A ordem destes imports E a cascata. Foram partidos em intervalos
    contiguos do arquivo original justamente para que ela permanecesse

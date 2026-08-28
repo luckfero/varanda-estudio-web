@@ -73,11 +73,24 @@
 }
 .marca svg { width: 34px; height: 34px; flex: none; }
 .marca-nome { display: flex; flex-direction: column; line-height: 1.05; min-width: 0; }
+/* O NOME DA MARCA.
+ *
+ * Kode Mono desde 28/08/2026, escolhida entre doze monoespaçadas montadas
+ * neste mesmo cabeçalho e comparadas em captura, no tamanho real. Era
+ * Playfair, a serifada dos títulos, e o nome do estúdio saía igual a um h2.
+ *
+ * `letter-spacing: 0`, e não os -0.02em de antes: aquele aperto foi medido
+ * para uma serifada, que tem sobra lateral para ceder. Monoespaçada já nasce
+ * com o avanço fixo, e apertar encosta as letras umas nas outras.
+ *
+ * O `font-weight: 600` é o único peso importado da família (ver `raiz.tsx`).
+ * Pedir 400 ou 700 aqui faz o navegador FABRICAR o peso, e negrito sintético
+ * em logotipo é engrossar contorno, não trocar de desenho. */
 .marca-nome strong {
-  font-family: var(--fonte-display);
+  font-family: var(--fonte-marca);
   font-size: var(--t-item);
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
 }
 .marca-nome small {
   font-family: var(--fonte-mono);
@@ -137,7 +150,12 @@
 /* A numeração da navegação, que é a mesma numeração dos rótulos de seção
    chegando na barra. Decorativa, e por isso `aria-hidden` na marcação: o
    leitor de tela não precisa ouvir "zero quatro" antes de "Portfólio". */
+/* Peso declarado de propósito: ele herdava 550 do `.menu a`, que é um valor
+   da Geist variável. A IBM Plex Mono é estática, tem 400 e 500 importados, e
+   550 resolve para 500 hoje. Se alguém importar o 600 um dia, 550 passaria a
+   resolver para 600 e os números do menu engrossariam sozinhos. */
 .menu-num {
+  font-weight: 500;
   font-family: var(--fonte-mono);
   font-size: 0.6rem;
   letter-spacing: var(--ls-mono);
