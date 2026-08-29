@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Varanda Estúdio Web">
+  <title>Varanda Estúdio Web</title>
+  <!-- O selo invertido: a pastilha clara com a marca escura, para quando o
+       lugar em que a foto de perfil cai ja e escuro e um selo escuro sumiria
+       na moldura.
+
+       A pastilha e o creme da paleta e nao branco puro: sobre creme o
+       contorno #14110e mede 16,43:1, e o branco puro so daria estalo
+       sem acrescentar leitura.
+
+       O sol sai na tinta escura, e nao em ambar, pela mesma razao do
+       `assinatura.svg`: o ambar #e8a33c mede 1,88:1 sobre este creme e
+       reprovaria os 3:1 de elemento grafico. Quem separa o sol do arco aqui e
+       a forma. -->
+  <rect width="64" height="64" rx="14" fill="#f4efe6"/>
+  <path d="M18 36V26a8 8 0 0 1 8-8h12a8 8 0 0 1 8 8v10" fill="none" stroke="#14110e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M25 46.5a7 7 0 0 1 14 0Z" fill="#14110e"/>
+  <path d="M14 48h36" fill="none" stroke="#14110e" stroke-width="5" stroke-linecap="round"/>
+</svg>
