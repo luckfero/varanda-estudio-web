@@ -44,8 +44,8 @@ export function CarouselArrow({ direction }: { direction: "previous" | "next" })
  * escuro sem um segundo componente. É a lição da seção 9.8 do protocolo:
  * quem decide a cor é a superfície, não a peça.
  */
-export function ArcoMark({ small = false }: { small?: boolean }) {
-  /* A MARCA NOVA, aprovada em 27/08/2026: a soleira.
+export function ArcoMark() {
+  /* A MARCA: a soleira, na versão ABERTA, sem pastilha.
    *
    * Três peças, e só três. Uma cobertura de ombros arredondados cujas pernas
    * descem e PARAM antes do chão. Um piso reto e mais largo que ela. E entre
@@ -57,9 +57,21 @@ export function ArcoMark({ small = false }: { small?: boolean }) {
    * for "arrumar" o desenho encostando as pernas no piso apaga o motivo dele
    * existir.
    *
+   * ANTES EXISTIAM DUAS VERSÕES AQUI, e a do site era a selada: pastilha de
+   * 64 com raio 14, vão de 24 em vez de 32, traço 2,6 em vez de 5. Em 34px
+   * aquele traço saía com 1,38px contra os 2,66px deste, ou seja, o símbolo
+   * do cabeçalho era quase metade do peso do símbolo dos arquivos de marca.
+   * Eram dois desenhos, não dois tamanhos, e o Lucca reparou olhando o PNG ao
+   * lado do site em 28/08/2026. Ficou um só.
+   *
+   * A pastilha não morreu: ela vive em `public/marca/selo.svg`, que é a peça
+   * para foto de perfil, onde o recorte redondo da rede social exige fundo
+   * próprio. Aqui, sobre o chão do site, ela era moldura sem função.
+   *
    * A geometria é a de `public/marca/simbolo.svg`, unidade por unidade, para
-   * o selo do topo e o arquivo que vai para proposta e assinatura serem o
-   * mesmo desenho. Duas cópias divergem na primeira mudança.
+   * o símbolo do topo e o arquivo que vai para proposta e assinatura serem o
+   * mesmo desenho. Duas cópias divergem na primeira mudança, que é exatamente
+   * o que aconteceu.
    *
    * O piso tem vão de 40 (x 12 a 52) e não 44: com 44 a ponta arredondada
    * ficava a 30,30 do centro, e o recorte circular de perfil de rede social
@@ -68,24 +80,6 @@ export function ArcoMark({ small = false }: { small?: boolean }) {
    *
    * A meia-lua é meia de propósito: círculo inteiro fecha o vão e a marca lê
    * como cadeado em 16px. */
-  if (small) {
-    return (
-      <svg
-        className="arco-mark arco-mark--small"
-        viewBox="0 0 64 64"
-        aria-hidden="true"
-        focusable="false"
-      >
-        <rect className="arco-mark-caixa" width="64" height="64" rx="14" />
-        <path className="arco-mark-traco" d="M20 37V28a7 7 0 0 1 7-7h10a7 7 0 0 1 7 7v9" />
-        <path className="arco-mark-sol" d="M26 45.5a6 6 0 0 1 12 0Z" />
-        <path className="arco-mark-traco" d="M16 47h32" />
-      </svg>
-    );
-  }
-
-  /* Versão aberta, sem pastilha: usada grande, onde o traço fino é legível.
-     Aqui vale a geometria cheia do símbolo, de 64 unidades. */
   return (
     <svg className="arco-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
       <path className="arco-mark-traco" d="M16 35V24a9 9 0 0 1 9-9h14a9 9 0 0 1 9 9v11" />

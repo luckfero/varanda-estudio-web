@@ -114,9 +114,11 @@
  * antes de `icons.tsx` ser reconciliado, `fill` e `stroke` caem para o valor
  * inicial e o selo sai preto sobre o chão escuro.
  */
-/* A pastilha do selo: --nivel-2, que é exatamente o #262019 que o
-   `marca-D-selo.svg` usa. Era --verde, e o verde saiu da identidade. */
-.arco-mark-caixa { fill: var(--nivel-2); }
+/* A pastilha saiu daqui em 28/08/2026, junto com a versão selada do
+   componente: sobre o chão do site ela era moldura sem função, e fazia o
+   símbolo do cabeçalho ser um desenho diferente do dos arquivos de marca.
+   Ela continua existindo em `public/marca/selo.svg`, para foto de perfil,
+   onde o recorte redondo da rede social exige fundo próprio. */
 .arco-mark-traco {
   fill: none;
   stroke: var(--tinta);
@@ -129,7 +131,6 @@
    `viewBox` de 64, que a 34px de caixa dá pouco mais de um pixel. O 5 acima
    fica valendo para a versão aberta e grande, que ainda vive na apresentação:
    afinada para 2,6 num desenho de 88px o arco vira fio de cabelo. */
-.arco-mark--small .arco-mark-traco { stroke-width: 2.6; }
 
 .menu { display: flex; align-items: center; gap: var(--e1); }
 .menu a {
@@ -146,21 +147,6 @@
               background var(--dur-fast) var(--ease-out);
 }
 .menu a:hover { color: var(--tinta); background: rgba(244, 239, 230, 0.06); }
-
-/* A numeração da navegação, que é a mesma numeração dos rótulos de seção
-   chegando na barra. Decorativa, e por isso `aria-hidden` na marcação: o
-   leitor de tela não precisa ouvir "zero quatro" antes de "Portfólio". */
-/* Peso declarado de propósito: ele herdava 550 do `.menu a`, que é um valor
-   da Geist variável. A IBM Plex Mono é estática, tem 400 e 500 importados, e
-   550 resolve para 500 hoje. Se alguém importar o 600 um dia, 550 passaria a
-   resolver para 600 e os números do menu engrossariam sozinhos. */
-.menu-num {
-  font-weight: 500;
-  font-family: var(--fonte-mono);
-  font-size: 0.6rem;
-  letter-spacing: var(--ls-mono);
-  color: var(--acento);
-}
 
 /* A pílula dentro do menu existe SÓ para o painel do celular, onde a de
    `.topo-acoes` está escondida. No desktop as duas apareceriam lado a lado.

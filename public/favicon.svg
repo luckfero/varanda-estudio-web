@@ -1,18 +1,33 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Varanda Estúdio Web">
   <title>Varanda Estúdio Web</title>
-  <!-- A soleira, aprovada em 27/08/2026. Tres pecas: a cobertura que nao
-       encosta, o piso mais largo que ela, e a luz entre os dois.
+  <!-- A soleira ABERTA, sem pastilha: a mesma geometria de
+       `marca/simbolo.svg`, unidade por unidade, e a mesma que o cabeçalho do
+       site desenha. Antes daqui a aba usava uma versão própria, com pastilha,
+       vão de 24 e traço 6, ou seja, um terceiro desenho. Trocado em
+       28/08/2026, a pedido, para a aba mostrar a mesma marca dos arquivos.
 
-       Cor LITERAL, e nao currentColor: favicon e documento isolado, nenhuma
-       folha do site alcanca ele, e currentColor cairia em preto sobre a
-       pastilha escura. A mesma armadilha vale para o SVG usado como img ou
-       como background-image.
+       A COR SEGUE O TEMA DA ABA, e é por isso que existe uma folha aqui
+       dentro. Sem pastilha não há fundo próprio: creme sobre uma barra de
+       abas clara sumiria, e tinta escura sobre uma barra escura sumiria
+       igual. A consulta de mídia resolve, e é exatamente o par de arquivos
+       que a pasta de entrega já tem, um para fundo claro e um para escuro.
 
-       Traco de 6 em vez de 5 e vao mais aberto que o simbolo: em 16px, uma
-       unidade do viewBox vale 0,25 pixel, entao o desenho de aba precisa de
-       mais peso e mais folga que o de tela. -->
-  <rect width="64" height="64" rx="14" fill="#262019"/>
-  <path d="M20 36V27a8 8 0 0 1 8-8h8a8 8 0 0 1 8 8v9" fill="none" stroke="#f4efe6" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M25 45.5a7 7 0 0 1 14 0Z" fill="#e8a33c"/>
-  <path d="M15 47h34" fill="none" stroke="#f4efe6" stroke-width="6" stroke-linecap="round"/>
+       O sol só é âmbar no tema escuro. Sobre branco o âmbar mede 2,16:1 e
+       reprova os 3:1 de elemento gráfico, então no tema claro ele sai na
+       mesma tinta do contorno e quem separa o sol do arco é a forma. É a
+       mesma regra do `marca/assinatura.svg`.
+
+       Cor literal e não `currentColor`: favicon é documento isolado, nenhuma
+       folha do site alcança ele, e `currentColor` cairia em preto. -->
+  <style>
+    .traco { fill: none; stroke: #14110e; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+    .sol { fill: #14110e; }
+    @media (prefers-color-scheme: dark) {
+      .traco { stroke: #f4efe6; }
+      .sol { fill: #e8a33c; }
+    }
+  </style>
+  <path class="traco" d="M16 35V24a9 9 0 0 1 9-9h14a9 9 0 0 1 9 9v11"/>
+  <path class="traco" d="M12 49h40"/>
+  <path class="sol" d="M24 46.5a8 8 0 0 1 16 0Z"/>
 </svg>

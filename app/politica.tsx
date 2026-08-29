@@ -33,7 +33,7 @@ export default function Politica({ locale }: { locale: Locale }) {
             aparece em nenhuma varredura de CSS, porque o defeito é a
             AUSÊNCIA de regra. */}
         <Link className="marca" href={t.path === "" ? "/" : t.path} aria-label={t.privacidade.voltarAria}>
-          <ArcoMark small />
+          <ArcoMark />
           <span className="marca-nome"><strong>Varanda</strong><small>Estúdio Web</small></span>
         </Link>
         <article>

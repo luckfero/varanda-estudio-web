@@ -183,12 +183,12 @@ export function metadadosDe(locale: Locale, pagina: Pagina): Metadata {
        desenho mudar, regerar os quatro juntos e aí sim subir o `?v=`. */
     icons: {
       icon: [
-        { url: "/favicon.svg?v=3", type: "image/svg+xml" },
-        { url: "/favicon-96.png?v=3", type: "image/png", sizes: "96x96" },
-        { url: "/favicon-48.png?v=3", type: "image/png", sizes: "48x48" },
+        { url: "/favicon.svg?v=4", type: "image/svg+xml" },
+        { url: "/favicon-96.png?v=4", type: "image/png", sizes: "96x96" },
+        { url: "/favicon-48.png?v=4", type: "image/png", sizes: "48x48" },
       ],
-      shortcut: "/favicon.ico?v=3",
-      apple: "/apple-touch-icon.png?v=3",
+      shortcut: "/favicon.ico?v=4",
+      apple: "/apple-touch-icon.png?v=4",
     },
   };
 }

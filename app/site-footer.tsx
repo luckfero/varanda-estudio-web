@@ -45,7 +45,7 @@ export default function SiteFooter({
           aria-label={t.rodape.voltarInicio}
           onClick={(event) => handleNavClick(event, "#inicio")}
         >
-          <ArcoMark small />
+          <ArcoMark />
           <span className="marca-nome"><strong>Varanda</strong><small>Estúdio Web</small></span>
         </a>
         <p>{t.rodape.frase}</p>

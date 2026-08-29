@@ -51,10 +51,14 @@
    marca no tamanho natural em toda a faixa.
 
    `min-width` no piso, e não só `max-width`: sem ele estas regras entram
-   também no painel do celular, onde o número é o marcador de cada item da
-   lista e há largura de sobra. */
+   também no painel do celular, onde há largura de sobra.
+
+   O `.menu-num { display: none }` saiu daqui em 28/08/2026 junto com os
+   números da barra, que deixaram de existir na marcação. A conta de largura
+   acima foi feita COM eles, então ela agora é folgada, não apertada: sem os
+   números o menu cabe com sobra nesta faixa. As três regras que sobraram
+   continuam valendo e só apertam o vão. */
 @media (min-width: 961px) and (max-width: 1160px) {
-  .menu-num { display: none; }
   .menu { gap: 0; }
   .menu a { gap: 0; padding-inline: var(--e2); }
   .topo-acoes { gap: var(--e2); }

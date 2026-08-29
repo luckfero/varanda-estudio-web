@@ -89,36 +89,31 @@ export default function SiteHeader({
           aria-label={`Varanda Estúdio Web, ${nav.inicio}`}
           onClick={(evento) => handleNavClick(evento, "#inicio")}
         >
-          <ArcoMark small />
+          <ArcoMark />
           <span className="marca-nome">
             <strong>Varanda</strong>
             <small>Estúdio Web</small>
           </span>
         </a>
 
-        {/* Os números são a numeração das seções chegando na barra: dado de
-            navegação visual, não conteúdo, e por isso ficam na marcação e não
-            no dicionário. `aria-hidden` para o leitor de tela ouvir só o nome
-            do destino. */}
+        {/* Os itens não são numerados. A numeração das seções continua
+            existindo na página, na sobrancelha de cada uma; na barra ela era
+            repetição, e repetição em item de menu compete com a palavra que
+            carrega o destino. Saiu a pedido do Lucca em 28/08/2026. */}
         <nav className="menu" id="menu-principal" aria-label={nav.navegacao} ref={menuRef}>
           <a href="#servicos" onClick={(evento) => handleNavClick(evento, "#servicos")}>
-            <span className="menu-num" aria-hidden="true">03</span>{" "}
             {nav.servicos}
           </a>
           <a href="#portfolio" onClick={(evento) => handleNavClick(evento, "#portfolio")}>
-            <span className="menu-num" aria-hidden="true">04</span>{" "}
             {nav.portfolio}
           </a>
           <a href="#processo" onClick={(evento) => handleNavClick(evento, "#processo")}>
-            <span className="menu-num" aria-hidden="true">05</span>{" "}
             {nav.processo}
           </a>
           <a href="#investimento" onClick={(evento) => handleNavClick(evento, "#investimento")}>
-            <span className="menu-num" aria-hidden="true">06</span>{" "}
             {nav.investimento}
           </a>
           <a href="#sobre" onClick={(evento) => handleNavClick(evento, "#sobre")}>
-            <span className="menu-num" aria-hidden="true">08</span>{" "}
             {nav.sobre}
           </a>
 
