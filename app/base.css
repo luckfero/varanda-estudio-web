@@ -534,6 +534,25 @@ h3, .titulo-bloco {
 }
 .selo--neutro { background: rgba(244, 239, 230, 0.08); color: var(--tinta-fraca); }
 
+/* O SELO DE PROJETO CONCEITUAL, que é um AVISO e não um destaque.
+   Ele existia só na marcação: o porte deu a ele a classe `.selo--conceitual`
+   e nenhuma regra, então ele caía no `.selo` base e saía no ÂMBAR DA MARCA,
+   exatamente o mesmo tratamento do selo que marca trabalho publicado de
+   verdade, três cartões acima. Pintar de cor de destaque a etiqueta que diz
+   "esta empresa NÃO EXISTE" é dizer o contrário do que ela escreve, e quem
+   chega direto pelo link de um estudo não tem o resto da página para
+   desfazer o engano.
+   Contorno em vez de preenchimento, e tinta fraca: lê como ressalva, e se
+   separa também do `--neutro`, que é preenchido e marca índice de subseção.
+   O recuo cai 1px em cada eixo para a borda não deixar esta pílula mais alta
+   que as irmãs. */
+.selo--conceitual {
+  padding: 3px 9px;
+  background: transparent;
+  border: 1px solid var(--fio);
+  color: var(--tinta-fraca);
+}
+
 /* ---------------------------------------------------------------------
    8. TEXTURA
    A grade fina como sotaque, e não como assunto: a trama vive a 0,06 e o

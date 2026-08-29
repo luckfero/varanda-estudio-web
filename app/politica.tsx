@@ -22,9 +22,19 @@ export default function Politica({ locale }: { locale: Locale }) {
     <>
       <a className="skip-link" href="#conteudo">{t.nav.pular}</a>
       <main className="legal-page" id="conteudo" tabIndex={-1}>
-        <Link className="brand" href={t.path === "" ? "/" : t.path} aria-label={t.privacidade.voltarAria}>
+        {/* `marca` e `marca-nome`, os mesmos nomes do cabeçalho e do rodapé.
+            Eram `brand` e um `<span>` nu, que é como a identidade ANTERIOR
+            chamava isto. A reforma renomeou a classe e o `.brand` ficou sem
+            uma única regra: o link virava elemento em linha sem estilo e o
+            `ArcoMark` caía no tamanho intrínseco de um SVG sem largura, ou
+            seja, 300px. Medido nesta página antes da correção: caixa de
+            1209 por 1232px no topo do documento, com o nome em Geist em vez
+            da fonte da marca. Não quebra build, não quebra teste e não
+            aparece em nenhuma varredura de CSS, porque o defeito é a
+            AUSÊNCIA de regra. */}
+        <Link className="marca" href={t.path === "" ? "/" : t.path} aria-label={t.privacidade.voltarAria}>
           <ArcoMark small />
-          <span><strong>Varanda</strong><small>Estúdio Web</small></span>
+          <span className="marca-nome"><strong>Varanda</strong><small>Estúdio Web</small></span>
         </Link>
         <article>
           <p className="kicker"><span /> {t.privacidade.kicker}</p>
