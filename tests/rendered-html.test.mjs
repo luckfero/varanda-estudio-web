@@ -393,3 +393,45 @@ test("todo SVG do projeto é XML válido", async () => {
     assert.doesNotMatch(semComentario, /&(?!amp;|lt;|gt;|quot;|apos;|#)/, `${nome}: & sem escapar`);
   }
 });
+
+/**
+ * O CARTÃO DE PRÉ-VISUALIZAÇÃO DO LINK, e por que ele precisa de teste próprio.
+ *
+ * Ele é a peça mais vista do site por quem ainda não é visitante: todo prospect
+ * recebe o endereço por WhatsApp e vê isto antes da home.
+ *
+ * **O Satori falha em silêncio.** Ele exige `display` explícito em qualquer
+ * elemento com mais de um filho, e quando não encontra não desenha nada: a
+ * rota responde **200**, com `content-type: image/png` correto, e **zero
+ * byte**. Não há erro no console, não há aviso no build, e o teste de
+ * metadados continua passando, porque a tag `og:image` existe e aponta para um
+ * endereço que responde. Foi assim que o cartão foi publicado em branco em
+ * 28/08/2026, junto com a identidade nova, e só apareceu ao baixar o arquivo e
+ * tentar abrir.
+ *
+ * Por isso o teste não confere o código HTTP nem o tipo: os dois estavam certos
+ * com o cartão vazio. Ele lê os BYTES e o IHDR, que é o mesmo critério que os
+ * favicons já usam neste arquivo.
+ */
+test("o cartão de link é uma imagem de verdade, e não 200 com zero byte", async () => {
+  const resposta = await worker.fetch(
+    new Request("https://varanda-estudio-web.test/opengraph-image"),
+    env,
+    ctx,
+  );
+  assert.equal(resposta.status, 200, "a rota do cartão não respondeu 200");
+
+  const bytes = Buffer.from(await resposta.arrayBuffer());
+  assert.ok(
+    bytes.length > 5000,
+    `o cartão saiu com ${bytes.length} bytes; abaixo disso não há imagem, e zero é o sintoma do Satori falhando em silêncio`,
+  );
+  assert.equal(
+    bytes.subarray(1, 4).toString("ascii"),
+    "PNG",
+    "o corpo do cartão não é um PNG",
+  );
+  assert.equal(bytes.subarray(12, 16).toString("ascii"), "IHDR", "PNG sem cabeçalho IHDR");
+  assert.equal(bytes.readUInt32BE(16), 1200, "o cartão não tem 1200px de largura");
+  assert.equal(bytes.readUInt32BE(20), 630, "o cartão não tem 630px de altura");
+});

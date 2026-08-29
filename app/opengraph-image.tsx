@@ -97,9 +97,42 @@ export default function OpenGraphImage() {
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
-          <div style={{ maxWidth: 940, fontSize: 74, lineHeight: 1.02, letterSpacing: -2.2 }}>
-            Sites que dão{" "}
-            <span style={{ color: acento }}>espaço</span> para o seu negócio crescer.
+          {/* UMA PALAVRA POR `span`, E `display: flex` DECLARADO.
+              O Satori exige display explícito em elemento com MAIS DE UM
+              filho, e quando não encontra ele não desenha nada: a rota
+              responde 200, com `content-type: image/png`, e **zero byte**.
+              Não há erro no console, não há aviso no build, e o teste de
+              metadados continua passando porque a tag `og:image` existe e
+              aponta para um endereço que responde. Só se descobre baixando a
+              imagem e tentando abrir.
+              A versão anterior deste bloco era um `div` com texto, um `span`
+              colorido e mais texto, sem display, e por isso o cartão saiu em
+              branco no dia em que a identidade foi publicada.
+              Palavra a palavra, e não três blocos de frase, porque com
+              `flexWrap` a quebra acontece na borda de cada item: um `span`
+              com a frase inteira não quebraria e transbordaria o cartão. O
+              `gap` faz o papel do espaço entre palavras. */}
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              /* `columnGap` e `rowGap` separados, e nao o atalho `gap: "0 18px"`.
+                 O Satori ignora o atalho de dois valores em silencio, e o
+                 resultado foi as palavras coladas: "Sitesquedaoespaco". Medido
+                 renderizando o cartao e olhando, que e a unica prova aqui. */
+              columnGap: 18,
+              rowGap: 0,
+              maxWidth: 940,
+              fontSize: 74,
+              lineHeight: 1.02,
+              letterSpacing: -2.2,
+            }}
+          >
+            {"Sites que dão espaço para o seu negócio crescer.".split(" ").map((palavra) => (
+              <span key={palavra} style={palavra === "espaço" ? { color: acento } : undefined}>
+                {palavra}
+              </span>
+            ))}
           </div>
           <div style={{ fontSize: 26, color: tintaMedia, maxWidth: 800, lineHeight: 1.4 }}>
             Estratégia, direção visual autoral e desenvolvimento, do zero.
