@@ -17,6 +17,8 @@ desenho encostando as pernas apaga o motivo dele existir.
 | Assinatura de e-mail | `assinatura-1200.png` ou `assinatura-claro-1200.png` |
 | Foto de perfil: WhatsApp Business, LinkedIn, Instagram | `perfil-512.png` |
 | Foto de perfil onde a moldura já é escura | `perfil-claro-512.png` |
+| Selo: o símbolo dentro da pastilha, cor literal | `selo.svg` |
+| O mesmo, invertido, para moldura escura | `selo-claro.svg` |
 | Símbolo isolado, dentro da página | `simbolo.svg` |
 | Símbolo isolado, sobre fundo escuro, fora da página | `simbolo-claro.svg` |
 | O mesmo em PNG | `simbolo-512.png` e `simbolo-claro-512.png` |
