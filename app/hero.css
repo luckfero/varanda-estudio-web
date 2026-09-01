@@ -219,16 +219,6 @@
    `pointer-events: none` porque quem escuta e a `<section>`, o pai. Sem isto
    a camada ficaria por cima das outras texturas e viraria alvo de ponteiro
    sem precisar. */
-/* `.abertura .abertura-cursor`, e nao `.abertura-cursor` sozinho.
-
-   O componente traz `.cursor-grid { position: relative }` na folha dele, e as
-   duas classes tem a mesma especificidade: quem ganha e quem carrega depois, e
-   a folha do componente entra DEPOIS desta. Medido: a camada saia com
-   `position: relative`, altura zero, e o canvas nascia com 1440 por 1 pixel.
-   Dois seletores resolvem sem depender de ordem de import. */
-.abertura .abertura-cursor {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-}
+/* A camada do CursorGrid agora se posiciona pela propria folha dele,
+   em `.cursor-grid--camada`. A regra que morava aqui dependia de ordem
+   de import para vencer o `position: relative` do componente. */

@@ -1,6 +1,7 @@
 "use client";
 
 import { emailContato } from "./data";
+import CursorGrid from "./cursor-grid";
 import type { Dicionario } from "./i18n";
 import { ArcoMark } from "./icons";
 import { useAncoraSuave } from "./use-ancora-suave";
@@ -38,6 +39,28 @@ export default function SiteFooter({
 
   return (
     <footer className="rodape">
+      {/* A mesma grade da abertura e do formulario. O rodape NAO tem a
+          `.grade-fina` parada, entao aqui nao ha o que alinhar; `origemNoCanto`
+          fica assim mesmo, para a malha ser a mesma dos outros dois e nao
+          escorregar de secao para secao. */}
+      <CursorGrid
+        className="cursor-grid--camada"
+        escutaNoPai
+        origemNoCanto
+        cellSize={96}
+        color="#e8a33c"
+        radius={120}
+        falloff="smooth"
+        holdTime={100}
+        fadeDuration={800}
+        lineWidth={1.2}
+        maxOpacity={0.3}
+        fillOpacity={0}
+        gridOpacity={0}
+        cellRadius={0}
+        clickPulse
+        pulseSpeed={600}
+      />
       <div className="caixa rodape-alto">
         <a
           className="marca"

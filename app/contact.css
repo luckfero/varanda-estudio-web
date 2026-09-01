@@ -140,7 +140,13 @@
 /* ---------------------------------------------------------------------
    21. RODAPÉ
    --------------------------------------------------------------------- */
-.rodape { border-top: 1px solid var(--fio); background: var(--chao-alto); }
+/* `position: relative` e as duas linhas acima do zero por causa da camada do
+   CursorGrid, que e absoluta em `z-index: 0`. Sem posicionar o rodape ela se
+   ancoraria no primeiro ancestral posicionado, que aqui e a pagina; sem subir
+   o conteudo, o canvas passaria por cima do texto. As secoes resolvem isso com
+   a classe `.acima`, e o rodape nao a usa. */
+.rodape { position: relative; border-top: 1px solid var(--fio); background: var(--chao-alto); }
+.rodape-alto, .rodape-baixo { position: relative; z-index: 1; }
 .rodape-alto { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--e5); padding-block: var(--e8); }
 /* Frase de fecho: serifada, e é o único `p` deste bloco. A guarda `:not(.mono)`
    está aqui pela regra 9.24, e não porque falte hoje. */

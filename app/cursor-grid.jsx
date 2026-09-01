@@ -8,7 +8,7 @@
  * Zero dependencia: o registro declara `dependencies: []` e o arquivo nao
  * importa nada alem do React. Nenhum pacote entrou por causa dele.
  *
- * QUATRO MUDANCAS EM CIMA DO ORIGINAL, e so estas. O resto e identico, para
+ * SETE MUDANCAS EM CIMA DO ORIGINAL, e so estas. O resto e identico, para
  * dar para comparar com a origem no dia em que ela mudar:
  *
  * 1. `"use client"`. O componente usa `useRef` e `useEffect`.
@@ -37,6 +37,16 @@
  *    FILHO DIRETO e definem o recuo de todas as secoes do site. Escutando no
  *    pai, o efeito recebe o movimento sobre todo o conteudo, porque evento de
  *    ponteiro sobe, e nenhum seletor existente muda de significado.
+ *
+ * 6. A escrita em `propsRef` saiu do corpo do componente para dentro de um
+ *    efeito. Era atribuicao a um ref DURANTE A RENDERIZACAO, que o lint do
+ *    projeto recusa. O comentario no lugar explica por que a POSICAO daquele
+ *    efeito importa.
+ *
+ * 7. `origemNoCanto`. A malha comeca no canto superior esquerdo em vez de
+ *    centralizada, para cair exatamente sobre a grade parada da secao, que e
+ *    `background-image` e nao tem deslocamento. Com ela, `cellSize` precisa
+ *    ser o MESMO valor do `background-size` daquela grade, hoje 96px.
  *
  * As duas consultas sao lidas UMA VEZ, na montagem. Trocar a preferencia com
  * a pagina aberta nao religa o efeito, e isso e aceitavel: quem muda essa
@@ -74,6 +84,7 @@ const CursorGrid = ({
   pulseSpeed = 600,
   className = '',
   escutaNoPai = false,
+  origemNoCanto = false,
   children
 }) => {
   const containerRef = useRef(null);
@@ -151,9 +162,21 @@ const CursorGrid = ({
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       cols = Math.ceil(w / p.cellSize) + 1;
       rows = Math.ceil(h / p.cellSize) + 1;
-      // Center the lattice so edge cells crop evenly on both sides
-      offX = (w - cols * p.cellSize) / 2;
-      offY = (h - rows * p.cellSize) / 2;
+      /* MUDANCA 7: a malha pode comecar no CANTO em vez de centralizada.
+         O original centraliza para as celulas das bordas serem cortadas por
+         igual dos dois lados. Aqui a grade precisa cair EM CIMA da grade
+         parada da secao (`.grade-fina`), que e um `background-image` e comeca
+         no canto superior esquerdo do elemento, sem deslocamento. Centralizada,
+         a malha do cursor ficava fora de fase com ela e as celulas acesas
+         apareciam atravessadas nas linhas paradas. */
+      if (origemNoCanto) {
+        offX = 0;
+        offY = 0;
+      } else {
+        // Center the lattice so edge cells crop evenly on both sides
+        offX = (w - cols * p.cellSize) / 2;
+        offY = (h - rows * p.cellSize) / 2;
+      }
       alphas = new Float32Array(cols * rows);
       touched = new Float64Array(cols * rows);
     };
@@ -340,7 +363,7 @@ const CursorGrid = ({
        ser necessaria: com `escutaNoPai` na lista, as duas dependencias que o
        efeito de fato usa estao declaradas. O resto entra por `propsRef`, de
        proposito, para trocar cor ou opacidade nao remontar o canvas inteiro. */
-  }, [cellSize, escutaNoPai]);
+  }, [cellSize, escutaNoPai, origemNoCanto]);
 
   // Repaint static layers when visual props change while idle
   useEffect(() => {

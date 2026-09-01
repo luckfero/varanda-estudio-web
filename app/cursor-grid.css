@@ -21,3 +21,22 @@
   height: 100%;
   pointer-events: none;
 }
+
+/* A PECA COMO CAMADA DE FUNDO de uma secao.
+
+   Mora aqui, e nao na folha da secao, de proposito: `.cursor-grid` declara
+   `position: relative` logo acima, e as duas classes tem a mesma
+   especificidade. Enquanto a regra da camada vivia em `hero.css`, quem ganhava
+   era quem carregasse depois, e a folha do componente carrega depois: a camada
+   saia com `position: relative`, altura zero, e o canvas nascia com 1 pixel de
+   altura. No mesmo arquivo e depois, isso nao pode acontecer.
+
+   A secao que a recebe precisa ser `position: relative`, e o conteudo dela
+   precisa subir acima do `z-index: 0`, que no site e o que a classe `.acima`
+   faz. */
+.cursor-grid--camada {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}

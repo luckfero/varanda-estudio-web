@@ -1,6 +1,7 @@
 "use client";
 
 import { CSSProperties, FormEvent, useState } from "react";
+import CursorGrid from "./cursor-grid";
 import { emailContato, whatsappUrl } from "./data";
 import type { Dicionario } from "./i18n";
 
@@ -100,6 +101,34 @@ export default function SectionContato({
     <section className="secao" id="contato" aria-labelledby="titulo-contato">
       <div className="luz luz--baixa" aria-hidden="true" />
       <div className="grade-fina" aria-hidden="true" />
+      {/* A GRADE QUE RESPONDE AO CURSOR. Ver `app/cursor-grid.jsx`.
+
+          `cellSize` 96 e `origemNoCanto` existem para a celula acesa cair EM
+          CIMA do quadrado da `.grade-fina`, a grade parada desta secao: ela e
+          um `background-image` de 96 por 96 que comeca no canto do elemento,
+          e o componente, por padrao, usa 100 e centraliza a malha.
+
+          `escutaNoPai` porque a camada nao envolve o conteudo: envolver
+          quebraria `:is(.secao, .section) > .caixa`, que e seletor de filho
+          direto e define o recuo de toda secao do site. */}
+      <CursorGrid
+        className="cursor-grid--camada"
+        escutaNoPai
+        origemNoCanto
+        cellSize={96}
+        color="#e8a33c"
+        radius={120}
+        falloff="smooth"
+        holdTime={100}
+        fadeDuration={800}
+        lineWidth={1.2}
+        maxOpacity={0.3}
+        fillOpacity={0}
+        gridOpacity={0}
+        cellRadius={0}
+        clickPulse
+        pulseSpeed={600}
+      />
 
       <div className="caixa acima">
         <div className="contato-grade">

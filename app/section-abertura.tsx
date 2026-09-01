@@ -106,13 +106,20 @@ export default function SectionAbertura({
             Por isso `escutaNoPai`: os ouvintes vao para a `<section>` e o
             movimento sobre o texto e sobre os botoes tambem acende a grade.
 
-            Os valores sao os que o Lucca passou. `gridOpacity` zero: a grade
-            parada continua sendo a `.grade-fina`, que ja estava aqui; esta so
-            acende ao redor do ponteiro e some. */}
+            `cellSize` 96 e `origemNoCanto`, e os dois existem para a mesma
+            coisa: a celula acesa cair EM CIMA do quadrado da `.grade-fina`,
+            que e a grade parada desta secao. Ela e um `background-image` de
+            96 por 96 comecando no canto do elemento; o componente, por
+            padrao, usa 100 e centraliza a malha. Fora de fase, as celulas
+            acesas apareciam atravessadas nas linhas paradas.
+            Os outros valores sao os que o Lucca passou. `gridOpacity` zero: a
+            grade parada continua sendo a `.grade-fina`; esta so acende ao
+            redor do ponteiro e some. */}
         <CursorGrid
-          className="abertura-cursor"
+          className="cursor-grid--camada"
           escutaNoPai
-          cellSize={100}
+          origemNoCanto
+          cellSize={96}
           color="#e8a33c"
           radius={120}
           falloff="smooth"
