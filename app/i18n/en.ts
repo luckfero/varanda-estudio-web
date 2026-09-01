@@ -216,6 +216,7 @@ const en: Dicionario = {
        que todo cliente faz tinha resposta antes de ele precisar perguntar.
        O 50/50 vem de `comercial/oferta/politicas.md`, que é a fonte. */
     pagamento: "Payment in two parts: 50% to start and 50% on final approval, before publishing. Bank transfer.",
+    incluiNoPlano: "What is included",
     cta: "I want this plan",
     incluidoTitulo: "In every package, at no extra charge",
     escopoIncluidoTitulo: "Integrations included in every package",
@@ -312,8 +313,8 @@ const en: Dicionario = {
         description: "Everything in Business, plus one capability your project calls for, chosen together with you.",
         items: [
           "Everything in the Business package",
-          "One capability of your choice: another language, a filterable catalogue, manageable content, or a system integration",
-          "Technical SEO and structured data",
+          "One capability of your choice: another language, a filterable catalogue, a panel where you change text and photos yourself, or a link to a system you already use",
+          "The site set up for search: technical work plus your business details in the format Google reads",
           "2 revision rounds",
           "First month of the Presence plan included",
         ],

@@ -118,92 +118,32 @@
 }
 
 /* -------------------------------------------------------------------
-   A TABELA VIRA CARTÃO A 900px, E NÃO A 760px. O corte antigo deixava uma
-   faixa cega entre 761 e cerca de 900px: ali a tabela nem virava cartão
-   nem cabia, e rolava na horizontal dentro do `.rolagem-tabela` com a
-   coluna de rótulo `static`, ou seja, o visitante arrastava para ver a
-   terceira coluna e perdia de vista se estava lendo preço, prazo ou
-   escopo. Medido a 800px: 711px de largura útil contra 760 de conteúdo,
-   49px escondidos à direita, sem sombra, sem esmaecimento e sem nota
-   dizendo que ali rolava. Subir o corte fecha a faixa em vez de tratá-la,
-   e a 901px a caixa já dá 820px, com folga sobre o min-width.
+   ABAIXO DE 900px A TABELA SAI E OS CARTÕES ENTRAM.
 
-   O CABEÇALHO NÃO SOME. Ele vira três cartões de plano, um por coluna,
-   cada um abrindo com perfil, nome e resumo: são seis textos que vêm de
-   `investimento.pacotes[]` nos três dicionários, estão publicados hoje e
-   não existem em nenhum outro lugar da peça. Com `thead { display: none }`
-   os seis mediam altura 0 a 390px, e o comprador de celular via três
-   preços sem saber qual é o recomendado nem o que cada pacote é em uma
-   linha. Só depois deles vêm os cartões de linha, agrupados por DIMENSÃO e
-   não por plano, que é o que deixa comparar os três valores um sob o
-   outro.
+   Antes daqui a tabela virava cartão por CSS: o `thead` deitava em três
+   cartões de plano e cada `tr` do corpo virava um cartão de DIMENSÃO, com os
+   três valores dentro. A intenção era boa, comparar um valor sob o outro, e o
+   resultado não era: onze cartões empilhados, o nome do plano repetido 33
+   vezes, e quatro linhas de "Não incluído" abrindo o cartão do Essencial, ou
+   seja, o plano de entrada se apresentando pelo que ele NÃO faz.
+
+   O motivo de fundo é que a tabela existe para comparar LADO A LADO, e em
+   390px não existe lado a lado. Empilhada, ela deixa de ser comparação e vira
+   a mesma informação pior organizada.
+
+   Agora quem apresenta os pacotes no celular é `.planos-cartoes`, um cartão
+   por plano, com a lista de `pacotes[].items`, que é o escopo por escrito de
+   cada um. Nada se perde: a matriz `COMPARACAO` de `section-oferta.tsx` mapeia
+   cada célula da tabela de volta para esses mesmos itens.
+
+   Saíram junto cerca de 88 linhas de regras que transformavam a tabela e que
+   agora não alcançariam nada, porque ela não é desenhada nesta faixa.
    ------------------------------------------------------------------- */
 @media (max-width: 900px) {
-  .rolagem-tabela { overflow-x: visible; }
-  .tabela, .tabela thead, .tabela tbody, .tabela tr, .tabela th, .tabela td { display: block; width: auto; min-width: 0; }
+  .rolagem-tabela,
+  .tabela-legenda { display: none; }
 
-  /* Os três cartões de plano, que são o `thead` deitado. */
-  .tabela thead tr { display: grid; gap: var(--e4); margin-bottom: var(--e6); }
-  .tabela thead th {
-    border: 1px solid var(--fio); border-radius: var(--raio-cartao);
-    padding: var(--e5); background: var(--nivel-1);
-  }
-  .tabela thead th.tabela-destaque { background: var(--nivel-2); border-color: var(--fio-acento); }
-
-  .tabela tbody tr { margin-bottom: var(--e6); border: 1px solid var(--fio); border-radius: var(--raio-cartao); overflow: hidden; }
-  .tabela th[scope="row"] {
-    width: auto; border: 0; border-bottom: 1px solid var(--fio);
-    padding: var(--e4) var(--e5);
-    background: var(--nivel-1);
-    color: var(--acento);
-    min-width: 0;
-  }
-  .tabela td { border: 0; border-top: 1px solid var(--fio); padding: var(--e4) var(--e5); }
-  /* Sem colunas, o destaque de coluna não tem o que destacar: ele viraria
-     uma célula de cor diferente no meio de um cartão, sem nada dizendo por
-     quê. Quem carrega o "Recomendado" no celular é o cartão de plano lá em
-     cima, que traz a pílula em acento e a borda de acento. */
-  .tabela td.tabela-destaque { background: transparent; border-color: var(--fio); }
-  /* O primeiro td VISÍVEL de cada cartão não leva fio de topo. Nas linhas
-     comuns ele vem depois do `th[scope="row"]`, que já traz o fio de baixo;
-     na linha de ações ele vem depois do canto, que está escondido, e sem a
-     segunda regra o primeiro botão nascia com um fio de 1px sobrando. */
-  .tabela tbody tr > td:first-of-type,
-  .tabela td.tabela-canto + td { border-top: 0; }
-
-  /* O nome do plano acima de cada valor, texto de verdade. Vale TAMBÉM na
-     linha de ações: sem ele aquele cartão virava três botões idênticos
-     lendo "Quero este plano", sem nada visível dizendo de qual plano é, e o
-     cartão imediatamente acima mede mais de uma tela de rolagem. */
-  .celula-plano {
-    display: block; margin-bottom: var(--e3);
-    font-family: var(--fonte-mono); font-size: var(--c-mono);
-    letter-spacing: var(--ls-mono); text-transform: uppercase;
-    color: var(--tinta-fraca);
-  }
-  /* O canto de cruzamento não tem o que dizer quando não há colunas. A
-     especificidade casa com a de `.tabela th, .tabela td { display: block }`,
-     senão ele computa `block` e o cartão de ações abre com uma tarja vazia
-     de 28px seguida de um fio de 1px sem nada em cima. */
-  .tabela td.tabela-canto { display: none; }
-  .tabela tr.tabela-acoes td { padding-top: var(--e3); }
-
-  /* No cartão, a marca de presente e de ausente ganha a palavra AO LADO. É
-     a mesma palavra que o leitor de tela ouve no desktop, e ela vem de
-     `investimento.comparacao.incluido` e `.naoIncluido` nos três
-     dicionários; aqui ela sai do `.so-leitor` porque um sinal sozinho numa
-     linha de cartão, sem a coluna vizinha para comparar, não diz o que diz
-     numa grade.
-     Os dois nomes da classe estão no seletor porque a base declara os dois
-     enquanto o porte não fecha, e quem só cita o novo deixa a palavra
-     escondida onde a marcação ainda usa o antigo. */
-  .marca-escopo { width: auto; height: auto; gap: var(--e2); }
-  .marca-escopo .so-leitor,
-  .marca-escopo .sr-only {
-    position: static; width: auto; height: auto;
-    margin: 0; overflow: visible; clip: auto;
-    letter-spacing: var(--ls-mono); text-transform: uppercase;
-  }
+  .planos-cartoes { display: grid; gap: var(--e4); }
 }
 
 @media (max-width: 760px) {

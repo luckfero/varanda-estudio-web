@@ -215,6 +215,74 @@ export default function SectionOferta({
             {comparacao.legenda}
           </p>
 
+          {/* OS CARTÕES DE PLANO, E ELES SÃO A APRESENTAÇÃO DO CELULAR.
+              Abaixo de 900px a tabela sai da tela e estes entram; acima de
+              901px acontece o contrário. Os dois estão no documento e o CSS
+              escolhe, porque a transformação não sai de CSS: a tabela guarda
+              os `items` REMAPEADOS por dimensão, linha a linha, e nenhuma
+              regra de folha reagrupa isso por plano.
+
+              POR QUE A TABELA SAI DO CELULAR. Ela existe para comparar os
+              três lado a lado, e em 390px não existe lado a lado: ela virava
+              onze cartões empilhados, um por dimensão, com o nome do plano
+              repetido 33 vezes e quatro linhas de "Não incluído" no cartão do
+              Essencial, ou seja, o plano de entrada abria dizendo o que ele
+              NÃO faz. O Lucca leu como confuso para quem não é da área, e
+              estava certo.
+
+              NADA SE PERDE. A matriz `COMPARACAO` acima mapeia cada célula da
+              tabela para um `pacotes[].items`, e o comentário dela já dizia
+              que as listas de `items` são o escopo por escrito de cada plano.
+              O cartão mostra essa lista inteira. O que some é a coluna de
+              ausências, que é justamente o que confundia. */}
+          <div className="planos-cartoes" data-reveal>
+            {investimento.pacotes.map((pacote, indice) => {
+              const partes = partesDoPreco(moedas, pacote.launch);
+              return (
+                <article
+                  className={pacote.featured ? "plano-cartao plano-cartao--destaque" : "plano-cartao"}
+                  key={pacote.name}
+                  style={atraso(indice * 80)}
+                >
+                  <p className="plano-sobrancelha">{pacote.eyebrow}</p>
+                  <h3 className="plano-titulo">{pacote.name}</h3>
+                  <p className="preco">
+                    {partes.antes && <span className="preco-moeda">{partes.antes}</span>}
+                    <span className="preco-valor numeral">{partes.numero}</span>
+                    {partes.depois && <span className="preco-moeda">{partes.depois}</span>}
+                    <span className="preco-unidade">{investimento.porProjeto}</span>
+                  </p>
+                  {/* O prazo entra VERBATIM, sem molde de frase. O do
+                      Profissional é "Definido no orçamento, conforme a
+                      capacidade escolhida", que não cabe depois de "fica
+                      pronto em" e produzia português quebrado. */}
+                  <p className="plano-prazo">
+                    <span>{comparacao.linhas[1]}</span> {pacote.entrega}
+                  </p>
+                  <p className="plano-resumo">{pacote.description}</p>
+                  <p className="plano-inclui">{investimento.incluiNoPlano}</p>
+                  <ul className="plano-lista" role="list">
+                    {pacote.items.map((linha) => (
+                      <li key={linha}>{linha}</li>
+                    ))}
+                  </ul>
+                  {/* Os tres botoes dizem a mesma frase, entao o nome do
+                      plano vai no fim para quem navega por lista de links.
+                      E o mesmo cuidado que a linha de acoes da tabela ja
+                      tinha. */}
+                  <a
+                    className={`botao ${pacote.featured ? "botao--acento" : "botao--contorno"} botao--bloco`}
+                    href="#contato"
+                    onClick={(evento) => handleNavClick(evento, "#contato")}
+                  >
+                    {investimento.cta}
+                    <span className="so-leitor">{" "}{pacote.name}</span>
+                  </a>
+                </article>
+              );
+            })}
+          </div>
+
           <div className="rolagem-tabela" data-reveal>
             <table className="tabela">
               <thead>

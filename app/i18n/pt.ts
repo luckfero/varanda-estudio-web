@@ -230,6 +230,7 @@ const pt = {
        que todo cliente faz tinha resposta antes de ele precisar perguntar.
        O 50/50 vem de `comercial/oferta/politicas.md`, que é a fonte. */
     pagamento: "Pagamento em duas partes: 50% para iniciar e 50% na aprovação final, antes da publicação. Pix, transferência ou boleto.",
+    incluiNoPlano: "O que está incluído",
     cta: "Quero este plano",
     incluidoTitulo: "Em todos os pacotes, sem cobrança à parte",
     /* Duas colunas, e a separação é comercial antes de ser visual: a da
@@ -336,8 +337,8 @@ const pt = {
         description: "Tudo do Negócio, mais uma capacidade que o seu projeto exige, escolhida junto com você.",
         items: [
           "Tudo do pacote Negócio",
-          "Uma capacidade à escolha: outro idioma, catálogo com filtros, conteúdo gerenciável ou integração com sistema",
-          "SEO técnico e dados estruturados",
+          "Uma capacidade à escolha: outro idioma, catálogo com filtros, um painel para você mesmo trocar textos e fotos, ou ligação com um sistema que você já usa",
+          "O site preparado para busca: ajustes técnicos e os dados do negócio no formato que o Google lê",
           "2 rodadas de ajustes",
           "Primeiro mês do plano Presença incluído",
         ],

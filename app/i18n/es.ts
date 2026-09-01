@@ -227,6 +227,7 @@ const es: Dicionario = {
        que todo cliente faz tinha resposta antes de ele precisar perguntar.
        O 50/50 vem de `comercial/oferta/politicas.md`, que é a fonte. */
     pagamento: "Pago en dos partes: 50% para empezar y 50% en la aprobación final, antes de publicar. Transferencia bancaria.",
+    incluiNoPlano: "Qué incluye",
     cta: "Quiero este plan",
     incluidoTitulo: "En todos los paquetes, sin coste aparte",
     escopoIncluidoTitulo: "Integraciones incluidas en todos los paquetes",
@@ -323,8 +324,8 @@ const es: Dicionario = {
         description: "Todo lo de Negocio, más una capacidad que tu proyecto necesite, elegida contigo.",
         items: [
           "Todo el paquete Negocio",
-          "Una capacidad a elegir: otro idioma, catálogo con filtros, contenido gestionable o integración con sistema",
-          "SEO técnico y datos estructurados",
+          "Una capacidad a elegir: otro idioma, catálogo con filtros, un panel para que tú mismo cambies textos y fotos, o conexión con un sistema que ya usas",
+          "La web preparada para la búsqueda: ajustes técnicos y los datos del negocio en el formato que lee Google",
           "2 rondas de ajustes",
           "Primer mes del plan Presencia incluido",
         ],

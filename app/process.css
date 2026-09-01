@@ -227,3 +227,77 @@
 .plano-lista li::before { content: ""; width: 6px; height: 6px; margin-top: 8px; background: var(--acento); }
 .manutencao-notas { margin-top: var(--e7); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--e5); }
 .manutencao-acao { margin-top: var(--e6); }
+
+/* ---------------------------------------------------------------------
+   OS CARTOES DE PLANO, a apresentacao do celular.
+
+   Escondidos por padrao: acima de 901px quem apresenta os pacotes e a tabela,
+   que ali compara de verdade, tres colunas lado a lado. O responsivo inverte
+   os dois abaixo de 900px.
+
+   Eles reaproveitam `.preco`, `.plano-resumo`, `.plano-lista` e `.botao`, que
+   ja existem e ja sao usados pelos cartoes de manutencao. O que e novo aqui e
+   so o recipiente e as tres linhas de cabecalho do cartao.
+   --------------------------------------------------------------------- */
+.planos-cartoes { display: none; }
+
+.plano-cartao {
+  display: flex;
+  flex-direction: column;
+  background: var(--nivel-1);
+  border: 1px solid var(--fio);
+  border-radius: var(--raio-cartao);
+  padding: var(--e5);
+}
+.plano-cartao--destaque { background: var(--nivel-2); border-color: var(--fio-acento); }
+
+.plano-sobrancelha {
+  font-family: var(--fonte-mono);
+  font-size: var(--c-mono);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--tinta-fraca);
+  margin: 0 0 var(--e2);
+}
+.plano-cartao--destaque .plano-sobrancelha { color: var(--acento); }
+
+.plano-titulo {
+  font-family: var(--fonte-display);
+  font-size: var(--t-bloco);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--e2);
+}
+
+/* O prazo em cima do fio: ele fecha o bloco de "quanto custa e quando fica
+   pronto", e a descricao abaixo abre o de "o que e". O rotulo vem de
+   `comparacao.linhas[1]`, que ja existe nos tres dicionarios. */
+.plano-prazo {
+  font-size: var(--c-apoio);
+  color: var(--tinta-fraca);
+  margin: 0 0 var(--e4);
+  padding-bottom: var(--e4);
+  border-bottom: 1px solid var(--fio);
+}
+.plano-prazo span {
+  font-family: var(--fonte-mono);
+  font-size: var(--c-mono);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  margin-right: var(--e2);
+}
+
+.plano-inclui {
+  font-family: var(--fonte-mono);
+  font-size: var(--c-mono);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--tinta-fraca);
+  margin: 0 0 var(--e3);
+}
+
+/* `margin-top: auto` no botao: os tres cartoes ficam com o botao na mesma
+   altura mesmo com listas de tamanhos diferentes, que e o mesmo recurso que
+   `.destaque-acao` ja usa no portfolio. */
+.plano-cartao .plano-lista { margin-bottom: var(--e5); }
+.plano-cartao .botao { margin-top: auto; }
