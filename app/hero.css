@@ -209,3 +209,26 @@
 }
 .fecho p:not(.mono) { color: var(--tinta-media); font-size: var(--c-apoio); }
 .fecho-acoes { display: flex; flex-wrap: wrap; gap: var(--e3); }
+
+/* A camada da grade que responde ao cursor.
+
+   `z-index: 0` e o mesmo das outras texturas (`.luz`, `.grade-fina`,
+   `.trama`), e o conteudo sobe por `.acima`, que e `z-index: 1`. Ou seja:
+   ela entra na mesma fila das outras, sem inventar camada nova.
+
+   `pointer-events: none` porque quem escuta e a `<section>`, o pai. Sem isto
+   a camada ficaria por cima das outras texturas e viraria alvo de ponteiro
+   sem precisar. */
+/* `.abertura .abertura-cursor`, e nao `.abertura-cursor` sozinho.
+
+   O componente traz `.cursor-grid { position: relative }` na folha dele, e as
+   duas classes tem a mesma especificidade: quem ganha e quem carrega depois, e
+   a folha do componente entra DEPOIS desta. Medido: a camada saia com
+   `position: relative`, altura zero, e o canvas nascia com 1440 por 1 pixel.
+   Dois seletores resolvem sem depender de ordem de import. */
+.abertura .abertura-cursor {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}

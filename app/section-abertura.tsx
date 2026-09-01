@@ -1,5 +1,6 @@
 "use client";
 
+import CursorGrid from "./cursor-grid";
 import type { CSSProperties } from "react";
 
 import { featuredAssets } from "./data";
@@ -95,6 +96,36 @@ export default function SectionAbertura({
       <section className="secao abertura" id="inicio" aria-labelledby="titulo-abertura">
         <div className="luz" aria-hidden="true" />
         <div className="grade-fina" aria-hidden="true" />
+        {/* A GRADE QUE RESPONDE AO CURSOR, do React Bits. Ver
+            `app/cursor-grid.jsx`, que explica o que foi mudado do original.
+
+            Ela e uma camada IRMA das outras tres, e nao um envoltorio: o
+            recuo de toda seção do site vem de `:is(.secao, .section) > .caixa`
+            e o da abertura de `.abertura > .caixa`, as duas de FILHO DIRETO.
+            Envolver o conteudo mudaria o significado das duas em silencio.
+            Por isso `escutaNoPai`: os ouvintes vao para a `<section>` e o
+            movimento sobre o texto e sobre os botoes tambem acende a grade.
+
+            Os valores sao os que o Lucca passou. `gridOpacity` zero: a grade
+            parada continua sendo a `.grade-fina`, que ja estava aqui; esta so
+            acende ao redor do ponteiro e some. */}
+        <CursorGrid
+          className="abertura-cursor"
+          escutaNoPai
+          cellSize={100}
+          color="#e8a33c"
+          radius={120}
+          falloff="smooth"
+          holdTime={100}
+          fadeDuration={800}
+          lineWidth={1.2}
+          maxOpacity={0.3}
+          fillOpacity={0}
+          gridOpacity={0}
+          cellRadius={0}
+          clickPulse
+          pulseSpeed={600}
+        />
         <div className="trama" aria-hidden="true" />
 
         <div className="caixa acima">

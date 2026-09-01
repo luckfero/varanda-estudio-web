@@ -1,0 +1,23 @@
+/* CursorGrid, do React Bits. Ver `app/cursor-grid.jsx`.
+
+   Mudou do original: o canvas passou a ser ABSOLUTO, atras do conteudo. No
+   original ele e o unico filho e ocupa a caixa; aqui o componente envolve o
+   conteudo da secao, entao ele precisa ficar por baixo sem empurrar nada.
+
+   `pointer-events: none` no canvas, e nao no container: quem escuta e o
+   container, e evento de ponteiro sobe do conteudo ate ele. Sem isto o canvas
+   ficaria por cima do proprio nada e nao mudaria comportamento, mas deixar
+   explicito evita que alguem o transforme em alvo sem querer. */
+.cursor-grid {
+  position: relative;
+}
+
+.cursor-grid__canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
