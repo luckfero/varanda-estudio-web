@@ -113,6 +113,18 @@
   min-height: 320px;
   border-right: 1px solid var(--fio);
   overflow: hidden;
+  /* `padding-box`, e nao o `border-box` padrao.
+     Por padrao o fundo de um elemento pinta TAMBEM por baixo da borda, e o
+     fio da casa e translucido: `rgba(244, 239, 230, 0.13)`. Com a capa
+     virando cor chapada, esse fio passou a compor sobre a COR DA MARCA em vez
+     de sobre o cartao, e saia uma linha clara na cor do projeto. Medido por
+     pixel na base da capa da Nivora: (191, 118, 81), que e o cobre #b7653b
+     clareado pelo fio. Aparecia como uma faixa laranja solta entre a
+     plaquinha e o corpo do cartao, e em vermelho na Brasa.
+     Recortando no padding, a borda deixa de ter a cor da capa atras e o fio
+     volta a compor sobre o fundo do cartao, como todos os outros fios do
+     site. */
+  background-clip: padding-box;
 }
 
 /* A COR DA IDENTIDADE de cada projeto, declarada em `base.css` e igual a cor
