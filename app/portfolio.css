@@ -68,6 +68,20 @@
    enquanto houver duas colunas: em coluna única ela deixaria a ordem de
    leitura imagem-texto num cartão e texto-imagem no outro, e quem desliga
    isso é o responsivo. */
+/* A CAIXA DA CAPA TEM PROPORCAO DEFINIDA, e e isso que impede a imagem de
+   mandar na altura do cartao.
+
+   Sem proporcao, a contribuicao INTRINSECA da imagem entra na conta da linha
+   da grade: mesmo com `flex-basis: 0` e `min-height: 0`, a altura natural dela
+   numa coluna de 590px, 393px, vazava para a linha. Somada a plaquinha, o
+   cartao ia a 475px. Com a proporcao declarada, a caixa tem tamanho proprio e
+   quem volta a mandar e a coluna de TEXTO, que e o comportamento de antes.
+
+   16/9 e nao 3/2: o valor precisa ficar ABAIXO da altura do texto, senao ele
+   e que passa a mandar. Na largura de hoje da 332px contra os 392 do texto, e
+   a caixa e esticada para 392 pela propria grade. */
+.placa .amostra { aspect-ratio: 16 / 9; min-height: 100%; }
+
 .placa--invertida .amostra {
   order: 2;
   border-right: 0;
@@ -128,8 +142,21 @@
    aparece, porque o fundo da caixa e a MESMA cor do arquivo, declarada em
    `--amostra-*` no `base.css`. Se as duas divergirem, a emenda aparece. */
 .amostra img {
+  /* `height: 0` com `flex: 1`, e isto e o que faz a capa PARAR de mandar na
+     altura do cartao.
+
+     Sem a altura zerada, a imagem tem largura definida (100%) e proporcao
+     propria, entao a altura usada e a intrinseca: 393px numa coluna de 590.
+     Somada a plaquinha, que passou a ficar no fluxo, o cartao dos publicados
+     foi de 392 para 475px. Medido, e o Lucca reparou.
+
+     Com a base em zero ela vira preenchimento: quem manda na altura volta a
+     ser a coluna de TEXTO ao lado, como era antes, e a capa ocupa o que
+     sobra. O `object-fit: contain` continua garantindo que o simbolo nao
+     deforme nem seja cortado. */
   flex: 1;
   min-height: 0;
+  height: 0;
   width: 100%;
   object-fit: contain;
 }

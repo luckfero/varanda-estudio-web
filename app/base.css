@@ -61,7 +61,7 @@
      sobre a amostra mais clara (#76776f) ela resulta em #21201e, e o hex em
      acento por cima mede 7,55:1. Pior caso das cinco. */
   --amostra-casa: #2E3A2C;      /* casa-conexao-hero.png */
-  --amostra-milenio: #a1fea0;   /* milenio-hero.png */
+  --amostra-milenio: #000000;   /* milenio-hero.png */
   --amostra-nivora: #b7653b;    /* nivora-casa-patio-alto.webp */
   --amostra-nascente: #191210;  /* nascente-hero-central.webp */
   --amostra-brasa: #731f17;     /* brasa-do-vale-hero.png */
