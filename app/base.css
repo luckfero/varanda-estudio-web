@@ -60,11 +60,11 @@
      sobre os originais em assets/originais/. A plaquinha é preto a 78%:
      sobre a amostra mais clara (#76776f) ela resulta em #21201e, e o hex em
      acento por cima mede 7,55:1. Pior caso das cinco. */
-  --amostra-casa: #4c513f;      /* casa-conexao-hero.png */
-  --amostra-milenio: #151a17;   /* milenio-hero.png */
-  --amostra-nivora: #76776f;    /* nivora-casa-patio-alto.webp */
-  --amostra-nascente: #2b1b09;  /* nascente-hero-central.webp */
-  --amostra-brasa: #3a2621;     /* brasa-do-vale-hero.png */
+  --amostra-casa: #2E3A2C;      /* casa-conexao-hero.png */
+  --amostra-milenio: #a1fea0;   /* milenio-hero.png */
+  --amostra-nivora: #b7653b;    /* nivora-casa-patio-alto.webp */
+  --amostra-nascente: #191210;  /* nascente-hero-central.webp */
+  --amostra-brasa: #731f17;     /* brasa-do-vale-hero.png */
   --placa: rgba(9, 8, 7, 0.78);
 
   /* Tipografia: três famílias, e o teto é três.

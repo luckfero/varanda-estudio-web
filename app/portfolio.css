@@ -79,41 +79,59 @@
    O `min-height` é piso e não altura: quem manda na linha é a coluna de
    texto ao lado, e a foto acompanha por `cover`.
    --------------------------------------------------------------------- */
+/* A CAIXA E UMA COLUNA, e a plaquinha nao sobrepoe mais a capa.
+
+   Enquanto a capa era foto, a plaquinha precisava flutuar por cima: a foto
+   preenchia a caixa inteira e nao havia onde por a faixa a nao ser sobre ela.
+   Com a capa virando cor chapada com o simbolo no meio, sobrepor passou a
+   custar caro: o simbolo centraliza na altura TOTAL da caixa, mas a area
+   visivel e so o que sobra acima da faixa. Medido nos cartoes conceituais,
+   que sao os baixos: caixa de 176px, faixa de 63px, area util de 113px. A
+   Brasa, cuja marca e alta, invadia a faixa em 4,5px e a Nivora encostava
+   nela.
+
+   Em coluna, a imagem fica com o espaco que sobra e o simbolo centraliza
+   nele sozinho, em qualquer altura de caixa e sem nenhum valor calculado a
+   mao. */
 .amostra {
   position: relative;
+  display: flex;
+  flex-direction: column;
   min-height: 320px;
   border-right: 1px solid var(--fio);
   overflow: hidden;
 }
 
-/* A cor média real de cada capa, medida sobre o arquivo original e declarada
-   em `base.css`. Ela é o CHÃO da caixa: aparece enquanto o AVIF não chegou e
-   fica por baixo da foto depois. */
+/* A COR DA IDENTIDADE de cada projeto, declarada em `base.css` e igual a cor
+   dentro do arquivo da capa. Ela era a cor MEDIA da captura, medida sobre a
+   foto; com a capa virando cor chapada, as duas passaram a ser a mesma coisa e
+   precisam continuar iguais. Divergiram, aparece uma emenda na caixa. */
 .amostra--casa { background-color: var(--amostra-casa); }
 .amostra--milenio { background-color: var(--amostra-milenio); }
 .amostra--nivora { background-color: var(--amostra-nivora); }
 .amostra--nascente { background-color: var(--amostra-nascente); }
 .amostra--brasa { background-color: var(--amostra-brasa); }
 
-/* A CAPA DA PLACA ENTRA INTEIRA, e isto foi medido antes de ser decidido.
-   A caixa é uma coluna de grade: a altura dela vem da coluna de TEXTO ao
-   lado, que em 1440px dá 392px contra os 590px de largura, ou seja proporção
-   1,50. As capas são a faixa da hero, 1600/758 ≈ 2,11. Com `object-fit:
-   cover` a diferença sai toda pelos lados: 29% da LARGURA some, uns 14% em
-   cada borda, e o que ela come é justamente o começo e o fim do título do
-   site fotografado. Medido na captura: "Seu atendimento merece um espaço à
-   altura do seu trabalho" saía como "eu atendimento / erece um espaço à /
-   ltura do seu trabalho". Título cortado no meio da palavra é defeito, e num
-   portfólio ele acontece no único lugar em que o visitante avalia o trabalho.
-   Então a capa fica NO FLUXO, presa ao alto e com a largura inteira, na
-   própria proporção. A folga que sobrar embaixo é a cor média da capa, que é
-   para isso que ela existe: vira o passe-partout do quadro, e é sobre ela que
-   a plaquinha com o nome cai. Nada é recortado em largura nenhuma, e se a
-   coluna de texto for mais curta que a capa é ela que estica. */
+/* A CAPA E UMA COR CHAPADA COM O SIMBOLO NO MEIO, desde 28/08/2026.
+
+   O que havia aqui antes era uma captura do site fotografado, e o comentario
+   longo que ocupava este lugar explicava por que ela entrava NO FLUXO, presa
+   ao alto e na propria proporcao: com `object-fit: cover` a caixa comia 29% da
+   largura e cortava o titulo do site no meio da palavra. Aquele raciocinio
+   morreu junto com a captura. Numa cor chapada nao ha o que cortar.
+
+   Agora a capa e um SVG de `public/marcas/`, com o simbolo daquele projeto
+   sobre a cor da identidade dele, e ela preenche a caixa inteira.
+
+   `contain` e nao `cover`: o simbolo mantem o tamanho que foi calculado no
+   arquivo em vez de crescer quando a caixa e mais alta. A faixa que sobra nao
+   aparece, porque o fundo da caixa e a MESMA cor do arquivo, declarada em
+   `--amostra-*` no `base.css`. Se as duas divergirem, a emenda aparece. */
 .amostra img {
-  display: block;
+  flex: 1;
+  min-height: 0;
   width: 100%;
-  height: auto;
+  object-fit: contain;
 }
 
 /* A MOLDURA E O VÉU VIVEM NO PSEUDOELEMENTO, e não no próprio elemento.
@@ -140,11 +158,12 @@
    `aria-hidden` na marcação: o nome já é o h3 ao lado, e o `alt` da foto já
    descreve a imagem. */
 .amostra-placa {
-  position: absolute;
+  /* `static`, e nao mais `absolute`: ver o comentario de `.amostra`. Ela
+     continua sendo a ultima coisa da coluna, entao continua embaixo. O
+     `z-index` fica porque o veu de `.amostra::after` e desenhado por cima e
+     escureceria o nome. */
+  position: relative;
   z-index: 2;
-  left: 0;
-  right: 0;
-  bottom: 0;
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
@@ -245,35 +264,35 @@
    placa. Ela ganha fio embaixo, e não à direita, porque aqui a divisão entre
    imagem e texto é horizontal.
 
-   AQUI A CAPA VOLTA A SER RECORTE, ao contrário da placa, e a razão é que os
-   três cartões vivem numa linha de grade: se cada caixa tomasse a altura da
-   própria capa, as três descrições começariam em alturas diferentes, e a
-   ondulação apareceria antes do conteúdo. A proporção é a faixa real da hero
-   (1600/758), a mesma em que as capas são capturadas: a Casa Conexão, a
-   Milênio e a Nívora entram sem perder um pixel. As outras duas são mais
-   altas e o recorte sai pela ALTURA, não pela largura, que é a perda barata:
-   sobra e falta em cima e embaixo não parte título no meio.
-   Por isso o recorte puxa para o terço de cima. É lá que mora o cabeçalho e o
-   título do site fotografado; centralizar joga fora justamente essa parte.
+   A PROPORÇÃO É FIXA porque os três cartões vivem numa linha de grade: se
+   cada caixa tomasse a altura da própria capa, as três descrições começariam
+   em alturas diferentes e a ondulação apareceria antes do conteúdo.
 
-   Era `min-height: 176px` no protótipo, que é o valor que esta proporção dá
-   na largura de hoje. Em proporção ele acompanha a coluna em vez de ficar
-   defasado na primeira mudança de grade. */
+   Era 1600/758, a faixa real da hero dos sites fotografados, escolhida para a
+   captura entrar sem perder pixel. Com a capa virando símbolo sobre cor
+   chapada isso deixou de fazer sentido e passou a atrapalhar: 1600/758 dá
+   176px de caixa, menos 63 da plaquinha sobram 113 para a imagem, e dentro
+   deles o símbolo saía com uns 30px. Medido e olhado: ilegível.
+
+   Agora é 3/2, a mesma das capas, o que também deixa as cinco com uma
+   proporção só. Custa 72px por cartão, que no celular são 216px de página,
+   e é o preço de a marca ser legível. */
 .estudo .amostra {
   flex: none;
-  aspect-ratio: 1600 / 758;
+  aspect-ratio: 3 / 2;
   min-height: 0;
   border-right: 0;
   border-bottom: 1px solid var(--fio);
 }
 
-.estudo .amostra img {
-  position: absolute;
-  inset: 0;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 35%;
-}
+/* A regra que existia aqui recortava a foto por `cover` puxando para o terco
+   de cima, porque era la que ficava o cabecalho do site fotografado. Ela
+   sobrevivia a troca da capa e desfazia o conserto da sobreposicao: voltava a
+   imagem para `absolute`, e a plaquinha cobria o simbolo de novo. Medido: nos
+   tres cartoes conceituais a faixa comecava 175px ANTES de a imagem terminar.
+   Sem foto nao ha o que recortar, entao o estudo passa a herdar o mesmo
+   comportamento dos publicados: a imagem fica no fluxo e o simbolo centraliza
+   no espaco que sobra. */
 
 .estudo .amostra::after { box-shadow: inset 0 0 0 6px rgba(184, 103, 73, 0.22); }
 

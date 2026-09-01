@@ -1,7 +1,6 @@
 import type { CSSProperties } from "react";
 import { depoimentos, featuredAssets, projectAssets } from "./data";
 import type { Dicionario } from "./i18n";
-import Picture from "./picture";
 
 /**
  * Portfólio, na identidade nova (bloco 13 do protótipo aprovado em
@@ -53,11 +52,11 @@ import Picture from "./picture";
  * carregamento, que é o pior caso aceitável.
  */
 const amostraDaCapa: Record<string, string> = {
-  "casa-conexao-hero": "casa",
-  "milenio-hero": "milenio",
-  "nivora-casa-patio-alto": "nivora",
-  "nascente-hero-central": "nascente",
-  "brasa-do-vale-hero": "brasa",
+  "casa-conexao": "casa",
+  "milenio": "milenio",
+  "nivora": "nivora",
+  "nascente": "nascente",
+  "brasa-do-vale": "brasa",
 };
 
 function classeDaAmostra(imagem: string): string {
@@ -131,13 +130,26 @@ export default function SectionPortfolio({ portfolio }: { portfolio: Dicionario[
               <li key={projeto.name} data-reveal>
                 <article className={`placa${invertida ? " placa--invertida" : ""}`}>
                   <div className={classeDaAmostra(asset.image)}>
-                    {/* Duas colunas acima de 1100px, uma abaixo, e a caixa
-                        recorta por `cover`: o `sizes` acompanha a LARGURA da
-                        coluna, que é quem manda aqui. */}
-                    <Picture
-                      name={asset.image}
+                    {/* SVG servido de `public/marcas/`, e nao o `Picture`.
+                        A capa deixou de ser foto: e o simbolo do projeto sobre
+                        a cor da identidade dele. Fundo chapado nao precisa de
+                        pixel, entao nao ha variante responsiva a escolher, nao
+                        ha `sizes` a calcular e o desenho fica nitido em
+                        qualquer largura. */}
+                    {/* A regra `no-img-element` existe para imagem RASTER: ela
+                        quer o otimizador, que redimensiona e reencoda. Aqui a
+                        capa e SVG, ou seja ja e vetor: nao ha o que
+                        redimensionar, nao ha variante a escolher e o
+                        `next/image` nao otimiza SVG por padrao. Silenciada com
+                        o motivo escrito, e nao ignorada. */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={`/marcas/${asset.image}.svg`}
                       alt={projeto.imageAlt}
-                      sizes="(max-width: 1100px) 92vw, (max-width: 1300px) 46vw, 600px"
+                      width={1600}
+                      height={1067}
+                      loading="lazy"
+                      decoding="async"
                     />
                     <div className="amostra-placa">
                       {/* Escondido de quem ouve: o nome já é o h3 ao lado e o
@@ -195,10 +207,20 @@ export default function SectionPortfolio({ portfolio }: { portfolio: Dicionario[
               return (
                 <li className="cartao cartao--interativo estudo" key={projeto.name} data-reveal style={atraso}>
                   <div className={classeDaAmostra(asset.image)}>
-                    <Picture
-                      name={asset.image}
+                    {/* A regra `no-img-element` existe para imagem RASTER: ela
+                        quer o otimizador, que redimensiona e reencoda. Aqui a
+                        capa e SVG, ou seja ja e vetor: nao ha o que
+                        redimensionar, nao ha variante a escolher e o
+                        `next/image` nao otimiza SVG por padrao. Silenciada com
+                        o motivo escrito, e nao ignorada. */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={`/marcas/${asset.image}.svg`}
                       alt={projeto.imageAlt}
-                      sizes="(max-width: 760px) 92vw, (max-width: 1100px) 45vw, (max-width: 1300px) 30vw, 380px"
+                      width={1600}
+                      height={1067}
+                      loading="lazy"
+                      decoding="async"
                     />
                     <div className="amostra-placa">
                       <span className="amostra-nome" aria-hidden="true">

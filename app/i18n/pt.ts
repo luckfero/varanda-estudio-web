@@ -143,7 +143,7 @@ const pt = {
         description:
           "Uma casa que aluga salas para profissionais autônomos atenderem: psicólogos, advogados, doulas, contadores. O site apresenta o espaço, mostra quem já atende ali e leva a conversa direto para o WhatsApp.",
         features: ["Direção visual", "Ilustração autoral", "Galeria interativa", "Página por profissional"],
-        imageAlt: "Página inicial da Casa Conexão, com duas poltronas diante de uma janela em arco",
+        imageAlt: "Marca da Casa Conexão, dois círculos que se cruzam, sobre o verde da identidade dela",
       },
       {
         name: "Milênio",
@@ -151,7 +151,7 @@ const pt = {
         description:
           "Três vozes, quase dez anos de estrada e o primeiro álbum a caminho. O site apresenta o grupo, o disco e o curta, com a alternância entre preto e branco como espinha da narrativa.",
         features: ["Direção visual", "Tratamento de imagem", "Tipografia", "Desenvolvimento sem dependência"],
-        imageAlt: "Página inicial da Milênio, com o título O rap de outro milênio sobre fundo preto",
+        imageAlt: "Marca da Milênio, um olho desenhado em traço, sobre o verde da identidade dela",
       },
     ],
     abrirAntes: "Abrir demonstração do projeto ",
@@ -166,7 +166,7 @@ const pt = {
         description:
           "Um site institucional trilíngue para uma construtora contemporânea, com portfólio de obras, serviços, processo construtivo e pré-diagnóstico de orçamento em uma experiência visual técnica e imersiva.",
         features: ["Estratégia trilíngue", "Arquitetura da informação", "Direção visual", "Desenvolvimento responsivo"],
-        imageAlt: "Casa contemporânea apresentada na página inicial do projeto Nívora Construções",
+        imageAlt: "Marca da Nívora Construções, um N em linha contínua, sobre o cobre da identidade dela",
       },
       {
         name: "Nascente",
@@ -174,7 +174,7 @@ const pt = {
         description:
           "Uma loja de perfumaria autoral com catálogo filtrável por coleção e intensidade, guia olfativo em etapas e fluxo de compra completo, da descoberta da fragrância à confirmação do pedido.",
         features: ["Identidade visual", "Catálogo e filtros", "Guia olfativo", "Fluxo de compra"],
-        imageAlt: "Frasco de perfume em vidro âmbar entre folhas escuras, na página inicial do projeto Nascente",
+        imageAlt: "Marca da Nascente, meia rodela de cítrico, sobre o marrom escuro da identidade dela",
       },
       {
         name: "Brasa do Vale",
@@ -182,7 +182,7 @@ const pt = {
         description:
           "Um site acolhedor e direto para uma churrascaria, com foco no cardápio, nos diferenciais da casa e no contato rápido pelo WhatsApp.",
         features: ["Estratégia de conteúdo", "Direção visual", "Design responsivo", "Desenvolvimento"],
-        imageAlt: "Imagem de churrasco usada na página inicial do projeto Brasa do Vale",
+        imageAlt: "Marca da Brasa do Vale, um espeto com três cortes, sobre o vinho da identidade dela",
       },
     ],
   },

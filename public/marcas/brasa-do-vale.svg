@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1067" width="1600" height="1067" role="img" aria-label="brasa-do-vale">
+  <title>brasa-do-vale</title>
+  <!-- O espeto com tres cortes, de portfolio/brasa-do-vale/public/favicon.svg. A PLACA DE FUNDO DELE FOI REMOVIDA: o favicon traz um rect #4a1511 que, sobre o vinho #731f17, apareceria como um quadrado mais escuro no meio da capa, a 1,38:1. Cortes 5.93:1 e espeto 4.09:1 sobre o vinho. -->
+  <rect width="1600" height="1067" fill="#731f17"/>
+  <g transform="translate(549.78 283.28) scale(7.81929)">
+    <path d="M32 9v46" stroke="#c7973e" stroke-width="3.5" stroke-linecap="round"/>
+    <g fill="#dfbb70">
+      <rect x="16" y="13" width="32" height="11" rx="5.5"/>
+      <rect x="16" y="27" width="32" height="11" rx="5.5"/>
+      <rect x="16" y="41" width="32" height="11" rx="5.5"/>
+    </g>
+  </g>
+</svg>

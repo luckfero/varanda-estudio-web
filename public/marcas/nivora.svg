@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1067" width="1600" height="1067" role="img" aria-label="nivora">
+  <title>nivora</title>
+  <!-- O N, de portfolio/nivora-construcoes/components/ui.tsx, linhas 17 a 21. MONOCROMATICO POR NECESSIDADE: no site o segundo traco e cobre e o terceiro tem 25% de opacidade, e sobre um fundo cobre os dois desapareceriam (1,00:1 e 1,44:1 medidos). Os tres saem em creme, a 4.01:1. O `currentColor` do componente virou hex fixo, porque aqui o arquivo viaja sozinho. -->
+  <rect width="1600" height="1067" fill="#b7653b"/>
+  <g transform="translate(583.00 316.50) scale(8.34622)">
+    <g fill="none" stroke="#faf8f3" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M7 43V9l19 20V9l19 34V9"/>
+      <path d="M7 43h38"/>
+      <path d="M26 29 45 9"/>
+    </g>
+  </g>
+</svg>

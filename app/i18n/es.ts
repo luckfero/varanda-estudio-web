@@ -140,7 +140,7 @@ const es: Dicionario = {
         description:
           "Una casa que alquila salas para profesionales autónomos: psicólogos, abogados, doulas, contables. La web presenta el espacio, muestra quién trabaja allí y lleva la conversación directa a WhatsApp.",
         features: ["Dirección visual", "Ilustración propia", "Galería interactiva", "Página por profesional"],
-        imageAlt: "Página de inicio de Casa Conexão, con dos butacas frente a una ventana de arco",
+        imageAlt: "Marca de Casa Conexão, dos círculos que se cruzan, sobre el verde de su identidad",
       },
       {
         name: "Milênio",
@@ -148,7 +148,7 @@ const es: Dicionario = {
         description:
           "Tres voces, casi diez años de camino y el primer álbum en marcha. La web presenta al grupo, el disco y el cortometraje, con la alternancia entre negro y blanco como columna de la narración.",
         features: ["Dirección visual", "Tratamiento de imagen", "Tipografía", "Desarrollo sin dependencias"],
-        imageAlt: "Página de inicio de Milênio, con el título O rap de outro milênio sobre fondo negro",
+        imageAlt: "Marca de Milênio, un ojo dibujado a trazo, sobre el verde de su identidad",
       },
     ],
     abrirAntes: "Abrir la demo del proyecto ",
@@ -163,7 +163,7 @@ const es: Dicionario = {
         description:
           "Una web institucional trilingüe para una constructora contemporánea, con portfolio de obras, servicios, proceso constructivo y prediagnóstico de presupuesto en una experiencia visual técnica e inmersiva.",
         features: ["Estrategia trilingüe", "Arquitectura de la información", "Dirección visual", "Desarrollo responsive"],
-        imageAlt: "Casa contemporánea presentada en la página de inicio del proyecto Nívora Construções",
+        imageAlt: "Marca de Nívora Construções, una N de línea continua, sobre el cobre de su identidad",
       },
       {
         name: "Nascente",
@@ -171,7 +171,7 @@ const es: Dicionario = {
         description:
           "Una perfumería de autor con catálogo filtrable por colección e intensidad, guía olfativa por pasos y flujo de compra completo, del descubrimiento de la fragancia a la confirmación del pedido.",
         features: ["Identidad visual", "Catálogo y filtros", "Guía olfativa", "Flujo de compra"],
-        imageAlt: "Frasco de perfume en vidrio ámbar entre hojas oscuras, en la página de inicio del proyecto Nascente",
+        imageAlt: "Marca de Nascente, media rodaja de cítrico, sobre el marrón oscuro de su identidad",
       },
       {
         name: "Brasa do Vale",
@@ -179,7 +179,7 @@ const es: Dicionario = {
         description:
           "Una web acogedora y directa para un asador, centrada en la carta, en lo que distingue a la casa y en el contacto rápido por WhatsApp.",
         features: ["Estrategia de contenido", "Dirección visual", "Diseño responsive", "Desarrollo"],
-        imageAlt: "Imagen de carne a la brasa usada en la página de inicio del proyecto Brasa do Vale",
+        imageAlt: "Marca de Brasa do Vale, un pincho con tres cortes, sobre el vino de su identidad",
       },
     ],
   },

@@ -110,26 +110,26 @@ export const depoimentos: Depoimento[] = [];
 
 export const featuredAssets = [
   {
-    image: "casa-conexao-hero",
+    image: "casa-conexao",
     url: "https://casaconexao.varandaestudioweb.com/",
   },
   {
-    image: "milenio-hero",
+    image: "milenio",
     url: "https://milenio.varandaestudioweb.com/",
   },
 ];
 
 export const projectAssets = [
   {
-    image: "nivora-casa-patio-alto",
+    image: "nivora",
     url: "https://nivora.varandaestudioweb.com/",
   },
   {
-    image: "nascente-hero-central",
+    image: "nascente",
     url: "https://nascente.varandaestudioweb.com/",
   },
   {
-    image: "brasa-do-vale-hero",
+    image: "brasa-do-vale",
     url: "https://brasa.varandaestudioweb.com/",
   },
 ];

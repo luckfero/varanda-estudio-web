@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1067" width="1600" height="1067" role="img" aria-label="nascente">
+  <title>nascente</title>
+  <!-- A meia rodela de citrico, de portfolio/nascente-casa-olfativa/public/favicon.svg. A placa dele foi removida e o fundo da capa e a MESMA cor (#191210): o vao entre casca e polpa e os tres cortes sao pintados nessa cor, entao eles continuam lendo como recorte. Trocar o fundo da capa sem trocar esses quatro quebra o desenho. Ocre sobre tinta, 7.26:1. -->
+  <rect width="1600" height="1067" fill="#191210"/>
+  <g transform="translate(562.96 300.17) scale(7.40741)">
+    <path d="M5 45A27 27 0 0 1 59 45Z" fill="#c99a58"/>
+    <path d="M12 45A20 20 0 0 1 52 45Z" fill="#191210"/>
+    <path d="M17 45A15 15 0 0 1 47 45Z" fill="#c99a58"/>
+    <g stroke="#191210" stroke-width="4.2" stroke-linecap="round">
+      <path d="M32 45V31"/>
+      <path d="M32 45 21.5 34.5"/>
+      <path d="M32 45 42.5 34.5"/>
+    </g>
+  </g>
+</svg>

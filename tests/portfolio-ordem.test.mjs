@@ -22,14 +22,14 @@ import test from "node:test";
  */
 
 const NO_AR_ESPERADO = [
-  { nome: "Casa Conexão", host: "casaconexao.varandaestudioweb.com", imagem: "casa-conexao-hero" },
-  { nome: "Milênio", host: "milenio.varandaestudioweb.com", imagem: "milenio-hero" },
+  { nome: "Casa Conexão", host: "casaconexao.varandaestudioweb.com", imagem: "casa-conexao" },
+  { nome: "Milênio", host: "milenio.varandaestudioweb.com", imagem: "milenio" },
 ];
 
 const ESTUDOS_ESPERADOS = [
-  { nome: "Nívora Construções", host: "nivora.varandaestudioweb.com", imagem: "nivora-casa-patio-alto" },
-  { nome: "Nascente", host: "nascente.varandaestudioweb.com", imagem: "nascente-hero-central" },
-  { nome: "Brasa do Vale", host: "brasa.varandaestudioweb.com", imagem: "brasa-do-vale-hero" },
+  { nome: "Nívora Construções", host: "nivora.varandaestudioweb.com", imagem: "nivora" },
+  { nome: "Nascente", host: "nascente.varandaestudioweb.com", imagem: "nascente" },
+  { nome: "Brasa do Vale", host: "brasa.varandaestudioweb.com", imagem: "brasa-do-vale" },
 ];
 
 /* O nome dos estudos é igual nos três idiomas (são nomes próprios), então
@@ -73,7 +73,10 @@ function cartoes(html, marcador) {
     .map((pedaco) => ({
       nome: pedaco.match(/<h3[^>]*>([\s\S]*?)<\/h3>/i)?.[1]?.trim() ?? null,
       host: pedaco.match(/href="https?:\/\/([^/"]+)/i)?.[1] ?? null,
-      imagem: pedaco.match(/\/images\/r\/([a-z0-9-]+?)-\d+\.(?:avif|webp)/i)?.[1] ?? null,
+      /* A capa deixou de ser foto responsiva e virou um SVG de
+         `public/marcas/`, entao o nome sai do proprio caminho e nao
+         mais de uma variante com largura no nome. */
+      imagem: pedaco.match(/\/marcas\/([a-z0-9-]+)\.svg/i)?.[1] ?? null,
     }));
 }
 

@@ -129,7 +129,7 @@ const en: Dicionario = {
         description:
           "A house that rents rooms to independent professionals: psychologists, lawyers, doulas, accountants. The site introduces the space, shows who already works there and moves the conversation straight to WhatsApp.",
         features: ["Visual direction", "Original illustration", "Interactive gallery", "A page per professional"],
-        imageAlt: "Casa Conexão home page, with two armchairs facing an arched window",
+        imageAlt: "Casa Conexão's mark, two overlapping circles, on the green of its identity",
       },
       {
         name: "Milênio",
@@ -137,7 +137,7 @@ const en: Dicionario = {
         description:
           "Three voices, nearly ten years on the road and a first album on the way. The site introduces the group, the record and the short film, with the alternation between black and white as the backbone of the story.",
         features: ["Visual direction", "Image treatment", "Typography", "Dependency-free development"],
-        imageAlt: "Milênio home page, with the title O rap de outro milênio on a black background",
+        imageAlt: "Milênio's mark, an eye drawn in outline, on the green of its identity",
       },
     ],
     abrirAntes: "Open the ",
@@ -152,7 +152,7 @@ const en: Dicionario = {
         description:
           "A trilingual company site for a contemporary builder, with a portfolio of works, services, construction process and a budget pre-assessment, in a technical and immersive visual experience.",
         features: ["Trilingual strategy", "Information architecture", "Visual direction", "Responsive development"],
-        imageAlt: "Contemporary house shown on the home page of the Nívora Construções project",
+        imageAlt: "Nívora Construções' mark, an N in one continuous line, on the copper of its identity",
       },
       {
         name: "Nascente",
@@ -160,7 +160,7 @@ const en: Dicionario = {
         description:
           "An independent perfumery with a catalogue filterable by collection and intensity, a step-by-step scent guide and a complete purchase flow, from discovering the fragrance to confirming the order.",
         features: ["Visual identity", "Catalogue and filters", "Scent guide", "Purchase flow"],
-        imageAlt: "Amber glass perfume bottle among dark leaves, on the home page of the Nascente project",
+        imageAlt: "Nascente's mark, half a citrus slice, on the dark brown of its identity",
       },
       {
         name: "Brasa do Vale",
@@ -168,7 +168,7 @@ const en: Dicionario = {
         description:
           "A warm, direct site for a steakhouse, built around the menu, what sets the place apart and quick contact over WhatsApp.",
         features: ["Content strategy", "Visual direction", "Responsive design", "Development"],
-        imageAlt: "Grilled meat image used on the home page of the Brasa do Vale project",
+        imageAlt: "Brasa do Vale's mark, a skewer with three cuts, on the wine red of its identity",
       },
     ],
   },
