@@ -69,7 +69,6 @@ const en: Dicionario = {
 
   intro: {
     indice: "How we see it",
-    eyebrow: "A website doesn't have to look complicated",
     titulo: "It has to make sense to the person arriving and to the person running the business.",
     coluna1: "Varanda brings businesses closer to the web with clear communication, a transparent process and decisions made for the reality of each client.",
     coluna2: "Every project brings together strategy, content and development to deliver a site that is good-looking, useful and easy to navigate.",

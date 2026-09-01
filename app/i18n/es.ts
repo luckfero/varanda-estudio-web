@@ -80,7 +80,6 @@ const es: Dicionario = {
 
   intro: {
     indice: "Nuestra mirada",
-    eyebrow: "Una web no tiene por qué parecer complicada",
     titulo: "Tiene que tener sentido para quien llega y para quien lleva el negocio.",
     coluna1: "Varanda acerca los negocios a lo digital con comunicación clara, un proceso transparente y decisiones pensadas para la realidad de cada cliente.",
     coluna2: "Cada proyecto reúne estrategia, contenido y desarrollo para entregar una web bonita, útil y fácil de navegar.",

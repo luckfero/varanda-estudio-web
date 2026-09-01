@@ -70,7 +70,6 @@ const pt = {
 
   intro: {
     indice: "Nosso olhar",
-    eyebrow: "Um site não precisa parecer complicado",
     titulo: "Ele precisa fazer sentido para quem chega e para quem cuida do negócio.",
     coluna1: "A Varanda aproxima negócios do digital com comunicação clara, processo transparente e decisões pensadas para a realidade de cada cliente.",
     coluna2: "Cada projeto reúne estratégia, conteúdo e desenvolvimento para entregar um site bonito, útil e fácil de navegar.",

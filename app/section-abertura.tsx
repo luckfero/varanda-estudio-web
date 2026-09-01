@@ -197,14 +197,25 @@ export default function SectionAbertura({
           =================================================================== */}
       <section className="secao" aria-labelledby="titulo-apresentacao">
         <div className="caixa">
+          {/* O RÓTULO É FILHO DIRETO DA GRADE, e não do bloco da esquerda.
+              Enquanto ele morava lá dentro, ele empurrava o título 43px para
+              baixo (19px de altura mais 24px de margem) e o título nascia
+              desalinhado dos parágrafos da direita: medido no site publicado,
+              o rótulo em y=860, o primeiro parágrafo em y=877 e o título em
+              y=938. Como filho da grade ele ocupa a primeira linha sozinho, e
+              o título e as colunas dividem a segunda, começando juntos sem
+              nenhum número mágico no CSS.
+
+              SAIU DAQUI a `.sobrancelha` com `intro.eyebrow` ("Um site não
+              precisa parecer complicado"), a pedido. A classe continua
+              existindo porque a seção "sobre" ainda a usa. */}
           <div className="apresentacao-grade">
-            <div data-reveal>
-              <p className="rotulo">
-                <b>02</b>
-                <i aria-hidden="true" />
-                {intro.indice}
-              </p>
-              <p className="sobrancelha">{intro.eyebrow}</p>
+            <p className="rotulo" data-reveal>
+              <b>02</b>
+              <i aria-hidden="true" />
+              {intro.indice}
+            </p>
+            <div data-reveal style={atraso(60)}>
               {/* PENDÊNCIA: o protótipo destaca "sentido" em itálico no
                   acento, e o dicionário guarda o título como frase inteira.
                   Fazer o destaque exige três chaves novas nos três idiomas
