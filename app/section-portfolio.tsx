@@ -129,36 +129,45 @@ export default function SectionPortfolio({ portfolio }: { portfolio: Dicionario[
             return (
               <li key={projeto.name} data-reveal>
                 <article className={`placa${invertida ? " placa--invertida" : ""}`}>
-                  <div className={classeDaAmostra(asset.image)}>
-                    {/* SVG servido de `public/marcas/`, e nao o `Picture`.
-                        A capa deixou de ser foto: e o simbolo do projeto sobre
-                        a cor da identidade dele. Fundo chapado nao precisa de
-                        pixel, entao nao ha variante responsiva a escolher, nao
-                        ha `sizes` a calcular e o desenho fica nitido em
-                        qualquer largura. */}
-                    {/* A regra `no-img-element` existe para imagem RASTER: ela
-                        quer o otimizador, que redimensiona e reencoda. Aqui a
-                        capa e SVG, ou seja ja e vetor: nao ha o que
-                        redimensionar, nao ha variante a escolher e o
-                        `next/image` nao otimiza SVG por padrao. Silenciada com
-                        o motivo escrito, e nao ignorada. */}
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={`/marcas/${asset.image}.svg`}
-                      alt={projeto.imageAlt}
-                      width={1600}
-                      height={1067}
-                      loading="lazy"
-                      decoding="async"
+                  {/* A CAPA E UM LINK, e o desenho dela e FUNDO e nao `<img>`.
+
+                      Por que fundo: `<img>` tem tamanho intrinseco, e ele
+                      vazava para a grade. Com `aspect-ratio` na caixa para
+                      conter a altura, a largura minima intrinseca ia junto e a
+                      coluna da capa saia com 698px onde a grade pede 591,
+                      comendo 107px da coluna de texto. Medido. Um elemento com
+                      `background-image` nao tem tamanho intrinseco nenhum: ele
+                      ocupa o que a grade der, e o `background-size: contain`
+                      centraliza o desenho sozinho.
+
+                      A acessibilidade nao se perde: `role="img"` com
+                      `aria-label` diz o mesmo que o `alt` dizia.
+
+                      O LINK e `aria-hidden` e fora da ordem de tabulacao de
+                      proposito. O endereco do site ja e um link, no corpo do
+                      cartao, com nome acessivel completo. Dois links para o
+                      mesmo destino fariam o leitor de tela anunciar a mesma
+                      coisa duas vezes. Este existe para o ponteiro; quem
+                      navega por teclado usa o de baixo. */}
+                  <a
+                    className={classeDaAmostra(asset.image)}
+                    href={asset.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-hidden="true"
+                    tabIndex={-1}
+                  >
+                    <span
+                      className="amostra-arte"
+                      role="img"
+                      aria-label={projeto.imageAlt}
+                      style={{ backgroundImage: `url(/marcas/${asset.image}.svg)` }}
                     />
-                    <div className="amostra-placa">
-                      {/* Escondido de quem ouve: o nome já é o h3 ao lado e o
-                          `alt` da capa já diz de que site é a imagem. */}
-                      <span className="amostra-nome" aria-hidden="true">
-                        {projeto.name}
-                      </span>
-                    </div>
-                  </div>
+                    <span className="amostra-veu" aria-hidden="true" />
+                    <span className="amostra-placa">
+                      <span className="amostra-nome" aria-hidden="true">{projeto.name}</span>
+                    </span>
+                  </a>
 
                   <div className="placa-corpo">
                     <p className="mono mono--acento">{projeto.label}</p>
@@ -206,28 +215,45 @@ export default function SectionPortfolio({ portfolio }: { portfolio: Dicionario[
               const atraso = index > 0 ? ({ "--atraso": `${index * 90}ms` } as CSSProperties) : undefined;
               return (
                 <li className="cartao cartao--interativo estudo" key={projeto.name} data-reveal style={atraso}>
-                  <div className={classeDaAmostra(asset.image)}>
-                    {/* A regra `no-img-element` existe para imagem RASTER: ela
-                        quer o otimizador, que redimensiona e reencoda. Aqui a
-                        capa e SVG, ou seja ja e vetor: nao ha o que
-                        redimensionar, nao ha variante a escolher e o
-                        `next/image` nao otimiza SVG por padrao. Silenciada com
-                        o motivo escrito, e nao ignorada. */}
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={`/marcas/${asset.image}.svg`}
-                      alt={projeto.imageAlt}
-                      width={1600}
-                      height={1067}
-                      loading="lazy"
-                      decoding="async"
+                  {/* A CAPA E UM LINK, e o desenho dela e FUNDO e nao `<img>`.
+
+                      Por que fundo: `<img>` tem tamanho intrinseco, e ele
+                      vazava para a grade. Com `aspect-ratio` na caixa para
+                      conter a altura, a largura minima intrinseca ia junto e a
+                      coluna da capa saia com 698px onde a grade pede 591,
+                      comendo 107px da coluna de texto. Medido. Um elemento com
+                      `background-image` nao tem tamanho intrinseco nenhum: ele
+                      ocupa o que a grade der, e o `background-size: contain`
+                      centraliza o desenho sozinho.
+
+                      A acessibilidade nao se perde: `role="img"` com
+                      `aria-label` diz o mesmo que o `alt` dizia.
+
+                      O LINK e `aria-hidden` e fora da ordem de tabulacao de
+                      proposito. O endereco do site ja e um link, no corpo do
+                      cartao, com nome acessivel completo. Dois links para o
+                      mesmo destino fariam o leitor de tela anunciar a mesma
+                      coisa duas vezes. Este existe para o ponteiro; quem
+                      navega por teclado usa o de baixo. */}
+                  <a
+                    className={classeDaAmostra(asset.image)}
+                    href={asset.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-hidden="true"
+                    tabIndex={-1}
+                  >
+                    <span
+                      className="amostra-arte"
+                      role="img"
+                      aria-label={projeto.imageAlt}
+                      style={{ backgroundImage: `url(/marcas/${asset.image}.svg)` }}
                     />
-                    <div className="amostra-placa">
-                      <span className="amostra-nome" aria-hidden="true">
-                        {projeto.name}
-                      </span>
-                    </div>
-                  </div>
+                    <span className="amostra-veu" aria-hidden="true" />
+                    <span className="amostra-placa">
+                      <span className="amostra-nome" aria-hidden="true">{projeto.name}</span>
+                    </span>
+                  </a>
 
                   <div className="estudo-corpo">
                     <div className="estudo-alto">

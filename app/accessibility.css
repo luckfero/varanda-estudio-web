@@ -56,6 +56,12 @@
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 
+  /* O veu da capa do portfolio REDUZ, e nao some: ele e mudanca de estado e
+     nao enfeite, entao quem pediu menos movimento continua vendo a capa
+     revelar, so que quase de imediato. E a regra 9.20 aplicada onde ela
+     cabe, ao contrario do CursorGrid, que e decorativo e desliga inteiro. */
+  .amostra-veu { transition-duration: 60ms; }
+
   /* Longhand, e não o atalho `transition: opacity 240ms var(--ease-out)`.
      Atalho com `var()` dentro vira substituição pendente: ele funciona, mas
      o CSSOM devolve as quatro longhands VAZIAS, e aí não há como conferir a

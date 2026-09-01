@@ -68,19 +68,18 @@
    enquanto houver duas colunas: em coluna única ela deixaria a ordem de
    leitura imagem-texto num cartão e texto-imagem no outro, e quem desliga
    isso é o responsivo. */
-/* A CAIXA DA CAPA TEM PROPORCAO DEFINIDA, e e isso que impede a imagem de
-   mandar na altura do cartao.
+/* A CAIXA DA CAPA NAO PRECISA MAIS DE PROPORCAO DECLARADA.
 
-   Sem proporcao, a contribuicao INTRINSECA da imagem entra na conta da linha
-   da grade: mesmo com `flex-basis: 0` e `min-height: 0`, a altura natural dela
-   numa coluna de 590px, 393px, vazava para a linha. Somada a plaquinha, o
-   cartao ia a 475px. Com a proporcao declarada, a caixa tem tamanho proprio e
-   quem volta a mandar e a coluna de TEXTO, que e o comportamento de antes.
+   Enquanto o desenho era um `<img>`, ele tinha tamanho intrinseco e esse
+   tamanho vazava para a grade: a altura natural, 393px numa coluna de 590,
+   empurrava o cartao para 475px. A saida da vez foi declarar `aspect-ratio`
+   na caixa, e ela trouxe um defeito pior: com a altura presa, a largura
+   MINIMA intrinseca veio junto, e a coluna da capa saiu com 698px onde a
+   grade pede 591, comendo 107px da coluna de texto. Medido nos dois cartoes.
 
-   16/9 e nao 3/2: o valor precisa ficar ABAIXO da altura do texto, senao ele
-   e que passa a mandar. Na largura de hoje da 332px contra os 392 do texto, e
-   a caixa e esticada para 392 pela propria grade. */
-.placa .amostra { aspect-ratio: 16 / 9; min-height: 100%; }
+   Agora o desenho e `background-image` num elemento vazio, que nao tem
+   tamanho intrinseco nenhum. Nada vaza, nada precisa ser contido, e quem
+   manda na altura e na largura e a grade, como sempre deveria ter sido. */
 
 .placa--invertida .amostra {
   order: 2;
@@ -141,25 +140,50 @@
    arquivo em vez de crescer quando a caixa e mais alta. A faixa que sobra nao
    aparece, porque o fundo da caixa e a MESMA cor do arquivo, declarada em
    `--amostra-*` no `base.css`. Se as duas divergirem, a emenda aparece. */
-.amostra img {
-  /* `height: 0` com `flex: 1`, e isto e o que faz a capa PARAR de mandar na
-     altura do cartao.
-
-     Sem a altura zerada, a imagem tem largura definida (100%) e proporcao
-     propria, entao a altura usada e a intrinseca: 393px numa coluna de 590.
-     Somada a plaquinha, que passou a ficar no fluxo, o cartao dos publicados
-     foi de 392 para 475px. Medido, e o Lucca reparou.
-
-     Com a base em zero ela vira preenchimento: quem manda na altura volta a
-     ser a coluna de TEXTO ao lado, como era antes, e a capa ocupa o que
-     sobra. O `object-fit: contain` continua garantindo que o simbolo nao
-     deforme nem seja cortado. */
+/* A ARTE. Elemento vazio com o desenho de fundo: `contain` mantem a
+   proporcao e `center` centraliza, nos dois eixos, em qualquer altura de
+   caixa. `flex: 1` faz ela ocupar tudo que sobra acima da plaquinha. */
+.amostra-arte {
   flex: 1;
   min-height: 0;
-  height: 0;
-  width: 100%;
-  object-fit: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
+
+/* O VEU, e ele so existe onde HA ponteiro.
+
+   O pedido e que a capa fique escurecida e revele a cor de verdade quando o
+   ponteiro passa. Em tela de toque nao existe `:hover`: um veu declarado sem
+   guarda ficaria escuro para sempre no celular, e a capa nunca apareceria.
+   Por isso o bloco inteiro mora dentro de `(hover: hover)`, e onde nao ha
+   ponteiro a capa ja nasce como ela e. */
+.amostra-veu { display: none; }
+
+@media (hover: hover) {
+  .amostra-veu {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    /* 0,38 e nao um valor de gosto: e o ponto em que os CINCO simbolos
+       continuam acima dos 3:1 de elemento grafico com o veu por cima. Medido,
+       compondo cada simbolo e cada capa contra o veu: a 0,66 o pior caso caia
+       para 1,79:1 e a secao virava cinco retangulos escuros; a 0,45 o pior
+       ainda dava 2,78. Aqui o pior e a Nivora, com 3,02:1.
+       O veu escurece de propósito, mas o trabalho continua visivel antes de o
+       ponteiro chegar: quem so passa o olho pela secao ainda ve cinco marcas,
+       e nao cinco manchas. */
+    background: rgba(9, 8, 7, 0.38);
+    transition: opacity var(--dur-base) var(--ease-out);
+  }
+  .amostra:hover .amostra-veu,
+  .amostra:focus-visible .amostra-veu { opacity: 0; }
+}
+
+/* A capa e um link: sem sublinhado e sem cor de link herdada. */
+.amostra { text-decoration: none; color: inherit; }
 
 /* A MOLDURA E O VÉU VIVEM NO PSEUDOELEMENTO, e não no próprio elemento.
    `box-shadow: inset` é pintado na camada de fundo, ou seja, ABAIXO do
@@ -174,8 +198,14 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
+  /* A MOLDURA DE TERRACOTA SAIU, a pedido, em 28/08/2026. Ela era
+     `box-shadow: inset 0 0 0 8px rgba(184, 103, 73, 0.22)` aqui e 6px no
+     estudo, e foi desenhada quando a capa era foto: servia de passe-partout
+     entre a obra e o chao escuro. Sobre cor chapada ela virou um retangulo
+     marrom em volta de cada capa.
+     O brilho diagonal fica: ele nao e moldura, e o que impede a cor chapada
+     de ler como bloco morto. */
   background: linear-gradient(160deg, rgba(255, 255, 255, 0.06), transparent 55%);
-  box-shadow: inset 0 0 0 8px rgba(184, 103, 73, 0.22);
 }
 
 /* A plaquinha com o nome do projeto sobre a capa.
@@ -321,7 +351,7 @@
    comportamento dos publicados: a imagem fica no fluxo e o simbolo centraliza
    no espaco que sobra. */
 
-.estudo .amostra::after { box-shadow: inset 0 0 0 6px rgba(184, 103, 73, 0.22); }
+/* A moldura de 6px do estudo saiu junto com a de 8px da placa. */
 
 .estudo .amostra-nome { font-size: var(--t-item); }
 
