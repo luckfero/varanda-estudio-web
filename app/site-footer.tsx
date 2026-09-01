@@ -39,10 +39,21 @@ export default function SiteFooter({
 
   return (
     <footer className="rodape">
-      {/* A mesma grade da abertura e do formulario. O rodape NAO tem a
-          `.grade-fina` parada, entao aqui nao ha o que alinhar; `origemNoCanto`
-          fica assim mesmo, para a malha ser a mesma dos outros dois e nao
-          escorregar de secao para secao. */}
+      {/* A GRADE PARADA, a mesma da abertura e do formulario. Ela entrou aqui
+          em 01/09/2026, a pedido: sem ela as celulas acesas do CursorGrid
+          apareciam soltas, sem linha nenhuma para sustentar.
+
+          A ORDEM IMPORTA: as duas camadas vivem em `z-index: 0`, e entre
+          iguais quem pinta por cima e quem vem depois no documento. A parada
+          primeiro, a que acende depois. */}
+      <div className="grade-fina" aria-hidden="true" />
+
+      {/* A grade que responde ao cursor. Ver `app/cursor-grid.jsx`.
+
+          `cellSize` 96 e `origemNoCanto` sao o que faz a celula acesa cair EM
+          CIMA do quadrado da grade parada acima: ela e um `background-image`
+          de 96 por 96 que comeca no canto do elemento, e o componente, por
+          padrao, usa 100 e centraliza a malha. */}
       <CursorGrid
         className="cursor-grid--camada"
         escutaNoPai

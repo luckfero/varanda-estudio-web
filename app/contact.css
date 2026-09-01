@@ -147,6 +147,25 @@
    a classe `.acima`, e o rodape nao a usa. */
 .rodape { position: relative; border-top: 1px solid var(--fio); background: var(--chao-alto); }
 .rodape-alto, .rodape-baixo { position: relative; z-index: 1; }
+
+/* A GRADE PARADA DO RODAPE APAGA MAIS TARDE QUE A DAS SECOES.
+
+   A mascara de `.grade-fina` zera em 70% da altura do elemento. Isso foi
+   medido em secao alta, onde 70% e um desvanecimento longo; o rodape tem
+   300px, entao a mesma mascara apagava a grade em 210px e sobravam 90px de
+   chao liso bem onde mora a linha do e-mail e do copyright. As celulas acesas
+   do CursorGrid alcancam essa faixa, e la elas voltavam a flutuar sem linha
+   nenhuma, que e exatamente o que a grade veio resolver.
+
+   Aqui ela fica cheia ate 40% e desce a zero na borda de baixo. O
+   desvanecimento continua existindo, e existe por um motivo: a pagina termina
+   nessa borda, e grade cortada em seco marcaria um fim que o desenho nao tem.
+
+   Para devolver o comportamento das secoes, apagar este bloco. */
+.rodape .grade-fina::before {
+  mask-image: linear-gradient(to bottom, #000 0%, #000 40%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 40%, transparent 100%);
+}
 .rodape-alto { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--e5); padding-block: var(--e8); }
 /* Frase de fecho: serifada, e é o único `p` deste bloco. A guarda `:not(.mono)`
    está aqui pela regra 9.24, e não porque falte hoje. */
