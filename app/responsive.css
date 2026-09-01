@@ -144,6 +144,31 @@
   .tabela-legenda { display: none; }
 
   .planos-cartoes { display: grid; gap: var(--e4); }
+
+  /* O RESTO DA SEÇÃO APERTA O ESPAÇAMENTO, e não perde conteúdo.
+
+     Medido em 390px antes destas regras: `.incluido` tinha 762px com 464px de
+     texto e `.escopo` tinha 830px com 346px. Os dois são quase só conteúdo, e
+     por isso não há linha para cortar: as seis garantias e os onze itens de
+     escopo são o que o cliente precisa ler antes de decidir. O que dava para
+     tirar era ar, e é isso que está aqui.
+
+     Todos os valores descem um degrau da escala declarada em `base.css`,
+     nenhum é número solto. Vale só no celular: no desktop a seção não incomoda
+     e a folga faz parte do ritmo da página. */
+  .incluido { margin-top: var(--e7); }
+  .incluido-grade { gap: var(--e4); }
+  .incluido-item { padding-top: var(--e3); }
+
+  .escopo { margin-top: var(--e7); }
+  .escopo-coluna { padding: var(--e5); }
+  /* 8px para 4px em cada item. Eles não são clicáveis, então este recuo é
+     respiro e não alvo de toque: nenhum critério de tamanho mínimo se aplica
+     aqui, e a linha continua com 31px de altura. */
+  .escopo li { padding-block: var(--e1); }
+
+  .incluido h3,
+  .escopo h3 { margin-bottom: var(--e4); }
 }
 
 @media (max-width: 760px) {
