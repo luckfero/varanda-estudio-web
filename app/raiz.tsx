@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import AccessibilityEnhancements from "./accessibility-enhancements";
+import Ponteiro from "./ponteiro";
 import { caminho, getDicionario, idiomasAlternativos, type Locale, type Pagina } from "./i18n";
 import { siteName, siteUrl } from "./site-config";
 import StructuredData from "./structured-data";
@@ -66,6 +67,7 @@ import "./contact.css";
 import "./responsive.css";
 import "./accessibility.css";
 import "./barra-rolagem.css";
+import "./target-cursor.css";
 
 /**
  * O invólucro `<html>`/`<body>`, um por idioma.
@@ -100,6 +102,49 @@ export default function Raiz({ locale, children }: { locale: Locale; children: R
       <body>
         <StructuredData locale={locale} />
         <AccessibilityEnhancements />
+        {/* O PONTEIRO DA CASA. Ver `app/target-cursor.jsx`.
+
+            Mora aqui e nao em `pagina.tsx` porque ele vale para o site todo,
+            inclusive a politica de privacidade, e porque um ponteiro que
+            aparece e some conforme a rota seria pior que ponteiro nenhum.
+
+            `Ponteiro` e nao `TargetCursor` direto: o componente traz o GSAP
+            junto, 28,8 KB comprimidos, e o involucro so faz o `import()`
+            depois de conferir que existe ponteiro preciso e que ninguem pediu
+            movimento reduzido. Em toque o arquivo nao e baixado. */}
+        <Ponteiro
+          /* OS ALVOS SAO DECLARADOS AQUI, e nao por uma classe espalhada pela
+             marcacao. O componente aceita uma lista de seletores porque usa
+             `matches()`, e a lista abaixo e a que a medicao achou: os 16
+             botoes, as 5 capas do portfolio, os links de texto, os enderecos,
+             os canais de e-mail, a marca, os itens do menu, o seletor de
+             idioma, os links do rodape e as 8 duvidas. A lista foi conferida
+             elemento a elemento no navegador: seletor escrito de cabeca que
+             nao casa com nada nao da erro, o ponteiro so nunca abre.
+
+             DE FORA, e cada um por um motivo. O `skip-link`, que so existe
+             para o teclado e nem esta na tela para o ponteiro. O link da
+             politica dentro da frase de consentimento, e com ele todo link
+             que vive no meio de uma sentenca, inclusive os da pagina de
+             privacidade: caixa que se fecha em volta de um pedaco de frase le
+             como erro, nao como alvo. A linha e essa — alvo e CONTROLE, nao e
+             palavra sublinhada dentro de um paragrafo.
+
+             Por que assim e nao por `className="cursor-target"` em cada um,
+             que e o que a documentacao mostra: seriam oito arquivos tocados e
+             uma classe a lembrar toda vez que nascer um botao. Aqui a lista
+             vive num lugar so e nao pode ficar defasada da marcacao.
+
+             OS CAMPOS DO FORMULARIO FICARAM DE FORA de proposito. Cercar de
+             cantos uma area de texto de 557px nao ajuda ninguem, e ali o que
+             importa e a barrinha de texto, que a folha devolve. */
+          targetSelector=".botao, .amostra, .link-texto, .endereco, .canal-texto, .marca, .menu a, .idiomas a, .rodape-baixo a, summary"
+          spinDuration={5}
+          hideDefaultCursor={true}
+          parallaxOn={true}
+          cursorColor="#e8a33c"
+          cursorColorOnTarget="#e8a33c"
+        />
         {children}
         <script src="/barra-rolagem.js" defer />
       </body>

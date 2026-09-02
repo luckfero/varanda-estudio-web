@@ -1,0 +1,198 @@
+/* TargetCursor, do React Bits, variante JS-CSS, trazido em 01/09/2026 do
+   registro `https://reactbits.dev/r/TargetCursor-JS-CSS.json`.
+
+   O corpo e o do registro. Os desvios estao marcados um a um.
+
+   O `mix-blend-mode: difference` SAIU, e trocar isso custou duas medicoes.
+
+   Ele existe no original para o ponteiro aparecer sobre qualquer fundo, e faz
+   isso mesmo. So que ele nao pinta a cor pedida: pinta |cor - fundo|. Medido
+   nas onze superficies desta pagina, com o `#e8a33c` que o Lucca pediu:
+
+     superficie                        ambar puro   com difference
+     botao de acento  rgb(232,163,60)      1,00:1          9,74:1
+     texto creme      rgb(244,239,230)     1,88:1          6,97:1
+     capa da Nivora   rgb(183,101,59)      1,97:1          2,71:1
+     chao do site     rgb(20,17,14)        8,72:1          7,12:1
+
+   Olhando so essa tabela, `difference` ganha: o botao de acento e ambar
+   chapado, e ambar sobre ambar mede 1,00:1, ou seja, o ponteiro SOME bem no
+   alvo mais importante da pagina.
+
+   Foi a CAPTURA que desempatou, e contra o blend. Branco menos ambar da AZUL:
+   sobre o texto creme dos titulos o `difference` devolve `rgb(12,76,170)`, um
+   azul forte. E esta pagina e feita de titulo creme grande. O ponteiro da casa
+   piscava azul o tempo todo, e nenhuma tabela de contraste acusa isso, porque
+   6,97:1 e um numero excelente para a cor errada.
+
+   No lugar entra a solucao que a propria casa ja tinha escrito, a regra 9.25:
+   **elemento que flutua sobre o site precisa de duas camadas de cor.** Na
+   barra de rolagem e corpo claro com halo escuro; aqui e o inverso: corpo
+   ambar, que resolve os chaos escuros, e halo quase preto, que resolve o botao
+   ambar e o texto creme. A cor pedida fica sendo a cor que aparece, sempre, e
+   nunca vira azul.
+
+   Ver a tabela medida com o halo no bloco `NOSSO 0`, mais abaixo. */
+
+.target-cursor-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 2147483647;
+  /* `mix-blend-mode: difference` estava aqui. Ver o cabecalho. */
+  transform: translate(-50%, -50%);
+
+  /* NOSSO 0: O HALO, e ele e a razao de o blend poder sair.
+
+     `drop-shadow` e nao `box-shadow`: os cantos sao um "L", desenhado com
+     borda em dois lados so, e `box-shadow` contornaria a CAIXA quadrada em
+     volta do L. `drop-shadow` segue o alfa do desenho, entao ele contorna o L.
+
+     Dois empilhados de proposito: um so, a 1px, sai lavado sobre o ambar do
+     botao. Dois somam ate ficar uma linha continua sem engordar a peca.
+
+     Aplicado no involucro para valer para o ponto e para os quatro cantos de
+     uma vez. Ele nao vira bloco de contencao para nada: o involucro ja e
+     `position: fixed` e o filtro esta NELE, nao num ancestral — e o proprio
+     componente tem `getContainingBlock`, que sobe a arvore justamente
+     procurando `filter` em ancestral. */
+  filter:
+    drop-shadow(0 0 1px rgba(9, 8, 7, 0.95))
+    drop-shadow(0 0 1px rgba(9, 8, 7, 0.95));
+}
+
+.target-cursor-dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  background: #fff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+
+.target-cursor-corner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border: 3px solid #fff;
+  will-change: transform;
+}
+
+.corner-tl {
+  transform: translate(-150%, -150%);
+  border-right: none;
+  border-bottom: none;
+}
+
+.corner-tr {
+  transform: translate(50%, -150%);
+  border-left: none;
+  border-bottom: none;
+}
+
+.corner-br {
+  transform: translate(50%, 50%);
+  border-left: none;
+  border-top: none;
+}
+
+.corner-bl {
+  transform: translate(-150%, 50%);
+  border-right: none;
+  border-top: none;
+}
+
+/* ------------------------------------------------------------------ NOSSO
+
+   1. O CURSOR DE TEXTO VOLTA PARA OS CAMPOS DO FORMULARIO.
+
+   `hideDefaultCursor` escreve `cursor: none` no `<body>`, e isso desce por
+   heranca para tudo — inclusive para os cinco campos, o `select` e a area de
+   texto do formulario de contato. Perder a barrinha de texto ali nao e perda
+   estetica: e o unico formulario do site, e e por ele que entra pedido.
+
+   Heranca perde para regra propria do elemento, entao basta declarar. O
+   ponteiro desenhado continua na tela por cima, e isso e de proposito: some-lo
+   exigiria maquina nova, e ele e um ponto de 4px que nao tapa o campo. */
+input,
+textarea,
+select {
+  cursor: auto;
+}
+
+textarea,
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input:not([type]) {
+  cursor: text;
+}
+
+/* 1b. E O `cursor: none` PRECISA ALCANCAR OS CONTROLES.
+
+   `cursor: none` no `<body>` desce por heranca, e heranca so vale para quem
+   nao declara nada. Medido nesta pagina: 159 elementos em `pointer` e 15 em
+   `default`, isto e, todo link e todo botao seguiam desenhando o ponteiro do
+   sistema POR CIMA do desenhado — e ponteiro duplo aparece justamente onde
+   se aponta.
+
+   A classe `cursor-proprio` e posta no `<html>` pelo componente enquanto o
+   efeito roda, e tirada na limpeza. Ela e a garantia de que esta regra so vale
+   quando existe um ponteiro desenhado para pôr no lugar: sem JavaScript, sem
+   ponteiro preciso ou com movimento reduzido, a classe nao entra e o cursor do
+   sistema fica inteiro.
+
+   DUAS EXCECOES, e as duas por serem controle cuja resposta E o formato do
+   cursor: os campos do formulario, logo acima, e o polegar da barra de
+   rolagem, que diz "da para arrastar" pelo `grab`. */
+html.cursor-proprio,
+html.cursor-proprio * {
+  cursor: none;
+}
+
+html.cursor-proprio .barra-rolagem__polegar {
+  cursor: grab;
+}
+
+html.cursor-proprio.barra-rolagem--arrastando .barra-rolagem__polegar,
+html.cursor-proprio .barra-rolagem--arrastando .barra-rolagem__polegar {
+  cursor: grabbing;
+}
+
+/* As duas regras de campo acima usam seletor de elemento nu, que perde para
+   `html.cursor-proprio *`. Repetidas aqui com a classe na frente, porque a
+   barrinha de texto no formulario e o motivo pelo qual elas existem. */
+html.cursor-proprio :is(input, textarea, select) {
+  cursor: auto;
+}
+
+html.cursor-proprio :is(textarea, input[type="text"], input[type="email"], input[type="tel"], input:not([type])) {
+  cursor: text;
+}
+
+/* 2. QUEM NAO TEM PONTEIRO PRECISO NUNCA PERDE O CURSOR.
+
+   O componente ja se desliga sozinho nesses casos, e entao ele nem escreve o
+   `cursor: none`. Esta regra existe como segunda tranca, para o caso de o
+   componente ser desmontado no meio ou de a preferencia mudar com a pagina
+   aberta: as consultas de midia dele sao lidas UMA vez, na montagem. Ficar sem
+   ponteiro nenhum e o pior defeito que esta peca pode ter, e ele merece duas
+   linhas de defesa. */
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  body,
+  html.cursor-proprio,
+  html.cursor-proprio * {
+    cursor: auto !important;
+  }
+  .target-cursor-wrapper {
+    display: none;
+  }
+}
