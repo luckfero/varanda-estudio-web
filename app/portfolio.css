@@ -246,19 +246,66 @@
 
 /* Serifada porque é NOME PRÓPRIO, que é uma das três coisas que a regra da
    serifada em `base.css` reserva para a display. */
-.amostra-nome {
-  font-family: var(--fonte-display);
-  font-size: var(--t-bloco);
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  color: var(--tinta);
+/* O ENDERECO DO SITE, na plaquinha da capa, no lugar do nome do projeto.
+
+   Ele era `.amostra-nome`, em serifada grande e cor de tinta. Virou o endereco
+   em mono e no ambar da marca, a pedido, em 02/09/2026: o nome nao se perde,
+   porque continua sendo o `h3` do corpo do cartao.
+
+   `--c-mono` e 11,5px e ficou pequeno para o que agora e a unica chamada
+   visivel do cartao. 13px e o valor pedido ("aumenta um pouco"), e ele nao vira
+   token: e um caso so, e token de valor unico e mais um lugar para a decisao
+   divergir. */
+.amostra-endereco {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e2);
+  /* O endereco NAO PODE vazar da plaquinha. A classe antiga (`.endereco`) tinha
+     `overflow-wrap: anywhere` numa lista em `base.css`, e esta nao entrou nela:
+     medido em 320px, o endereco saia ate 65px para fora da plaquinha. Endereco
+     e uma palavra so, sem espaco onde quebrar, entao so `anywhere` resolve. */
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-family: var(--fonte-mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--acento);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+.amostra-endereco svg { width: 12px; height: 12px; flex: none; }
+
+/* A CAPA INTEIRA E O ALVO, entao quem responde ao ponteiro e ao teclado e ela,
+   e nao o texto do endereco. Sublinhar no hover da capa e o que liga as duas
+   coisas: o visitante entende que o retangulo todo leva aquele endereco. */
+.amostra:hover .amostra-endereco,
+.amostra:focus-visible .amostra-endereco { border-bottom-color: var(--acento); }
+
+/* A CAPA VIROU FOCALIZAVEL em 02/09/2026, quando passou a ser o unico link do
+   cartao. Antes ela era `tabIndex={-1}` e nunca recebia foco, entao nao havia
+   o que desenhar. Agora ha, e sem esta regra o foco cairia no contorno padrao
+   do navegador, que sobre chao escuro quase nao aparece. */
+.amostra:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 3px;
 }
 
 /* ---------------------------------------------------------------------
    O CORPO DA PLACA
    --------------------------------------------------------------------- */
+/* O RECUO VERTICAL DESCEU DE --e7 (48px) PARA --e6 (32px), em 02/09/2026.
+
+   Medido antes de mexer: o corpo tinha 332px de altura para **188px de
+   conteudo**. Os outros 144 eram 96px de recuo em cima e embaixo mais 48 de
+   vao entre os quatro blocos — quase 30% do cartao era respiro vertical.
+
+   O pedido foi "diminua verticalmente o card da conexao e milenio, ainda esta
+   muito grande", e este era o unico lugar de onde tirar altura sem tirar
+   informacao. O recuo horizontal fica em --e6: ele nao entra na conta da
+   altura, e encurtar a linha de leitura nao era o pedido. */
 .placa-corpo {
-  padding: var(--e7) var(--e6);
+  padding: var(--e6);
   display: flex;
   flex-direction: column;
   gap: var(--e4);
@@ -295,7 +342,7 @@
 
 /* Prende o endereço ao pé da placa: sem isto ele flutuaria na altura em que
    o texto de cada projeto terminou, que é altura diferente em cada um. */
-.placa-endereco { margin-top: auto; }
+/* `.placa-endereco` saiu: o endereco subiu para a plaquinha da capa. */
 
 /* ---------------------------------------------------------------------
    ESTUDOS CONCEITUAIS
@@ -365,7 +412,8 @@
 
 /* A moldura de 6px do estudo saiu junto com a de 8px da placa. */
 
-.estudo .amostra-nome { font-size: var(--t-item); }
+/* No estudo o endereco e o mesmo tamanho da placa publicada: ele e o mesmo
+   dado e a mesma chamada, e o cartao menor nao muda isso. */
 
 .estudo-corpo {
   padding: var(--e5);
@@ -389,7 +437,7 @@
 
 .estudo-corpo p:not(.mono) { font-size: var(--c-apoio); color: var(--tinta-media); }
 
-.estudo-endereco { margin-top: auto; }
+/* `.estudo-endereco` saiu: o endereco subiu para a plaquinha da capa. */
 
 /* ---------------------------------------------------------------------
    DEPOIMENTOS

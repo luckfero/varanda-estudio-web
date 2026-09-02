@@ -203,7 +203,12 @@
   }
   .rodape-alto > .marca,
   .rodape-alto > .botao { justify-self: start; }
-  .rodape-alto p:not(.mono) { text-align: left; }
+  /* A frase fica CENTRADA no celular tambem, a pedido, em 02/09/2026. Ela e a
+     unica coisa centrada da coluna: a marca e o botao seguem a esquerda, com o
+     resto do celular. E deliberado — a frase e a assinatura do rodape e ganha
+     eixo proprio; alinhar as tres coisas do mesmo jeito devolveria a lista de
+     itens soltos que ela veio fechar. */
+  .rodape-alto p:not(.mono) { text-align: center; justify-self: center; }
   .abertura-acoes .botao, .chamada .botao, .duvidas-fecho .botao, .fecho .botao, .manutencao-acao .botao { width: 100%; }
   .janela-corpo { padding: var(--e5) var(--e5) var(--e6); }
 
@@ -234,6 +239,14 @@
    375, 390, 400 e 401px.
    ------------------------------------------------------------------- */
 @media (max-width: 400px) {
+  /* A PLAQUINHA APERTA EM TELA MUITO ESTREITA. Em 320px ela tem 278px, e o
+     endereco mais longo (`casaconexao.varandaestudioweb.com`) nao cabe em
+     13px. Com a fonte de volta ao tamanho mono da casa e o recuo menor, ele
+     cabe em uma linha; e se um dia nao couber, o `overflow-wrap: anywhere`
+     quebra em vez de vazar. */
+  .amostra-placa { padding: var(--e3) var(--e4); }
+  .amostra-endereco { font-size: var(--c-mono); }
+
   /* `.topo .marca-nome`, e não `.marca-nome`: a mesma marca aparece no
      rodapé, onde não existe disputa de largura nenhuma e o nome escrito é o
      fecho da página. */

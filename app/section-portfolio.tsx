@@ -129,43 +129,50 @@ export default function SectionPortfolio({ portfolio }: { portfolio: Dicionario[
             return (
               <li key={projeto.name} data-reveal>
                 <article className={`placa${invertida ? " placa--invertida" : ""}`}>
-                  {/* A CAPA E UM LINK, e o desenho dela e FUNDO e nao `<img>`.
+                  {/* A CAPA E O LINK DO SITE, e desde 02/09/2026 ela e o UNICO.
 
-                      Por que fundo: `<img>` tem tamanho intrinseco, e ele
-                      vazava para a grade. Com `aspect-ratio` na caixa para
-                      conter a altura, a largura minima intrinseca ia junto e a
-                      coluna da capa saia com 698px onde a grade pede 591,
-                      comendo 107px da coluna de texto. Medido. Um elemento com
-                      `background-image` nao tem tamanho intrinseco nenhum: ele
-                      ocupa o que a grade der, e o `background-size: contain`
-                      centraliza o desenho sozinho.
+                      O endereco amarelo saiu do corpo do cartao e subiu para a
+                      plaquinha da capa, a pedido. O nome do projeto, que estava
+                      ali, saiu: ele nao se perde, porque continua sendo o `h3`
+                      do corpo, tres linhas abaixo.
 
-                      A acessibilidade nao se perde: `role="img"` com
-                      `aria-label` diz o mesmo que o `alt` dizia.
+                      ISSO MUDA A ACESSIBILIDADE, e a mudanca e obrigatoria.
+                      Enquanto o endereco era um link no corpo, esta capa era
+                      `aria-hidden` com `tabIndex={-1}`, para nao anunciar duas
+                      vezes o mesmo destino. Sem aquele link, esconder esta capa
+                      deixaria o site sem NENHUMA forma de chegar no projeto por
+                      teclado ou por leitor de tela. Entao ela e um link de
+                      verdade agora, com nome acessivel completo pelo `.so-leitor`.
 
-                      O LINK e `aria-hidden` e fora da ordem de tabulacao de
-                      proposito. O endereco do site ja e um link, no corpo do
-                      cartao, com nome acessivel completo. Dois links para o
-                      mesmo destino fariam o leitor de tela anunciar a mesma
-                      coisa duas vezes. Este existe para o ponteiro; quem
-                      navega por teclado usa o de baixo. */}
+                      Pela mesma razao o desenho da capa virou decorativo: dentro
+                      de um link, o `aria-label` dele entraria no nome acessivel
+                      e o leitor anunciaria a marca, o endereco e o convite, tudo
+                      emendado.
+
+                      Por que o desenho e FUNDO e nao `<img>`: `<img>` tem tamanho
+                      intrinseco, e ele vazava para a grade — com `aspect-ratio`
+                      para conter a altura, a largura minima vinha junto e a
+                      coluna da capa saia com 698px onde a grade pede 591. */}
                   <a
                     className={classeDaAmostra(asset.image)}
                     href={asset.url}
                     target="_blank"
                     rel="noreferrer"
-                    aria-hidden="true"
-                    tabIndex={-1}
                   >
                     <span
                       className="amostra-arte"
-                      role="img"
-                      aria-label={projeto.imageAlt}
+                      aria-hidden="true"
                       style={{ backgroundImage: `url(/marcas/${asset.image}.svg)` }}
                     />
                     <span className="amostra-veu" aria-hidden="true" />
                     <span className="amostra-placa">
-                      <span className="amostra-nome" aria-hidden="true">{projeto.name}</span>
+                      <span className="amostra-endereco">
+                        {semEsquema(asset.url)}
+                        <SetaExterna />
+                      </span>
+                    </span>
+                    <span className="so-leitor">
+                      {`${portfolio.visitar}${projeto.name}${portfolio.visitarDepois}`}
                     </span>
                   </a>
 
@@ -178,15 +185,6 @@ export default function SectionPortfolio({ portfolio }: { portfolio: Dicionario[
                         <li key={feature}>{feature}</li>
                       ))}
                     </ul>
-                    <p className="placa-endereco">
-                      <a className="endereco" href={asset.url} target="_blank" rel="noreferrer">
-                        {semEsquema(asset.url)}
-                        <span className="so-leitor">
-                          {`${portfolio.visitar}${projeto.name}${portfolio.visitarDepois}`}
-                        </span>
-                        <SetaExterna />
-                      </a>
-                    </p>
                   </div>
                 </article>
               </li>
@@ -215,43 +213,50 @@ export default function SectionPortfolio({ portfolio }: { portfolio: Dicionario[
               const atraso = index > 0 ? ({ "--atraso": `${index * 90}ms` } as CSSProperties) : undefined;
               return (
                 <li className="cartao cartao--interativo estudo" key={projeto.name} data-reveal style={atraso}>
-                  {/* A CAPA E UM LINK, e o desenho dela e FUNDO e nao `<img>`.
+                  {/* A CAPA E O LINK DO SITE, e desde 02/09/2026 ela e o UNICO.
 
-                      Por que fundo: `<img>` tem tamanho intrinseco, e ele
-                      vazava para a grade. Com `aspect-ratio` na caixa para
-                      conter a altura, a largura minima intrinseca ia junto e a
-                      coluna da capa saia com 698px onde a grade pede 591,
-                      comendo 107px da coluna de texto. Medido. Um elemento com
-                      `background-image` nao tem tamanho intrinseco nenhum: ele
-                      ocupa o que a grade der, e o `background-size: contain`
-                      centraliza o desenho sozinho.
+                      O endereco amarelo saiu do corpo do cartao e subiu para a
+                      plaquinha da capa, a pedido. O nome do projeto, que estava
+                      ali, saiu: ele nao se perde, porque continua sendo o `h3`
+                      do corpo, tres linhas abaixo.
 
-                      A acessibilidade nao se perde: `role="img"` com
-                      `aria-label` diz o mesmo que o `alt` dizia.
+                      ISSO MUDA A ACESSIBILIDADE, e a mudanca e obrigatoria.
+                      Enquanto o endereco era um link no corpo, esta capa era
+                      `aria-hidden` com `tabIndex={-1}`, para nao anunciar duas
+                      vezes o mesmo destino. Sem aquele link, esconder esta capa
+                      deixaria o site sem NENHUMA forma de chegar no projeto por
+                      teclado ou por leitor de tela. Entao ela e um link de
+                      verdade agora, com nome acessivel completo pelo `.so-leitor`.
 
-                      O LINK e `aria-hidden` e fora da ordem de tabulacao de
-                      proposito. O endereco do site ja e um link, no corpo do
-                      cartao, com nome acessivel completo. Dois links para o
-                      mesmo destino fariam o leitor de tela anunciar a mesma
-                      coisa duas vezes. Este existe para o ponteiro; quem
-                      navega por teclado usa o de baixo. */}
+                      Pela mesma razao o desenho da capa virou decorativo: dentro
+                      de um link, o `aria-label` dele entraria no nome acessivel
+                      e o leitor anunciaria a marca, o endereco e o convite, tudo
+                      emendado.
+
+                      Por que o desenho e FUNDO e nao `<img>`: `<img>` tem tamanho
+                      intrinseco, e ele vazava para a grade — com `aspect-ratio`
+                      para conter a altura, a largura minima vinha junto e a
+                      coluna da capa saia com 698px onde a grade pede 591. */}
                   <a
                     className={classeDaAmostra(asset.image)}
                     href={asset.url}
                     target="_blank"
                     rel="noreferrer"
-                    aria-hidden="true"
-                    tabIndex={-1}
                   >
                     <span
                       className="amostra-arte"
-                      role="img"
-                      aria-label={projeto.imageAlt}
+                      aria-hidden="true"
                       style={{ backgroundImage: `url(/marcas/${asset.image}.svg)` }}
                     />
                     <span className="amostra-veu" aria-hidden="true" />
                     <span className="amostra-placa">
-                      <span className="amostra-nome" aria-hidden="true">{projeto.name}</span>
+                      <span className="amostra-endereco">
+                        {semEsquema(asset.url)}
+                        <SetaExterna />
+                      </span>
+                    </span>
+                    <span className="so-leitor">
+                      {`${portfolio.abrirAntes}${projeto.name}${portfolio.abrirDepois}`}
                     </span>
                   </a>
 
@@ -275,15 +280,6 @@ export default function SectionPortfolio({ portfolio }: { portfolio: Dicionario[
                         <li key={feature}>{feature}</li>
                       ))}
                     </ul>
-                    <p className="estudo-endereco">
-                      <a className="endereco" href={asset.url} target="_blank" rel="noreferrer">
-                        {semEsquema(asset.url)}
-                        <span className="so-leitor">
-                          {`${portfolio.abrirAntes}${projeto.name}${portfolio.abrirDepois}`}
-                        </span>
-                        <SetaExterna />
-                      </a>
-                    </p>
                   </div>
                 </li>
               );
