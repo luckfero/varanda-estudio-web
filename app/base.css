@@ -102,6 +102,12 @@
   --t-secao: clamp(2.2rem, 3.8vw, 3.5rem);
   --t-bloco: clamp(1.45rem, 2.2vw, 1.85rem);
   --t-item: clamp(1.05rem, 1.4vw, 1.18rem);
+  /* O SEXTO degrau, e como o quinto ele e declarado e nao avulso: a frase de
+     fecho do rodape. Ela nao e titulo, e uma linha so que precisa CABER numa
+     linha so — e em tres idiomas, sendo o ingles o mais longo dos tres. Em
+     `--t-bloco` ela quebrava em duas. O valor sai de medicao e nao de gosto;
+     esta no `CLAUDE.md` da rodada de 02/09/2026. */
+  --t-rodape-frase: clamp(0.95rem, 1.35vw, 1.32rem);
   /* O quinto degrau, e ele é declarado e não avulso: o NUMERAL grande, que
      é dado e não título. Os quatro de cima não serviam. O preço em
      --t-bloco fica miúdo demais para ser o dado que a seção existe para

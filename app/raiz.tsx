@@ -141,7 +141,13 @@ export default function Raiz({ locale, children }: { locale: Locale; children: R
           targetSelector=".botao, .amostra, .link-texto, .endereco, .canal-texto, .marca, .menu a, .idiomas a, .rodape-baixo a, summary"
           spinDuration={5}
           hideDefaultCursor={true}
-          parallaxOn={true}
+          /* PARALLAX DESLIGADO, a pedido, em 02/09/2026. Com ele ligado os
+             quatro cantos seguem o ponteiro POR DENTRO do alvo, com 0,2s de
+             atraso, e o quadro fica escorregando enquanto o mouse anda dentro
+             do botao. Desligado, os cantos travam nas quinas assim que o alvo
+             e alcancado, e ficam parados ate a saida — que e o gesto que o
+             efeito promete. */
+          parallaxOn={false}
           cursorColor="#e8a33c"
           cursorColorOnTarget="#e8a33c"
         />

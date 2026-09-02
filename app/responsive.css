@@ -184,7 +184,26 @@
   .etapa::after { top: 0; left: 0; }
   .prova-rotulo { min-width: 100%; }
   .rodape-baixo .direitos { margin-left: 0; }
-  .cabeca-secao, .fecho, .chamada, .duvidas-fecho, .rodape-alto { align-items: flex-start; }
+  .cabeca-secao, .fecho, .chamada, .duvidas-fecho { align-items: flex-start; }
+
+  /* O RODAPÉ EMPILHA, e isto passou a ser obrigatório quando a linha de cima
+     virou grade, em 02/09/2026.
+
+     Antes ela era `flex` com `flex-wrap: wrap`, e quebrar linha em tela
+     estreita era de graça. Grade não quebra: com `1fr auto 1fr` os três itens
+     ficam presos na mesma fileira e se espremem uns nos outros. Medido antes
+     desta regra: a frase invadia a marca em 89px a 480px de largura.
+
+     Uma coluna só, tudo alinhado à esquerda como o resto do celular. */
+  .rodape-alto {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    justify-items: start;
+    gap: var(--e5);
+  }
+  .rodape-alto > .marca,
+  .rodape-alto > .botao { justify-self: start; }
+  .rodape-alto p:not(.mono) { text-align: left; }
   .abertura-acoes .botao, .chamada .botao, .duvidas-fecho .botao, .fecho .botao, .manutencao-acao .botao { width: 100%; }
   .janela-corpo { padding: var(--e5) var(--e5) var(--e6); }
 

@@ -1,7 +1,6 @@
 "use client";
 
 import { emailContato } from "./data";
-import CursorGrid from "./cursor-grid";
 import type { Dicionario } from "./i18n";
 import { ArcoMark } from "./icons";
 import { useAncoraSuave } from "./use-ancora-suave";
@@ -39,39 +38,18 @@ export default function SiteFooter({
 
   return (
     <footer className="rodape">
-      {/* A GRADE PARADA, a mesma da abertura e do formulario. Ela entrou aqui
-          em 01/09/2026, a pedido: sem ela as celulas acesas do CursorGrid
-          apareciam soltas, sem linha nenhuma para sustentar.
+      {/* AS DUAS GRADES SAIRAM DAQUI em 02/09/2026, a pedido: "remova as grid
+          do rodape, nao ficou legal".
 
-          A ORDEM IMPORTA: as duas camadas vivem em `z-index: 0`, e entre
-          iguais quem pinta por cima e quem vem depois no documento. A parada
-          primeiro, a que acende depois. */}
-      <div className="grade-fina" aria-hidden="true" />
+          Saiu a parada (`.grade-fina`) E a que acende com o cursor
+          (`CursorGrid`). As duas juntas, porque separadas elas se contradizem:
+          a parada entrou um dia antes justamente porque as celulas acesas
+          ficavam soltas sem linha para sustentar, entao tirar so uma devolveria
+          o defeito que a outra veio consertar. O rodape volta a ser chao liso.
 
-      {/* A grade que responde ao cursor. Ver `app/cursor-grid.jsx`.
-
-          `cellSize` 96 e `origemNoCanto` sao o que faz a celula acesa cair EM
-          CIMA do quadrado da grade parada acima: ela e um `background-image`
-          de 96 por 96 que comeca no canto do elemento, e o componente, por
-          padrao, usa 100 e centraliza a malha. */}
-      <CursorGrid
-        className="cursor-grid--camada"
-        escutaNoPai
-        origemNoCanto
-        cellSize={96}
-        color="#e8a33c"
-        radius={120}
-        falloff="smooth"
-        holdTime={100}
-        fadeDuration={800}
-        lineWidth={1.2}
-        maxOpacity={0.3}
-        fillOpacity={0}
-        gridOpacity={0}
-        cellRadius={0}
-        clickPulse
-        pulseSpeed={600}
-      />
+          Para trazer de volta: as duas, na ordem parada-primeiro, mais
+          `position: relative` no `.rodape` e a mascara propria dele, tudo
+          descrito no `contact.css`. */}
       <div className="caixa rodape-alto">
         <a
           className="marca"
