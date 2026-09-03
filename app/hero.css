@@ -71,7 +71,18 @@
    A altura é calc(100% + 64px), e não uma proporção: com proporção as duas
    pernas do arco desciam abaixo do cartão e o desenho lia como caixa solta.
    Assim só a coroa aparece, que é a parte que identifica a marca. */
-.maquete { position: relative; margin-top: 64px; }
+/* A MARGEM DE CIMA SUBIU O DESENHO INTEIRO, a pedido, em 02/09/2026.
+
+   Ela era 64px, e nao por acaso: o arco comeca em `top: -64px` e sobe
+   exatamente 64px acima desta caixa, entao a margem era a reserva dele. Baixar
+   para 32 nao corta o arco — ele passa a invadir 32px do espaco acima, e ali
+   nao ha nada: medido, sobram 66px ate o cabecalho em 1440px e 60 em 1280.
+
+   O desenho sobe 20px, e nao 32: a linha da grade tambem encolhe e o
+   alinhamento vertical redistribui a diferenca. O ganho e que o topo da
+   janela passa a bater com o topo do h1 ao lado (207 contra 206), que e o
+   ancoradouro optico que faltava. */
+.maquete { position: relative; margin-top: var(--e6); }
 .maquete-arco {
   position: absolute; z-index: 0;
   left: 50%; top: -64px; transform: translateX(-50%);
