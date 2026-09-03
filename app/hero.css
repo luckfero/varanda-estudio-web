@@ -75,23 +75,29 @@
    A altura é calc(100% + 64px), e não uma proporção: com proporção as duas
    pernas do arco desciam abaixo do cartão e o desenho lia como caixa solta.
    Assim só a coroa aparece, que é a parte que identifica a marca. */
-/* SEM MARGEM DE CIMA, e o alinhamento vem da grade.
+/* O QUE ALINHA COM A SOBRANCELHA E O SOL, e nao a janela.
 
-   O desenho tinha `margin-top: 64px`, que era a reserva para o arco: ele
-   comeca em `top: -64px` e sobe exatamente isso acima desta caixa.
+   Duas coisas fazem esta linha, e as duas foram medidas:
 
-   O pedido foi alinhar o topo do desenho com a sobrancelha "01 — ESTUDIO DE
-   CRIACAO DE SITES". Tentei primeiro por numero, e nao serve: a margem que
-   alinha em 1440px encosta a 3px do cabecalho em 1280 e erra 48px em 1920,
-   porque a grade centralizava a coluna e o desvio muda com a altura da linha.
+   1. `align-items: start` na grade (ver la em cima). Sem ele a coluna da arte
+      era centralizada e flutuava conforme a diferenca de altura entre as duas
+      colunas — diferenca que muda com a largura, porque o titulo quebra em
+      mais ou menos linhas. Por isso NENHUM numero fixo alinhava em mais de uma
+      largura: o que acertava 1440 errava 48px em 1920.
 
-   Com `align-items: start` na grade e margem zero aqui, o topo da janela E o
-   topo da linha, que e o mesmo topo da sobrancelha. Medido em sete larguras de
-   1120 a 1920: diferenca de **0px em todas**. O arco continua saindo 64px para
-   cima, e ali nao ha nada — a folga ate o cabecalho vai de 32px em 1920 a 3px
-   em 1120, sempre positiva, e abaixo disso a grade empilha e a questao deixa
-   de existir. */
-.maquete { position: relative; }
+   2. Com o topo alinhado, esta margem passou a mover o desenho 1:1, e 32px e o
+      valor que poe o CENTRO DO SOL no centro da frase. Medido: 1px de
+      diferenca em 1920, 1440, 1366 e 1280, e 5px em 1120, onde o sol encolhe
+      junto com a coluna.
+
+   Eu tinha alinhado a JANELA primeiro, que era o alvo errado, e o sol passou
+   33px acima da frase. O alvo e o sol.
+
+   Os 64px de margem que existiam antes eram a reserva do arco, que comeca em
+   `top: -52px`... o SOL comeca ali; o arco comeca em `top: -64px`. Com 32 de
+   margem os dois continuam saindo para cima e sobra folga: 64px ate o
+   cabecalho em 1920 e 35px em 1120, sempre positiva. */
+.maquete { position: relative; margin-top: var(--e6); }
 .maquete-arco {
   position: absolute; z-index: 0;
   left: 50%; top: -64px; transform: translateX(-50%);
