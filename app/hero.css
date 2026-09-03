@@ -50,7 +50,42 @@
 /* ---------------------------------------------------------------------
    10. ABERTURA
    --------------------------------------------------------------------- */
-.abertura > .caixa { padding-block: clamp(3rem, 6vw, 6rem) clamp(3rem, 5vw, 4.5rem); }
+/* A HERO OCUPA A TELA, E O CONTEUDO SE COMPORTA CONFORME A ALTURA DELA.
+
+   Pedido de 02/09/2026: "a hero deve aparecer assim para notebook, para
+   desktop como a tela e maior deve aparecer centralizado. arrume para ficar
+   responsivo para todos os tipos de tela".
+
+   Sao DOIS comportamentos, e nao um, e a conta e o que mostra isso:
+   centralizar SEMPRE desceria o conteudo em tela baixa. Num 1366x768 o topo do
+   conteudo iria de 159 para 183, porque centralizar num espaco de 691px com
+   643px de conteudo sobra 24px de cada lado — mais do que o recuo de cima que
+   havia ali. Ou seja, "centralizar" e "subir no notebook" sao pedidos opostos
+   na mesma tela.
+
+   Por isso o corte e por ALTURA DA JANELA, que e a variavel do problema.
+   Largura nao diz nada sobre caber na vertical: um 2560x1080 e largo e baixo.
+
+   - Sempre: a secao mede a tela menos o cabecalho, entao a proxima secao
+     comeca exatamente na dobra em qualquer tela. Antes disso, num 2560x1440
+     sobravam 595px da secao seguinte aparecendo por baixo.
+   - Ate 999px de altura (notebook): conteudo no TOPO. O recuo menor e o que
+     sobe o conteudo os "poucos pixels" pedidos: medido, a sobrancelha vai de
+     154-163 para 135-145.
+   - De 1000px para cima (desktop): conteudo CENTRALIZADO.
+
+   O `- 1px` e a borda de baixo do cabecalho: o token `--altura-cabecalho` e
+   `min-height` e vale 76px, e o elemento mede 77 por causa dela. Sem isso a
+   pagina ganha um pixel de rolagem que nao existe. */
+.abertura {
+  min-height: calc(100svh - var(--altura-cabecalho) - 1px);
+  display: grid;
+  align-content: start;
+}
+@media (min-height: 1000px) {
+  .abertura { align-content: center; }
+}
+.abertura > .caixa { padding-block: clamp(2.5rem, 4.5vw, 4.5rem) clamp(2.5rem, 4vw, 4rem); }
 .abertura-grade {
   display: grid;
   grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
