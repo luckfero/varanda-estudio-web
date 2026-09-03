@@ -122,14 +122,14 @@
 
    2. Com o topo alinhado, esta margem passou a mover o desenho 1:1. Em 32px o
       centro do sol caia exatamente no centro da frase (1px de diferenca em
-      1920, 1440, 1366 e 1280). Em 02/09/2026 o Lucca pediu "abaixe agora
-      alguns poucos pixels", entao o valor e 32 + 8: o sol fica 8px abaixo da
-      linha da frase, de proposito.
+      1920, 1440, 1366 e 1280). Em 02/09/2026 o Lucca pediu duas descidas
+      seguidas, "abaixe alguns poucos pixels" e depois "desce mais 7px", e o
+      valor parou em `--e7` (48px): o sol fica cerca de 15px ABAIXO da linha da
+      frase, de proposito.
 
-      O 40px sai da escala de 4px, e por isso e escrito como `--e6 + --e2` em
-      vez de um numero solto: o ajuste e OPTICO, de uma peca contra uma linha
-      de texto, e nao um degrau de ritmo de espacamento. Se um dia voltar a ser
-      alinhamento exato, o valor e `--e6` puro.
+      Os dois passos foram 32 -> 40 -> 48, e o ultimo caiu num degrau da escala
+      em vez de virar numero solto. Se um dia voltar a ser alinhamento exato do
+      sol com a frase, o valor e `--e6`.
 
    Eu tinha alinhado a JANELA primeiro, que era o alvo errado, e o sol passou
    33px acima da frase. O alvo e o sol.
@@ -138,7 +138,7 @@
    `top: -52px`... o SOL comeca ali; o arco comeca em `top: -64px`. Com 32 de
    margem os dois continuam saindo para cima e sobra folga: 64px ate o
    cabecalho em 1920 e 35px em 1120, sempre positiva. */
-.maquete { position: relative; margin-top: calc(var(--e6) + var(--e2)); }
+.maquete { position: relative; margin-top: var(--e7); }
 .maquete-arco {
   position: absolute; z-index: 0;
   left: 50%; top: -64px; transform: translateX(-50%);
