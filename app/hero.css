@@ -120,10 +120,16 @@
       mais ou menos linhas. Por isso NENHUM numero fixo alinhava em mais de uma
       largura: o que acertava 1440 errava 48px em 1920.
 
-   2. Com o topo alinhado, esta margem passou a mover o desenho 1:1, e 32px e o
-      valor que poe o CENTRO DO SOL no centro da frase. Medido: 1px de
-      diferenca em 1920, 1440, 1366 e 1280, e 5px em 1120, onde o sol encolhe
-      junto com a coluna.
+   2. Com o topo alinhado, esta margem passou a mover o desenho 1:1. Em 32px o
+      centro do sol caia exatamente no centro da frase (1px de diferenca em
+      1920, 1440, 1366 e 1280). Em 02/09/2026 o Lucca pediu "abaixe agora
+      alguns poucos pixels", entao o valor e 32 + 8: o sol fica 8px abaixo da
+      linha da frase, de proposito.
+
+      O 40px sai da escala de 4px, e por isso e escrito como `--e6 + --e2` em
+      vez de um numero solto: o ajuste e OPTICO, de uma peca contra uma linha
+      de texto, e nao um degrau de ritmo de espacamento. Se um dia voltar a ser
+      alinhamento exato, o valor e `--e6` puro.
 
    Eu tinha alinhado a JANELA primeiro, que era o alvo errado, e o sol passou
    33px acima da frase. O alvo e o sol.
@@ -132,7 +138,7 @@
    `top: -52px`... o SOL comeca ali; o arco comeca em `top: -64px`. Com 32 de
    margem os dois continuam saindo para cima e sobra folga: 64px ate o
    cabecalho em 1920 e 35px em 1120, sempre positiva. */
-.maquete { position: relative; margin-top: var(--e6); }
+.maquete { position: relative; margin-top: calc(var(--e6) + var(--e2)); }
 .maquete-arco {
   position: absolute; z-index: 0;
   left: 50%; top: -64px; transform: translateX(-50%);
