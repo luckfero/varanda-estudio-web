@@ -119,13 +119,13 @@
      1. o papel quadriculado
      2. A CONTA: o círculo gerador, os eixos, o raio, os nós e as cotas
      3. a linha do chão, traçada
-     4. os dois contornos do arco, traçados
+     4. os dois contornos da cobertura, traçados
      5. a alvenaria enchendo de verde
      6. a luz e o sol
      7. a conta SUMINDO, que é o que acontece com linha de construção quando
         o desenho vira obra
 
-   O estado final, e é ele que fica em pé 99% do tempo, é o arco verde cheio
+   O estado final, e é ele que fica em pé 99% do tempo, é a cobertura cheia
    com o sol na linha do chão sobre o quadriculado. Por isso `.planta-calculo`
    nasce em `opacity: 0` fora da animação: sem JavaScript o visitante vê esse
    mesmo estado final, e não uma versão que a animação depois contradiz.
@@ -142,7 +142,8 @@
 }
 
 /* `pathLength="100"` normaliza o comprimento de qualquer caminho em 100, então
-   o mesmo par de valores serve para o chão reto e para a abóbada curva. */
+   o mesmo par de valores serve para a barra reta do piso e para a curva do
+   ombro. */
 @keyframes planta-pinta {
   from { stroke-dashoffset: 100; }
   to   { stroke-dashoffset: 0; }
@@ -158,7 +159,7 @@
   100% { opacity: 0; }
 }
 
-/* A conta não existe em repouso: o desenho pronto é o arco construído. */
+/* A conta não existe em repouso: o desenho pronto é a peça construída. */
 .planta-calculo { opacity: 0; }
 
 /* Em repouso o traço está INTEIRO. Se o movimento não rodar, por qualquer
@@ -180,7 +181,7 @@
 
 .sobre-arte.is-visible .planta-grade { animation-name: planta-surge; animation-duration: 700ms; }
 
-/* A conta: entra cedo e sai depois de o arco estar de pé. As durações são
+/* A conta: entra cedo e sai depois de a peça estar de pé. As durações são
    diferentes de propósito, e os atrasos também: o que precisa coincidir é o
    FIM das duas, para elas sumirem juntas. 40 + 2200 = 140 + 2100 = 2240ms. */
 .sobre-arte.is-visible .planta-constru { animation-name: planta-calcula; animation-duration: 2200ms; animation-delay: 40ms; }
