@@ -138,7 +138,7 @@ export default function Raiz({ locale, children }: { locale: Locale; children: R
              OS CAMPOS DO FORMULARIO FICARAM DE FORA de proposito. Cercar de
              cantos uma area de texto de 557px nao ajuda ninguem, e ali o que
              importa e a barrinha de texto, que a folha devolve. */
-          targetSelector=".botao, .amostra, .link-texto, .endereco, .canal-texto, .marca, .menu a, .idiomas a, .rodape-baixo a, summary"
+          targetSelector=".botao, .amostra, .formato, .link-texto, .endereco, .canal-texto, .marca, .menu a, .idiomas a, .rodape-baixo a, summary"
           spinDuration={5}
           hideDefaultCursor={true}
           /* PARALLAX DESLIGADO, a pedido, em 02/09/2026. Com ele ligado os

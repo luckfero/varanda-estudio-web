@@ -296,18 +296,39 @@ export default function SectionAbertura({
           </div>
 
           <div className="formatos-grade">
+            {/* O CARTÃO INTEIRO É O LINK, desde 02/09/2026, a pedido.
+
+              Ele era um `<article>` com um link de texto em âmbar no pé, e
+              o pedido nasceu do ponteiro novo: os cantos dele fechavam só
+              em volta daquela linha de texto, e não do cartão. Alvo de
+              ponteiro do tamanho de uma frase dentro de um cartão de 300px
+              é o alvo errado.
+
+              `servicos.verPlano` NÃO foi removido, mudou de lugar: ele
+              sumiu da tela e virou `.so-leitor`. É ele que diz, para quem
+              ouve, o que este link faz — sem ele o nome acessível seria o
+              cartão inteiro sem nenhum verbo, e a chave morreria nos três
+              dicionários.
+
+              Sem `aria-label` de propósito: o nome acessível sai do texto
+              visível, que é o que a 2.5.3 (Label in Name) pede. Um rótulo
+              curto e bonito aqui contradiria o que está escrito na tela. */}
             {servicos.lista.map((formato, indice) => (
-              <article className="cartao cartao--interativo formato" key={formato.number} data-reveal style={atraso(indice * 90)}>
+              <a
+                className="cartao cartao--interativo formato"
+                href="#investimento"
+                onClick={(event) => handleNavClick(event, "#investimento")}
+                key={formato.number}
+                data-reveal
+                style={atraso(indice * 90)}
+              >
                 {/* O número é decorativo para quem ouve: ele repete a posição
                     do cartão, que a lista já dá. */}
                 <p className="formato-numero numeral" aria-hidden="true">{formato.number}</p>
                 <h3 className="titulo-bloco">{formato.title}</h3>
                 <p>{formato.text}</p>
-                <a className="link-texto" href="#investimento" onClick={(event) => handleNavClick(event, "#investimento")}>
-                  {servicos.verPlano}
-                  <Seta />
-                </a>
-              </article>
+                <span className="so-leitor">{servicos.verPlano}</span>
+              </a>
             ))}
           </div>
 

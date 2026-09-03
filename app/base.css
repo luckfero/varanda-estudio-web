@@ -529,6 +529,35 @@ h3, .titulo-bloco {
 .cartao--destaque { background: var(--nivel-2); border-color: var(--fio-acento); }
 .cartao--interativo:hover { background: var(--nivel-2); border-color: var(--fio-forte); transform: translateY(-3px); }
 
+/* QUANDO O CARTÃO É O PRÓPRIO LINK (os três formatos, desde 02/09/2026).
+
+   Ele deixou de ter link de texto dentro e passou a ser o link inteiro, então
+   precisa das três coisas que um `<a>` traz e que um `<article>` não trazia:
+   não herdar cor nem sublinhado de link, e desenhar o próprio foco. Sem a
+   regra de foco ele cairia no contorno padrão do navegador, que sobre chão
+   escuro quase não aparece. */
+a.cartao {
+  text-decoration: none;
+  color: inherit;
+}
+a.cartao:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 3px;
+}
+
+/* O PRESSIONADO, e ele não é enfeite aqui.
+
+   O que dizia "isto é clicável" era o texto em âmbar no pé do cartão, e ele
+   saiu a pedido. No ponteiro quem diz agora é o `:hover` acima mais os cantos
+   do ponteiro da casa fechando em volta. **No toque não existe nenhum dos
+   dois**, e é a regra da casa (rodada 6) que fecha a conta: sem `:hover`, o
+   pressionado é a única resposta que o controle dá entre o dedo encostar e a
+   página mudar.
+
+   `scale` e não `translateY`: afundar é o gesto de apertar, e descer seria o
+   contrário do `:hover`, que sobe 3px. */
+a.cartao--interativo:active { transform: scale(0.985); }
+
 .selo {
   display: inline-flex; align-items: center;
   padding: 4px 10px;
