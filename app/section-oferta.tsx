@@ -4,6 +4,7 @@ import type { CSSProperties } from "react";
 import type { Dicionario } from "./i18n";
 import { partesDoPreco } from "./i18n";
 import { useAncoraSuave } from "./use-ancora-suave";
+import IconeGarantia from "./icone-garantia";
 
 /**
  * Processo e investimento, na identidade nova. A manutenção mensal saiu do
@@ -71,6 +72,17 @@ const COMPARACAO: Celula[][] = [
   /* SEO e dados estruturados */ [{ tipo: "nao" }, { tipo: "nao" }, { tipo: "item", item: 2 }],
   /* Rodadas de ajuste        */ [{ tipo: "item", item: 3 }, { tipo: "item", item: 4 }, { tipo: "item", item: 3 }],
 ];
+
+/* "Em todos os pacotes, sem cobrança à parte" → ["Em todos os pacotes,", <em>sem cobrança à parte</em>] */
+function tituloPartido(titulo: string) {
+  const i = titulo.indexOf(",");
+  if (i < 0) return titulo;
+  return (
+    <>
+      {titulo.slice(0, i + 1)} <em>{titulo.slice(i + 1).trim()}</em>
+    </>
+  );
+}
 
 export default function SectionOferta({
   processo,
@@ -204,13 +216,15 @@ export default function SectionOferta({
             <p className="lead">{investimento.resumo}</p>
           </div>
 
-          {/* A legenda é um parágrafo VISÍVEL antes da tabela, e não um
-              `caption`. Duas razões: ela descreve o que se compara, que é
-              informação para todo mundo e não só para quem ouve; e abaixo de
-              900px a tabela vira cartão empilhado, o pai deixa de ser tabela
-              e um `caption` viraria um parágrafo solto sem vínculo com
-              nada. */}
-          <p className="apoio tabela-legenda" data-reveal>
+          {/* A legenda é um parágrafo antes da tabela, e não um `caption`:
+              abaixo de 900px a tabela vira cartão empilhado, o pai deixa de
+              ser tabela e um `caption` viraria um parágrafo solto sem vínculo
+              com nada.
+
+              Desde 13/09/2026 ela é `.so-leitor`, a pedido, para a tabela
+              subir: sai da tela e continua dizendo a quem ouve o que se
+              compara antes das células. */}
+          <p className="so-leitor tabela-legenda">
             {comparacao.legenda}
           </p>
 
@@ -363,75 +377,35 @@ export default function SectionOferta({
             {investimento.prazoNota}
           </p>
 
-          {/* A FAIXA DA CONDIÇÃO DE ABERTURA, E ELA SÓ EXISTE EM PORTUGUÊS.
-              O interruptor é `condicao.ativa`, falso nos outros dois
-              dicionários por decisão comercial escrita lá: a condição é em
-              real, e só em real.
-
-              ELA VEM DEPOIS DA TABELA, e isso é decisão, não sobra de
-              layout. O preço publicado é o da tabela e continua sendo; a
-              condição é uma oferta com data, lida depois do preço. Posta
-              antes, ou como segunda coluna, ela transformaria a tabela em
-              âncora, que foi exatamente o que a decisão de 25/08/2026 tirou
-              da página.
-
-              A DATA ANDA COLADA NOS VALORES. Ela não é rodapé: é o que separa
-              condição de abertura de tabela mais alta do que o que se cobra.
-
-              `valores` é posicional com `pacotes`, e o nome vem de `pacotes`
-              para não existirem duas listas de nomes que possam divergir. */}
-          {investimento.condicao.ativa && (
-            <aside className="condicao" data-reveal aria-labelledby="titulo-condicao">
-              <p className="rotulo condicao-rotulo">{investimento.condicao.rotulo}</p>
-              <h3 className="condicao-titulo" id="titulo-condicao">
-                {investimento.condicao.titulo}
-              </h3>
-              <p className="condicao-texto">{investimento.condicao.texto}</p>
-
-              <p className="condicao-valores-rotulo">{investimento.condicao.valoresRotulo}</p>
-              <ul className="condicao-valores" role="list">
-                {investimento.pacotes.map((pacote, indice) => {
-                  const partes = partesDoPreco(moedas, investimento.condicao.valores[indice]);
-                  return (
-                    <li key={pacote.name}>
-                      <span className="condicao-pacote">{pacote.name}</span>
-                      <span className="preco">
-                        {partes.antes && <span className="preco-moeda">{partes.antes}</span>}
-                        <span className="preco-valor numeral">{partes.numero}</span>
-                        {partes.depois && <span className="preco-moeda">{partes.depois}</span>}
-                      </span>
-                    </li>
-                  );
-                })}
-              </ul>
-
-              <p className="condicao-validade">{investimento.condicao.validade}</p>
-
-              <p className="condicao-troca-titulo">{investimento.condicao.contrapartidasTitulo}</p>
-              {/* Uma linha cada, como pedido: são três obrigações de
-                  contrato, e obrigação que vira parágrafo corrido some. */}
-              <ul className="condicao-troca" role="list">
-                {investimento.condicao.contrapartidas.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </aside>
-          )}
-
           {/* Garantias da casa fora dos cartões, de propósito. Enquanto
               viviam dentro da lista de cada pacote, pareciam variar entre
               eles, e "direção visual autoral" só no mais caro dizia, na
               prática, que os outros dois eram modelo pronto. */}
-          <div className="incluido" data-reveal>
-            <h3>{investimento.incluidoTitulo}</h3>
-            <div className="incluido-grade">
-              {investimento.incluido.map((item) => (
-                <div className="incluido-item" key={item.title}>
+          {/* REDESENHADO EM 13/09/2026, a pedido: era uma grade de textos soltos
+              entre fios, e lia como letra miúda debaixo da tabela. Agora é um
+              painel com o título de um lado e as seis garantias do outro, como
+              ficha técnica, cada uma com um ícone de traço fino que se desenha
+              ao entrar na tela (o mesmo gesto das ilustrações dos extras). O
+              ícone é achado pelo NOME (`item.icone`), não pela posição.
+
+              O título se parte na vírgula para a segunda metade ganhar o
+              itálico âmbar dos outros títulos. Os três idiomas têm a vírgula;
+              sem ela, o título sai inteiro. */}
+          <div className="incluido">
+            <div className="incluido-cabeca" data-reveal>
+              <h3 className="incluido-titulo">
+                {tituloPartido(investimento.incluidoTitulo)}
+              </h3>
+            </div>
+            <ul className="incluido-grade" role="list">
+              {investimento.incluido.map((item, indice) => (
+                <li className="incluido-item" key={item.icone} data-reveal style={atraso(indice * 70)}>
+                  <IconeGarantia nome={item.icone} />
                   <strong>{item.title}</strong>
                   <p>{item.text}</p>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
 
           {/* Duas colunas, e a separação é comercial antes de ser visual: a

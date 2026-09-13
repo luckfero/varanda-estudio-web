@@ -259,6 +259,10 @@
    para outra coisa a 200px de distância. Etiqueta que não diz nada que o
    texto já não diga é ruído com cara de precisão. */
 .coluna { border-top: 1px solid var(--fio); padding-top: var(--e4); }
+/* A primeira coluna perdeu o fio de cima em 13/09/2026, a pedido. O recuo
+   ficou: o texto chegou a subir junto e voltou à altura de antes, também a
+   pedido. O fio fica só entre as duas, que é onde ele separa alguma coisa. */
+.coluna:first-child { border-top-color: transparent; }
 
 /* ---------------------------------------------------------------------
    12. FORMATOS

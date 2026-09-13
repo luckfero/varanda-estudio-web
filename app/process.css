@@ -177,16 +177,71 @@
 /* A legenda da comparação é um parágrafo ANTES da tabela, e não um
    `caption`: abaixo de 900px o pai deixa de ser tabela e o `caption` vira um
    parágrafo solto de 1px de altura, sem vínculo com nada. */
-.tabela-legenda { margin-bottom: var(--e5); }
+/* Saiu da tela em 13/09/2026, a pedido, para a tabela subir: a legenda
+   continua no documento como `.so-leitor`, porque é ela que diz a quem ouve o
+   que a tabela compara antes de entrar nas células. */
+.tabela-legenda { margin-bottom: 0; }
 
-.incluido { margin-top: var(--e9); }
-.incluido h3, .escopo h3 { font-size: var(--t-item); font-weight: 600; letter-spacing: -0.015em; margin-bottom: var(--e5); padding-bottom: var(--e3); border-bottom: 1px solid var(--fio); }
-.incluido-grade { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--e5) var(--e6); }
-.incluido-item { border-top: 1px solid var(--fio); padding-top: var(--e4); }
-/* Sem o "01" a "06": era numeração inventada em cima de um conjunto que não
-   tem ordem. */
+/* ---------------------------------------------------------------------
+   EM TODOS OS PACOTES (redesenhado em 13/09/2026)
+   Um painel: o título numa coluna, as seis garantias numa grade de ficha
+   técnica na outra, separadas por fio interno e não por espaço solto.
+   --------------------------------------------------------------------- */
+.incluido {
+  margin-top: var(--e9);
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 2.15fr);
+  background: var(--nivel-1);
+  border: 1px solid var(--fio);
+  border-radius: var(--raio-painel);
+  overflow: hidden;
+}
+.incluido-cabeca {
+  padding: var(--e6);
+  border-right: 1px solid var(--fio);
+}
+.incluido-titulo {
+  font-family: var(--fonte-display);
+  font-size: var(--t-bloco);
+  line-height: var(--lh-bloco);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.incluido-titulo em { display: block; margin-top: var(--e1); color: var(--acento); }
+.escopo h3 { font-size: var(--t-item); font-weight: 600; letter-spacing: -0.015em; margin-bottom: var(--e5); padding-bottom: var(--e3); border-bottom: 1px solid var(--fio); }
+
+.incluido-grade { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+/* O fio interno desenha a ficha: cada item leva fio à direita e embaixo, e a
+   última coluna e a última linha perdem o seu para não dobrar com a borda. */
+.incluido-item {
+  padding: var(--e6) var(--e5);
+  border-right: 1px solid var(--fio);
+  border-bottom: 1px solid var(--fio);
+}
+.incluido-item:nth-child(3n) { border-right: 0; }
+.incluido-item:nth-last-child(-n + 3) { border-bottom: 0; }
 .incluido-item strong { display: block; margin-bottom: var(--e2); font-size: var(--c-base); font-weight: 600; letter-spacing: -0.015em; }
-.incluido-item p:not(.mono) { font-size: var(--c-apoio); color: var(--tinta-media); }
+.incluido-item p { font-size: var(--c-apoio); color: var(--tinta-media); }
+
+/* O ícone: traço âmbar fino que se pinta quando o item entra na tela, com os
+   mesmos quadros-chave da planta (about.css). Em repouso o desenho está
+   inteiro, então sem JavaScript ele aparece pronto. */
+.incluido-icone { display: block; width: 32px; height: 32px; margin-bottom: var(--e4); color: var(--acento); }
+.incluido-icone :is(path, circle, rect) { stroke-dasharray: 100; stroke-dashoffset: 0; }
+.incluido-item.is-visible .incluido-icone :is(path, circle, rect):not(.incluido-icone-cheio) {
+  animation: planta-pinta 700ms var(--ease-out) both;
+  animation-delay: calc(var(--atraso, 0ms) + 120ms);
+}
+.incluido-item.is-visible .incluido-icone-cheio {
+  animation: planta-surge 420ms var(--ease-out) both;
+  animation-delay: calc(var(--atraso, 0ms) + 620ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  .incluido-item.is-visible .incluido-icone :is(path, circle, rect) {
+    animation: planta-surge 300ms var(--ease-out) both !important;
+  }
+}
 
 /* A coluna da esquerda está no preço, a da direita não. A diferença é
    comercial antes de ser visual, então ela é dita pelo fundo e pelo
@@ -206,101 +261,16 @@
   border-radius: 0 var(--raio-peca) var(--raio-peca) 0;
   color: var(--tinta-media); font-size: var(--c-apoio);
 }
-.nota-secao { margin-top: var(--e5); }
+/* A nota de rodapé de seção ocupa a largura do conteúdo acima dela, e não os
+   76ch de `.apoio`: pedido de 13/09/2026, primeiro nos extras e depois no
+   investimento, para o texto terminar onde o card de cima termina. */
+.nota-secao { margin-top: var(--e5); max-width: none; }
 
 /* A CONTAGEM DO PRAZO.
    Ela nasce colada nos cartões e na tabela de propósito: é a letra miúda do
    número que está logo acima, e afastada dele viraria mais uma nota de
    rodapé, que é onde ninguém lê. */
 .prazo-nota { margin-top: var(--e4); }
-
-/* ---------------------------------------------------------------------
-   A FAIXA DA CONDIÇÃO DE ABERTURA (só em português, ver `pt.ts`).
-
-   Ela é uma PEÇA À PARTE, e não uma coluna a mais da tabela. O desenho
-   carrega essa decisão: chão próprio, fio de acento em volta e distância da
-   tabela, para o olho ler "outra coisa" antes de ler o número. Uma quarta
-   coluna, ou uma segunda linha de preço dentro da tabela, transformaria o
-   preço publicado em âncora.
-
-   O VALOR AQUI É MENOR QUE O DA TABELA, e por isso ele não pode ser o
-   elemento mais forte da seção: `--t-item` no valor, contra `--t-numero` na
-   tabela. Quem manda na página continua sendo o preço publicado.
-   --------------------------------------------------------------------- */
-.condicao {
-  margin-top: var(--e7);
-  padding: var(--e6);
-  background: var(--nivel-1);
-  border: 1px solid var(--fio-acento);
-  border-radius: var(--raio-cartao);
-}
-.condicao-rotulo { margin-bottom: var(--e3); color: var(--acento); }
-.condicao-titulo {
-  font-family: var(--fonte-display);
-  font-size: var(--t-bloco);
-  line-height: var(--lh-bloco);
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  margin-bottom: var(--e3);
-}
-.condicao-texto { font-size: var(--c-base); color: var(--tinta-media); max-width: 68ch; }
-
-.condicao-valores-rotulo,
-.condicao-troca-titulo {
-  font-family: var(--fonte-mono);
-  font-size: var(--c-mono);
-  letter-spacing: var(--ls-mono);
-  text-transform: uppercase;
-  color: var(--tinta-fraca);
-  margin: var(--e5) 0 var(--e3);
-}
-
-/* Três colunas para os três pacotes, na mesma ordem em que a tabela os
-   desenha. Lado a lado, e não em lista vertical: são o mesmo dado dos três,
-   e empilhados leriam como uma escada nova. */
-.condicao-valores {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--e4);
-  border-top: 1px solid var(--fio);
-  padding-top: var(--e4);
-}
-.condicao-valores li { display: grid; gap: var(--e1); }
-.condicao-pacote {
-  font-size: var(--c-apoio);
-  color: var(--tinta-fraca);
-}
-/* O valor da condição é menor que o da tabela de propósito: ver o comentário
-   do bloco. `.preco-valor` desce de `--t-numero` para `--t-item` só aqui. */
-.condicao-valores .preco-valor { font-size: var(--t-item); }
-
-/* A DATA ANDA COM O NÚMERO. Ela é o que separa condição de abertura de
-   tabela mais alta do que o que se cobra, então tem peso de texto e não de
-   rodapé, e fica logo abaixo dos três valores. */
-.condicao-validade {
-  margin-top: var(--e4);
-  font-size: var(--c-apoio);
-  font-weight: 600;
-  color: var(--acento);
-}
-
-/* Uma linha cada, com o mesmo marcador quadrado do resto da página. São três
-   obrigações de contrato: em parágrafo corrido elas somem. */
-.condicao-troca { display: grid; gap: var(--e2); }
-.condicao-troca li {
-  display: grid;
-  grid-template-columns: 14px minmax(0, 1fr);
-  gap: var(--e3);
-  font-size: var(--c-apoio);
-  color: var(--tinta-media);
-  line-height: 1.5;
-}
-.condicao-troca li::before {
-  content: "";
-  width: 6px; height: 6px;
-  margin-top: 7px;
-  background: var(--acento);
-}
 
 /* ---------------------------------------------------------------------
    OS ITENS DE CARTÃO DE PACOTE

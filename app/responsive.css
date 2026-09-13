@@ -74,7 +74,15 @@
   .apresentacao-grade > div:not(.colunas),
   .apresentacao-grade > .colunas { grid-area: auto; }
   .apresentacao-grade { row-gap: var(--e6); }
-  .formatos-grade, .estudos-lista, .incluido-grade { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .formatos-grade, .estudos-lista { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* O painel das garantias empilha: o título em cima, a ficha em duas colunas. */
+  .incluido { grid-template-columns: minmax(0, 1fr); }
+  .incluido-cabeca { border-right: 0; border-bottom: 1px solid var(--fio); }
+  .incluido-grade { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .incluido-item:nth-child(3n) { border-right: 1px solid var(--fio); }
+  .incluido-item:nth-child(2n) { border-right: 0; }
+  .incluido-item:nth-last-child(-n + 3) { border-bottom: 1px solid var(--fio); }
+  .incluido-item:nth-last-child(-n + 2) { border-bottom: 0; }
   .linha-tempo { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--e7); }
   .placa, .placa--invertida { grid-template-columns: minmax(0, 1fr); }
   .placa--invertida .amostra { order: 0; border-left: 0; }
@@ -157,8 +165,7 @@
      nenhum é número solto. Vale só no celular: no desktop a seção não incomoda
      e a folga faz parte do ritmo da página. */
   .incluido { margin-top: var(--e7); }
-  .incluido-grade { gap: var(--e4); }
-  .incluido-item { padding-top: var(--e3); }
+  .incluido-cabeca, .incluido-item { padding: var(--e5); }
 
   .escopo { margin-top: var(--e7); }
   .escopo-coluna { padding: var(--e5); }
@@ -167,23 +174,18 @@
      aqui, e a linha continua com 31px de altura. */
   .escopo li { padding-block: var(--e1); }
 
-  .incluido h3,
   .escopo h3 { margin-bottom: var(--e4); }
-
-  /* A faixa da condição e a peça do Reparo apertam junto com o resto, pela
-     mesma regra: desce um degrau da escala, nada de número solto. */
-  .condicao { margin-top: var(--e6); padding: var(--e5); }
 }
 
 @media (max-width: 760px) {
   :root { --altura-cabecalho: 68px; }
   .caixa { border-inline: 0; }
-  .formatos-grade, .estudos-lista, .incluido-grade, .dupla,
+  .formatos-grade, .estudos-lista, .dupla,
   .janela-leituras { grid-template-columns: minmax(0, 1fr); }
-  /* Os três valores da condição saem do lado a lado. Em 390px eles cabem
-     tecnicamente, e cabendo ficariam com o nome do pacote quebrado em duas
-     linhas debaixo de um número: a coluna vertical é o pior caso certo. */
-  .condicao-valores { grid-template-columns: minmax(0, 1fr); gap: var(--e3); }
+  .incluido-grade { grid-template-columns: minmax(0, 1fr); }
+  .incluido-item, .incluido-item:nth-child(3n) { border-right: 0; }
+  .incluido-item:nth-last-child(-n + 2) { border-bottom: 1px solid var(--fio); }
+  .incluido-item:last-child { border-bottom: 0; }
   .janela-leitura + .janela-leitura { border-left: 0; border-top: 1px solid var(--fio); }
   .linha-tempo { grid-template-columns: minmax(0, 1fr); gap: var(--e6); }
   .etapa { padding-top: 0; padding-left: var(--e6); }

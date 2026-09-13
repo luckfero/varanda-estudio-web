@@ -288,32 +288,6 @@ const en: Dicionario = {
       incluido: "Included",
       naoIncluido: "Not included",
     },
-    /**
-     * A CONDIÇÃO DE ABERTURA NÃO EXISTE EM INGLÊS, e `ativa: false` é o que
-     * garante isso: com ela falsa, `section-oferta.tsx` não renderiza a faixa
-     * e nada deste bloco chega à tela.
-     *
-     * As chaves estão aqui só por causa do contrato de tipo
-     * (`Dicionario = typeof pt`), que cobra dos três dicionários a mesma
-     * forma. Elas ficam VAZIAS de propósito, e isto não é tradução
-     * esquecida: a condição é em real e só em real, por decisão do estúdio
-     * em 08/09/2026.
-     *
-     * Deixar texto traduzido aqui seria pior que deixar vazio: convidaria
-     * alguém a ligar o interruptor e publicar um valor que ninguém aprovou
-     * em dólar.
-     */
-    condicao: {
-      ativa: false,
-      rotulo: "",
-      titulo: "",
-      texto: "",
-      validade: "",
-      valoresRotulo: "",
-      valores: [],
-      contrapartidasTitulo: "",
-      contrapartidas: [],
-    },
     pacotes: [
       {
         name: "Essential",
@@ -360,12 +334,12 @@ const en: Dicionario = {
       },
     ],
     incluido: [
-      { title: "Original visual direction", text: "Every project is designed from scratch. No package uses a template." },
-      { title: "Genuinely accessible", text: "Contrast, keyboard navigation and screen readers verified with tooling, not by eye." },
-      { title: "Fast on any phone", text: "Published on a distributed network, with images and fonts optimised." },
-      { title: "Launch and domain set up", text: "We leave the site live, with the address and certificate working." },
-      { title: "30-day warranty", text: "Any fault after launch is fixed at no cost." },
-      { title: "The site is yours", text: "Domain, accounts and code stay in your company's name from day one." },
+      { icone: "direcao", title: "Original visual direction", text: "Every project is designed from scratch. No package uses a template." },
+      { icone: "acessivel", title: "Genuinely accessible", text: "Contrast, keyboard navigation and screen readers verified with tooling, not by eye." },
+      { icone: "rapido", title: "Fast on any phone", text: "Published on a distributed network, with images and fonts optimised." },
+      { icone: "publicacao", title: "Launch and domain set up", text: "We leave the site live, with the address and certificate working." },
+      { icone: "garantia", title: "30-day warranty", text: "Any fault after launch is fixed at no cost." },
+      { icone: "dono", title: "The site is yours", text: "Domain, accounts and code stay in your company's name from day one." },
     ],
   },
 

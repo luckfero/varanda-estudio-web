@@ -299,32 +299,6 @@ const es: Dicionario = {
       incluido: "Incluido",
       naoIncluido: "No incluido",
     },
-    /**
-     * A CONDIÇÃO DE ABERTURA NÃO EXISTE EM ESPANHOL, e `ativa: false` é o
-     * que garante isso: com ela falsa, `section-oferta.tsx` não renderiza a
-     * faixa e nada deste bloco chega à tela.
-     *
-     * As chaves estão aqui só por causa do contrato de tipo
-     * (`Dicionario = typeof pt`), que cobra dos três dicionários a mesma
-     * forma. Elas ficam VAZIAS de propósito, e isto não é tradução
-     * esquecida: a condição é em real e só em real.
-     *
-     * Deixar texto traduzido aqui seria pior que deixar vazio: convidaria
-     * alguém a ligar o interruptor e publicar um valor que ninguém aprovou
-     * em euro. Se um dia existir condição em euro, ela nasce com valores
-     * aprovados por escrito, e só então `ativa` vira verdadeira.
-     */
-    condicao: {
-      ativa: false,
-      rotulo: "",
-      titulo: "",
-      texto: "",
-      validade: "",
-      valoresRotulo: "",
-      valores: [],
-      contrapartidasTitulo: "",
-      contrapartidas: [],
-    },
     pacotes: [
       {
         name: "Esencial",
@@ -371,12 +345,12 @@ const es: Dicionario = {
       },
     ],
     incluido: [
-      { title: "Dirección visual propia", text: "Cada proyecto se diseña desde cero. Ningún paquete usa plantilla." },
-      { title: "Accesible de verdad", text: "Contraste, navegación por teclado y lector de pantalla verificados con herramienta, no a ojo." },
-      { title: "Rápida en cualquier móvil", text: "Publicada en red distribuida, con imágenes y tipografías optimizadas." },
-      { title: "Publicación y dominio configurados", text: "Dejamos la web publicada, con dirección y certificado funcionando." },
-      { title: "Garantía de 30 días", text: "Cualquier fallo de funcionamiento tras la publicación se corrige sin coste." },
-      { title: "La web es tuya", text: "Dominio, cuentas y código quedan a nombre de tu empresa desde el primer día." },
+      { icone: "direcao", title: "Dirección visual propia", text: "Cada proyecto se diseña desde cero. Ningún paquete usa plantilla." },
+      { icone: "acessivel", title: "Accesible de verdad", text: "Contraste, navegación por teclado y lector de pantalla verificados con herramienta, no a ojo." },
+      { icone: "rapido", title: "Rápida en cualquier móvil", text: "Publicada en red distribuida, con imágenes y tipografías optimizadas." },
+      { icone: "publicacao", title: "Publicación y dominio configurados", text: "Dejamos la web publicada, con dirección y certificado funcionando." },
+      { icone: "garantia", title: "Garantía de 30 días", text: "Cualquier fallo de funcionamiento tras la publicación se corrige sin coste." },
+      { icone: "dono", title: "La web es tuya", text: "Dominio, cuentas y código quedan a nombre de tu empresa desde el primer día." },
     ],
   },
 

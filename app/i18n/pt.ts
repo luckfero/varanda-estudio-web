@@ -321,53 +321,11 @@ const pt = {
       incluido: "Incluído",
       naoIncluido: "Não incluído",
     },
-    /**
-     * A CONDIÇÃO DE ABERTURA, E ELA EXISTE SÓ EM REAL.
-     *
-     * Aprovada em 08/09/2026. Os valores não foram calculados aqui: vêm do
-     * material comercial do estúdio, seção "Os cinco primeiros", e mudam lá
-     * primeiro.
-     *
-     * `ativa` é o interruptor, e ele é FALSO em `es.ts` e `en.ts`. As chaves
-     * existem lá por causa do contrato de tipo (`Dicionario = typeof pt`),
-     * e ficam vazias de propósito: não existe condição aprovada em euro nem
-     * em dólar. Texto traduzido ali seria um convite a ligar o interruptor e
-     * publicar um valor que ninguém aprovou.
-     *
-     * ELA NÃO É SEGUNDA COLUNA DE PREÇO. O preço publicado continua sendo o
-     * da tabela, e esta faixa vem DEPOIS dela, com data à vista. Coluna
-     * paralela transformaria a tabela em âncora, que foi exatamente o que a
-     * decisão de 25/08/2026 tirou da página.
-     *
-     * A DATA É PARTE DO VALOR. Sem ela, a condição vira preço permanente com
-     * nome bonito, e quem entra por preço de abertura e vê o preço não subir
-     * aprende que o número era fingido.
-     *
-     * `valores` é POSICIONAL, na mesma ordem de `pacotes` logo abaixo, e o
-     * nome de cada pacote sai de lá para não haver duas listas de nomes que
-     * possam divergir. Trocar a ordem de `pacotes` sem trocar aqui põe o
-     * valor de um pacote debaixo do nome de outro, em silêncio.
-     */
-    condicao: {
-      ativa: true,
-      rotulo: "Condição de abertura",
-      titulo: "Os cinco primeiros",
-      texto: "Os cinco primeiros contratos fecham por um valor de abertura. Ele vem com uma contrapartida escrita no contrato, e não existe sem ela.",
-      validade: "Vale até 31/10/2026, ou até os cinco primeiros contratos assinados, o que vier antes.",
-      valoresRotulo: "Nesta condição",
-      valores: ["1.000", "2.100", "3.800"],
-      contrapartidasTitulo: "O que pedimos em troca",
-      contrapartidas: [
-        "Um depoimento assinado, com nome e empresa, depois da entrega.",
-        "Autorização escrita para publicar o trabalho no portfólio, com o nome real.",
-        "Uma indicação, com nome e telefone de alguém que você conheça.",
-      ],
-    },
     pacotes: [
       {
         name: "Essencial",
         eyebrow: "Para começar",
-        launch: "1.200",
+        launch: "1.000",
         /* Presente nos três, mesmo falso. Sem a chave em todos, o TypeScript
            infere um tipo diferente por elemento e `typeof pt` deixa de servir
            como contrato para `es.ts` e `en.ts`. */
@@ -388,7 +346,7 @@ const pt = {
       {
         name: "Negócio",
         eyebrow: "Recomendado",
-        launch: "2.500",
+        launch: "2.100",
         entrega: "Até 15 dias úteis",
         featured: true,
         description: "O site completo do seu negócio, com espaço para explicar, mostrar trabalhos e responder dúvidas.",
@@ -403,7 +361,7 @@ const pt = {
       {
         name: "Profissional",
         eyebrow: "Para crescer",
-        launch: "4.500",
+        launch: "3.800",
         entrega: "Definido na proposta, conforme a capacidade escolhida",
         featured: false,
         description: "Tudo do Negócio, mais uma capacidade que o seu projeto exige, escolhida junto com você.",
@@ -416,12 +374,12 @@ const pt = {
       },
     ],
     incluido: [
-      { title: "Direção visual autoral", text: "Cada projeto é desenhado do zero. Nenhum pacote usa modelo pronto." },
-      { title: "Acessível de verdade", text: "Contraste, navegação por teclado e leitor de tela verificados com ferramenta, não no olho." },
-      { title: "Rápido em qualquer celular", text: "Publicado em rede distribuída, com imagens e fontes otimizadas." },
-      { title: "Publicação e domínio configurados", text: "Deixamos o site no ar, com endereço e certificado funcionando." },
-      { title: "Garantia de 30 dias", text: "Defeito de funcionamento depois da publicação é corrigido sem custo." },
-      { title: "O site é seu", text: "Domínio, contas e código ficam no nome da sua empresa desde o primeiro dia." },
+      { icone: "direcao", title: "Direção visual autoral", text: "Cada projeto é desenhado do zero. Nenhum pacote usa modelo pronto." },
+      { icone: "acessivel", title: "Acessível de verdade", text: "Contraste, navegação por teclado e leitor de tela verificados com ferramenta, não no olho." },
+      { icone: "rapido", title: "Rápido em qualquer celular", text: "Publicado em rede distribuída, com imagens e fontes otimizadas." },
+      { icone: "publicacao", title: "Publicação e domínio configurados", text: "Deixamos o site no ar, com endereço e certificado funcionando." },
+      { icone: "garantia", title: "Garantia de 30 dias", text: "Defeito de funcionamento depois da publicação é corrigido sem custo." },
+      { icone: "dono", title: "O site é seu", text: "Domínio, contas e código ficam no nome da sua empresa desde o primeiro dia." },
     ],
   },
 

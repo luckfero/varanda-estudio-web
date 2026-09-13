@@ -46,7 +46,7 @@ const SITE = "https://varandaestudioweb.com";
    atributo do `<html>` é `es` e a anotação para o buscador é `es-ES`.
    Tratá-los como um só campo foi o primeiro erro deste arquivo. */
 const IDIOMAS = [
-  { locale: "pt", lang: "pt-BR", hreflang: "pt-BR", home: "/", politica: "/privacidade", titulo: "Varanda Estúdio Web | Criação de sites profissionais", moeda: "R$", precos: ["1.200", "2.500", "4.500"], extras: ["R$ 390", "R$ 220", "R$ 320", "R$ 190"], reparo: true },
+  { locale: "pt", lang: "pt-BR", hreflang: "pt-BR", home: "/", politica: "/privacidade", titulo: "Varanda Estúdio Web | Criação de sites profissionais", moeda: "R$", precos: ["1.000", "2.100", "3.800"], extras: ["R$ 390", "R$ 220", "R$ 320", "R$ 190"], reparo: true },
   { locale: "es", lang: "es", hreflang: "es-ES", home: "/es", politica: "/es/privacidad", titulo: "Varanda Estúdio Web | Diseño y desarrollo de webs profesionales", moeda: "€", precos: ["790", "1.590", "2.900"], extras: ["250 €", "150 €", "199 €", "59 €"], reparo: false },
   { locale: "en", lang: "en", hreflang: "en", home: "/en", politica: "/en/privacy", titulo: "Varanda Estúdio Web | Professional website design and development", moeda: "US$", precos: ["900", "1,850", "3,350"], extras: ["US$ 290", "US$ 170", "US$ 230", "US$ 69"], reparo: false },
 ];
@@ -151,6 +151,10 @@ for (const idioma of IDIOMAS) {
     assert.doesNotMatch(visivel, /manuten[çc][ãa]o|mantenimiento|maintenance/i, `${idioma.locale}: manutenção voltou ao texto da home`);
     assert.doesNotMatch(visivel, /plano mensal|plan mensual|monthly plan|\/m[êe]s\b|\/month\b/i, `${idioma.locale}: plano mensal voltou à home`);
     assert.doesNotMatch(html, /titulo-manutencao/, `${idioma.locale}: a seção de manutenção voltou`);
+    /* A condição de abertura "os cinco primeiros" também saiu, no mesmo dia: os
+       valores dela viraram a tabela em real, e anunciar uma oferta que não
+       existe mais seria o site prometendo o que a casa não cobra. */
+    assert.doesNotMatch(visivel, /cinco primeiros|condição de abertura|condición de apertura|opening offer/i, `${idioma.locale}: a condição de abertura voltou`);
   });
 
   test(`[${idioma.locale}] os extras são cards, com a ilustração certa em cada um`, async () => {

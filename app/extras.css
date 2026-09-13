@@ -151,11 +151,6 @@
   .extra:hover .extra-seta { transform: translate(2px, -2px); }
 }
 
-/* A nota de rodapé da seção ocupa a largura da grade de cards, e não os 76ch
-   de `.apoio`: pedido de 13/09/2026, para o texto terminar onde o card de
-   cima termina. */
-#extras .nota-secao { max-width: none; }
-
 /* ---------------------------------------------------------------------
    O CARD LARGO: texto numa coluna, desenho na outra.
    --------------------------------------------------------------------- */
