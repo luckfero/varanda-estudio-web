@@ -348,6 +348,14 @@
    ESTUDOS CONCEITUAIS
    --------------------------------------------------------------------- */
 .estudos { margin-top: var(--e9); }
+/* Sem nenhum publicado ligado (a pausa de 13/09/2026, ver `featuredAssets` em
+   `app/data.ts`), os estudos vêm logo depois do cabeçalho da seção. Os
+   `--e9` acima existem para separar os estudos das PLACAS. As duas margens
+   colapsam, então sem esta regra o vão não somaria: valeria a maior, 96px,
+   contra os 64px da `.cabeca-secao` que o trilho "No ar" tinha e que as
+   outras seções têm. Zerando aqui, sobra a do cabeçalho. Religando um
+   publicado, o trilho volta para o meio e o seletor deixa de casar sozinho. */
+.cabeca-secao + .estudos { margin-top: 0; }
 
 /* O aviso de que empresa, texto e dado são fictícios. A barra de acento à
    esquerda existe para ele não ler como legenda do trilho de cima: é

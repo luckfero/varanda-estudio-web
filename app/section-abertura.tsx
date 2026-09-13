@@ -3,7 +3,6 @@
 import CursorGrid from "./cursor-grid";
 import type { CSSProperties } from "react";
 
-import { featuredAssets } from "./data";
 import type { Dicionario } from "./i18n";
 import { useAncoraSuave } from "./use-ancora-suave";
 
@@ -43,14 +42,6 @@ function Seta() {
   );
 }
 
-function SetaDiagonal() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
-      <path d="M7 7h10v10M7 17 17 7" />
-    </svg>
-  );
-}
-
 /* O atraso da revelação, escrito por elemento. `CSSProperties` não aceita
    propriedade customizada sem a asserção, e a asserção fica num lugar só em
    vez de repetida em cada `style=`. */
@@ -60,33 +51,12 @@ export default function SectionAbertura({
   hero,
   intro,
   servicos,
-  noArRotulo,
-  noAr,
 }: {
   hero: Dicionario["hero"];
   intro: Dicionario["intro"];
   servicos: Dicionario["servicos"];
-  /* A PROVA da abertura, e as duas propriedades são OPCIONAIS de propósito.
-     O bloco mostra os sites que já estão no ar, e esse texto mora em
-     `portfolio` (`noArIndice` e `destaques`), que não é fatia desta seção.
-     Quem monta a página (`app/pagina.tsx`) precisa passar
-     `noArRotulo={t.portfolio.noArIndice}` e `noAr={t.portfolio.destaques}`.
-     Enquanto não passar, o bloco simplesmente não aparece, que é o pior caso
-     aceitável: melhor um lugar vazio do que texto comercial escrito dentro do
-     componente.
-     O tipo pede só `name` porque só o nome é usado aqui. O endereço vem de
-     `featuredAssets`, pareado por índice, exatamente como no portfólio. */
-  noArRotulo?: string;
-  noAr?: ReadonlyArray<{ name: string }>;
 }) {
   const handleNavClick = useAncoraSuave();
-
-  /* Pareamento por índice, e o `slice` é a trava: se um dia a lista de texto
-     e a de endereços divergirem em tamanho, o excedente fica de fora em vez
-     de gerar um cartão com nome e sem link, ou com link e sem nome. */
-  const provas = (noAr ?? [])
-    .slice(0, featuredAssets.length)
-    .map((projeto, indice) => ({ nome: projeto.name, url: featuredAssets[indice].url }));
 
   return (
     <>
@@ -112,7 +82,7 @@ export default function SectionAbertura({
             96 por 96 comecando no canto do elemento; o componente, por
             padrao, usa 100 e centraliza a malha. Fora de fase, as celulas
             acesas apareciam atravessadas nas linhas paradas.
-            Os outros valores sao os que o Lucca passou. `gridOpacity` zero: a
+            Os outros valores sao os que a direcao do estudio passou. `gridOpacity` zero: a
             grade parada continua sendo a `.grade-fina`; esta so acende ao
             redor do ponteiro e some. */}
         <CursorGrid
@@ -150,14 +120,15 @@ export default function SectionAbertura({
               </h1>
               <p className="lead">{hero.lead}</p>
 
+              {/* O "Ver projeto" que ficava ao lado saiu em 13/09/2026, a pedido,
+                  junto com a pausa dos publicados no portfólio (ver
+                  `featuredAssets` em `app/data.ts`). Levou a chave
+                  `ctaSecundario` dos três dicionários e a `SetaDiagonal`, que
+                  só ele usava. */}
               <div className="abertura-acoes">
                 <a className="botao botao--acento" href="#contato" onClick={(event) => handleNavClick(event, "#contato")}>
                   {hero.ctaPrimario}
                   <Seta />
-                </a>
-                <a className="link-texto" href="#portfolio" onClick={(event) => handleNavClick(event, "#portfolio")}>
-                  {hero.ctaSecundario}
-                  <SetaDiagonal />
                 </a>
               </div>
 
@@ -208,25 +179,28 @@ export default function SectionAbertura({
             </div>
           </div>
 
-          {/* A PROVA. Os dois endereços estão de fato no ar e qualquer um
-              confere em um clique, o que é prova mais forte que um logotipo
-              cinza. Sai inteira quando o texto não é passado: ver o comentário
-              das propriedades. */}
-          {noArRotulo && provas.length > 0 ? (
-            <div className="prova" data-reveal style={atraso(200)}>
-              <div className="prova-linha">
-                <p className="mono prova-rotulo">{noArRotulo}</p>
-                <div className="prova-marcas">
-                  {provas.map((prova) => (
-                    <a key={prova.url} href={prova.url} target="_blank" rel="noreferrer">
-                      <strong>{prova.nome}</strong>
-                      <span>{new URL(prova.url).host}</span>
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ) : null}
+          {/* O BLOCO "NO AR" FOI REMOVIDO DA ABERTURA EM 09/09/2026, por decisão
+              do dono, no mesmo dia em que foi ligado. Ele listava Casa Conexão
+              e Milênio com o endereço de cada um, logo abaixo da primeira
+              dobra.
+
+              Saiu inteiro: o JSX, as duas propriedades da assinatura e o
+              pareamento por índice que montava os cartões. Deixar o código
+              parado aqui viraria advertência de variável sem uso em todo lint,
+              e código morto que ninguém entende por que existe.
+
+              O que NÃO saiu, de propósito: o texto continua nos dicionários
+              (`noArIndice` e `destaques`, em `portfolio`), que é de onde a
+              seção 04 também lê, e as regras `.prova*` continuam em
+              `app/hero.css`, que eram só deste bloco. A versão exata está no
+              commit `f5edd96` deste arquivo.
+
+              ATENÇÃO SE FOR DEVOLVER, desde 13/09/2026: aquele pareamento não
+              olhava `ativo`, que ainda não existia. Copiado como estava, ele
+              religa aqui os dois publicados que estão em pausa (ver
+              `featuredAssets` em `app/data.ts`). Filtrar por `asset.ativo`
+              depois de parear, como faz `section-portfolio.tsx`. O teste
+              "nenhum rastro na página" acusa se isso for esquecido. */}
         </div>
       </section>
 

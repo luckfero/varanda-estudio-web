@@ -93,6 +93,13 @@ function SetaExterna() {
 }
 
 export default function SectionPortfolio({ portfolio }: { portfolio: Dicionario["portfolio"] }) {
+  /* O pareamento por índice acontece ANTES do filtro, e a ordem importa:
+     filtrar primeiro e parear depois colaria o endereço de um projeto no texto
+     de outro assim que só um deles estivesse desligado. */
+  const noAr = portfolio.destaques
+    .map((projeto, index) => ({ projeto, asset: featuredAssets[index] }))
+    .filter(({ asset }) => asset?.ativo);
+
   return (
     <section className="secao" id="portfolio" aria-labelledby="titulo-portfolio">
       <div className="caixa">
@@ -113,84 +120,91 @@ export default function SectionPortfolio({ portfolio }: { portfolio: Dicionario[
           </div>
         </div>
 
-        {/* --- No ar ---------------------------------------------------- */}
-        <div className="trilho" data-reveal>
-          <span className="selo">{portfolio.noArIndice}</span>
-          <span className="trilho-nota">{portfolio.noArNota}</span>
-        </div>
+        {/* --- No ar ----------------------------------------------------
+            Só existe com pelo menos um publicado ligado. Desde 13/09/2026 os
+            dois estão desligados (ver `featuredAssets` em `data.ts`), e o
+            bloco some inteiro, rótulo e nota junto. */}
+        {noAr.length > 0 && (
+          <>
+            <div className="trilho" data-reveal>
+              <span className="selo">{portfolio.noArIndice}</span>
+              <span className="trilho-nota">{portfolio.noArNota}</span>
+            </div>
 
-        <ol className="placas" role="list">
-          {portfolio.destaques.map((projeto, index) => {
-            const asset = featuredAssets[index];
-            if (!asset) return null;
-            /* A segunda placa inverte os lados. Com as duas iguais, a segunda
-               lê como repetição da primeira em vez de segundo trabalho. */
-            const invertida = index % 2 === 1;
-            return (
-              <li key={projeto.name} data-reveal>
-                <article className={`placa${invertida ? " placa--invertida" : ""}`}>
-                  {/* A CAPA E O LINK DO SITE, e desde 02/09/2026 ela e o UNICO.
+            <ol className="placas" role="list">
+              {noAr.map(({ projeto, asset }, index) => {
+                /* A segunda placa inverte os lados. Com as duas iguais, a segunda
+                   lê como repetição da primeira em vez de segundo trabalho. A
+                   contagem é sobre as VISÍVEIS: com a primeira desligada, a que
+                   sobra não nasce invertida. */
+                const invertida = index % 2 === 1;
+                return (
+                  <li key={projeto.name} data-reveal>
+                    <article className={`placa${invertida ? " placa--invertida" : ""}`}>
+                      {/* A CAPA E O LINK DO SITE, e desde 02/09/2026 ela e o UNICO.
 
-                      O endereco amarelo saiu do corpo do cartao e subiu para a
-                      plaquinha da capa, a pedido. O nome do projeto, que estava
-                      ali, saiu: ele nao se perde, porque continua sendo o `h3`
-                      do corpo, tres linhas abaixo.
+                          O endereco amarelo saiu do corpo do cartao e subiu para a
+                          plaquinha da capa, a pedido. O nome do projeto, que estava
+                          ali, saiu: ele nao se perde, porque continua sendo o `h3`
+                          do corpo, tres linhas abaixo.
 
-                      ISSO MUDA A ACESSIBILIDADE, e a mudanca e obrigatoria.
-                      Enquanto o endereco era um link no corpo, esta capa era
-                      `aria-hidden` com `tabIndex={-1}`, para nao anunciar duas
-                      vezes o mesmo destino. Sem aquele link, esconder esta capa
-                      deixaria o site sem NENHUMA forma de chegar no projeto por
-                      teclado ou por leitor de tela. Entao ela e um link de
-                      verdade agora, com nome acessivel completo pelo `.so-leitor`.
+                          ISSO MUDA A ACESSIBILIDADE, e a mudanca e obrigatoria.
+                          Enquanto o endereco era um link no corpo, esta capa era
+                          `aria-hidden` com `tabIndex={-1}`, para nao anunciar duas
+                          vezes o mesmo destino. Sem aquele link, esconder esta capa
+                          deixaria o site sem NENHUMA forma de chegar no projeto por
+                          teclado ou por leitor de tela. Entao ela e um link de
+                          verdade agora, com nome acessivel completo pelo `.so-leitor`.
 
-                      Pela mesma razao o desenho da capa virou decorativo: dentro
-                      de um link, o `aria-label` dele entraria no nome acessivel
-                      e o leitor anunciaria a marca, o endereco e o convite, tudo
-                      emendado.
+                          Pela mesma razao o desenho da capa virou decorativo: dentro
+                          de um link, o `aria-label` dele entraria no nome acessivel
+                          e o leitor anunciaria a marca, o endereco e o convite, tudo
+                          emendado.
 
-                      Por que o desenho e FUNDO e nao `<img>`: `<img>` tem tamanho
-                      intrinseco, e ele vazava para a grade — com `aspect-ratio`
-                      para conter a altura, a largura minima vinha junto e a
-                      coluna da capa saia com 698px onde a grade pede 591. */}
-                  <a
-                    className={classeDaAmostra(asset.image)}
-                    href={asset.url}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <span
-                      className="amostra-arte"
-                      aria-hidden="true"
-                      style={{ backgroundImage: `url(/marcas/${asset.image}.svg)` }}
-                    />
-                    <span className="amostra-veu" aria-hidden="true" />
-                    <span className="amostra-placa">
-                      <span className="amostra-endereco">
-                        {semEsquema(asset.url)}
-                        <SetaExterna />
-                      </span>
-                    </span>
-                    <span className="so-leitor">
-                      {`${portfolio.visitar}${projeto.name}${portfolio.visitarDepois}`}
-                    </span>
-                  </a>
+                          Por que o desenho e FUNDO e nao `<img>`: `<img>` tem tamanho
+                          intrinseco, e ele vazava para a grade — com `aspect-ratio`
+                          para conter a altura, a largura minima vinha junto e a
+                          coluna da capa saia com 698px onde a grade pede 591. */}
+                      <a
+                        className={classeDaAmostra(asset.image)}
+                        href={asset.url}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <span
+                          className="amostra-arte"
+                          aria-hidden="true"
+                          style={{ backgroundImage: `url(/marcas/${asset.image}.svg)` }}
+                        />
+                        <span className="amostra-veu" aria-hidden="true" />
+                        <span className="amostra-placa">
+                          <span className="amostra-endereco">
+                            {semEsquema(asset.url)}
+                            <SetaExterna />
+                          </span>
+                        </span>
+                        <span className="so-leitor">
+                          {`${portfolio.visitar}${projeto.name}${portfolio.visitarDepois}`}
+                        </span>
+                      </a>
 
-                  <div className="placa-corpo">
-                    <p className="mono mono--acento">{projeto.label}</p>
-                    <h3>{projeto.name}</h3>
-                    <p>{projeto.description}</p>
-                    <ul className="entregas" role="list">
-                      {projeto.features.map((feature) => (
-                        <li key={feature}>{feature}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </article>
-              </li>
-            );
-          })}
-        </ol>
+                      <div className="placa-corpo">
+                        <p className="mono mono--acento">{projeto.label}</p>
+                        <h3>{projeto.name}</h3>
+                        <p>{projeto.description}</p>
+                        <ul className="entregas" role="list">
+                          {projeto.features.map((feature) => (
+                            <li key={feature}>{feature}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </article>
+                  </li>
+                );
+              })}
+            </ol>
+          </>
+        )}
 
         {/* --- Estudos conceituais -------------------------------------- */}
         <div className="estudos">

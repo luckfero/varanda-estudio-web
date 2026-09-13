@@ -21,7 +21,19 @@ import test from "node:test";
  * deixou de existir. O contrato é o mesmo; mudaram os seletores.
  */
 
-const NO_AR_ESPERADO = [
+/* VAZIA DESDE 13/09/2026, e é o estado certo, não uma lacuna. Os dois
+   publicados foram desligados por decisão do dono (`ativo: false` em
+   `featuredAssets`, `app/data.ts`), por um tempo. Religar um é
+   trazê-lo de `NO_AR_EM_PAUSA` para cá, na posição que ele tem em
+   `featuredAssets`. */
+const NO_AR_ESPERADO = [];
+
+/* Os desligados, e o que deles NÃO pode aparecer em lugar nenhum da página.
+   O nome entra junto do endereço porque a seção é componente de servidor e o
+   texto do projeto não deveria viajar no payload; se um dia ela virar
+   componente cliente, o dicionário inteiro passa a ir no HTML e é este teste
+   que acusa. */
+const NO_AR_EM_PAUSA = [
   { nome: "Casa Conexão", host: "casaconexao.varandaestudioweb.com", imagem: "casa-conexao" },
   { nome: "Milênio", host: "milenio.varandaestudioweb.com", imagem: "milenio" },
 ];
@@ -151,7 +163,27 @@ for (const { locale, home } of HOMES) {
   });
 }
 
-test("os cinco projetos aparecem na mesma ordem nos três idiomas", async () => {
+for (const { locale, home } of HOMES) {
+  test(`em pausa em ${locale}: nenhum rastro na página`, async () => {
+    const html = await htmlDe(home);
+    for (const { nome, host, imagem } of NO_AR_EM_PAUSA) {
+      assert.ok(!html.includes(host), `${locale}: o endereço ${host} continua na página`);
+      assert.ok(!html.includes(nome), `${locale}: o nome ${nome} continua na página`);
+      assert.ok(!html.includes(`/marcas/${imagem}.svg`), `${locale}: a capa de ${nome} continua na página`);
+    }
+    /* O rótulo "No ar" em cima de uma lista vazia diria que a lista existe.
+       Com nenhum publicado ligado, o bloco some inteiro. */
+    if (NO_AR_ESPERADO.length === 0) {
+      assert.ok(!html.includes('class="placas"'), `${locale}: a lista de publicados ainda é renderizada vazia`);
+      /* O rótulo tem classe própria: `selo` sozinho, sem `--neutro` nem
+         `--conceitual`. Procurar o texto "No ar" não serviria, porque "no ar"
+         aparece em outras seções e "Live" é palavra comum. */
+      assert.ok(!html.includes('class="selo"'), `${locale}: o rótulo "No ar" continua na página sem nenhum publicado`);
+    }
+  });
+}
+
+test("os projetos aparecem na mesma ordem nos três idiomas", async () => {
   const porIdioma = {};
   for (const { locale, home } of HOMES) {
     const html = await htmlDe(home);
@@ -174,7 +206,12 @@ test("o aviso de conceitual não descreve os trabalhos publicados", async () => 
     const html = await htmlDe(home);
     const ultimaPlaca = ultimaOcorrencia(html, PLACA);
     const aviso = html.indexOf('class="aviso"');
-    assert.ok(ultimaPlaca > 0, `${locale}: nenhum publicado no documento`);
+    /* Sem publicado ligado não há placa, e `ultimaPlaca` vale -1: a ordem
+       abaixo continua valendo sem esforço. Só se cobra a presença quando a
+       lista esperada diz que existe alguma. */
+    if (NO_AR_ESPERADO.length > 0) {
+      assert.ok(ultimaPlaca > 0, `${locale}: nenhum publicado no documento`);
+    }
     assert.ok(aviso > 0, `${locale}: aviso de conceitual sumiu do documento`);
     assert.ok(
       aviso > ultimaPlaca,
