@@ -31,8 +31,11 @@ import type { Dicionario } from "./i18n";
    que o site está no ar. */
 const DESTAQUE = new Set(["avulsa"]);
 
-/* Os cards largos têm texto de um lado e desenho do outro. */
-const LARGOS = new Set(["pagina"]);
+/* Os cards largos têm texto de um lado e desenho do outro. A Página adicional
+   saiu daqui em 13/09/2026, a pedido: em duas colunas o desenho ficava com
+   metade do card e parecia pequeno e encostado no canto. Empilhada, ela ganha
+   a largura inteira do card. */
+const LARGOS = new Set<string>();
 
 const atraso = (ms: number) => ({ "--atraso": `${ms}ms` }) as CSSProperties;
 /* A ilustração começa depois de o card aparecer, e não junto: com os dois

@@ -165,7 +165,7 @@ for (const idioma of IDIOMAS) {
     for (const pedaco of pedacos) {
       const nome = pedaco.slice(0, pedaco.indexOf('"'));
       const card = pedaco.split("</li>")[0];
-      assert.match(card, /<svg[^>]*viewBox="0 0 480 300"/, `${idioma.locale}: card ${nome} sem ilustração`);
+      assert.match(card, /<svg[^>]*viewBox="[0-9. ]+"/, `${idioma.locale}: card ${nome} sem ilustração`);
       assert.match(card, /href="#contato"/, `${idioma.locale}: card ${nome} não leva ao contato`);
     }
     /* `class="..."` e não a palavra solta: o payload do RSC repete as classes

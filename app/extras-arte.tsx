@@ -6,7 +6,7 @@ export default function ArteExtra({ arte }: { arte: string }) {
   switch (arte) {
     case "pagina":
       return (
-        <svg aria-hidden="true" focusable="false" viewBox="0 0 480 300">
+        <svg aria-hidden="true" focusable="false" viewBox="24 24 432 252">
           <defs>
             <radialGradient id="ex-pagina-luz">
               <stop offset="0" stopColor="#f4b862" stopOpacity="0.5" />
