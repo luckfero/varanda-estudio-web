@@ -29,6 +29,12 @@ const pt = {
     ogDescription: "Sites que dão espaço para o seu negócio crescer.",
     privacyTitle: "Política de Privacidade",
     privacyDescription: "Como a Varanda Estúdio Web trata os dados enviados pelo formulário de contato.",
+    /* Só o dado estruturado (JSON-LD) usa as duas chaves abaixo. Elas vivem
+       aqui, e não em `structured-data.tsx`, porque a página declara
+       `inLanguage` do próprio idioma: texto em português numa página em
+       inglês é dado misto para o buscador. */
+    areaAtendida: "Brasil, Europa e América do Norte",
+    servicos: ["Criação de sites", "Site institucional", "Desenvolvimento web", "Manutenção de sites"],
   },
 
   nav: {
@@ -54,7 +60,6 @@ const pt = {
     tituloDepois: " para o seu negócio crescer.",
     lead: "Conteúdo claro, visual profissional e tecnologia sem complicação para transformar boas ideias em uma presença digital confiável.",
     ctaPrimario: "Conte sobre seu projeto",
-    ctaSecundario: "Ver projeto",
     local: "São Paulo, Brasil",
     atendimento: "Atendimento remoto",
     arteAlt: "Composição visual de um site sendo desenvolvido",
@@ -225,11 +230,32 @@ const pt = {
        publicado passa a ser o preço que se cobra, sem segunda coluna. */
     resumo: "O preço fecha antes de começar, junto com o escopo por escrito. Nada é cobrado durante o projeto sem ter sido combinado antes.",
     porProjeto: "por projeto",
-    entregaRotulo: "Prazo típico",
+    /* O RÓTULO DO PRAZO, e ele agora é lido de verdade.
+       Até 08/09/2026 esta chave existia nos três dicionários e nenhum
+       componente a usava: o cartão pegava o rótulo emprestado de
+       `comparacao.linhas[1]`, que é a linha da tabela. As duas continuam
+       dizendo a mesma coisa e precisam continuar dizendo: o cartão é a
+       apresentação do celular e a tabela é a do desktop, e o mesmo dado com
+       dois nomes leria como duas informações diferentes.
+       "Típico" saiu porque o prazo deixou de ser média e passou a ser teto:
+       "até 7 dias úteis" é promessa, e "prazo típico de até 7 dias" é uma
+       frase que se contradiz. */
+    entregaRotulo: "Prazo de entrega",
+    /* A CONTAGEM DO PRAZO, uma vez só para a seção inteira.
+       Ela vale para os três pacotes, e repetida em cada cartão leria como se
+       variasse de um para o outro. A regra é a de
+       `comercial/oferta/politicas.md`, que é a fonte: conta do material
+       recebido, nunca da assinatura. Sem ela, "até 7 dias úteis" vira promessa
+       aberta e o cliente que some com as fotos leva o prazo junto. */
+    prazoNota: "Todo prazo conta a partir do recebimento de todos os materiais e acessos, e da aprovação deles.",
     /* Prazo e pagamento não existiam na página: nenhuma das duas perguntas
        que todo cliente faz tinha resposta antes de ele precisar perguntar.
-       O 50/50 vem de `comercial/oferta/politicas.md`, que é a fonte. */
-    pagamento: "Pagamento em duas partes: 50% para iniciar e 50% na aprovação final, antes da publicação. Pix, transferência ou boleto.",
+       O 50/50 vem de `comercial/oferta/politicas.md`, que é a fonte.
+       O cartão entrou em 08/09/2026, e entrou com o acréscimo DITO. A frase
+       nunca pode virar "12 vezes sem juros": existe acréscimo, e ele é dito.
+       Parcelamento com acréscimo escondido é o mesmo desconto que o cliente
+       descobre na fatura. */
+    pagamento: "Pagamento em duas partes: 50% para iniciar e 50% na aprovação final, antes da publicação. Pix, transferência ou boleto. Para quem precisa diluir, o cartão de crédito vai em até 12 vezes, com acréscimo de 15% sobre o valor à vista.",
     incluiNoPlano: "O que está incluído",
     cta: "Quero este plano",
     incluidoTitulo: "Em todos os pacotes, sem cobrança à parte",
@@ -282,7 +308,8 @@ const pt = {
       legenda: "Comparação dos três pacotes, linha a linha: investimento, prazo e o que muda no escopo de um para o outro.",
       linhas: [
         "Investimento",
-        "Prazo típico",
+        /* Mesmo texto de `entregaRotulo` acima, e por quê está escrito lá. */
+        "Prazo de entrega",
         "Páginas ou seções",
         "Tratamento de texto",
         "Galeria e conteúdo",
@@ -295,6 +322,48 @@ const pt = {
       incluido: "Incluído",
       naoIncluido: "Não incluído",
     },
+    /**
+     * A CONDIÇÃO DE ABERTURA, E ELA EXISTE SÓ EM REAL.
+     *
+     * Aprovada em 08/09/2026. Os valores não foram calculados aqui: vêm do
+     * material comercial do estúdio, seção "Os cinco primeiros", e mudam lá
+     * primeiro.
+     *
+     * `ativa` é o interruptor, e ele é FALSO em `es.ts` e `en.ts`. As chaves
+     * existem lá por causa do contrato de tipo (`Dicionario = typeof pt`),
+     * e ficam vazias de propósito: não existe condição aprovada em euro nem
+     * em dólar. Texto traduzido ali seria um convite a ligar o interruptor e
+     * publicar um valor que ninguém aprovou.
+     *
+     * ELA NÃO É SEGUNDA COLUNA DE PREÇO. O preço publicado continua sendo o
+     * da tabela, e esta faixa vem DEPOIS dela, com data à vista. Coluna
+     * paralela transformaria a tabela em âncora, que foi exatamente o que a
+     * decisão de 25/08/2026 tirou da página.
+     *
+     * A DATA É PARTE DO VALOR. Sem ela, a condição vira preço permanente com
+     * nome bonito, e quem entra por preço de abertura e vê o preço não subir
+     * aprende que o número era fingido.
+     *
+     * `valores` é POSICIONAL, na mesma ordem de `pacotes` logo abaixo, e o
+     * nome de cada pacote sai de lá para não haver duas listas de nomes que
+     * possam divergir. Trocar a ordem de `pacotes` sem trocar aqui põe o
+     * valor de um pacote debaixo do nome de outro, em silêncio.
+     */
+    condicao: {
+      ativa: true,
+      rotulo: "Condição de abertura",
+      titulo: "Os cinco primeiros",
+      texto: "Os cinco primeiros contratos fecham por um valor de abertura. Ele vem com uma contrapartida escrita no contrato, e não existe sem ela.",
+      validade: "Vale até 31/10/2026, ou até os cinco primeiros contratos assinados, o que vier antes.",
+      valoresRotulo: "Nesta condição",
+      valores: ["1.000", "2.100", "3.800"],
+      contrapartidasTitulo: "O que pedimos em troca",
+      contrapartidas: [
+        "Um depoimento assinado, com nome e empresa, depois da entrega.",
+        "Autorização escrita para publicar o trabalho no portfólio, com o nome real.",
+        "Uma indicação, com nome e telefone de alguém que você conheça.",
+      ],
+    },
     pacotes: [
       {
         name: "Essencial",
@@ -303,7 +372,11 @@ const pt = {
         /* Presente nos três, mesmo falso. Sem a chave em todos, o TypeScript
            infere um tipo diferente por elemento e `typeof pt` deixa de servir
            como contrato para `es.ts` e `en.ts`. */
-        entrega: "Alguns dias depois do material aprovado",
+        /* O PRAZO PUBLICADO, aprovado em 08/09/2026. Saiu "alguns dias", que
+           não é prazo, é impressão. O número vem de
+           `comercial/oferta/catalogo.md`, seção "Prazo publicado", e a
+           contagem está em `prazoNota` acima. */
+        entrega: "Até 7 dias úteis",
         featured: false,
         description: "Uma página para apresentar o essencial do negócio e abrir conversa com quem chega.",
         items: [
@@ -317,7 +390,7 @@ const pt = {
         name: "Negócio",
         eyebrow: "Recomendado",
         launch: "2.500",
-        entrega: "1 a 2 semanas depois do material aprovado",
+        entrega: "Até 15 dias úteis",
         featured: true,
         description: "O site completo do seu negócio, com espaço para explicar, mostrar trabalhos e responder dúvidas.",
         items: [
@@ -332,7 +405,7 @@ const pt = {
         name: "Profissional",
         eyebrow: "Para crescer",
         launch: "4.500",
-        entrega: "Definido no orçamento, conforme a capacidade escolhida",
+        entrega: "Definido na proposta, conforme a capacidade escolhida",
         featured: false,
         description: "Tudo do Negócio, mais uma capacidade que o seu projeto exige, escolhida junto com você.",
         items: [
@@ -400,7 +473,7 @@ const pt = {
     paragrafo1: "A Varanda Estúdio Web existe para ajudar comércios, profissionais e empresas a construírem uma presença digital clara, profissional e confiável.",
     paragrafo2: "Cada projeto é acompanhado de perto, da organização das ideias ao desenvolvimento, com conversa franca, processo documentado e atenção aos detalhes. Poucos projetos por vez, e nenhum tratado como encomenda de esteira.",
     assinatura: "Varanda Estúdio Web",
-    assinaturaLocal: "— São Paulo, Brasil",
+    assinaturaLocal: "São Paulo, Brasil",
   },
 
   extras: {
@@ -408,6 +481,33 @@ const pt = {
     titulo: "O que mais o seu projeto pode precisar?",
     resumo: "Estes serviços podem ser adicionados quando não estiverem incluídos no pacote escolhido.",
     nota: "Os valores acima não incluem custos cobrados por domínio, hospedagem ou ferramentas externas. Entrega em prazo menor que o combinado, ou trabalho em fim de semana e feriado, tem adicional de 30% e depende de disponibilidade.",
+    /**
+     * O REPARO, E ELE TAMBÉM É SÓ EM REAL.
+     *
+     * Aprovado em 08/09/2026, copiado de `comercial/oferta/catalogo.md`,
+     * seção "Reparo · o produto de entrada". Mesmo interruptor da condição de
+     * abertura, pelo mesmo motivo: `ativo` é falso em `es.ts` e `en.ts`, e as
+     * chaves de lá ficam vazias. Ele vale só no Brasil, e conserto de site
+     * alheio depende de acesso, de hospedagem e de conversa por telefone, que
+     * é justamente o que não se faz de longe e em outro fuso.
+     *
+     * A NOTA DE QUE ELE NÃO É PARA CLIENTE fica colada ao preço, e não é
+     * detalhe: Reparo e hora avulsa são produtos diferentes, e essa
+     * distinção só se sustenta se estiver escrita ao lado do número.
+     */
+    reparo: {
+      ativo: true,
+      rotulo: "Para quem já tem site",
+      titulo: "Reparo",
+      preco: "R$ 390",
+      prazo: "até 3 dias úteis",
+      texto: "Diagnóstico e conserto de um defeito no site que a sua empresa já tem, com o escopo fechado por escrito antes de começar.",
+      /* "Corridos" está no catálogo e vem junto: 30 dias corridos e 30 dias
+         úteis são quase duas semanas de diferença, e quem conta o prazo é o
+         cliente. */
+      abatimento: "Fechando qualquer pacote em até 30 dias corridos, os R$ 390 são descontados do valor do pacote.",
+      nota: "Vale para quem ainda não é cliente. Para quem já é, o mesmo trabalho entra na manutenção.",
+    },
     lista: [
       { name: "Página adicional", price: "R$ 390" },
       { name: "Redação completa", price: "R$ 220/página" },
@@ -518,6 +618,22 @@ const pt = {
     privacidade: "Privacidade",
     direitos: "© 2026 Varanda Estúdio Web",
     voltarInicio: "Varanda Estúdio Web, voltar ao início",
+  },
+
+  /* A PÁGINA DE ENDEREÇO QUE NÃO EXISTE, escrita em 09/09/2026.
+     Até aqui quem errava o endereço, ou clicava num link antigo que a gente
+     mandou meses atrás, recebia nove bytes de texto puro: "Not Found", sem
+     marca, sem idioma e sem caminho de volta. Quem vê essa tela é justamente
+     quem já tinha interesse suficiente para clicar.
+     O texto é curto de propósito: ninguém lê parágrafo em página de erro. */
+  erro: {
+    metaTitulo: "Página não encontrada",
+    metaDescricao: "O endereço não existe neste site. Volte para a página inicial da Varanda Estúdio Web.",
+    rotulo: "Endereço não encontrado",
+    titulo: "Esta página não existe.",
+    texto:
+      "O endereço que você abriu não está aqui. Pode ser um link antigo, ou um endereço com um caractere a mais. Volte para o começo e siga daí.",
+    voltar: "Voltar para o início",
   },
 
   privacidade: {

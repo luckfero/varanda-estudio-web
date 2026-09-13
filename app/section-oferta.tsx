@@ -60,7 +60,7 @@ type Celula =
 
 const COMPARACAO: Celula[][] = [
   /* Investimento             */ [{ tipo: "preco" }, { tipo: "preco" }, { tipo: "preco" }],
-  /* Prazo típico             */ [{ tipo: "prazo" }, { tipo: "prazo" }, { tipo: "prazo" }],
+  /* Prazo de entrega         */ [{ tipo: "prazo" }, { tipo: "prazo" }, { tipo: "prazo" }],
   /* Páginas ou seções        */ [{ tipo: "item", item: 0 }, { tipo: "item", item: 0 }, { tipo: "herdado", item: 0 }],
   /* Tratamento de texto      */ [{ tipo: "item", item: 1 }, { tipo: "item", item: 1 }, { tipo: "sim" }],
   /* Galeria e conteúdo       */ [{ tipo: "nao" }, { tipo: "item", item: 2 }, { tipo: "sim" }],
@@ -227,7 +227,7 @@ export default function SectionOferta({
               onze cartões empilhados, um por dimensão, com o nome do plano
               repetido 33 vezes e quatro linhas de "Não incluído" no cartão do
               Essencial, ou seja, o plano de entrada abria dizendo o que ele
-              NÃO faz. O Lucca leu como confuso para quem não é da área, e
+              NÃO faz. A direção do estúdio leu como confuso para quem não é da área, e
               estava certo.
 
               NADA SE PERDE. A matriz `COMPARACAO` acima mapeia cada célula da
@@ -253,11 +253,19 @@ export default function SectionOferta({
                     <span className="preco-unidade">{investimento.porProjeto}</span>
                   </p>
                   {/* O prazo entra VERBATIM, sem molde de frase. O do
-                      Profissional é "Definido no orçamento, conforme a
+                      Profissional é "Definido na proposta, conforme a
                       capacidade escolhida", que não cabe depois de "fica
-                      pronto em" e produzia português quebrado. */}
+                      pronto em" e produzia português quebrado.
+
+                      O RÓTULO PASSOU A SAIR DE `entregaRotulo`, que existia
+                      nos três dicionários desde a rodada do prazo e que
+                      nenhum componente lia. Ele diz a mesma coisa que
+                      `comparacao.linhas[1]`, usado na tabela, e os dois
+                      precisam continuar dizendo: cartão e tabela são a mesma
+                      informação em telas diferentes, e dois nomes para ela
+                      leriam como duas coisas. */}
                   <p className="plano-prazo">
-                    <span>{comparacao.linhas[1]}</span> {pacote.entrega}
+                    <span>{investimento.entregaRotulo}</span> {pacote.entrega}
                   </p>
                   <p className="plano-resumo">{pacote.description}</p>
                   <p className="plano-inclui">{investimento.incluiNoPlano}</p>
@@ -345,6 +353,71 @@ export default function SectionOferta({
               </tbody>
             </table>
           </div>
+
+          {/* A CONTAGEM DO PRAZO, uma vez só, e serve às duas apresentações.
+              Os cartões e a tabela são a mesma seção, e um dos dois está
+              sempre escondido pela folha: uma nota abaixo dos dois alcança
+              quem vê o cartão no celular e quem vê a tabela no desktop, sem
+              repetir a mesma frase três vezes dentro dos cartões, onde ela
+              leria como se o critério mudasse de pacote para pacote. */}
+          <p className="apoio prazo-nota" data-reveal>
+            {investimento.prazoNota}
+          </p>
+
+          {/* A FAIXA DA CONDIÇÃO DE ABERTURA, E ELA SÓ EXISTE EM PORTUGUÊS.
+              O interruptor é `condicao.ativa`, falso nos outros dois
+              dicionários por decisão comercial escrita lá: a condição é em
+              real, e só em real.
+
+              ELA VEM DEPOIS DA TABELA, e isso é decisão, não sobra de
+              layout. O preço publicado é o da tabela e continua sendo; a
+              condição é uma oferta com data, lida depois do preço. Posta
+              antes, ou como segunda coluna, ela transformaria a tabela em
+              âncora, que foi exatamente o que a decisão de 25/08/2026 tirou
+              da página.
+
+              A DATA ANDA COLADA NOS VALORES. Ela não é rodapé: é o que separa
+              condição de abertura de tabela mais alta do que o que se cobra.
+
+              `valores` é posicional com `pacotes`, e o nome vem de `pacotes`
+              para não existirem duas listas de nomes que possam divergir. */}
+          {investimento.condicao.ativa && (
+            <aside className="condicao" data-reveal aria-labelledby="titulo-condicao">
+              <p className="rotulo condicao-rotulo">{investimento.condicao.rotulo}</p>
+              <h3 className="condicao-titulo" id="titulo-condicao">
+                {investimento.condicao.titulo}
+              </h3>
+              <p className="condicao-texto">{investimento.condicao.texto}</p>
+
+              <p className="condicao-valores-rotulo">{investimento.condicao.valoresRotulo}</p>
+              <ul className="condicao-valores" role="list">
+                {investimento.pacotes.map((pacote, indice) => {
+                  const partes = partesDoPreco(moedas, investimento.condicao.valores[indice]);
+                  return (
+                    <li key={pacote.name}>
+                      <span className="condicao-pacote">{pacote.name}</span>
+                      <span className="preco">
+                        {partes.antes && <span className="preco-moeda">{partes.antes}</span>}
+                        <span className="preco-valor numeral">{partes.numero}</span>
+                        {partes.depois && <span className="preco-moeda">{partes.depois}</span>}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+
+              <p className="condicao-validade">{investimento.condicao.validade}</p>
+
+              <p className="condicao-troca-titulo">{investimento.condicao.contrapartidasTitulo}</p>
+              {/* Uma linha cada, como pedido: são três obrigações de
+                  contrato, e obrigação que vira parágrafo corrido some. */}
+              <ul className="condicao-troca" role="list">
+                {investimento.condicao.contrapartidas.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </aside>
+          )}
 
           {/* Garantias da casa fora dos cartões, de propósito. Enquanto
               viviam dentro da lista de cada pacote, pareciam variar entre

@@ -39,6 +39,9 @@ const es: Dicionario = {
     ogDescription: "Webs que dan espacio para que tu negocio crezca.",
     privacyTitle: "Política de Privacidad",
     privacyDescription: "Cómo trata Varanda Estúdio Web los datos enviados desde el formulario de contacto.",
+    /* Ver la nota en `pt.ts`: solo las usa el JSON-LD. */
+    areaAtendida: "Brasil, Europa y América del Norte",
+    servicos: ["Diseño de webs", "Web corporativa", "Desarrollo web", "Mantenimiento de webs"],
   },
 
   nav: {
@@ -64,7 +67,6 @@ const es: Dicionario = {
     tituloDepois: " para que tu negocio crezca.",
     lead: "Contenido claro, imagen profesional y tecnología sin complicaciones para convertir buenas ideas en una presencia digital fiable.",
     ctaPrimario: "Cuéntanos tu proyecto",
-    ctaSecundario: "Ver proyecto",
     local: "São Paulo, Brasil",
     atendimento: "Trabajamos en remoto",
     arteAlt: "Composición visual de una web en desarrollo",
@@ -222,11 +224,23 @@ const es: Dicionario = {
        publicado passa a ser o preço que se cobra, sem segunda coluna. */
     resumo: "El precio se cierra antes de empezar, junto con el alcance por escrito. Nada se cobra durante el proyecto sin haberse acordado antes.",
     porProjeto: "por proyecto",
-    entregaRotulo: "Plazo habitual",
+    /* O rótulo do prazo, que até 08/09/2026 nenhum componente lia. Agora ele
+       é o rótulo do cartão, e `comparacao.linhas[1]` é o mesmo texto na
+       tabela: o porquê está escrito em `pt.ts`, que é o contrato. */
+    entregaRotulo: "Plazo de entrega",
+    /* A contagem do prazo, uma vez só para a seção inteira. A regra é a de
+       `comercial/oferta/politicas.md` e vale igual nos três idiomas: prazo
+       não é desconto, é informação, e quem compra de fora usa o mesmo
+       critério de quem compra daqui. */
+    prazoNota: "Todo plazo cuenta desde la recepción de todos los materiales y accesos, y de su aprobación.",
     /* Prazo e pagamento não existiam na página: nenhuma das duas perguntas
        que todo cliente faz tinha resposta antes de ele precisar perguntar.
-       O 50/50 vem de `comercial/oferta/politicas.md`, que é a fonte. */
-    pagamento: "Pago en dos partes: 50% para empezar y 50% en la aprobación final, antes de publicar. Transferencia bancaria.",
+       O 50/50 vem de `comercial/oferta/politicas.md`, que é a fonte.
+       O CARTÃO ENTROU EM 08/09/2026 COM O ACRÉSCIMO DITO, e aqui ele vai sem
+       porcentagem: os 15% aprovados valem para o cartão no Brasil, e a
+       spec não definiu acréscimo para euro. Prometer "sin intereses" está
+       fora em qualquer idioma. */
+    pagamento: "Pago en dos partes: 50% para empezar y 50% en la aprobación final, antes de publicar. Transferencia bancaria. Para quien necesite repartirlo, la tarjeta de crédito llega hasta 12 plazos, con un recargo sobre el importe al contado.",
     incluiNoPlano: "Qué incluye",
     cta: "Quiero este plan",
     incluidoTitulo: "En todos los paquetes, sin coste aparte",
@@ -272,7 +286,8 @@ const es: Dicionario = {
       legenda: "Comparación de los tres paquetes, línea a línea: inversión, plazo y lo que cambia en el alcance de uno a otro.",
       linhas: [
         "Inversión",
-        "Plazo habitual",
+        /* Mesmo texto de `entregaRotulo` acima. */
+        "Plazo de entrega",
         "Páginas o secciones",
         "Tratamiento de los textos",
         "Galería y contenido",
@@ -285,12 +300,38 @@ const es: Dicionario = {
       incluido: "Incluido",
       naoIncluido: "No incluido",
     },
+    /**
+     * A CONDIÇÃO DE ABERTURA NÃO EXISTE EM ESPANHOL, e `ativa: false` é o
+     * que garante isso: com ela falsa, `section-oferta.tsx` não renderiza a
+     * faixa e nada deste bloco chega à tela.
+     *
+     * As chaves estão aqui só por causa do contrato de tipo
+     * (`Dicionario = typeof pt`), que cobra dos três dicionários a mesma
+     * forma. Elas ficam VAZIAS de propósito, e isto não é tradução
+     * esquecida: a condição é em real e só em real.
+     *
+     * Deixar texto traduzido aqui seria pior que deixar vazio: convidaria
+     * alguém a ligar o interruptor e publicar um valor que ninguém aprovou
+     * em euro. Se um dia existir condição em euro, ela nasce com valores
+     * aprovados por escrito, e só então `ativa` vira verdadeira.
+     */
+    condicao: {
+      ativa: false,
+      rotulo: "",
+      titulo: "",
+      texto: "",
+      validade: "",
+      valoresRotulo: "",
+      valores: [],
+      contrapartidasTitulo: "",
+      contrapartidas: [],
+    },
     pacotes: [
       {
         name: "Esencial",
         eyebrow: "Para empezar",
         launch: "790",
-        entrega: "Pocos días después de aprobar el material",
+        entrega: "Hasta 7 días laborables",
         featured: false,
         description: "Una página para presentar lo esencial del negocio y abrir conversación con quien llega.",
         items: [
@@ -304,7 +345,7 @@ const es: Dicionario = {
         name: "Negocio",
         eyebrow: "Recomendado",
         launch: "1.590",
-        entrega: "1 a 2 semanas después de aprobar el material",
+        entrega: "Hasta 15 días laborables",
         featured: true,
         description: "La web completa de tu negocio, con espacio para explicar, mostrar trabajos y resolver dudas.",
         items: [
@@ -319,7 +360,7 @@ const es: Dicionario = {
         name: "Profesional",
         eyebrow: "Para crecer",
         launch: "2.900",
-        entrega: "Se define en el presupuesto, según la capacidad elegida",
+        entrega: "Se define en la propuesta, según la capacidad elegida",
         featured: false,
         description: "Todo lo de Negocio, más una capacidad que tu proyecto necesite, elegida contigo.",
         items: [
@@ -387,7 +428,7 @@ const es: Dicionario = {
     paragrafo1: "Varanda Estúdio Web existe para ayudar a comercios, profesionales y empresas a construir una presencia digital clara, profesional y fiable.",
     paragrafo2: "Cada proyecto se acompaña de cerca, desde la organización de las ideas hasta el desarrollo, con conversación franca, proceso documentado y atención al detalle. Pocos proyectos a la vez, y ninguno tratado como encargo en serie.",
     assinatura: "Varanda Estúdio Web",
-    assinaturaLocal: "— São Paulo, Brasil",
+    assinaturaLocal: "São Paulo, Brasil",
   },
 
   extras: {
@@ -395,6 +436,23 @@ const es: Dicionario = {
     titulo: "¿Qué más puede necesitar tu proyecto?",
     resumo: "Estos servicios se pueden añadir cuando no estén incluidos en el paquete elegido.",
     nota: "Los precios de arriba no incluyen los costes que cobran el dominio, el alojamiento o las herramientas externas. Una entrega en menos plazo del acordado, o trabajo en fin de semana y festivo, tiene un recargo del 30% y depende de disponibilidad.",
+    /**
+     * O REPARO TAMBÉM NÃO EXISTE EM ESPANHOL, e pelo mesmo mecanismo:
+     * `ativo: false` e as chaves vazias, presentes só por causa do contrato
+     * de tipo. Ele é R$ 390 e vale só no Brasil, porque conserto de site
+     * alheio depende de acesso, de hospedagem e de telefone, que é
+     * justamente o que não se resolve de longe e em outro fuso.
+     */
+    reparo: {
+      ativo: false,
+      rotulo: "",
+      titulo: "",
+      preco: "",
+      prazo: "",
+      texto: "",
+      abatimento: "",
+      nota: "",
+    },
     lista: [
       { name: "Página adicional", price: "250 €" },
       { name: "Redacción completa", price: "150 €/página" },
@@ -505,6 +563,17 @@ const es: Dicionario = {
     privacidade: "Privacidad",
     direitos: "© 2026 Varanda Estúdio Web",
     voltarInicio: "Varanda Estúdio Web, volver al inicio",
+  },
+
+  /* La página para una dirección que no existe. Ver la nota en `pt.ts`. */
+  erro: {
+    metaTitulo: "Página no encontrada",
+    metaDescricao: "Esta dirección no existe en la web. Vuelve al inicio de Varanda Estúdio Web.",
+    rotulo: "Dirección no encontrada",
+    titulo: "Esta página no existe.",
+    texto:
+      "La dirección que abriste no está aquí. Puede ser un enlace antiguo, o una dirección con un carácter de más. Vuelve al inicio y sigue desde ahí.",
+    voltar: "Volver al inicio",
   },
 
   privacidade: {

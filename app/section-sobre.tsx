@@ -22,15 +22,16 @@ import type { Dicionario } from "./i18n";
  */
 
 /**
- * Os três dicionários trazem `assinaturaLocal` começando por travessão
+ * Os três dicionários traziam `assinaturaLocal` começando por travessão
  * ("— São Paulo, Brasil"). A regra de escrita da casa não usa travessão em
- * texto que o cliente lê, e aqui ele não faz falta: quem separa o nome do
- * estúdio do lugar passa a ser o desenho, com cor, corpo e espaço próprios
- * na `.assinatura`.
+ * texto que o cliente lê, e ali ele não fazia falta: quem separa o nome do
+ * estúdio do lugar é o desenho, com cor, corpo e espaço próprios na
+ * `.assinatura`.
  *
- * A limpeza é feita aqui, e não no dicionário, porque o dicionário é de
- * outro dono nesta rodada. Quando o travessão sair de `pt.ts`, `es.ts` e
- * `en.ts`, esta função vira inofensiva e pode ser removida.
+ * O travessão saiu dos três dicionários em 08/09/2026, e o texto renderizado
+ * não mudou nada, porque esta limpeza já o removia. A função fica como
+ * guarda: ela custa nada e impede que o travessão volte por um copiar e colar
+ * de tradução.
  */
 const TRAVESSAO_INICIAL = /^[\s—–-]+/;
 
@@ -280,6 +281,36 @@ export default function SectionSobre({
             ))}
           </ul>
 
+          {/* O REPARO, E ELE SÓ EXISTE EM PORTUGUÊS.
+              Interruptor em `extras.reparo.ativo`, falso nos outros dois
+              dicionários: o produto é em real e só no Brasil, e o porquê está
+              escrito lá.
+
+              PEÇA PRÓPRIA, E NÃO MAIS UMA LINHA DA LISTA DE EXTRAS. A lista
+              acima é o que se acrescenta a um projeto contratado; o Reparo é
+              o contrário disso, um trabalho fechado no site que a empresa já
+              tem, para quem ainda não é cliente. Na mesma lista, os dois
+              números ficariam lado a lado como se fossem a mesma escada, e é
+              exatamente essa comparação que o catálogo manda impedir.
+
+              A NOTA DE QUE ELE NÃO É PARA CLIENTE FICA COLADA AO PREÇO, pelo
+              mesmo motivo. */}
+          {t.extras.reparo.ativo && (
+            <aside className="reparo" data-reveal aria-labelledby="titulo-reparo">
+              <div className="reparo-cabeca">
+                <p className="rotulo reparo-rotulo">{t.extras.reparo.rotulo}</p>
+                <h3 className="reparo-titulo" id="titulo-reparo">{t.extras.reparo.titulo}</h3>
+              </div>
+              <p className="reparo-numeros">
+                <strong className="numeral">{t.extras.reparo.preco}</strong>
+                <span>{t.extras.reparo.prazo}</span>
+              </p>
+              <p className="reparo-texto">{t.extras.reparo.texto}</p>
+              <p className="reparo-texto">{t.extras.reparo.abatimento}</p>
+              <p className="apoio reparo-nota">{t.extras.reparo.nota}</p>
+            </aside>
+          )}
+
           {/* A lista do que é orçado à parte saiu daqui em 2026-08-10: passou
               a viver em destaque na seção de investimento, em duas colunas ao
               lado do que está incluso. Repetir nos dois lugares enfraquecia os
@@ -329,11 +360,11 @@ export default function SectionSobre({
                     `scroll-behavior: smooth`, então o navegador faz o mesmo
                     movimento sozinho.
 
-                    A seta vai EMBUTIDA, como no `corpo.html`, e não pelo
-                    `ArrowIcon` de `icons.tsx`. O componente não traz `fill`,
-                    `stroke` nem espessura, e quem os dava era uma regra da
-                    folha antiga que a identidade nova não tem: usado hoje, ele
-                    sairia preenchido de preto no lugar de um traço. */}
+                    A seta vai EMBUTIDA, como no `corpo.html`. Houve em
+                    `icons.tsx` um `ArrowIcon`, e ele não servia aqui: não
+                    trazia `fill`, `stroke` nem espessura, e quem os dava era
+                    uma regra da folha antiga que a identidade nova não tem.
+                    Ele saiu do arquivo em 2026-09-08, sem nenhuma chamada. */}
                 <a className="botao botao--acento" href="#contato">
                   {t.faq.fechamentoBotao}
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

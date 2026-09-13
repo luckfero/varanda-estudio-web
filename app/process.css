@@ -208,6 +208,100 @@
 }
 .nota-secao { margin-top: var(--e5); }
 
+/* A CONTAGEM DO PRAZO.
+   Ela nasce colada nos cartões e na tabela de propósito: é a letra miúda do
+   número que está logo acima, e afastada dele viraria mais uma nota de
+   rodapé, que é onde ninguém lê. */
+.prazo-nota { margin-top: var(--e4); }
+
+/* ---------------------------------------------------------------------
+   A FAIXA DA CONDIÇÃO DE ABERTURA (só em português, ver `pt.ts`).
+
+   Ela é uma PEÇA À PARTE, e não uma coluna a mais da tabela. O desenho
+   carrega essa decisão: chão próprio, fio de acento em volta e distância da
+   tabela, para o olho ler "outra coisa" antes de ler o número. Uma quarta
+   coluna, ou uma segunda linha de preço dentro da tabela, transformaria o
+   preço publicado em âncora.
+
+   O VALOR AQUI É MENOR QUE O DA TABELA, e por isso ele não pode ser o
+   elemento mais forte da seção: `--t-item` no valor, contra `--t-numero` na
+   tabela. Quem manda na página continua sendo o preço publicado.
+   --------------------------------------------------------------------- */
+.condicao {
+  margin-top: var(--e7);
+  padding: var(--e6);
+  background: var(--nivel-1);
+  border: 1px solid var(--fio-acento);
+  border-radius: var(--raio-cartao);
+}
+.condicao-rotulo { margin-bottom: var(--e3); color: var(--acento); }
+.condicao-titulo {
+  font-family: var(--fonte-display);
+  font-size: var(--t-bloco);
+  line-height: var(--lh-bloco);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--e3);
+}
+.condicao-texto { font-size: var(--c-base); color: var(--tinta-media); max-width: 68ch; }
+
+.condicao-valores-rotulo,
+.condicao-troca-titulo {
+  font-family: var(--fonte-mono);
+  font-size: var(--c-mono);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--tinta-fraca);
+  margin: var(--e5) 0 var(--e3);
+}
+
+/* Três colunas para os três pacotes, na mesma ordem em que a tabela os
+   desenha. Lado a lado, e não em lista vertical: são o mesmo dado dos três,
+   e empilhados leriam como uma escada nova. */
+.condicao-valores {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--e4);
+  border-top: 1px solid var(--fio);
+  padding-top: var(--e4);
+}
+.condicao-valores li { display: grid; gap: var(--e1); }
+.condicao-pacote {
+  font-size: var(--c-apoio);
+  color: var(--tinta-fraca);
+}
+/* O valor da condição é menor que o da tabela de propósito: ver o comentário
+   do bloco. `.preco-valor` desce de `--t-numero` para `--t-item` só aqui. */
+.condicao-valores .preco-valor { font-size: var(--t-item); }
+
+/* A DATA ANDA COM O NÚMERO. Ela é o que separa condição de abertura de
+   tabela mais alta do que o que se cobra, então tem peso de texto e não de
+   rodapé, e fica logo abaixo dos três valores. */
+.condicao-validade {
+  margin-top: var(--e4);
+  font-size: var(--c-apoio);
+  font-weight: 600;
+  color: var(--acento);
+}
+
+/* Uma linha cada, com o mesmo marcador quadrado do resto da página. São três
+   obrigações de contrato: em parágrafo corrido elas somem. */
+.condicao-troca { display: grid; gap: var(--e2); }
+.condicao-troca li {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr);
+  gap: var(--e3);
+  font-size: var(--c-apoio);
+  color: var(--tinta-media);
+  line-height: 1.5;
+}
+.condicao-troca li::before {
+  content: "";
+  width: 6px; height: 6px;
+  margin-top: 7px;
+  background: var(--acento);
+}
+
 /* ---------------------------------------------------------------------
    16. MANUTENÇÃO
    Aqui os três planos continuam sendo cartões, e não tabela. O motivo é de

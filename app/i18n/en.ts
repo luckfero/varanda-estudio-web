@@ -28,6 +28,9 @@ const en: Dicionario = {
     ogDescription: "Websites that make room for your business to grow.",
     privacyTitle: "Privacy Policy",
     privacyDescription: "How Varanda Estúdio Web handles the data sent through the contact form.",
+    /* See the note in `pt.ts`: only the JSON-LD reads these. */
+    areaAtendida: "Brazil, Europe and North America",
+    servicos: ["Website design", "Business website", "Web development", "Website maintenance"],
   },
 
   nav: {
@@ -53,7 +56,6 @@ const en: Dicionario = {
     tituloDepois: " for your business to grow.",
     lead: "Clear content, a professional look and technology without the headache, turning good ideas into a presence people trust.",
     ctaPrimario: "Tell us about your project",
-    ctaSecundario: "See a project",
     local: "São Paulo, Brazil",
     atendimento: "Working remotely",
     arteAlt: "Visual composition of a website being built",
@@ -211,11 +213,23 @@ const en: Dicionario = {
        publicado passa a ser o preço que se cobra, sem segunda coluna. */
     resumo: "The price is settled before we start, together with the scope in writing. Nothing is charged mid-project that wasn't agreed beforehand.",
     porProjeto: "per project",
-    entregaRotulo: "Typical timeline",
+    /* O rótulo do prazo, que até 08/09/2026 nenhum componente lia. Agora ele
+       é o rótulo do cartão, e `comparacao.linhas[1]` é o mesmo texto na
+       tabela: o porquê está escrito em `pt.ts`, que é o contrato. */
+    entregaRotulo: "Delivery time",
+    /* A contagem do prazo, uma vez só para a seção inteira. A regra é a de
+       `comercial/oferta/politicas.md` e vale igual nos três idiomas: prazo
+       não é desconto, é informação, e quem compra de fora usa o mesmo
+       critério de quem compra daqui. */
+    prazoNota: "Every timeline starts from the moment all material and access have arrived and been approved.",
     /* Prazo e pagamento não existiam na página: nenhuma das duas perguntas
        que todo cliente faz tinha resposta antes de ele precisar perguntar.
-       O 50/50 vem de `comercial/oferta/politicas.md`, que é a fonte. */
-    pagamento: "Payment in two parts: 50% to start and 50% on final approval, before publishing. Bank transfer.",
+       O 50/50 vem de `comercial/oferta/politicas.md`, que é a fonte.
+       O CARTÃO ENTROU EM 08/09/2026 COM O ACRÉSCIMO DITO, e aqui ele vai sem
+       porcentagem: os 15% aprovados valem para o cartão no Brasil, e a
+       spec não definiu acréscimo para dólar. Prometer "interest free" está
+       fora em qualquer idioma. */
+    pagamento: "Payment in two parts: 50% to start and 50% on final approval, before publishing. Bank transfer. If you need to spread it out, credit card runs to 12 instalments, with a surcharge on the upfront price.",
     incluiNoPlano: "What is included",
     cta: "I want this plan",
     incluidoTitulo: "In every package, at no extra charge",
@@ -261,7 +275,8 @@ const en: Dicionario = {
       legenda: "The three packages compared row by row: investment, timeline and what changes in scope from one to the next.",
       linhas: [
         "Investment",
-        "Typical timeline",
+        /* Mesmo texto de `entregaRotulo` acima. */
+        "Delivery time",
         "Pages or sections",
         "Copy handling",
         "Gallery and content",
@@ -274,12 +289,38 @@ const en: Dicionario = {
       incluido: "Included",
       naoIncluido: "Not included",
     },
+    /**
+     * A CONDIÇÃO DE ABERTURA NÃO EXISTE EM INGLÊS, e `ativa: false` é o que
+     * garante isso: com ela falsa, `section-oferta.tsx` não renderiza a faixa
+     * e nada deste bloco chega à tela.
+     *
+     * As chaves estão aqui só por causa do contrato de tipo
+     * (`Dicionario = typeof pt`), que cobra dos três dicionários a mesma
+     * forma. Elas ficam VAZIAS de propósito, e isto não é tradução
+     * esquecida: a condição é em real e só em real, por decisão do estúdio
+     * em 08/09/2026.
+     *
+     * Deixar texto traduzido aqui seria pior que deixar vazio: convidaria
+     * alguém a ligar o interruptor e publicar um valor que ninguém aprovou
+     * em dólar.
+     */
+    condicao: {
+      ativa: false,
+      rotulo: "",
+      titulo: "",
+      texto: "",
+      validade: "",
+      valoresRotulo: "",
+      valores: [],
+      contrapartidasTitulo: "",
+      contrapartidas: [],
+    },
     pacotes: [
       {
         name: "Essential",
         eyebrow: "To get started",
         launch: "900",
-        entrega: "A few days after the material is approved",
+        entrega: "Up to 7 business days",
         featured: false,
         description: "One page to introduce the essentials of the business and open a conversation with whoever arrives.",
         items: [
@@ -293,7 +334,7 @@ const en: Dicionario = {
         name: "Business",
         eyebrow: "Recommended",
         launch: "1,850",
-        entrega: "1 to 2 weeks after the material is approved",
+        entrega: "Up to 15 business days",
         featured: true,
         description: "The full site for your business, with room to explain, show your work and answer questions.",
         items: [
@@ -308,7 +349,7 @@ const en: Dicionario = {
         name: "Professional",
         eyebrow: "To grow",
         launch: "3,350",
-        entrega: "Set in the quote, depending on the capability chosen",
+        entrega: "Set in the proposal, depending on the capability chosen",
         featured: false,
         description: "Everything in Business, plus one capability your project calls for, chosen together with you.",
         items: [
@@ -376,7 +417,7 @@ const en: Dicionario = {
     paragrafo1: "Varanda Estúdio Web exists to help shops, professionals and companies build a presence online that is clear, professional and trustworthy.",
     paragrafo2: "Every project is followed closely, from organising the ideas through to development, with straight talk, a documented process and attention to detail. Few projects at a time, and none treated as an item on a conveyor belt.",
     assinatura: "Varanda Estúdio Web",
-    assinaturaLocal: "— São Paulo, Brazil",
+    assinaturaLocal: "São Paulo, Brazil",
   },
 
   extras: {
@@ -384,6 +425,23 @@ const en: Dicionario = {
     titulo: "What else might your project need?",
     resumo: "These can be added when they aren't included in the package you choose.",
     nota: "The prices above don't include what the domain, hosting or third-party tools charge. Delivery faster than agreed, or work over a weekend or public holiday, carries a 30% surcharge and depends on availability.",
+    /**
+     * O REPARO TAMBÉM NÃO EXISTE EM INGLÊS, e pelo mesmo mecanismo:
+     * `ativo: false` e as chaves vazias, presentes só por causa do contrato
+     * de tipo. Ele é R$ 390 e vale só no Brasil, porque conserto de site
+     * alheio depende de acesso, de hospedagem e de telefone, que é
+     * justamente o que não se resolve de longe e em outro fuso.
+     */
+    reparo: {
+      ativo: false,
+      rotulo: "",
+      titulo: "",
+      preco: "",
+      prazo: "",
+      texto: "",
+      abatimento: "",
+      nota: "",
+    },
     lista: [
       { name: "Extra page", price: "US$ 290" },
       { name: "Full copywriting", price: "US$ 170/page" },
@@ -494,6 +552,17 @@ const en: Dicionario = {
     privacidade: "Privacy",
     direitos: "© 2026 Varanda Estúdio Web",
     voltarInicio: "Varanda Estúdio Web, back to the top",
+  },
+
+  /* The page for an address that does not exist. See the note in `pt.ts`. */
+  erro: {
+    metaTitulo: "Page not found",
+    metaDescricao: "This address does not exist on this site. Head back to the Varanda Estúdio Web home page.",
+    rotulo: "Address not found",
+    titulo: "This page does not exist.",
+    texto:
+      "The address you opened is not here. It may be an old link, or an address with one character too many. Head back to the start and carry on from there.",
+    voltar: "Back to the home page",
   },
 
   privacidade: {
