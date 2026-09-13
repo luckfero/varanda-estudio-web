@@ -154,7 +154,11 @@ const TargetCursor = ({
   const constants = useMemo(
     () => ({
       borderWidth: 3,
-      cornerSize: 12
+      /* 12 no registro. Desceu para 8 em 13/09/2026, a pedido ("quero o
+         quadrado em volta menor"): em repouso os cantos ficam a 1,5 vez o
+         tamanho do centro, então o quadrado passou de 36px para 24px. Precisa
+         andar junto com `width`/`height` de `.target-cursor-corner` na folha. */
+      cornerSize: 8
     }),
     []
   );

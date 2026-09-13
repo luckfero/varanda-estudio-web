@@ -80,8 +80,10 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 12px;
-  height: 12px;
+  /* 12px no registro; 8px desde 13/09/2026, junto com `cornerSize` no
+     componente. Ver o comentário lá. */
+  width: 8px;
+  height: 8px;
   border: 3px solid #fff;
   will-change: transform;
 }
