@@ -1,0 +1,13 @@
+Por que a OFL.txt esta nesta pasta, e por que ela nao e lixo.
+
+Os cinco .woff2 daqui sao a Geist, e o site os SERVE: qualquer visitante baixa
+o arquivo da fonte. Servir arquivo de fonte e redistribuir fonte, e a SIL Open
+Font License 1.1 exige que o aviso de licenca acompanhe a redistribuicao. Ela
+fica ao lado dos binarios porque e ai que ela acompanha de verdade: guardada
+em outra pasta do repositorio, ela nao viaja com o que foi publicado.
+
+Ser servida em texto aberto e de proposito e nao tem custo: nenhuma rota do
+site aponta para ela, e um arquivo de 4 KB que ninguem pede nao gasta banda.
+
+A copia conferida e a explicacao de como o arquivo foi montado estao em
+estudio/marca/papelaria/fontes/LICENCAS/LEIA-ME.txt.
