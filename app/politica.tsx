@@ -54,7 +54,14 @@ export default function Politica({ locale }: { locale: Locale }) {
             </section>
           ))}
         </article>
-        <Link className="button button--primary legal-back" href={t.path === "" ? "/" : t.path}>
+        {/* `botao botao--acento`, e não `button button--primary`: a identidade
+            nova de 28/08/2026 renomeou as classes e esta linha ficou para trás.
+            O efeito não aparecia em lugar nenhum porque classe de CSS que não
+            existe não gera erro: o botão simplesmente saía sem forma, texto
+            solto de 26px de altura num site que padronizou 44 de alvo de toque.
+            Medido com getComputedStyle em 09/09/2026: 113,6 por 26,4px, fundo
+            transparente, padding e border-radius zerados. */}
+        <Link className="botao botao--acento legal-back" href={t.path === "" ? "/" : t.path}>
           {t.privacidade.voltar}
         </Link>
       </main>

@@ -39,6 +39,11 @@ export default function Pagina({ locale }: { locale: Locale }) {
       <SiteHeader nav={t.nav} locale={locale} idiomas={outrosIdiomas(locale, "home")} />
 
       <main id="conteudo" tabIndex={-1}>
+        {/* O bloco "no ar" na primeira tela foi ligado e desligado no mesmo
+            dia, 09/09/2026, por decisão do dono. Ele passava aqui duas
+            propriedades a mais (`noArRotulo` e `noAr`), fatias de `portfolio`.
+            O texto sempre veio da seção 04, e desde 13/09/2026 os dois sites
+            também saíram de lá, em pausa (ver `featuredAssets` em `data.ts`). */}
         <SectionAbertura hero={t.hero} intro={t.intro} servicos={t.servicos} />
         <SectionPortfolio portfolio={t.portfolio} />
         <SectionOferta
@@ -62,8 +67,14 @@ export default function Pagina({ locale }: { locale: Locale }) {
           `aria-hidden` no ícone e texto de verdade no `span`, escondido
           visualmente mas lido: um botão flutuante sem nome é um círculo verde
           que o leitor de tela anuncia como "link". */}
+      {/* `zap`, e não `zap-flutuante`, desde 09/09/2026. Os dois nomes existiam
+          ao mesmo tempo: este arquivo escrevia o nome da folha ANTIGA e o
+          desenho do botão morava em `contact.css` sob o nome do protótipo.
+          Nenhuma regra alcançava o elemento, e o que segurava o botão de pé
+          era uma cópia de seis declarações em `accessibility.css`, escrita
+          para ser apagada no dia em que este nome mudasse. É este dia. */}
       <a
-        className="zap-flutuante"
+        className="zap"
         href={`${whatsappUrl}?text=${encodeURIComponent(t.contato.whatsappMensagem)}`}
         target="_blank"
         rel="noreferrer"

@@ -85,7 +85,11 @@
  *
  * O `font-weight: 600` é o único peso importado da família (ver `raiz.tsx`).
  * Pedir 400 ou 700 aqui faz o navegador FABRICAR o peso, e negrito sintético
- * em logotipo é engrossar contorno, não trocar de desenho. */
+ * em logotipo é engrossar contorno, não trocar de desenho.
+ *
+ * O corpo é `--t-item`. Em 09/09/2026 ele subiu para `--t-bloco` durante a
+ * passagem pela Kola, que tem minúscula proporcionalmente menor; com a Kode
+ * Mono de volta, o degrau volta junto. */
 .marca-nome strong {
   font-family: var(--fonte-marca);
   font-size: var(--t-item);

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { readFile, readdir } from "node:fs/promises";
+import { createHash } from "node:crypto";
 
 const workerUrl = new URL("../dist/server/index.js", import.meta.url);
 workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
@@ -283,7 +284,7 @@ test("HTTP puro não entrega página: redireciona para HTTPS", async () => {
   assert.notEqual(local.status, 301, "localhost não pode redirecionar");
 });
 
-test("a head declara o favicon em SVG, PNG e ICO, e os arquivos existem", async () => {
+test("a head declara SÓ o SVG, e os quatro arquivos existem e são válidos", async () => {
   /* Em 2026-08-14 o resultado de busca do Google ainda mostrava o "V" verde
      antigo. O SVG publicado estava certo, válido e em 200: o que faltava era
      formato alternativo, e `/favicon.ico` respondia 404 — que é o endereço
@@ -295,7 +296,21 @@ test("a head declara o favicon em SVG, PNG e ICO, e os arquivos existem", async 
 
      **A head é recortada de propósito.** O payload repete metadado no corpo
      da página, e asserção sobre o documento inteiro já passou aqui com a tag
-     ausente. */
+     ausente.
+
+     EM 09/09/2026 ESTE TESTE INVERTEU, e o motivo é o oposto do de cima. O
+     dono viu a aba do painel creme e âmbar e a do site TODA PRETA. Os dois SVG
+     são o mesmo desenho; quem estragava era esta declaração. O painel declara
+     só o SVG, então a aba usa o SVG e ele troca de cor com o tema; o site
+     declarava também os PNG com `sizes`, e o Chrome PREFERE o raster quando
+     existe um no tamanho pedido. Os rasters eram tinta escura sobre
+     transparente: um borrão preto em barra de abas escura.
+
+     Agora a head declara SÓ o SVG (mais o apple-touch, que o iOS exige porque
+     não lê SVG), e este teste cobra isso. Os arquivos raster continuam
+     existindo e continuam conferidos por bytes abaixo: `/favicon.ico` é o
+     caminho que todo rastreador pede sozinho, e eles agora saem creme e âmbar
+     sobre o chão da marca, legíveis no branco da busca e numa aba escura. */
   const head = headDe(await htmlDe("/"));
 
   const tagsDeIcone = [...head.matchAll(/<link\b[^>]*>/gi)]
@@ -304,16 +319,19 @@ test("a head declara o favicon em SVG, PNG e ICO, e os arquivos existem", async 
 
   const hrefs = tagsDeIcone.map((tag) => tag.match(/href=["']([^"']+)["']/i)?.[1] ?? "");
 
-  for (const esperado of [
-    "/favicon.svg",
-    "/favicon-96.png",
-    "/favicon-48.png",
-    "/favicon.ico",
-    "/apple-touch-icon.png",
-  ]) {
+  for (const esperado of ["/favicon.svg", "/apple-touch-icon.png"]) {
     assert.ok(
       hrefs.some((href) => href.includes(esperado)),
       `${esperado} não está declarado na head (declarados: ${hrefs.join(", ") || "nenhum"})`,
+    );
+  }
+
+  /* E o que NÃO pode estar declarado, que é a metade que conserta o defeito:
+     raster no `rel="icon"` faz o Chrome preferir o raster à aba adaptativa. */
+  for (const proibido of ["/favicon-96.png", "/favicon-48.png", "/favicon.ico"]) {
+    assert.ok(
+      !hrefs.some((href) => href.includes(proibido)),
+      `${proibido} voltou a ser declarado em rel="icon": a aba deixa de usar o SVG`,
     );
   }
 
@@ -413,25 +431,126 @@ test("todo SVG do projeto é XML válido", async () => {
  * com o cartão vazio. Ele lê os BYTES e o IHDR, que é o mesmo critério que os
  * favicons já usam neste arquivo.
  */
-test("o cartão de link é uma imagem de verdade, e não 200 com zero byte", async () => {
-  const resposta = await worker.fetch(
-    new Request("https://varanda-estudio-web.test/opengraph-image"),
-    env,
-    ctx,
-  );
-  assert.equal(resposta.status, 200, "a rota do cartão não respondeu 200");
+test("os três cartões de link são imagens de verdade, e são TRÊS", async () => {
+  /* **O endereço de cada cartão sai da head da própria página**, e não é
+     escrito aqui. O vinext dá nome com hash aos arquivos de metadado de
+     segmento (`/en/opengraph-image-1nh35u`), então adivinhar o caminho mediria
+     um 404 e o teste passaria a provar outra coisa. */
+  const bytesDe = async (rotaDaPagina) => {
+    const head = headDe(await htmlDe(rotaDaPagina));
+    const declarados = [...head.matchAll(/<meta property="og:image" content="([^"]+)"/g)];
+    assert.equal(declarados.length, 1, `${rotaDaPagina}: esperava uma og:image na head`);
 
-  const bytes = Buffer.from(await resposta.arrayBuffer());
-  assert.ok(
-    bytes.length > 5000,
-    `o cartão saiu com ${bytes.length} bytes; abaixo disso não há imagem, e zero é o sintoma do Satori falhando em silêncio`,
-  );
+    const endereco = new URL(declarados[0][1]);
+    const resposta = await worker.fetch(
+      new Request(`https://varanda-estudio-web.test${endereco.pathname}${endereco.search}`),
+      env,
+      ctx,
+    );
+    assert.equal(resposta.status, 200, `${rotaDaPagina}: a rota do cartão não respondeu 200`);
+    return Buffer.from(await resposta.arrayBuffer());
+  };
+
+  const cartoes = new Map();
+  for (const rota of ["/", "/en", "/es"]) {
+    const bytes = await bytesDe(rota);
+    assert.ok(
+      bytes.length > 5000,
+      `${rota}: o cartão saiu com ${bytes.length} bytes; abaixo disso não há imagem, e zero é o sintoma do Satori falhando em silêncio`,
+    );
+    assert.equal(bytes.subarray(1, 4).toString("ascii"), "PNG", `${rota}: o corpo do cartão não é um PNG`);
+    assert.equal(bytes.subarray(12, 16).toString("ascii"), "IHDR", `${rota}: PNG sem cabeçalho IHDR`);
+    assert.equal(bytes.readUInt32BE(16), 1200, `${rota}: o cartão não tem 1200px de largura`);
+    assert.equal(bytes.readUInt32BE(20), 630, `${rota}: o cartão não tem 630px de altura`);
+    cartoes.set(rota, createHash("md5").update(bytes).digest("hex"));
+  }
+
+  /* **Três md5 diferentes.** Até 09/09/2026 as três rotas herdavam o mesmo
+     arquivo da raiz da árvore: `/en` e `/es` mandavam para o mundo um cartão
+     escrito em português, e nenhuma verificação de bytes pegaria isso, porque
+     o PNG era válido. O que separa "existe imagem" de "existe a imagem certa"
+     é justamente os três serem distintos. */
+  const distintos = new Set(cartoes.values());
   assert.equal(
-    bytes.subarray(1, 4).toString("ascii"),
-    "PNG",
-    "o corpo do cartão não é um PNG",
+    distintos.size,
+    3,
+    `os três cartões precisam ser diferentes entre si, e saíram ${distintos.size} arquivo(s) distintos`,
   );
-  assert.equal(bytes.subarray(12, 16).toString("ascii"), "IHDR", "PNG sem cabeçalho IHDR");
-  assert.equal(bytes.readUInt32BE(16), 1200, "o cartão não tem 1200px de largura");
-  assert.equal(bytes.readUInt32BE(20), 630, "o cartão não tem 630px de altura");
+});
+
+/**
+ * A PÁGINA DE ENDEREÇO QUE NÃO EXISTE.
+ *
+ * Duas coisas que só valem juntas, e é por isso que o teste é um só:
+ *
+ * 1. **O código HTTP é 404 de verdade.** Rota coringa que responde 200 com a
+ *    página de erro é um soft 404, e o buscador indexa endereço que não
+ *    existe (regra 9.3). Quem troca o código é `worker/index.ts`.
+ * 2. **Os metadados são os da página de erro**, e não os do layout. É aqui
+ *    que o caminho idiomático do Next falha no vinext: `notFound()` com
+ *    `app/not-found.tsx` acerta o item 1 e erra o item 2 em silêncio.
+ *
+ * A head é recortada e as tags são CONTADAS, porque o payload RSC repete
+ * metadado no corpo da página e asserção sobre o documento inteiro já passou
+ * aqui com a tag ausente (regra 9.2).
+ */
+test("endereço que não existe responde 404, com a página e os metadados certos", async () => {
+  const CASOS = [
+    { rota: "/nao-existe", lang: "pt-BR", titulo: "Página não encontrada | Varanda Estúdio Web" },
+    { rota: "/en/does-not-exist", lang: "en", titulo: "Page not found | Varanda Estúdio Web" },
+    { rota: "/es/no-existe", lang: "es", titulo: "Página no encontrada | Varanda Estúdio Web" },
+    { rota: "/privacidade/xx", lang: "pt-BR", titulo: "Página não encontrada | Varanda Estúdio Web" },
+    { rota: "/a/b/c/d", lang: "pt-BR", titulo: "Página não encontrada | Varanda Estúdio Web" },
+  ];
+
+  for (const caso of CASOS) {
+    const resposta = await fetchRoute(caso.rota);
+    assert.equal(resposta.status, 404, `${caso.rota}: soft 404, o buscador indexaria este endereço`);
+    assert.match(
+      resposta.headers.get("content-type") ?? "",
+      /text\/html/,
+      `${caso.rota}: a página de erro precisa ser HTML, e não o texto puro de antes`,
+    );
+
+    const html = await resposta.text();
+    const head = headDe(html);
+
+    assert.equal((head.match(/<title[ >]/g) ?? []).length, 1, `${caso.rota}: esperava uma <title> só`);
+    assert.ok(head.includes(`<title>${caso.titulo}</title>`), `${caso.rota}: título errado`);
+    assert.equal(html.match(/<html lang="([^"]*)"/)?.[1], caso.lang, `${caso.rota}: idioma errado no <html>`);
+
+    /* `noindex` na head, e não no documento: endereço que não existe não pode
+       entrar no índice. `follow` fica, para o rastreador seguir o link da home
+       em vez de tratar isto como beco. */
+    assert.equal((head.match(/name="robots"/g) ?? []).length, 1, `${caso.rota}: esperava um robots só`);
+    assert.match(head, /content="noindex/, `${caso.rota}: a página de erro precisa ser noindex`);
+    assert.doesNotMatch(head, /nofollow/, `${caso.rota}: nofollow deixaria o rastreador sem saída`);
+
+    /* Sem canonical: não existe endereço oficial de uma página que não existe. */
+    assert.equal(canonicalDe(html), null, `${caso.rota}: página de erro não pode declarar canonical`);
+
+    /* Caminho de volta, que é o motivo de a página existir. */
+    const inicio = { "pt-BR": "/", en: "/en", es: "/es" }[caso.lang];
+    assert.ok(
+      html.includes(`href="${inicio}"`),
+      `${caso.rota}: a página de erro precisa levar de volta para ${inicio}`,
+    );
+  }
+
+  /* E o outro lado, que é o que impede a troca de código de virar defeito: as
+     seis páginas de verdade continuam em 200. */
+  for (const rota of ["/", "/privacidade", "/en", "/en/privacy", "/es", "/es/privacidad"]) {
+    const resposta = await fetchRoute(rota);
+    assert.equal(resposta.status, 200, `${rota} deixou de responder 200`);
+  }
+
+  /* E o que não é página não pode virar 404 por não estar na lista de rotas. */
+  for (const [rota, tipo] of [
+    ["/robots.txt", /text\/plain/],
+    ["/sitemap.xml", /xml/],
+  ]) {
+    const resposta = await fetchRoute(rota);
+    assert.equal(resposta.status, 200, `${rota} deixou de responder 200`);
+    assert.match(resposta.headers.get("content-type") ?? "", tipo, `${rota}: tipo errado`);
+  }
 });

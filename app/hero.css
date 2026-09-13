@@ -122,7 +122,7 @@
 
    2. Com o topo alinhado, esta margem passou a mover o desenho 1:1. Em 32px o
       centro do sol caia exatamente no centro da frase (1px de diferenca em
-      1920, 1440, 1366 e 1280). Em 02/09/2026 o Lucca pediu duas descidas
+      1920, 1440, 1366 e 1280). Em 02/09/2026 a direção do estúdio pediu duas descidas
       seguidas, "abaixe alguns poucos pixels" e depois "desce mais 7px", e o
       valor parou em `--e7` (48px): o sol fica cerca de 15px ABAIXO da linha da
       frase, de proposito.
@@ -190,17 +190,24 @@
 .janela-leitura + .janela-leitura { border-left: 1px solid var(--fio); }
 .janela-leitura strong { display: block; margin-top: var(--e1); font-size: var(--t-item); font-weight: 600; letter-spacing: -0.015em; }
 
-/* A prova, logo abaixo da abertura.
+/* A PROVA, logo abaixo da abertura. Ligada em 09/09/2026.
+
    O muro de logotipo das referências, aqui feito de nome tipografado e de
    endereço que qualquer um confere em um clique, porque o estúdio não tem
    marca de cliente em arquivo.
+
    A FAIXA DE NÚMEROS DO PROTÓTIPO NÃO FOI PORTADA, de propósito. Ela mostrava
    "02 No ar" e "03 Estudos conceituais" como estatística de vitrine: os dois
    rótulos existem no dicionário (`noArIndice` e `estudosIndice`), os dois
    NÚMEROS não. Eram a contagem escrita à mão, nada no build a segura, e no
    dia em que o terceiro site subir a página passa a afirmar um número falso
    em três idiomas sem nenhum teste quebrar. Os endereços ao lado são prova
-   mais forte e se conferem em um clique. */
+   mais forte e se conferem em um clique.
+
+   `min-height: var(--alvo-toque)` em cada link não é sobra: no celular estes
+   são dois alvos de dedo em cima de um bloco de texto, e o nome tem 21px de
+   altura. A caixa cresce por dentro, com `justify-content: center`, então o
+   desenho não muda e o alvo passa a existir. */
 .prova { margin-top: var(--e8); padding-top: var(--e6); border-top: 1px solid var(--fio); display: grid; gap: var(--e6); }
 .prova-linha { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--e4) var(--e7); }
 .prova-rotulo { flex: none; min-width: 8rem; }
@@ -212,7 +219,13 @@
   transition: color var(--dur-fast) var(--ease-out);
 }
 .prova-marcas a:hover strong { color: var(--acento); }
-.prova-marcas span { font-family: var(--fonte-mono); font-size: var(--c-mono); letter-spacing: 0.04em; color: var(--tinta-fraca); }
+/* `:not(.so-leitor)` porque dentro do link há DOIS `span`: o endereço, que
+   se vê, e o aviso de aba nova, que só se ouve. `.prova-marcas span` é 0-1-1
+   e venceria `.so-leitor`, que é 0-1-0 (a regra 9.24). Hoje não haveria dano,
+   porque as quatro declarações abaixo são de tipografia e o esconderijo do
+   `.so-leitor` é feito com posição e recorte; escrito assim, deixa de
+   depender dessa coincidência. */
+.prova-marcas span:not(.so-leitor) { font-family: var(--fonte-mono); font-size: var(--c-mono); letter-spacing: 0.04em; color: var(--tinta-fraca); }
 
 /* ---------------------------------------------------------------------
    11. APRESENTAÇÃO

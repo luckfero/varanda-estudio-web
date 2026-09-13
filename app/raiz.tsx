@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import AccessibilityEnhancements from "./accessibility-enhancements";
 import Ponteiro from "./ponteiro";
 import { caminho, getDicionario, idiomasAlternativos, type Locale, type Pagina } from "./i18n";
 import { siteName, siteUrl } from "./site-config";
@@ -101,7 +100,6 @@ export default function Raiz({ locale, children }: { locale: Locale; children: R
       </head>
       <body>
         <StructuredData locale={locale} />
-        <AccessibilityEnhancements />
         {/* O PONTEIRO DA CASA. Ver `app/target-cursor.jsx`.
 
             Mora aqui e nao em `pagina.tsx` porque ele vale para o site todo,
@@ -158,6 +156,62 @@ export default function Raiz({ locale, children }: { locale: Locale; children: R
   );
 }
 
+/* O `?v=` não é enfeite. O navegador guarda favicon num índice próprio,
+   fora do cache HTTP normal, e ignora `must-revalidate`: quem já visitou
+   o site continua vendo o ícone antigo por tempo indeterminado, mesmo
+   com Ctrl+F5. Mudar o endereço é o que faz ele buscar de novo.
+
+   **Trocar o desenho do favicon sem subir este número não chega em
+   ninguém que já esteve aqui.** v2 = marca do arco, 2026-08-11.
+
+   O número **não sobe** quando só se acrescenta formato, como em
+   2026-08-14: o desenho é o mesmo, e o Google prefere endereço de favicon
+   estável. Subir aqui obrigaria ele a redescobrir tudo de novo.
+
+   **Por que existe PNG se o SVG já funciona.** Até 2026-08-14 o site
+   declarava só o SVG e `/favicon.ico` respondia 404. O resultado de busca
+   mostrava o ícone antigo, junto com um título anterior a 10/08 — ou seja,
+   o Google não tinha voltado. Os formatos abaixo são seguro barato para o
+   caso de o rastreador não usar SVG: ele recomenda ícone quadrado em
+   múltiplo de 48px, e `/favicon.ico` é o caminho que todo navegador pede
+   sozinho quando nada é declarado.
+
+   Os três PNG são gerados a partir de `public/favicon.svg`, e não de
+   `marca/simbolo.svg`: só o primeiro tem o fundo verde arredondado. Se o
+   desenho mudar, regerar os quatro juntos e aí sim subir o `?v=`.
+
+   **v5, 2026-09-09, e este subiu SEM o desenho mudar**, que é exceção à
+   regra do parágrafo acima e por isso está escrito aqui. O dono comparou a
+   aba do site com a do painel e viu ícones diferentes. Medido: os dois SVG
+   são o MESMO desenho, unidade por unidade, e a diferença de 23 bytes entre
+   os arquivos é só o `<title>` e o comentário. Ou seja, o que ele estava
+   vendo era o ícone anterior a 28/08 guardado no índice do próprio
+   navegador, exatamente o caso que o primeiro parágrafo descreve. Subir o
+   número é o único jeito de alcançar quem já visitou.
+
+   O custo é o do parágrafo do Google, e foi aceito de propósito: redescobrir
+   o endereço uma vez vale menos que o dono continuar vendo a marca antiga na
+   aba dele. */
+const ICONES = {
+  /* SÓ O SVG AQUI, e isto é a correção de 09/09/2026. O dono abriu o painel e
+     o site lado a lado e viu o ícone do painel creme e âmbar e o do site todo
+     preto. Medido: os dois SVG são o MESMO desenho, unidade por unidade.
+
+     A causa era esta lista. O painel declara só o SVG, então a aba usa o SVG e
+     ele troca de cor com o tema. O site declarava também os PNG com `sizes`, e
+     o Chrome PREFERE o raster quando existe um no tamanho que ele quer. Os
+     rasters eram tinta `#14110e` sobre transparente, e sobre uma barra de abas
+     escura isso é um borrão preto.
+
+     Os arquivos continuam existindo e continuam sendo achados: `/favicon.ico`
+     é o caminho que todo navegador e todo rastreador pede sozinho quando nada
+     mais serve, e ele agora sai creme e âmbar sobre o chão da marca, que se lê
+     tanto no branco do resultado de busca quanto numa aba escura. O
+     `apple-touch-icon` continua declarado porque o iOS não lê SVG. */
+  icon: [{ url: "/favicon.svg?v=6", type: "image/svg+xml" }],
+  apple: "/apple-touch-icon.png?v=6",
+};
+
 /**
  * Metadados de uma página em um idioma.
  *
@@ -203,43 +257,50 @@ export function metadadosDe(locale: Locale, pagina: Pagina): Metadata {
             type: "website" as const,
           },
           twitter: {
-            card: "summary" as const,
+            /* `summary_large_image`, e não `summary`.
+               O cartão é 1200 por 630, ou seja, largo. `summary` desenha um
+               selo QUADRADO ao lado do texto: o Satori entrega os 1200x630 e
+               quem exibe recorta o meio, jogando fora as bordas onde moram a
+               marca, no alto à esquerda, e a linha do rodapé.
+               As páginas de política já saíam com `summary_large_image`, que
+               é o padrão de quem tem imagem declarada e não escreve o campo:
+               ou seja, a home era a única das seis com o cartão apertado, e
+               ela é justamente a que o estúdio manda por WhatsApp. */
+            card: "summary_large_image" as const,
             title: siteName,
             description: t.meta.ogDescription,
           },
         }
       : {}),
-    /* O `?v=` não é enfeite. O navegador guarda favicon num índice próprio,
-       fora do cache HTTP normal, e ignora `must-revalidate`: quem já visitou
-       o site continua vendo o ícone antigo por tempo indeterminado, mesmo
-       com Ctrl+F5. Mudar o endereço é o que faz ele buscar de novo.
+    icons: ICONES,
+  };
+}
 
-       **Trocar o desenho do favicon sem subir este número não chega em
-       ninguém que já esteve aqui.** v2 = marca do arco, 2026-08-11.
+/**
+ * Metadados da página de endereço que não existe.
+ *
+ * Separada de `metadadosDe` porque ela declara o CONTRÁRIO das outras seis, e
+ * misturar as duas num `if` a mais deixaria a página de erro dependendo de um
+ * ramo que ninguém lê:
+ *
+ * - **`index: false`**, porque endereço que não existe não entra no índice. E
+ *   `follow: true`, para o rastreador seguir o link da home e sair daqui em
+ *   vez de tratar isto como beco.
+ * - **sem `canonical` e sem `alternates`**, porque não há endereço oficial de
+ *   uma página que não existe, e `hreflang` recíproco entre três páginas de
+ *   erro seria o buscador anotando um conjunto de nada.
+ *
+ * Os ícones vêm da mesma constante das outras rotas: página de erro sem
+ * favicon é a aba trocando de ícone no meio da visita.
+ */
+export function metadadosDeErro(locale: Locale): Metadata {
+  const t = getDicionario(locale);
 
-       O número **não sobe** quando só se acrescenta formato, como em
-       2026-08-14: o desenho é o mesmo, e o Google prefere endereço de favicon
-       estável. Subir aqui obrigaria ele a redescobrir tudo de novo.
-
-       **Por que existe PNG se o SVG já funciona.** Até 2026-08-14 o site
-       declarava só o SVG e `/favicon.ico` respondia 404. O resultado de busca
-       mostrava o ícone antigo, junto com um título anterior a 10/08 — ou seja,
-       o Google não tinha voltado. Os formatos abaixo são seguro barato para o
-       caso de o rastreador não usar SVG: ele recomenda ícone quadrado em
-       múltiplo de 48px, e `/favicon.ico` é o caminho que todo navegador pede
-       sozinho quando nada é declarado.
-
-       Os três PNG são gerados a partir de `public/favicon.svg`, e não de
-       `marca/simbolo.svg`: só o primeiro tem o fundo verde arredondado. Se o
-       desenho mudar, regerar os quatro juntos e aí sim subir o `?v=`. */
-    icons: {
-      icon: [
-        { url: "/favicon.svg?v=4", type: "image/svg+xml" },
-        { url: "/favicon-96.png?v=4", type: "image/png", sizes: "96x96" },
-        { url: "/favicon-48.png?v=4", type: "image/png", sizes: "48x48" },
-      ],
-      shortcut: "/favicon.ico?v=4",
-      apple: "/apple-touch-icon.png?v=4",
-    },
+  return {
+    metadataBase: new URL(siteUrl),
+    title: `${t.erro.metaTitulo} | ${siteName}`,
+    description: t.erro.metaDescricao,
+    robots: { index: false, follow: true },
+    icons: ICONES,
   };
 }

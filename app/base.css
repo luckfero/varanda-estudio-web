@@ -84,7 +84,7 @@
   --fonte-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", "Segoe UI Mono", "SF Mono", Menlo, Consolas, monospace;
 
   /* A QUARTA FAMÍLIA, e ela é da MARCA, não do texto.
-     Escolhida pelo Lucca em 28/08/2026 entre doze monoespaçadas montadas no
+     Escolhida pela direção do estúdio em 28/08/2026 entre doze monoespaçadas montadas no
      cabeçalho de verdade e comparadas em captura. Ela desenha a palavra
      "Varanda" no cabeçalho e no rodapé, e mais nada.
      Por que token próprio e não `--fonte-mono`: a etiqueta "ESTÚDIO WEB" logo
@@ -92,7 +92,16 @@
      marca viraria dois tamanhos do mesmo tecido. Sendo famílias diferentes, o
      nome se separa da etiqueta sem precisar de peso nem de corpo maior.
      Quem usar isto para texto corrido está usando errado: só tem o peso 600
-     importado, porque a marca é uma palavra em um tamanho. */
+     importado, porque a marca é uma palavra em um tamanho.
+
+     **A KOLA PASSOU POR AQUI EM 09/09/2026 E VOLTOU NO MESMO DIA.** Ela é
+     display de estêncil, da Indian Type Foundry, e no logotipo ficou boa. O
+     que a derrubou não foi desenho, foi licença: a ITF Free Font License
+     proíbe obra derivada do arquivo da fonte, e `marca/assinatura.svg`
+     desenha o nome em CURVAS tiradas do arquivo, que é como o logotipo sai
+     igual em qualquer máquina e em gráfica. Com a Kola, o site e as peças
+     impressas passariam a ter dois desenhos do nome, e essa divergência já
+     custou uma rodada em 28/08/2026. O dono escolheu voltar. */
   --fonte-marca: "Kode Mono", "IBM Plex Mono", ui-monospace, "Cascadia Mono", Menlo, Consolas, monospace;
 
   /* Os quatro degraus de título da casa. O ajuste está na entrelinha e no
@@ -227,7 +236,7 @@ picture { display: contents; }
    delas sozinha estica a página. Quebrar dentro da palavra SÓ aqui, e não no
    corpo, onde cortaria palavra comum no meio. Vale também para espanhol e
    inglês, em que os mesmos rótulos crescem 15 a 20%. */
-.endereco, .canal-texto b, .rodape-baixo a, .prova-marcas span { overflow-wrap: anywhere; }
+.endereco, .canal-texto b, .rodape-baixo a { overflow-wrap: anywhere; }
 
 ::selection { background: var(--acento); color: var(--acento-tinta); }
 
@@ -298,14 +307,14 @@ picture { display: contents; }
   border-inline: 1px solid var(--fio);
 }
 
-/* `.section` continua existindo com o corpo do `.secao`, para as seções
-   ainda não portadas não perderem o chão no meio do caminho. O nome novo é
-   `.secao`. O `:is()` cobre as emendas mistas: enquanto durar a mistura,
-   uma `.section` seguida de uma `.secao` precisa do mesmo fio. */
-:is(.secao, .section) { position: relative; }
-:is(.secao, .section) > .caixa { padding-block: clamp(4rem, 8vw, 7.5rem); }
-:is(.secao, .section) + :is(.secao, .section) { border-top: 1px solid var(--fio); }
-:is(.secao--curta, .section--curta) > .caixa { padding-block: clamp(3rem, 5.5vw, 5rem); }
+/* O `.section` era ponte da identidade anterior, para as seções ainda não
+   portadas não perderem o chão no meio do caminho. A travessia terminou: em
+   2026-09-08 nenhuma marcação escrevia `.section` nem `.secao--curta`, e o
+   `:is()` saiu junto com elas. A especificidade não muda, porque `:is()` de
+   duas classes vale o mesmo que uma classe. */
+.secao { position: relative; }
+.secao > .caixa { padding-block: clamp(4rem, 8vw, 7.5rem); }
+.secao + .secao { border-top: 1px solid var(--fio); }
 
 /* O conteúdo sobe acima da textura, que é irmã dele e vive em z-index 0. */
 .acima { position: relative; z-index: 1; }
@@ -351,7 +360,7 @@ picture { display: contents; }
      1. h1 e h2 (`.titulo-secao`);
      2. NOME PRÓPRIO: a marca ("Varanda"), o nome de cada projeto
         (`.placa-corpo h3`, `.estudo-corpo h3`, `.amostra-nome`,
-        `.prova-marcas strong`, a assinatura da seção sobre) e o título
+        a assinatura da seção sobre) e o título
         dentro da maquete, que é arte imitando o h1 de outro site;
      3. FRASE DE FECHO (`.chamada p`, `.rodape-alto p`).
 

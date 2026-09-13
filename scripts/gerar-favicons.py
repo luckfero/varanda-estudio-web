@@ -4,8 +4,24 @@
 O `favicon.svg` troca de cor conforme o tema da aba, e PNG nao faz isso. Entao
 cada arquivo raster e gerado na cor que serve ao lugar onde ele aparece:
 
-  favicon.ico, favicon-48, favicon-96  tinta escura sobre transparente.
-      Sao os que o buscador mostra, e resultado de busca e fundo branco.
+  ATE 09/09/2026 os tres primeiros saiam em TINTA ESCURA SOBRE TRANSPARENTE,
+  com o raciocinio de que o buscador mostra o icone sobre fundo branco. O
+  raciocinio estava certo sobre o BUSCADOR e errado sobre a ABA, e o custo foi
+  medido pelo dono: ele abriu o painel e o site lado a lado e viu dois icones
+  diferentes, o do painel creme e ambar, o do site TODO PRETO.
+
+  A causa: o painel declara SO o SVG, entao a aba usa o SVG e ele adapta ao
+  tema. O site declarava tambem os PNG com `sizes`, e o Chrome PREFERE o
+  raster quando existe um no tamanho pedido. Numa barra de abas escura, tinta
+  `#14110e` sobre transparente e um borrao preto.
+
+  Desde 09/09/2026 TODOS os raster carregam o proprio chao: creme e ambar
+  sobre o chao escuro da marca. Um ladrilho escuro se le em qualquer lugar,
+  sobre barra de abas clara ou escura e sobre o branco do resultado de busca.
+  Transparente nao: ele depende da cor de quem o hospeda, e essa cor nao se
+  sabe daqui.
+
+  favicon.ico, favicon-48, favicon-96   creme e ambar sobre o chao escuro.
   apple-touch-icon                     creme sobre o chao solido.
       O iOS compoe o icone na tela inicial e PNG transparente sai com fundo
       PRETO, entao este precisa de fundo proprio. O iOS arredonda a quina
@@ -33,8 +49,8 @@ GEO = """<path d="M16 35V24a9 9 0 0 1 9-9h14a9 9 0 0 1 9 9v11" fill="none"
 
 # (saida, lado, traco, sol, fundo)
 PECAS = [
-    ("favicon-96.png", 96, "#14110e", "#14110e", None),
-    ("favicon-48.png", 48, "#14110e", "#14110e", None),
+    ("favicon-96.png", 96, "#f4efe6", "#e8a33c", "#14110e"),
+    ("favicon-48.png", 48, "#f4efe6", "#e8a33c", "#14110e"),
     ("apple-touch-icon.png", 180, "#f4efe6", "#e8a33c", "#14110e"),
 ]
 ICO = [16, 32, 48]
@@ -104,7 +120,7 @@ try:
     # um tamanho so. Foi o que aconteceu na primeira tentativa, e so apareceu
     # ao ler `info["sizes"]` do arquivo gravado.
     maior = TMP / "ico-maior.png"
-    render(a, max(ICO), "#14110e", "#14110e", None, maior)
+    render(a, max(ICO), "#f4efe6", "#e8a33c", "#14110e", maior)
     Image.open(maior).convert("RGBA").save(
         PUB / "favicon.ico", format="ICO", sizes=[(l, l) for l in ICO])
     print("  %-24s %s  %5.1f KB" % ("favicon.ico", "+".join(str(l) for l in ICO),

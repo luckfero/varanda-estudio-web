@@ -57,6 +57,28 @@ inclusive em gráfica, e não depende de nada estar instalado. O custo é que o
 arquivo não se atualiza sozinho quando a tipografia muda: precisa rodar o
 script de novo.
 
+## A Kola passou por aqui em 09/09/2026 e voltou no mesmo dia
+
+O site chegou a usar a **Kola** (Indian Type Foundry, fontshare.com) no
+logotipo, a pedido. Ela voltou para a Kode Mono no mesmo dia, e o motivo não
+foi desenho: no logotipo ela ficou boa.
+
+**Foi licença, e a razão está na seção acima.** A ITF Free Font License libera
+uso comercial em qualquer mídia, mas proíbe obra derivada do arquivo da fonte.
+Converter glifo em curva, que é exatamente o que este arquivo descreve como a
+razão de a assinatura sair igual em qualquer máquina, cai nessa descrição.
+
+Com a Kola no site e a Kode Mono nestas peças, passariam a existir **dois
+desenhos do nome**: o visitante veria um e quem recebesse a proposta em PDF
+veria outro. Essa divergência já custou uma rodada em 28/08/2026, quando o
+símbolo do site e o dos arquivos não eram o mesmo. O dono escolheu voltar, e
+hoje o site e estas peças usam a mesma tipografia de novo.
+
+Fica registrado porque a pergunta volta: **se um dia alguém quiser a Kola, o
+caminho é perguntar à ITF** se contorno de logotipo é uso permitido. O que a
+cláusula protege é o software da fonte, não o texto renderizado, e muitas
+fundições consideram normal. Custa um e-mail.
+
 ## As cores
 
 | | Fundo claro | Fundo escuro |
@@ -86,4 +108,4 @@ como cadeado. A meia-lua nascendo do piso mantém o vão aberto em cima.
 
 O navegador guarda favicon num índice próprio, fora do cache HTTP, e ignora
 `Cache-Control`. Mudar o desenho sem subir o número em `app/raiz.tsx` **não
-chega em ninguém que já visitou o site**. Está em `?v=3` desde 27/08/2026.
+chega em ninguém que já visitou o site**. Está em `?v=5` desde 09/09/2026. Foi `?v=4` de 28/08/2026, quando o desenho passou a ser o mesmo símbolo aberto da marca, até 09/09, quando o número subiu de novo sem o desenho mudar: quem já tinha visitado o site continuava com o ícone antigo guardado, e o índice de favicon do navegador ignora recarregar a página.

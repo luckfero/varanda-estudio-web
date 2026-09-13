@@ -116,45 +116,29 @@
    parte do botão que nem `contact.css` nem `responsive.css` têm como
    saber, e por isso ela mora aqui.
    --------------------------------------------------------------------- */
-.zap,
-.zap-flutuante { bottom: calc(var(--e4) + env(safe-area-inset-bottom, 0px)); }
+.zap { bottom: calc(var(--e4) + env(safe-area-inset-bottom, 0px)); }
 
-/* PONTE, E ELA TEM DATA PARA MORRER.
-   `app/pagina.tsx` ainda escreve `zap-flutuante`, que é o nome da folha
-   antiga, enquanto o desenho do botão foi portado em `contact.css` sob
-   `.zap`, que é o nome do protótipo. Nenhum dos dois está errado sozinho;
-   juntos, nenhuma regra alcança o elemento. Medido no Chrome a 360px, com
-   emulação de celular: o link saía com 360px de largura e 22px de altura,
-   no fluxo, no fim do documento, sem cor e sem forma, e o botão de
-   WhatsApp que os três pacotes prometem simplesmente não existia na tela
-   do visitante de celular. Não dá erro em lugar nenhum.
+/* AQUI FICAVA A PONTE ENTRE `.zap` E `.zap-flutuante`, e ela morreu em
+   09/09/2026, que era a data marcada no próprio comentário dela.
 
-   As seis declarações abaixo são CÓPIA de `.zap` em `contact.css`, e cópia
-   é uma segunda fonte de verdade: se o desenho do botão mudar lá e não
-   aqui, os dois divergem em silêncio. Está escrito assim mesmo porque a
-   alternativa é publicar sem o botão.
-   APAGAR ESTE BLOCO no dia em que `pagina.tsx` escrever `zap`. Os outros
-   três seletores deste arquivo que citam os dois nomes podem ir junto. */
-.zap-flutuante {
-  position: fixed; right: var(--e4); z-index: 90;
-  width: 56px; height: 56px;
-  align-items: center; justify-content: center;
-  border-radius: 50%;
-  background: var(--acento); color: var(--acento-tinta);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
-}
-/* O piso de `display` é o de `.zap`: escondido, porque no desktop o
-   cabeçalho fica visível o tempo todo e já leva ao contato. Ligar e
-   desligar mora aqui dentro, e não em `responsive.css`, por dois motivos:
-   este arquivo vem DEPOIS na cascata, então um `display: none` aqui
-   apagaria o `display: flex` de lá com a mesma especificidade; e assim a
-   ponte inteira sai de uma vez, sem deixar meia regra para trás em outro
-   arquivo. A largura é a mesma de `.zap`, e as duas precisam continuar
-   iguais enquanto os dois nomes existirem. */
-.zap-flutuante { display: none; }
-@media (max-width: 960px) {
-  .zap-flutuante { display: flex; }
-}
+   O que havia: `app/pagina.tsx` escrevia `zap-flutuante`, o nome da folha
+   anterior, enquanto o desenho do botão vivia em `contact.css` sob `.zap`, o
+   nome do protótipo. Nenhum dos dois estava errado sozinho; juntos, nenhuma
+   regra alcançava o elemento, e o botão de WhatsApp que os três pacotes
+   prometem tinha sumido da tela do celular sem erro em lugar nenhum. A ponte
+   era uma CÓPIA de seis declarações de `.zap`, mais o par de `display` que a
+   ligava a 960px, e cópia é uma segunda fonte de verdade.
+
+   Agora `pagina.tsx` escreve `zap` e quem manda é uma folha só: o desenho e o
+   `display: none` em `contact.css`, o `display: flex` de `responsive.css` a
+   partir de 960px para baixo, e as duas regras deste arquivo, que são as
+   únicas que nem uma nem outra teriam como saber (a faixa de gestos do iPhone
+   e o afundar no toque).
+
+   MEDIDO ANTES E DEPOIS, largura a largura, porque foi esta ponte que já fez o
+   botão sumir uma vez: visível com 56 por 56 em 375, 919, 921, 959 e 960px, e
+   `display: none` em 961, 1000 e 1280px. Os dois lados do corte conferidos nos
+   dois estados. */
 
 /* O único `:active` que a identidade nova não cobre, e ele é o que mais
    precisa: no toque não existe `:hover`, então o afundar é a única resposta
@@ -164,8 +148,6 @@
    Dentro de `no-preference` porque é movimento, e a consulta acima não o
    alcançaria sem uma segunda regra. */
 @media (prefers-reduced-motion: no-preference) {
-  .zap,
-  .zap-flutuante { transition: transform var(--dur-press) var(--ease-out); }
-  .zap:active,
-  .zap-flutuante:active { transform: scale(0.94); }
+  .zap { transition: transform var(--dur-press) var(--ease-out); }
+  .zap:active { transform: scale(0.94); }
 }

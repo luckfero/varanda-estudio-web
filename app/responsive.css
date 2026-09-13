@@ -110,10 +110,10 @@
   /* O botão fixo de WhatsApp acende exatamente onde a chamada da barra
      apaga: daqui para baixo o cabeçalho deixa de ter ação, e sem ele volta
      o deserto medido em 25/08/2026, 7.839px sem nada clicável, 9,3 telas.
-     Só `.zap`, que é o nome do protótipo. O nome antigo que `pagina.tsx`
-     ainda escreve é tratado inteiro em `accessibility.css`, numa ponte
-     escrita para ser apagada de uma vez; espalhar meia regra aqui deixaria
-     um caco para trás no dia da remoção. */
+     Só `.zap`. Até 09/09/2026 `pagina.tsx` escrevia `zap-flutuante`, e o
+     nome antigo era tratado por uma ponte inteira em `accessibility.css`;
+     agora existe um nome só e esta é a linha que liga o botão. Medido: ele
+     aparece em 960px e some em 961. */
   .zap { display: flex; }
 }
 
@@ -169,6 +169,10 @@
 
   .incluido h3,
   .escopo h3 { margin-bottom: var(--e4); }
+
+  /* A faixa da condição e a peça do Reparo apertam junto com o resto, pela
+     mesma regra: desce um degrau da escala, nada de número solto. */
+  .condicao, .reparo { margin-top: var(--e6); padding: var(--e5); }
 }
 
 @media (max-width: 760px) {
@@ -176,12 +180,19 @@
   .caixa { border-inline: 0; }
   .formatos-grade, .estudos-lista, .planos, .incluido-grade, .dupla,
   .manutencao-notas, .janela-leituras { grid-template-columns: minmax(0, 1fr); }
+  /* Os três valores da condição saem do lado a lado. Em 390px eles cabem
+     tecnicamente, e cabendo ficariam com o nome do pacote quebrado em duas
+     linhas debaixo de um número: a coluna vertical é o pior caso certo. */
+  .condicao-valores { grid-template-columns: minmax(0, 1fr); gap: var(--e3); }
   .janela-leitura + .janela-leitura { border-left: 0; border-top: 1px solid var(--fio); }
   .linha-tempo { grid-template-columns: minmax(0, 1fr); gap: var(--e6); }
   .etapa { padding-top: 0; padding-left: var(--e6); }
   .etapa::before { top: 6px; bottom: calc(var(--e6) * -1); left: 6px; right: auto; width: 1px; height: auto; }
   .etapa:last-child::before { bottom: 0; }
   .etapa::after { top: 0; left: 0; }
+  /* O rótulo "No ar" ocupa a linha inteira e os dois endereços descem para a
+     linha de baixo. Sem isto, `min-width: 8rem` mais os dois links pedem mais
+     largura do que existe a 390px e o segundo endereço quebra no meio. */
   .prova-rotulo { min-width: 100%; }
   .rodape-baixo .direitos { margin-left: 0; }
   .cabeca-secao, .fecho, .chamada, .duvidas-fecho { align-items: flex-start; }
@@ -251,4 +262,16 @@
      rodapé, onde não existe disputa de largura nenhuma e o nome escrito é o
      fecho da página. */
   .topo .marca-nome { display: none; }
+
+  /* E COM O NOME FORA, O ALVO DE TOQUE FICA SÓ COM O SÍMBOLO.
+     Medido a 375px antes desta linha: a marca do topo saía com **34 por 44**,
+     porque `min-height: var(--alvo-toque)` já estava em `header.css` e a
+     LARGURA vinha do símbolo, que tem 34. Altura certa, largura 10px curta, e
+     é o primeiro alvo da barra no celular.
+     `min-width` com `justify-content: center` mantém o símbolo onde estava e
+     faz a caixa crescer em volta dele. O `min-width: 0` que `.marca` declara
+     existe para ela CEDER largura na faixa apertada de 921 a 1160px; aqui
+     embaixo não há nome para ceder, e a folga do cabeçalho medida a 360px era
+     de 70px, então os 10px cabem com sobra. */
+  .topo .marca { min-width: var(--alvo-toque); justify-content: center; }
 }

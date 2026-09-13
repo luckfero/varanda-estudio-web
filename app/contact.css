@@ -109,10 +109,24 @@
    volta chega aos 44px. */
 .consentimento { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: var(--e3); align-items: start; align-content: center; min-height: var(--alvo-toque); font-size: var(--c-apoio); color: var(--tinta-media); cursor: pointer; }
 .consentimento input { width: 24px; height: 24px; margin: 1px 0 0; accent-color: var(--acento); }
-/* Link dentro de frase: a 2.5.8 dispensa o alvo de 44px quando o destino
-   está no meio de texto corrido, porque a entrelinha manda. O recuo com
-   margem negativa engorda a área de toque sem empurrar a linha. */
-.consentimento a { color: var(--acento); text-decoration: underline; text-underline-offset: 3px; padding: 8px 3px; margin: -8px -3px; }
+/* O RECUO VERTICAL AQUI É ALVO DE TOQUE, e não respiro.
+   A 2.5.8 DISPENSARIA os 44px, porque o destino está no meio de texto corrido
+   e ali quem manda é a entrelinha. Feito assim mesmo: é o único link do
+   formulário, e quem chega nele já preencheu três campos com o polegar.
+   Medido a 375px com 8px: a caixa do link saía com **150,7 por 34**, ou seja,
+   10px abaixo dos 44 que `--alvo-toque` pede.
+   13px em vez de 8px fecha a conta: 34 + 10 = 44, conferido no navegador.
+   E não desloca nada, porque recuo e margem VERTICAIS de elemento em linha não
+   entram no cálculo da linha: eles mudam só a área que recebe o toque e a que
+   seria pintada. A altura do rótulo inteiro continua 69,3px, medida antes e
+   depois. Por isso a margem negativa acompanha o número: ela existe para o
+   caso horizontal, e ficar defasada dela seria pegadinha para quem editar
+   depois.
+   O texto ao redor é o mesmo `<label>` que marca a caixa de consentimento, e a
+   área do link cresce 5px para dentro da linha de cima. A sobreposição já
+   existia com 8px; o que muda é o tamanho dela, e a troca é a favor de quem
+   precisa acertar o link com o dedo. */
+.consentimento a { color: var(--acento); text-decoration: underline; text-underline-offset: 3px; padding: 13px 3px; margin: -13px -3px; }
 
 /* --c-apoio, e não --c-mono. São duas frases corridas de interface, em
    Geist, que a pessoa precisa LER: o --c-mono existe para etiqueta em caixa
@@ -243,7 +257,12 @@
 
 /* O botão fixo de WhatsApp, só no celular. É um dos itens que os três
    pacotes prometem, então o site do estúdio precisa cumprir. Quem o liga a
-   partir de 920px para baixo é o bloco responsivo. */
+   partir de **960px** para baixo é o bloco responsivo, e não 920 como esta
+   linha dizia até 09/09/2026: o corte do menu subiu para 960 quando a barra
+   compacta foi medida, e este comentário ficou para trás. Medido no navegador:
+   o botão aparece em 960 e some em 961. Este é o ÚNICO lugar onde o desenho do
+   botão mora; `accessibility.css` só acrescenta a faixa de gestos do iPhone e
+   o afundar no toque. */
 .zap {
   position: fixed; right: var(--e4); bottom: var(--e4); z-index: 90;
   display: none;
@@ -253,6 +272,31 @@
   background: var(--acento); color: var(--acento-tinta);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
 }
+
+/* ---------------------------------------------------------------------
+   A PÁGINA DE ENDEREÇO QUE NÃO EXISTE (`app/nao-encontrado.tsx`)
+
+   Ela veste as classes da ABERTURA, então quase tudo já vem de `hero.css`: o
+   chão escuro, a luz, a grade fina, o rótulo numerado, o `h1`, o `.lead` e o
+   botão. As quatro linhas abaixo são só o que difere, e cada uma tem motivo.
+
+   Este arquivo vem DEPOIS de `hero.css` na cascata de `app/raiz.tsx`, então
+   `.erro-pagina` e `.erro-pagina h1` sobrescrevem `.abertura` e `.abertura h1`
+   com a mesma especificidade. Trocar a ordem daqueles imports quebra isto em
+   silêncio.
+   --------------------------------------------------------------------- */
+/* A abertura mede a tela MENOS o cabeçalho, porque na home existe um. Aqui
+   não existe, e sem esta linha a página nasceria 77px mais curta que a
+   janela. */
+.erro-pagina { min-height: 100svh; }
+/* A marca é o primeiro caminho de volta, e o rótulo vem logo abaixo dela. Sem
+   o respiro, os dois leem como um bloco só. */
+.erro-pagina .marca { margin-bottom: var(--e8); }
+/* 15ch é a medida do `h1` da home, escrita para um título de quatro palavras
+   em três idiomas. "Esta página não existe." cabe folgado; o inglês, "This
+   page does not exist.", quebraria em quatro linhas com aquele limite. */
+.erro-pagina h1 { max-width: 20ch; }
+.erro-pagina .lead { max-width: 52ch; }
 
 /* ---------------------------------------------------------------------
    A PÁGINA DE POLÍTICA (`app/politica.tsx`)
