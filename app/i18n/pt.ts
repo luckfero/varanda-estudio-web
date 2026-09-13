@@ -214,7 +214,7 @@ const pt = {
       },
       {
         step: "04",
-        title: "Publicação e cuidado",
+        title: "Publicação e entrega",
         text: "Com a aprovação final, publicamos e entregamos os acessos.",
       },
     ],

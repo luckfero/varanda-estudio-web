@@ -197,7 +197,7 @@ const en: Dicionario = {
       },
       {
         step: "04",
-        title: "Launch and care",
+        title: "Launch and handover",
         text: "Once you approve, we publish and hand over the accounts.",
       },
     ],

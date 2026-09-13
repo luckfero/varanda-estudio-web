@@ -208,7 +208,7 @@ const es: Dicionario = {
       },
       {
         step: "04",
-        title: "Publicación y cuidado",
+        title: "Publicación y entrega",
         text: "Con la aprobación final publicamos y entregamos los accesos.",
       },
     ],
