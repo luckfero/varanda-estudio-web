@@ -1,9 +1,9 @@
 /**
- * Varredura dos quatro sites no WebKit — o motor do Safari.
+ * Varredura dos sites do estúdio no WebKit — o motor do Safari.
  *
  *   node scripts/varredura-webkit.mjs
  *
- * Por que isto roda no GitHub Actions e não na máquina do Lucca: o WebKit do
+ * Por que isto roda no GitHub Actions e não na máquina de desenvolvimento: o WebKit do
  * Playwright não sobe no Windows dele. O Smart App Control recusa carregar os
  * DLLs do pacote por não terem assinatura de nível corporativo — o mesmo
  * motivo que bloqueia o FFmpeg ali. Desligar essa política é irreversível no
@@ -32,7 +32,13 @@ import { chromium, webkit } from "playwright";
 import { mkdir } from "node:fs/promises";
 
 const SITES = [
-  ["Varanda", "https://varandaestudioweb.com", ["/", "/privacidade"]],
+  /* Os seis endereços da Varanda, e não só os dois em português: o espanhol e
+     o inglês são páginas próprias e nunca tinham sido varridos. Junto entram
+     os dois sites publicados de cliente, que até 2026-09-08 ficavam de fora
+     de toda varredura de Safari. */
+  ["Varanda", "https://varandaestudioweb.com", ["/", "/privacidade", "/en", "/en/privacy", "/es", "/es/privacidad"]],
+  ["Casa Conexao", "https://casaconexao.varandaestudioweb.com", ["/"]],
+  ["Milenio", "https://milenio.varandaestudioweb.com", ["/"]],
   ["Brasa", "https://brasa.varandaestudioweb.com", ["/", "/cardapio", "/galeria", "/contato"]],
   ["Nivora", "https://nivora.varandaestudioweb.com", ["/pt", "/pt/projetos", "/pt/contato"]],
   ["Nascente", "https://nascente.varandaestudioweb.com", ["/", "/produtos", "/guia-olfativo"]],
@@ -166,7 +172,7 @@ async function varrer(motor, nome) {
 }
 
 /* `MOTOR=chromium` existe para poder exercitar este arquivo na máquina do
-   Lucca, onde o WebKit não sobe. Serve para conferir que o script funciona —
+   desenvolvimento, onde o WebKit não sobe. Serve para conferir que o script funciona —
    não substitui a varredura de verdade, que é o WebKit no Actions. */
 const motorPrincipal = process.env.MOTOR === "chromium" ? chromium : webkit;
 const rotulo = process.env.MOTOR === "chromium" ? "chromium" : "webkit";

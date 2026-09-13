@@ -1,7 +1,7 @@
-# Varredura dos quatro sites no WebKit, o motor do Safari.
+# Varredura dos sites do estúdio no WebKit, o motor do Safari.
 #
-# Existe aqui, e não na máquina do Lucca, porque o WebKit do Playwright não
-# sobe no Windows dele: o Smart App Control recusa os DLLs do pacote por
+# Existe aqui, e não na máquina de desenvolvimento, porque o WebKit do Playwright não
+# sobe no Windows: o Smart App Control recusa os DLLs do pacote por
 # assinatura, e desligar essa política é irreversível no Windows 11. Em Linux
 # não há essa restrição.
 #
@@ -21,6 +21,12 @@ on:
 concurrency:
   group: safari
   cancel-in-progress: false
+
+# O padrão do repositório pode ser leitura e escrita, e esta varredura só lê o
+# próprio código: sem isto, uma action comprometida escreveria no repositório
+# com o GITHUB_TOKEN herdado.
+permissions:
+  contents: read
 
 jobs:
   webkit:

@@ -58,4 +58,8 @@ capturas/
 # Previa local do hero animado (Claude Design). Arquivo em public/ vai para
 # producao num push, e previa de trabalho nao deve ficar publicada no dominio
 # do negocio.
-/public/preview-hero.html
+/assets/previas/
+
+# Segredo local do wrangler. A regra .env* nao alcanca este nome.
+.dev.vars
+.dev.vars.*

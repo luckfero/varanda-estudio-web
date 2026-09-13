@@ -8,9 +8,17 @@
 # Content-Type declarado e adivinhar o tipo do arquivo — que é como um
 # arquivo servido como imagem acaba executado como script.
 
+# Os quatro abaixo do `nosniff` estavam só nas respostas do worker, e arquivo
+# estático não passa por ele: um SVG aberto direto no endereço podia ser
+# emoldurado por outro site. Não afetam imagem, fonte ou script carregados pela
+# página, só a abertura direta do arquivo.
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=31536000
+  X-Frame-Options: DENY
+  Cross-Origin-Opener-Policy: same-origin
+  Permissions-Policy: camera=(), geolocation=(), microphone=()
 
 # Conteúdo com hash no nome nunca muda: pode ficar em cache para sempre.
 /assets/*
@@ -23,3 +31,23 @@
 # um mês é seguro e ainda evita rebaixar quando a imagem trocar.
 /images/r/*
   Cache-Control: public, max-age=2592000
+
+# Os arquivos abaixo não têm hash no nome e saíam com `max-age=0,
+# must-revalidate`, ou seja, uma ida ao servidor por visita para cada um.
+# Arquivo de marca troca raramente; favicon tem o `?v=` para forçar a troca
+# (regra 9.13); o script da barra de rolagem é o único que muda com alguma
+# frequência, e por isso fica em um dia.
+/marca/*
+  Cache-Control: public, max-age=2592000
+
+/marcas/*
+  Cache-Control: public, max-age=2592000
+
+/favicon*
+  Cache-Control: public, max-age=604800
+
+/apple-touch-icon.png
+  Cache-Control: public, max-age=604800
+
+/barra-rolagem.js
+  Cache-Control: public, max-age=86400

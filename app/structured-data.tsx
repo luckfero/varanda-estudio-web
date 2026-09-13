@@ -1,3 +1,4 @@
+import { whatsappNumero } from "./data";
 import { getDicionario, type Locale } from "./i18n";
 import { siteName, siteUrl } from "./site-config";
 
@@ -19,13 +20,15 @@ import { siteName, siteUrl } from "./site-config";
  * entra aqui.
  */
 
-/* O mesmo contato que a página de contato usa. Mantido aqui como constante
-   para não divergirem em silêncio.
+/* O mesmo contato que a página de contato usa, DERIVADO de `data.ts` e não
+   escrito de novo: até 2026-09-08 o número aparecia por extenso aqui e lá, sem
+   ligação nenhuma entre os dois, e trocar num lugar deixava o outro para trás
+   sem que teste algum reclamasse.
 
    Sem `email`: o endereço saiu da seção de contato junto com o nome da
    pessoa, e este arquivo só afirma o que a página afirma. Volta quando
    existir `contato@` no domínio próprio. */
-const WHATSAPP = "+5511942263007";
+const WHATSAPP = `+${whatsappNumero}`;
 
 export default function StructuredData({ locale }: { locale: Locale }) {
   const t = getDicionario(locale);
@@ -48,14 +51,11 @@ export default function StructuredData({ locale }: { locale: Locale }) {
        em três idiomas e a dizer, no próprio FAQ, que atende fora do país.
        Sem `address`: não há endereço comercial publicado, e inventar um
        seria pior que omitir. */
-    areaServed: { "@type": "Place", name: "Brasil, Europa e América do Norte" },
+    areaServed: { "@type": "Place", name: t.meta.areaAtendida },
     knowsLanguage: ["pt-BR", "es-ES", "en"],
-    serviceType: [
-      "Criação de sites",
-      "Site institucional",
-      "Desenvolvimento web",
-      "Manutenção de sites",
-    ],
+    /* Do dicionário, e não fixos em português: a página declara `inLanguage`
+       do próprio idioma, e o /en servia área e serviços em português. */
+    serviceType: t.meta.servicos,
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       /* O `replace` que tirava o "05 — " daqui saiu junto com os números das

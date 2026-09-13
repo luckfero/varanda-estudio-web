@@ -1,31 +1,11 @@
 /**
- * Os quatro sinais graficos da pagina. Sem estado e sem dependencia:
- * o unico motivo de estarem juntos e serem SVG embutido.
+ * Os sinais graficos da pagina. Sem estado e sem dependencia: o unico motivo
+ * de estarem juntos e serem SVG embutido.
+ *
+ * Sairam em 2026-09-08 `ArrowIcon`, `ArrowDownRightIcon` e `CarouselArrow`,
+ * sem uma chamada sequer: o `CarouselArrow` estava morto desde que o carrossel
+ * do portfolio deixou de existir, em 25/08/2026.
  */
-
-export function ArrowIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M5 12h13M13 6l6 6-6 6" />
-    </svg>
-  );
-}
-
-export function ArrowDownRightIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M7 7h10v10M7 17 17 7" />
-    </svg>
-  );
-}
-
-export function CarouselArrow({ direction }: { direction: "previous" | "next" }) {
-  return (
-    <svg className={direction === "previous" ? "is-previous" : ""} viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M5 12h13M13 6l6 6-6 6" />
-    </svg>
-  );
-}
 
 /**
  * A marca: um arco com o sol nascendo, visto de dentro da varanda.
@@ -61,7 +41,7 @@ export function ArcoMark() {
    * 64 com raio 14, vão de 24 em vez de 32, traço 2,6 em vez de 5. Em 34px
    * aquele traço saía com 1,38px contra os 2,66px deste, ou seja, o símbolo
    * do cabeçalho era quase metade do peso do símbolo dos arquivos de marca.
-   * Eram dois desenhos, não dois tamanhos, e o Lucca reparou olhando o PNG ao
+   * Eram dois desenhos, não dois tamanhos, e a diferença apareceu ao olhar o PNG ao
    * lado do site em 28/08/2026. Ficou um só.
    *
    * A pastilha não morreu: ela vive em `public/marca/selo.svg`, que é a peça

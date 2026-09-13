@@ -12,7 +12,12 @@
  * idioma apontar para um link morto sem ninguém perceber.
  */
 
-export const whatsappUrl = "https://wa.me/5511942263007";
+/* O número, uma vez só. O link do botão e o `telephone` do JSON-LD saem daqui:
+   até 2026-09-08 o mesmo número estava escrito também em `structured-data.tsx`,
+   e trocar num arquivo deixaria o buscador com o antigo, sem teste que
+   reclamasse. */
+export const whatsappNumero = "5511942263007";
+export const whatsappUrl = `https://wa.me/${whatsappNumero}`;
 
 /**
  * O canal de e-mail do estúdio.
@@ -89,8 +94,8 @@ export const emailContato = "varandaestudioweb@gmail.com";
  *
  * O caminho para preencher, em 25/08/2026:
  *
- * 1. `comercial/conversas/depoimento-casa-conexao.md` tem três frases prontas
- *    para a Isamarta escolher, mais o pedido pronto para mandar.
+ * 1. O material comercial do estúdio tem três frases prontas para a
+ *    responsável escolher, mais o pedido pronto para mandar.
  * 2. Ela responde escolhendo uma, mudando as palavras ou escrevendo a dela.
  * 3. **O que ela devolver é o que entra aqui**, com o nome como ela quiser
  *    assinar. Se ela mudar uma vírgula, vale a versão dela.
@@ -108,14 +113,34 @@ export type Depoimento = {
 
 export const depoimentos: Depoimento[] = [];
 
+/**
+ * `ativo` é o interruptor de cada publicado, e os dois estão DESLIGADOS desde
+ * 13/09/2026, por decisão do estúdio. Saem do portfólio por um tempo e voltam
+ * quando o estúdio decidir. Os subdomínios continuam no ar; só deixam de ser
+ * anunciados aqui.
+ *
+ * Desligar não apaga nada de propósito. O texto continua em
+ * `portfolio.destaques` nos três dicionários, e a capa continua em
+ * `public/marcas/`. **Voltar é trocar `ativo` para `true`** e devolver o
+ * projeto a `NO_AR_ESPERADO` em `tests/portfolio-ordem.test.mjs`, tirando-o
+ * de `NO_AR_EM_PAUSA` no mesmo arquivo. Dá para religar um sem o outro.
+ *
+ * Com os dois desligados, a subseção "No ar" inteira some, rótulo incluído
+ * (ver `section-portfolio.tsx`): rótulo em cima de lista vazia diria que a
+ * lista existe. Como a seção é componente de servidor, o texto do projeto
+ * desligado não viaja no payload da página; o teste confere isso nos três
+ * idiomas.
+ */
 export const featuredAssets = [
   {
     image: "casa-conexao",
     url: "https://casaconexao.varandaestudioweb.com/",
+    ativo: false,
   },
   {
     image: "milenio",
     url: "https://milenio.varandaestudioweb.com/",
+    ativo: false,
   },
 ];
 

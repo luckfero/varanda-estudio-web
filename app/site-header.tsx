@@ -99,7 +99,7 @@ export default function SiteHeader({
         {/* Os itens não são numerados. A numeração das seções continua
             existindo na página, na sobrancelha de cada uma; na barra ela era
             repetição, e repetição em item de menu compete com a palavra que
-            carrega o destino. Saiu a pedido do Lucca em 28/08/2026. */}
+            carrega o destino. Saiu a pedido da direção do estúdio em 28/08/2026. */}
         <nav className="menu" id="menu-principal" aria-label={nav.navegacao} ref={menuRef}>
           <a href="#servicos" onClick={(evento) => handleNavClick(evento, "#servicos")}>
             {nav.servicos}

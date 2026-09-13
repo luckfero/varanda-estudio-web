@@ -22,7 +22,12 @@ export default defineConfig(async () => {
 
   return {
     server: {
-      host: "0.0.0.0",
+      // 127.0.0.1 e nao 0.0.0.0: com o curinga, o servidor de desenvolvimento
+      // fica exposto a toda a rede local (wi-fi de casa, de cliente, de cafe),
+      // e a versao instalada do vite tem desvio conhecido de `server.fs.deny`
+      // no Windows. Quem precisar servir para outra maquina troca aqui de
+      // proposito, e so enquanto precisar.
+      host: "127.0.0.1",
       allowedHosts: ["terminal.local"],
       ...(isCodexSeatbeltSandbox
         ? { watch: { useFsEvents: false, usePolling: true } }

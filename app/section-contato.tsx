@@ -1,6 +1,7 @@
 "use client";
 
-import { CSSProperties, FormEvent, useState } from "react";
+import { useState } from "react";
+import type { CSSProperties, FormEvent } from "react";
 import CursorGrid from "./cursor-grid";
 import { emailContato, whatsappUrl } from "./data";
 import type { Dicionario } from "./i18n";
