@@ -46,9 +46,9 @@ const SITE = "https://varandaestudioweb.com";
    atributo do `<html>` é `es` e a anotação para o buscador é `es-ES`.
    Tratá-los como um só campo foi o primeiro erro deste arquivo. */
 const IDIOMAS = [
-  { locale: "pt", lang: "pt-BR", hreflang: "pt-BR", home: "/", politica: "/privacidade", titulo: "Varanda Estúdio Web | Criação de sites profissionais", moeda: "R$", precos: ["1.200", "2.500", "4.500"], mensais: ["119", "279", "519"] },
-  { locale: "es", lang: "es", hreflang: "es-ES", home: "/es", politica: "/es/privacidad", titulo: "Varanda Estúdio Web | Diseño y desarrollo de webs profesionales", moeda: "€", precos: ["790", "1.590", "2.900"], mensais: ["39", "79", "149"] },
-  { locale: "en", lang: "en", hreflang: "en", home: "/en", politica: "/en/privacy", titulo: "Varanda Estúdio Web | Professional website design and development", moeda: "US$", precos: ["900", "1,850", "3,350"], mensais: ["45", "89", "169"] },
+  { locale: "pt", lang: "pt-BR", hreflang: "pt-BR", home: "/", politica: "/privacidade", titulo: "Varanda Estúdio Web | Criação de sites profissionais", moeda: "R$", precos: ["1.200", "2.500", "4.500"], extras: ["R$ 390", "R$ 220", "R$ 320", "R$ 190"], reparo: true },
+  { locale: "es", lang: "es", hreflang: "es-ES", home: "/es", politica: "/es/privacidad", titulo: "Varanda Estúdio Web | Diseño y desarrollo de webs profesionales", moeda: "€", precos: ["790", "1.590", "2.900"], extras: ["250 €", "150 €", "199 €", "59 €"], reparo: false },
+  { locale: "en", lang: "en", hreflang: "en", home: "/en", politica: "/en/privacy", titulo: "Varanda Estúdio Web | Professional website design and development", moeda: "US$", precos: ["900", "1,850", "3,350"], extras: ["US$ 290", "US$ 170", "US$ 230", "US$ 69"], reparo: false },
 ];
 
 function headDe(html) {
@@ -133,14 +133,44 @@ for (const idioma of IDIOMAS) {
        tabelas independentes — euro e dólar não são conversão do real, estão
        ancorados em pesquisa de cada mercado —, então errar uma não deixa
        rastro nas outras. */
-    for (const valor of [...idioma.precos, ...idioma.mensais]) {
+    for (const valor of idioma.precos) {
       assert.match(html, new RegExp(`>${valor.replace(".", "\\.")}<`), `${idioma.locale}: valor ${valor} sumiu da home`);
     }
     assert.ok(html.includes(idioma.moeda), `${idioma.locale}: moeda ${idioma.moeda} ausente`);
+    for (const valor of idioma.extras) {
+      assert.ok(html.includes(`>${valor}<`), `${idioma.locale}: preço de extra ${valor} sumiu da home`);
+    }
+  });
 
-    /* A tabela antiga tinha o plano mensal mais barato saindo a R$ 178/hora
-       contra R$ 160/hora da avulsa: assinar era pior que não assinar. */
-    if (idioma.locale === "pt") assert.doesNotMatch(html, />89</, "preço da manutenção antiga (R$ 89) voltou");
+  test(`[${idioma.locale}] a manutenção mensal não volta ao site`, async () => {
+    /* Decisão de 13/09/2026: o estúdio vende o site e, depois dele, só
+       alteração paga pelo tempo. Plano mensal anunciado seria promessa que a casa decidiu
+       não fazer. Confere-se o texto VISÍVEL: tira script e marcação antes. */
+    const html = await htmlDe(idioma.home);
+    const visivel = html.replace(/<script[\s\S]*?<\/script>/gi, " ").replace(/<[^>]+>/g, " ");
+    assert.doesNotMatch(visivel, /manuten[çc][ãa]o|mantenimiento|maintenance/i, `${idioma.locale}: manutenção voltou ao texto da home`);
+    assert.doesNotMatch(visivel, /plano mensal|plan mensual|monthly plan|\/m[êe]s\b|\/month\b/i, `${idioma.locale}: plano mensal voltou à home`);
+    assert.doesNotMatch(html, /titulo-manutencao/, `${idioma.locale}: a seção de manutenção voltou`);
+  });
+
+  test(`[${idioma.locale}] os extras são cards, com a ilustração certa em cada um`, async () => {
+    /* Ordem e desenho são casados pelo NOME do serviço (`item.arte`), e é
+       isso que se cobra: a mesma sequência nos três idiomas, uma ilustração
+       dentro de cada card, e o Reparo só em português. */
+    const html = await htmlDe(idioma.home);
+    const cards = [...html.matchAll(/class="extra-celula extra-celula--([a-z]+)"/g)].map((m) => m[1]);
+    const esperado = ["pagina", "redacao", "integracao", "rodada", "avulsa", ...(idioma.reparo ? ["reparo"] : [])];
+    assert.deepEqual(cards, esperado, `${idioma.locale}: cards fora da ordem`);
+    const pedacos = html.split(/class="extra-celula extra-celula--/).slice(1);
+    for (const pedaco of pedacos) {
+      const nome = pedaco.slice(0, pedaco.indexOf('"'));
+      const card = pedaco.split("</li>")[0];
+      assert.match(card, /<svg[^>]*viewBox="0 0 480 300"/, `${idioma.locale}: card ${nome} sem ilustração`);
+      assert.match(card, /href="#contato"/, `${idioma.locale}: card ${nome} não leva ao contato`);
+    }
+    /* `class="..."` e não a palavra solta: o payload do RSC repete as classes
+       no corpo da página (a regra 9.2), e a contagem solta dava dois. */
+    assert.equal((html.match(/class="[^"]*extra--destaque/g) ?? []).length, 1, `${idioma.locale}: esperava um card de destaque`);
   });
 
   test(`[${idioma.locale}] fala como estúdio: nenhum nome de pessoa na home`, async () => {
@@ -384,7 +414,12 @@ test("todo SVG do projeto é XML válido", async () => {
     return saida;
   }
 
-  const arquivos = await svgsDe(dir);
+  /* Os mestres das ilustrações dos extras também são SVG escritos à mão, e o
+     gerador os converte em JSX. XML inválido ali não quebra o site, mas
+     quebra o arquivo que se abre para corrigir o desenho. */
+  const arte = await svgsDe(new URL("../assets/extras-arte/", import.meta.url), "assets/extras-arte/");
+  assert.equal(arte.length, 6, `esperava 6 mestres de ilustração, achei ${arte.length}`);
+  const arquivos = [...(await svgsDe(dir)), ...arte];
   assert.ok(arquivos.length > 0, "nenhum SVG encontrado em public/");
 
   for (const [nome, url] of arquivos) {

@@ -1,0 +1,79 @@
+/* GERADO por scripts/gerar-extras-arte.mjs: o gesto próprio de cada ilustração. */
+/* redacao */
+/* Redação completa: a pena termina a linha que está escrevendo.
+   O cabo e o bico deslizam 16 unidades ao longo da linha de base e param
+   exatamente onde o desenho em repouso os deixa: a ponta no fim da linha. */
+@keyframes ex-redacao-gesto {
+  from { transform: translate(-16px, 0); }
+  to   { transform: translate(0, 0); }
+}
+.extra-arte.is-visible .ex-redacao-gesto {
+  animation: ex-redacao-gesto 1000ms var(--ease-in-out) both;
+  animation-delay: calc(var(--d, 0ms) + var(--offset, 0ms));
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@media (prefers-reduced-motion: reduce) {
+  .extra-arte.is-visible .ex-redacao-gesto { animation: none; }
+}
+
+/* rodada */
+/* Rodada adicional de ajustes: a peça ajustada nasce no lugar antigo
+   (o fantasma tracejado) e desliza até o lugar marcado pela nuvem de
+   revisão. Termina em translate(0, 0), que é o repouso do SVG. */
+@keyframes ex-rodada-gesto {
+  from { transform: translate(160px, 0); }
+  to   { transform: translate(0, 0); }
+}
+
+.extra-arte.is-visible .ex-rodada-gesto {
+  animation: ex-rodada-gesto 800ms var(--ease-in-out) both;
+  animation-delay: calc(var(--d, 0ms) + var(--offset, 0ms));
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Sem deslocamento: a peça só surge já no lugar certo. */
+  .extra-arte.is-visible .ex-rodada-gesto { animation: none; }
+}
+
+/* avulsa */
+/* Alterações avulsas: o trecho novo da página entra no lugar do antigo.
+   Só transform; termina em translate(0), que é o repouso do SVG. */
+@keyframes ex-avulsa-gesto {
+  from { transform: translate(34px, 0); }
+  to { transform: translate(0, 0); }
+}
+
+.extra-arte.is-visible .ex-avulsa-gesto {
+  animation: ex-avulsa-gesto 920ms var(--ease-in-out) both;
+  animation-delay: calc(var(--d, 0ms) + var(--offset, 0ms));
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .extra-arte.is-visible .ex-avulsa-gesto { animation: none; }
+}
+
+/* reparo */
+/* Reparo: o balanço partido cai 6 graus em torno do pé da fissura e,
+   diagnosticado, volta ao nível antes de o remendo subir para dentro dela.
+   Só transform; termina em rotate(0), que é o repouso do SVG. */
+@keyframes ex-reparo-gesto {
+  from { transform: rotate(6deg); }
+  to   { transform: rotate(0deg); }
+}
+
+.extra-arte.is-visible .ex-reparo-gesto {
+  animation: ex-reparo-gesto 720ms var(--ease-in-out) both;
+  animation-delay: calc(var(--d, 0ms) + var(--offset, 0ms));
+  transform-box: fill-box;
+  transform-origin: 0% 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Sem giro: a peça surge já nivelada. */
+  .extra-arte.is-visible .ex-reparo-gesto { animation: none; }
+}

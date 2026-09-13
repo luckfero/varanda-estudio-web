@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" aria-hidden="true" focusable="false">
+  <defs>
+    <clipPath id="ex-avulsa-vao">
+      <path clip-rule="evenodd" d="M0 0H480V300H0Z M52 62H204A8 8 0 0 1 212 70V230A8 8 0 0 1 204 238H52A8 8 0 0 1 44 230V70A8 8 0 0 1 52 62Z M428 150A88 88 0 1 1 252 150A88 88 0 1 1 428 150Z M398 150A58 58 0 1 1 282 150A58 58 0 1 1 398 150Z"/>
+    </clipPath>
+    <radialGradient id="ex-avulsa-luz" cx="384" cy="108" r="96" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f4b862" stop-opacity="0.5"/>
+      <stop offset="0.55" stop-color="#e8a33c" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#e8a33c" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <g fill="none" stroke-width="1.1">
+    <path class="ex-calc" style="--d: 0ms" d="M24 150H456" stroke="var(--tinta)" stroke-opacity="0.22" stroke-dasharray="7 7"/>
+    <path class="ex-calc" style="--d: 30ms" d="M340 30V270" stroke="var(--tinta)" stroke-opacity="0.22" stroke-dasharray="7 7"/>
+    <path class="ex-calc" style="--d: 60ms" d="M24 118H236M24 182H236" stroke="var(--tinta)" stroke-opacity="0.22" stroke-dasharray="7 7"/>
+    <path class="ex-calc" style="--d: 90ms" d="M413 150A73 73 0 1 1 267 150A73 73 0 1 1 413 150Z" stroke="var(--terracota)" stroke-opacity="0.45" stroke-dasharray="7 7"/>
+    <path class="ex-calc" style="--d: 110ms" d="M62 118H194V182H62ZM62 118L194 182M194 118L62 182" stroke="var(--terracota)" stroke-opacity="0.45" stroke-dasharray="5 5"/>
+  </g>
+  <g class="ex-calc" style="--d: 140ms">
+    <rect x="337" y="147" width="6" height="6" fill="var(--terracota)"/>
+    <rect x="337" y="59" width="6" height="6" fill="var(--terracota)"/>
+    <rect x="425" y="147" width="6" height="6" fill="var(--terracota)"/>
+    <rect x="125" y="147" width="6" height="6" fill="var(--terracota)"/>
+    <rect x="59" y="115" width="6" height="6" fill="var(--terracota)"/>
+    <rect x="191" y="179" width="6" height="6" fill="var(--terracota)"/>
+  </g>
+  <g class="ex-calc" style="--d: 160ms">
+    <g fill="none" stroke="var(--acento)" stroke-opacity="0.6" stroke-width="1.1">
+      <path d="M340 48A102 102 0 0 1 442 150M334 54l12-12M436 156l12-12"/>
+      <path d="M32 26v12M26 32h12M448 262v12M442 268h12" stroke="var(--tinta)" stroke-opacity="0.25"/>
+    </g>
+    <text x="424" y="66" text-anchor="middle">30</text>
+  </g>
+
+  <path class="ex-traco" style="--d: 280ms; --dur: 820ms" pathLength="100" d="M44 84V70A8 8 0 0 1 52 62H204A8 8 0 0 1 212 70V230A8 8 0 0 1 204 238H52A8 8 0 0 1 44 230V82" fill="none" stroke="var(--tinta)" stroke-opacity="0.5" stroke-width="1.7"/>
+  <path class="ex-traco" style="--d: 400ms; --dur: 560ms" pathLength="100" d="M344 62.09A88 88 0 0 1 427.91 146H397.86A58 58 0 0 0 344 92.14V62.09A88 88 0 0 1 346 62.21" fill="none" stroke="var(--tinta)" stroke-opacity="0.5" stroke-width="1.7"/>
+  <path class="ex-traco" style="--d: 500ms; --dur: 560ms" pathLength="100" d="M427.91 154A88 88 0 0 1 344 237.91V207.86A58 58 0 0 0 397.86 154H427.91A88 88 0 0 1 427.79 156" fill="none" stroke="var(--tinta)" stroke-opacity="0.5" stroke-width="1.7"/>
+  <path class="ex-traco" style="--d: 600ms; --dur: 560ms" pathLength="100" d="M336 237.91A88 88 0 0 1 252.09 154H282.14A58 58 0 0 0 336 207.86V237.91A88 88 0 0 1 334 237.79" fill="none" stroke="var(--tinta)" stroke-opacity="0.5" stroke-width="1.7"/>
+  <path class="ex-traco" style="--d: 700ms; --dur: 560ms" pathLength="100" d="M252.09 146A88 88 0 0 1 336 62.09V92.14A58 58 0 0 0 282.14 146H252.09A88 88 0 0 1 252.21 144" fill="none" stroke="var(--tinta)" stroke-opacity="0.5" stroke-width="1.7"/>
+  <path class="ex-traco" style="--d: 760ms; --dur: 420ms" pathLength="100" d="M345 150A5 5 0 0 1 335 150A5 5 0 0 1 345 150A5 5 0 0 1 344.58 152" fill="none" stroke="var(--tinta)" stroke-opacity="0.5" stroke-width="1.7"/>
+  <path class="ex-traco" style="--d: 800ms; --dur: 420ms" pathLength="100" d="M346.7 150H384" fill="none" stroke="var(--tinta)" stroke-opacity="0.5" stroke-width="1.7" stroke-linecap="round"/>
+  <path class="ex-traco" style="--d: 840ms; --dur: 420ms" pathLength="100" d="M44 84H212" fill="none" stroke="var(--tinta)" stroke-opacity="0.5" stroke-width="1.7"/>
+  <path class="ex-traco" style="--d: 900ms; --dur: 420ms" pathLength="100" d="M62 102H166" fill="none" stroke="var(--tinta)" stroke-opacity="0.5" stroke-width="1.7" stroke-linecap="round"/>
+  <path class="ex-traco" style="--d: 960ms; --dur: 420ms" pathLength="100" d="M62 202H172" fill="none" stroke="var(--tinta)" stroke-opacity="0.5" stroke-width="1.7" stroke-linecap="round"/>
+  <path class="ex-traco" style="--d: 1020ms; --dur: 420ms" pathLength="100" d="M62 216H132" fill="none" stroke="var(--tinta)" stroke-opacity="0.5" stroke-width="1.7" stroke-linecap="round"/>
+
+  <path class="ex-massa" style="--d: 1200ms" fill="var(--tinta)" fill-opacity="0.09" d="M52 62H204A8 8 0 0 1 212 70V230A8 8 0 0 1 204 238H52A8 8 0 0 1 44 230V70A8 8 0 0 1 52 62Z"/>
+  <path class="ex-massa" style="--d: 1260ms" fill="var(--tinta)" fill-opacity="0.09" d="M344 62.09A88 88 0 0 1 427.91 146H397.86A58 58 0 0 0 344 92.14Z M427.91 154A88 88 0 0 1 344 237.91V207.86A58 58 0 0 0 397.86 154Z M336 237.91A88 88 0 0 1 252.09 154H282.14A58 58 0 0 0 336 207.86Z M252.09 146A88 88 0 0 1 336 62.09V92.14A58 58 0 0 0 282.14 146Z"/>
+  <g clip-path="url(#ex-avulsa-vao)">
+    <rect class="ex-massa" style="--d: 1400ms" x="0" y="0" width="480" height="300" fill="url(#ex-avulsa-luz)"/>
+  </g>
+
+  <g class="ex-avulsa-gesto" style="--d: 1080ms">
+    <path class="ex-traco" style="--d: 980ms; --dur: 620ms" pathLength="100" d="M128 118H190A4 4 0 0 1 194 122V178A4 4 0 0 1 190 182H66A4 4 0 0 1 62 178V122A4 4 0 0 1 66 118H130" fill="none" stroke="var(--tinta)" stroke-opacity="0.5" stroke-width="1.7"/>
+    <path class="ex-massa" style="--d: 1320ms" fill="var(--tinta)" fill-opacity="0.09" d="M66 118H190A4 4 0 0 1 194 122V178A4 4 0 0 1 190 182H66A4 4 0 0 1 62 178V122A4 4 0 0 1 66 118Z"/>
+  </g>
+
+  <path class="ex-acento" style="--d: 1540ms" fill="var(--acento)" d="M344 62.09A88 88 0 0 1 427.91 146H397.86A58 58 0 0 0 344 92.14Z"/>
+</svg>

@@ -1,0 +1,260 @@
+/* =========================================================================
+   SOB MEDIDA: OS CARDS DOS EXTRAS (13/09/2026)
+
+   Grade de cards de larguras diferentes, como pediu a referência: um card
+   largo abre a linha, os estreitos se alinham embaixo, e um só card sai do
+   chão escuro para o âmbar da marca. Cada card é um serviço e um preço, com
+   uma ilustração que se desenha ao entrar na tela.
+
+   AS ILUSTRAÇÕES FALAM A LÍNGUA DA PLANTA de "Quem está na Varanda": usam os
+   mesmos quadros-chave (`planta-pinta`, `planta-calcula`, `planta-sobe`,
+   `planta-surge`, declarados em `about.css`) e o mesmo repouso, que é o
+   desenho pronto. Sem JavaScript, ou antes de a animação rodar, o visitante
+   vê a peça inteira, e não um desenho pela metade.
+   ========================================================================= */
+
+.extras-grade {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--e5);
+}
+
+/* A linha de cima tem o card largo e um estreito; a de baixo, três iguais; o
+   Reparo, quando existe, ocupa a última linha inteira. Casado pelo NOME do
+   serviço, e não por `nth-child`: com a ordem mudando num dicionário, a
+   posição erraria em silêncio e o nome não. */
+.extra-celula { grid-column: span 4; display: flex; }
+.extra-celula--pagina { grid-column: span 7; }
+.extra-celula--redacao { grid-column: span 5; }
+.extra-celula--reparo { grid-column: 1 / -1; }
+
+/* ---------------------------------------------------------------------
+   O CARD
+   `.cartao` e `.cartao--interativo` (base.css) já dão chão, fio, raio, o
+   `:hover` e o pressionado. Aqui entra só a anatomia.
+   --------------------------------------------------------------------- */
+.extra {
+  --extra-fundo: var(--nivel-1);
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: var(--e4);
+  width: 100%;
+  min-height: 420px;
+  padding: var(--e6);
+  border-radius: var(--raio-painel);
+  background: var(--extra-fundo);
+  overflow: hidden;
+}
+
+.extra-nome {
+  font-family: var(--fonte-interface);
+  font-size: var(--t-item);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  padding-right: var(--e7);
+}
+
+.extra-rotulo {
+  font-family: var(--fonte-mono);
+  font-size: var(--c-mono);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--acento);
+  margin-bottom: calc(var(--e4) * -1 + var(--e1));
+}
+
+/* O desenho ocupa o meio e fica centrado na altura que sobrar. A grade de
+   fundo é a da prancha, e some nas bordas para não virar moldura. */
+.extra-arte {
+  align-self: center;
+  justify-self: center;
+  width: 100%;
+  max-width: 440px;
+  padding-block: var(--e2);
+  background-image:
+    linear-gradient(var(--extra-grade, rgba(244, 239, 230, 0.05)) 1px, transparent 1px),
+    linear-gradient(90deg, var(--extra-grade, rgba(244, 239, 230, 0.05)) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center;
+  -webkit-mask-image: radial-gradient(closest-side, #000 80%, transparent 100%);
+          mask-image: radial-gradient(closest-side, #000 80%, transparent 100%);
+}
+.extra-arte svg { display: block; width: 100%; height: auto; overflow: visible; }
+.extra-arte text { font-family: var(--fonte-mono); font-size: 13px; letter-spacing: 0.04em; fill: var(--tinta-fraca); }
+
+/* O preço é o dado grande do card, como o número dos cards da referência.
+   Grotesca tabular (`.numeral`), e não serifada: é número, não título. */
+.extra-preco {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--e2);
+  line-height: 1;
+}
+.extra-preco strong {
+  font-size: clamp(2.1rem, 3.1vw, 2.9rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  color: var(--tinta);
+}
+.extra-prefixo {
+  flex-basis: 100%;
+  margin-bottom: var(--e2);
+  font-size: var(--c-apoio);
+  color: var(--tinta-fraca);
+}
+.extra-unidade { font-size: var(--c-apoio); color: var(--tinta-fraca); }
+
+.extra-texto {
+  margin-top: var(--e3);
+  font-size: var(--c-apoio);
+  line-height: var(--lh-apoio);
+  color: var(--tinta-media);
+  max-width: 46ch;
+  padding-right: var(--e7);
+}
+.extra-texto + .extra-texto { margin-top: var(--e2); }
+.extra-texto--nota { color: var(--tinta-fraca); }
+
+/* O botão redondo do canto, a marca de "isto abre algo". Decorativo para
+   quem ouve (o verbo está no `.so-leitor`), e por isso fora da árvore. */
+.extra-seta {
+  position: absolute;
+  right: var(--e5);
+  bottom: var(--e5);
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--raio-pilula);
+  background: var(--acento);
+  color: var(--acento-tinta);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.extra-seta svg { width: 15px; height: 15px; }
+@media (hover: hover) and (pointer: fine) {
+  .extra:hover .extra-seta { transform: translate(2px, -2px); }
+}
+
+/* ---------------------------------------------------------------------
+   O CARD LARGO: texto numa coluna, desenho na outra.
+   --------------------------------------------------------------------- */
+.extra--largo {
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  grid-template-rows: auto 1fr;
+  column-gap: var(--e6);
+}
+.extra--largo .extra-rotulo,
+.extra--largo .extra-nome { grid-column: 1; }
+.extra--largo .extra-arte { grid-column: 2; grid-row: 1 / -1; max-width: 520px; }
+.extra--largo .extra-pe { grid-column: 1; align-self: end; }
+.extra--reparo .extra-rotulo { grid-row: 1; }
+.extra--reparo .extra-nome { grid-row: 2; align-self: start; }
+.extra--reparo .extra-pe { grid-row: 3; }
+.extra--reparo { grid-template-rows: auto auto 1fr; min-height: 380px; }
+
+/* ---------------------------------------------------------------------
+   O CARD DE DESTAQUE, no âmbar da marca.
+
+   A cor mora em variáveis redefinidas pela SUPERFÍCIE (regra 9.8): a tinta
+   do texto e a do desenho viram o chão escuro, e a peça cheia da ilustração,
+   que no escuro é âmbar, aqui vira tinta escura. Sem isso o desenho some.
+
+   `--extra-fundo` existe por causa do `:hover` de `.cartao--interativo`, que
+   troca o fundo por `--nivel-2`: no destaque o fundo é o degradê e precisa
+   continuar sendo.
+   --------------------------------------------------------------------- */
+.extra--destaque {
+  --extra-fundo:
+    radial-gradient(90% 70% at 12% 8%, #f7cd8f 0%, rgba(247, 205, 143, 0) 62%),
+    radial-gradient(75% 80% at 92% 96%, #d48a33 0%, rgba(212, 138, 51, 0) 68%),
+    #e8a33c;
+  --extra-grade: rgba(20, 17, 14, 0.08);
+  border-color: rgba(20, 17, 14, 0.18);
+  color: var(--acento-tinta);
+}
+.extra--destaque.cartao--interativo:hover { background: var(--extra-fundo); border-color: rgba(20, 17, 14, 0.34); }
+/* O `h3` traz a cor da regra global de título, que é a tinta creme: sobre o
+   âmbar ela sumia, e só a captura mostrou. */
+.extra--destaque .extra-nome,
+.extra--destaque .extra-preco strong { color: var(--acento-tinta); }
+.extra--destaque .extra-prefixo,
+.extra--destaque .extra-unidade,
+.extra--destaque .extra-texto { color: #2b2117; }
+/* Sólida, e não a tinta a 78%: composta sobre o canto mais escuro do degradê
+   (#d48a33) a transparência dava 4,4:1, abaixo do mínimo de 4,5 para texto
+   miúdo. #2b2117 dá 5,7:1 no mesmo ponto e 8,4:1 no âmbar puro. */
+.extra--destaque .extra-seta { background: var(--acento-tinta); color: var(--acento); }
+.extra--destaque .extra-arte {
+  --tinta: #14110e;
+  --tinta-fraca: #3a2b1c;
+  --terracota: #6e3a22;
+  --acento: #14110e;
+}
+
+/* ---------------------------------------------------------------------
+   AS ILUSTRAÇÕES: as classes que animam.
+   Cada elemento marca o próprio atraso em `style="--d: ..."`; o card soma o
+   seu por `--offset`, para o desenho começar depois de o card aparecer.
+   --------------------------------------------------------------------- */
+.ex-calc { opacity: 0; }
+.ex-traco { stroke-dasharray: 100; stroke-dashoffset: 0; }
+
+.extra-arte.is-visible .ex-calc,
+.extra-arte.is-visible .ex-traco,
+.extra-arte.is-visible .ex-massa,
+.extra-arte.is-visible .ex-acento {
+  animation-timing-function: var(--ease-out);
+  animation-fill-mode: both;
+  animation-delay: calc(var(--d, 0ms) + var(--offset, 0ms));
+}
+.extra-arte.is-visible .ex-calc   { animation-name: planta-calcula; animation-duration: var(--dur, 2200ms); }
+.extra-arte.is-visible .ex-traco  { animation-name: planta-pinta;   animation-duration: var(--dur, 780ms); }
+.extra-arte.is-visible .ex-massa  { animation-name: planta-surge;   animation-duration: var(--dur, 520ms); }
+.extra-arte.is-visible .ex-acento { animation-name: planta-sobe;    animation-duration: var(--dur, 700ms); }
+
+/* Reduz, não zera, igual à planta: o surgimento fica, o traço correndo e a
+   subida saem. */
+@media (prefers-reduced-motion: reduce) {
+  .extra-arte.is-visible .ex-traco,
+  .extra-arte.is-visible .ex-massa,
+  .extra-arte.is-visible .ex-acento {
+    animation-name: planta-surge !important;
+    animation-duration: 420ms !important;
+  }
+  .extra-arte.is-visible .ex-calc { animation-duration: 900ms !important; }
+}
+
+/* ---------------------------------------------------------------------
+   TELAS MENORES
+   --------------------------------------------------------------------- */
+@media (max-width: 999px) {
+  .extras-grade { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .extra-celula { grid-column: span 1; }
+  .extra-celula--pagina,
+  .extra-celula--reparo { grid-column: 1 / -1; }
+  .extra { min-height: 400px; }
+}
+
+@media (max-width: 639px) {
+  .extras-grade { grid-template-columns: minmax(0, 1fr); gap: var(--e4); }
+  .extra-celula,
+  .extra-celula--pagina,
+  .extra-celula--reparo { grid-column: 1; }
+  .extra,
+  .extra--largo,
+  .extra--reparo {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    min-height: 0;
+    padding: var(--e5);
+  }
+  .extra--largo .extra-arte,
+  .extra--largo .extra-pe,
+  .extra--reparo .extra-rotulo,
+  .extra--reparo .extra-nome,
+  .extra--reparo .extra-pe { grid-column: 1; grid-row: auto; }
+  .extra-arte { max-width: 360px; }
+}

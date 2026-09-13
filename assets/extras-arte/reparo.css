@@ -1,0 +1,19 @@
+/* Reparo: o balanço partido cai 6 graus em torno do pé da fissura e,
+   diagnosticado, volta ao nível antes de o remendo subir para dentro dela.
+   Só transform; termina em rotate(0), que é o repouso do SVG. */
+@keyframes ex-reparo-gesto {
+  from { transform: rotate(6deg); }
+  to   { transform: rotate(0deg); }
+}
+
+.extra-arte.is-visible .ex-reparo-gesto {
+  animation: ex-reparo-gesto 720ms var(--ease-in-out) both;
+  animation-delay: calc(var(--d, 0ms) + var(--offset, 0ms));
+  transform-box: fill-box;
+  transform-origin: 0% 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Sem giro: a peça surge já nivelada. */
+  .extra-arte.is-visible .ex-reparo-gesto { animation: none; }
+}

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id="ex-pagina-luz">
+      <stop offset="0" stop-color="#f4b862" stop-opacity="0.5"/>
+      <stop offset="0.55" stop-color="#e8a33c" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#e8a33c" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <g fill="none" stroke-width="1.1">
+    <path class="ex-calc" style="--d:0ms" d="M240 24V276" stroke="var(--tinta)" stroke-opacity="0.22" stroke-dasharray="7 7"/>
+    <path class="ex-calc" style="--d:40ms" d="M24 153H456" stroke="var(--tinta)" stroke-opacity="0.22" stroke-dasharray="7 7"/>
+    <path class="ex-calc" style="--d:80ms" d="M24 179H456" stroke="var(--tinta)" stroke-opacity="0.22" stroke-dasharray="7 7"/>
+    <rect class="ex-calc" style="--d:120ms" x="370" y="179" width="64" height="80" stroke="var(--terracota)" stroke-opacity="0.45" stroke-dasharray="5 5"/>
+  </g>
+  <g fill="var(--terracota)">
+    <rect class="ex-calc" style="--d:160ms" x="237" y="150" width="6" height="6"/>
+    <rect class="ex-calc" style="--d:160ms" x="399" y="150" width="6" height="6"/>
+    <rect class="ex-calc" style="--d:160ms" x="367" y="256" width="6" height="6"/>
+    <rect class="ex-calc" style="--d:160ms" x="431" y="256" width="6" height="6"/>
+  </g>
+  <text class="ex-calc" style="--d:160ms" x="402" y="224" text-anchor="middle">+1</text>
+
+  <circle class="ex-massa" style="--d:1400ms" cx="402" cy="219" r="78" fill="url(#ex-pagina-luz)"/>
+
+  <g fill="var(--tinta)" fill-opacity="0.09">
+    <path class="ex-massa" style="--d:1200ms" d="M208 41H272V121H208Z"/>
+    <path class="ex-massa" style="--d:1240ms" d="M46 179H110V259H46Z"/>
+    <path class="ex-massa" style="--d:1280ms" d="M154 179H218V259H154Z"/>
+    <path class="ex-massa" style="--d:1320ms" d="M262 179H326V259H262Z"/>
+  </g>
+
+  <g fill="none" stroke="var(--tinta)" stroke-opacity="0.5" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round">
+    <path class="ex-traco" style="--d:280ms; --dur:700ms" pathLength="100" d="M272 57V121H208V41H272V57H208"/>
+    <path class="ex-traco" style="--d:520ms; --dur:420ms" pathLength="100" d="M240 121V153"/>
+    <path class="ex-traco" style="--d:640ms; --dur:620ms" pathLength="100" d="M240 153H78V179"/>
+    <path class="ex-traco" style="--d:640ms; --dur:480ms" pathLength="100" d="M240 153H294V179"/>
+    <path class="ex-traco" style="--d:720ms; --dur:420ms" pathLength="100" d="M186 153V179"/>
+    <path class="ex-traco" style="--d:760ms; --dur:700ms" pathLength="100" d="M218 195V259H154V179H218V195H154"/>
+    <path class="ex-traco" style="--d:800ms; --dur:700ms" pathLength="100" d="M326 195V259H262V179H326V195H262"/>
+    <path class="ex-traco" style="--d:860ms; --dur:700ms" pathLength="100" d="M110 195V259H46V179H110V195H46"/>
+    <path class="ex-traco" style="--d:1000ms; --dur:480ms" pathLength="100" d="M294 153H402V179"/>
+  </g>
+
+  <g class="ex-acento" style="--d:1500ms">
+    <path d="M370 198H434V259H370Z" fill="var(--acento)"/>
+    <path d="M370 179H434V193H370Z" fill="var(--acento)"/>
+  </g>
+</svg>

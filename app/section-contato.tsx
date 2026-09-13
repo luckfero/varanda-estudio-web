@@ -138,7 +138,7 @@ export default function SectionContato({
                 seção da peça, e por isso ele é escrito aqui e não no
                 dicionário, que guarda texto traduzível. O texto ao lado
                 continua vindo de `contato.indice`. */}
-            <p className="rotulo"><b>11</b><i aria-hidden="true" /> {t.contato.indice}</p>
+            <p className="rotulo"><b>10</b><i aria-hidden="true" /> {t.contato.indice}</p>
             <h2 className="titulo-secao" id="titulo-contato">
               {t.contato.tituloAntes}
               <em>{t.contato.tituloDestaque}</em>

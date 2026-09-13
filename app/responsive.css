@@ -74,7 +74,7 @@
   .apresentacao-grade > div:not(.colunas),
   .apresentacao-grade > .colunas { grid-area: auto; }
   .apresentacao-grade { row-gap: var(--e6); }
-  .formatos-grade, .estudos-lista, .planos, .incluido-grade { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .formatos-grade, .estudos-lista, .incluido-grade { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .linha-tempo { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--e7); }
   .placa, .placa--invertida { grid-template-columns: minmax(0, 1fr); }
   .placa--invertida .amostra { order: 0; border-left: 0; }
@@ -172,14 +172,14 @@
 
   /* A faixa da condição e a peça do Reparo apertam junto com o resto, pela
      mesma regra: desce um degrau da escala, nada de número solto. */
-  .condicao, .reparo { margin-top: var(--e6); padding: var(--e5); }
+  .condicao { margin-top: var(--e6); padding: var(--e5); }
 }
 
 @media (max-width: 760px) {
   :root { --altura-cabecalho: 68px; }
   .caixa { border-inline: 0; }
-  .formatos-grade, .estudos-lista, .planos, .incluido-grade, .dupla,
-  .manutencao-notas, .janela-leituras { grid-template-columns: minmax(0, 1fr); }
+  .formatos-grade, .estudos-lista, .incluido-grade, .dupla,
+  .janela-leituras { grid-template-columns: minmax(0, 1fr); }
   /* Os três valores da condição saem do lado a lado. Em 390px eles cabem
      tecnicamente, e cabendo ficariam com o nome do pacote quebrado em duas
      linhas debaixo de um número: a coluna vertical é o pior caso certo. */
@@ -220,7 +220,7 @@
      eixo proprio; alinhar as tres coisas do mesmo jeito devolveria a lista de
      itens soltos que ela veio fechar. */
   .rodape-alto p:not(.mono) { text-align: center; justify-self: center; }
-  .abertura-acoes .botao, .chamada .botao, .duvidas-fecho .botao, .fecho .botao, .manutencao-acao .botao { width: 100%; }
+  .abertura-acoes .botao, .chamada .botao, .duvidas-fecho .botao, .fecho .botao { width: 100%; }
   .janela-corpo { padding: var(--e5) var(--e5) var(--e6); }
 
   /* A POLÍTICA DE PRIVACIDADE não está no protótipo e não tem marcação de

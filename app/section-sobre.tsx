@@ -2,7 +2,9 @@ import type { CSSProperties } from "react";
 import type { Dicionario } from "./i18n";
 
 /**
- * Quem está na Varanda, serviços sob medida e dúvidas frequentes.
+ * Quem está na Varanda e dúvidas frequentes. Os serviços sob medida saíram
+ * daqui em 13/09/2026 e viraram `section-extras.tsx`, logo depois do
+ * investimento.
  *
  * Sem `"use client"`: não há estado, evento nem gancho aqui. O acordeão das
  * dúvidas é `<details>`, que o próprio navegador abre e fecha sem uma linha
@@ -37,14 +39,12 @@ const TRAVESSAO_INICIAL = /^[\s—–-]+/;
 
 export default function SectionSobre({
   sobre,
-  extras,
   faq,
 }: {
   sobre: Dicionario["sobre"];
-  extras: Dicionario["extras"];
   faq: Dicionario["faq"];
 }) {
-  const t = { sobre, extras, faq };
+  const t = { sobre, faq };
   return (
     <>
       <section className="secao" id="sobre" aria-labelledby="titulo-sobre">
@@ -257,73 +257,11 @@ export default function SectionSobre({
         </div>
       </section>
 
-      <section className="secao" aria-labelledby="titulo-extras">
-        <div className="caixa">
-          <div className="cabeca-secao" data-reveal>
-            <div>
-              <p className="rotulo"><b>09</b><i aria-hidden="true" />{t.extras.indice}</p>
-              <h2 className="titulo-secao" id="titulo-extras">{t.extras.titulo}</h2>
-            </div>
-            <p className="lead">{t.extras.resumo}</p>
-          </div>
-
-          {/* Lista de verdade, e não uma pilha de `<div>`.
-              `role="list"` não é redundante: o `list-style: none` do reset faz
-              o Safari tirar a semântica de lista do `<ul>`, e quem ouve a
-              página perde o "lista de 5 itens" que diz de saída o tamanho do
-              que vem. */}
-          <ul className="extras-lista" role="list" data-reveal>
-            {t.extras.lista.map((item) => (
-              <li key={item.name}>
-                <span className="extra-nome">{item.name}</span>
-                <strong className="extra-preco numeral">{item.price}</strong>
-              </li>
-            ))}
-          </ul>
-
-          {/* O REPARO, E ELE SÓ EXISTE EM PORTUGUÊS.
-              Interruptor em `extras.reparo.ativo`, falso nos outros dois
-              dicionários: o produto é em real e só no Brasil, e o porquê está
-              escrito lá.
-
-              PEÇA PRÓPRIA, E NÃO MAIS UMA LINHA DA LISTA DE EXTRAS. A lista
-              acima é o que se acrescenta a um projeto contratado; o Reparo é
-              o contrário disso, um trabalho fechado no site que a empresa já
-              tem, para quem ainda não é cliente. Na mesma lista, os dois
-              números ficariam lado a lado como se fossem a mesma escada, e é
-              exatamente essa comparação que o catálogo manda impedir.
-
-              A NOTA DE QUE ELE NÃO É PARA CLIENTE FICA COLADA AO PREÇO, pelo
-              mesmo motivo. */}
-          {t.extras.reparo.ativo && (
-            <aside className="reparo" data-reveal aria-labelledby="titulo-reparo">
-              <div className="reparo-cabeca">
-                <p className="rotulo reparo-rotulo">{t.extras.reparo.rotulo}</p>
-                <h3 className="reparo-titulo" id="titulo-reparo">{t.extras.reparo.titulo}</h3>
-              </div>
-              <p className="reparo-numeros">
-                <strong className="numeral">{t.extras.reparo.preco}</strong>
-                <span>{t.extras.reparo.prazo}</span>
-              </p>
-              <p className="reparo-texto">{t.extras.reparo.texto}</p>
-              <p className="reparo-texto">{t.extras.reparo.abatimento}</p>
-              <p className="apoio reparo-nota">{t.extras.reparo.nota}</p>
-            </aside>
-          )}
-
-          {/* A lista do que é orçado à parte saiu daqui em 2026-08-10: passou
-              a viver em destaque na seção de investimento, em duas colunas ao
-              lado do que está incluso. Repetir nos dois lugares enfraquecia os
-              dois, e aqui ela ficava em letra miúda. */}
-          <p className="apoio nota-secao" data-reveal>{t.extras.nota}</p>
-        </div>
-      </section>
-
       <section className="secao" aria-labelledby="titulo-duvidas">
         <div className="caixa">
           <div className="duvidas-grade">
             <div data-reveal>
-              <p className="rotulo"><b>10</b><i aria-hidden="true" />{t.faq.indice}</p>
+              <p className="rotulo"><b>09</b><i aria-hidden="true" />{t.faq.indice}</p>
               <h2 className="titulo-secao" id="titulo-duvidas">{t.faq.titulo}</h2>
             </div>
 

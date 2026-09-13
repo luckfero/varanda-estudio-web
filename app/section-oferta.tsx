@@ -6,7 +6,9 @@ import { partesDoPreco } from "./i18n";
 import { useAncoraSuave } from "./use-ancora-suave";
 
 /**
- * Processo, investimento e manutenção, na identidade nova.
+ * Processo e investimento, na identidade nova. A manutenção mensal saiu do
+ * site em 13/09/2026, por decisão do estúdio: depois da publicação, o que se
+ * vende são alterações avulsas, que moram nos extras.
  *
  * Fatias, não o dicionário inteiro: propriedade de componente cliente viaja
  * serializada até o navegador, e o dicionário completo levaria junto o texto
@@ -29,10 +31,10 @@ const atraso = (ms: number) => ({ "--atraso": `${ms}ms` }) as CSSProperties;
 /**
  * DE ONDE SAI CADA CÉLULA DA TABELA.
  *
- * A matriz é o mapa entre as dez linhas de comparação e o conteúdo que já
+ * A matriz é o mapa entre as nove linhas de comparação e o conteúdo que já
  * existe no dicionário. Ela é estrutura, e não texto: nenhuma palavra
  * comercial mora aqui. Cada célula aponta para `launch`, para `entrega` ou
- * para um índice de `pacotes[].items`, e os 14 itens dos três pacotes foram
+ * para um índice de `pacotes[].items`, e os 13 itens dos três pacotes foram
  * distribuídos um a um, sem inventar nem descartar nenhum.
  *
  * A ORDEM DAS LINHAS É COMPARTILHADA com `investimento.comparacao.linhas`
@@ -68,19 +70,16 @@ const COMPARACAO: Celula[][] = [
   /* Capacidade à escolha     */ [{ tipo: "nao" }, { tipo: "nao" }, { tipo: "item", item: 1 }],
   /* SEO e dados estruturados */ [{ tipo: "nao" }, { tipo: "nao" }, { tipo: "item", item: 2 }],
   /* Rodadas de ajuste        */ [{ tipo: "item", item: 3 }, { tipo: "item", item: 4 }, { tipo: "item", item: 3 }],
-  /* Primeiro mês de plano    */ [{ tipo: "nao" }, { tipo: "nao" }, { tipo: "item", item: 4 }],
 ];
 
 export default function SectionOferta({
   processo,
   investimento,
-  manutencao,
   moeda,
   moedaAposValor,
 }: {
   processo: Dicionario["processo"];
   investimento: Dicionario["investimento"];
-  manutencao: Dicionario["manutencao"];
   moeda: string;
   moedaAposValor: boolean;
 }) {
@@ -472,82 +471,6 @@ export default function SectionOferta({
           <p className="apoio nota-secao" data-reveal>
             {investimento.nota}
           </p>
-        </div>
-      </section>
-
-      {/* =================================================================
-          07. MANUTENÇÃO
-          ================================================================= */}
-      <section className="secao" aria-labelledby="titulo-manutencao">
-        <div className="caixa">
-          <div className="cabeca-secao" data-reveal>
-            <div>
-              <p className="rotulo">
-                <b>07</b>
-                <i aria-hidden="true" /> {manutencao.indice}
-              </p>
-              {/* Sem `<br />` entre as duas metades. A quebra à mão é uma
-                  decisão tomada numa largura só, e aqui há três idiomas, um
-                  `clamp` de tamanho e telas de 320 a 2560px: quem quebra é o
-                  `text-wrap: balance` do alicerce. */}
-              <h2 className="titulo-secao" id="titulo-manutencao">
-                {manutencao.tituloAntes} <em>{manutencao.tituloDestaque}</em>
-              </h2>
-            </div>
-            <p className="lead">{manutencao.resumo}</p>
-          </div>
-
-          {/* Aqui os três planos continuam sendo cartões, e não tabela: eles
-              são uma ESCADA ("Tudo do plano Cuidado", "Tudo do plano
-              Presença"), e escada se lê em coluna. Tabela serve onde as
-              linhas são comparáveis item a item, que é o caso do
-              investimento. */}
-          <div className="planos">
-            {manutencao.planos.map((item, indice) => {
-              const partes = partesDoPreco(moedas, item.price);
-              return (
-                <article
-                  className={`cartao${item.featured ? " cartao--destaque" : ""} plano`}
-                  key={item.name}
-                  data-reveal
-                  style={atraso(indice * 90)}
-                >
-                  <h3>{item.name}</h3>
-                  <p className="preco">
-                    {partes.antes && <span className="preco-moeda">{partes.antes}</span>}
-                    <span className="preco-valor numeral">{partes.numero}</span>
-                    {partes.depois && <span className="preco-moeda">{partes.depois}</span>}
-                    <span className="preco-moeda">{manutencao.porMes}</span>
-                  </p>
-                  <p className="plano-resumo">{item.summary}</p>
-                  <ul className="plano-lista" role="list">
-                    {item.items.map((linha) => (
-                      <li key={linha}>{linha}</li>
-                    ))}
-                  </ul>
-                </article>
-              );
-            })}
-          </div>
-
-          <div className="manutencao-notas" data-reveal>
-            <p className="apoio">{manutencao.nota1}</p>
-            <p className="apoio">{manutencao.nota2}</p>
-          </div>
-
-          {/* Três planos com preço e nenhuma forma de contratar era o buraco
-              mais estranho da página: a seção anterior tem botão em cada
-              coluna, e esta, que vende assinatura, terminava em nota de
-              rodapé. */}
-          <div className="manutencao-acao" data-reveal>
-            <a
-              className="botao botao--acento"
-              href="#contato"
-              onClick={(event) => handleNavClick(event, "#contato")}
-            >
-              {manutencao.cta}
-            </a>
-          </div>
         </div>
       </section>
     </>

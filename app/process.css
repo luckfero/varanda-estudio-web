@@ -1,5 +1,5 @@
 /**
- * PROCESSO, INVESTIMENTO E MANUTENÇÃO.
+ * PROCESSO E INVESTIMENTO.
  *
  * Os blocos 14, 15 e 16 da identidade nova, na ordem em que o visitante os
  * encontra: como o trabalho acontece, quanto custa e o que existe depois da
@@ -138,7 +138,7 @@
    --nivel-1 e a faixa de destaque só começava abaixo dele: a coluna nascia
    igual às vizinhas e virava diferente três linhas depois, justo na linha em
    que o comprador lê os nomes. E o destaque usa o mesmo vocabulário do
-   `.cartao--destaque` dos planos de manutenção (nível 2 mais fio de acento),
+   `.cartao--destaque` da base (nível 2 mais fio de acento),
    para a página ter UMA linguagem de "este é o recomendado". */
 .tabela th.tabela-destaque, .tabela td.tabela-destaque { background: var(--nivel-2); border-color: var(--fio-acento); }
 
@@ -303,24 +303,15 @@
 }
 
 /* ---------------------------------------------------------------------
-   16. MANUTENÇÃO
-   Aqui os três planos continuam sendo cartões, e não tabela. O motivo é de
-   conteúdo: eles são uma ESCADA ("Tudo do plano Cuidado", "Tudo do plano
-   Presença"), e escada se lê de baixo para cima em coluna. A tabela serve
-   onde as linhas são comparáveis item a item, que é o caso do investimento.
+   OS ITENS DE CARTÃO DE PACOTE
+   A seção 16, dos planos de manutenção, saiu em 13/09/2026 junto com a
+   manutenção mensal. Ficaram `.plano-resumo` e `.plano-lista`, que os
+   cartões de pacote do celular continuam usando.
    --------------------------------------------------------------------- */
-.planos { display: grid; gap: var(--e5); grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.plano { display: flex; flex-direction: column; gap: var(--e3); }
-/* Nome de PACOTE é rótulo de produto, e por isso grotesca, igual ao nome
-   dos três formatos e ao da tabela de investimento. */
-.plano h3 { font-family: var(--fonte-interface); font-weight: 600; font-size: var(--t-bloco); line-height: var(--lh-bloco); letter-spacing: -0.02em; }
-.plano .preco { margin-block: var(--e2) var(--e1); }
 .plano-resumo { font-size: var(--c-apoio); color: var(--tinta-media); margin-bottom: var(--e2); }
 .plano-lista { border-top: 1px solid var(--fio); padding-top: var(--e4); display: grid; gap: var(--e2); flex: 1; }
 .plano-lista li { display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: var(--e3); font-size: var(--c-apoio); color: var(--tinta-media); line-height: 1.5; }
 .plano-lista li::before { content: ""; width: 6px; height: 6px; margin-top: 8px; background: var(--acento); }
-.manutencao-notas { margin-top: var(--e7); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--e5); }
-.manutencao-acao { margin-top: var(--e6); }
 
 /* ---------------------------------------------------------------------
    OS CARTOES DE PLANO, a apresentacao do celular.
@@ -330,7 +321,7 @@
    os dois abaixo de 900px.
 
    Eles reaproveitam `.preco`, `.plano-resumo`, `.plano-lista` e `.botao`, que
-   ja existem e ja sao usados pelos cartoes de manutencao. O que e novo aqui e
+   ja existem na folha. O que e novo aqui e
    so o recipiente e as tres linhas de cabecalho do cartao.
    --------------------------------------------------------------------- */
 .planos-cartoes { display: none; }

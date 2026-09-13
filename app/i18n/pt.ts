@@ -34,7 +34,7 @@ const pt = {
        `inLanguage` do próprio idioma: texto em português numa página em
        inglês é dado misto para o buscador. */
     areaAtendida: "Brasil, Europa e América do Norte",
-    servicos: ["Criação de sites", "Site institucional", "Desenvolvimento web", "Manutenção de sites"],
+    servicos: ["Criação de sites", "Site institucional", "Desenvolvimento web"],
   },
 
   nav: {
@@ -215,7 +215,7 @@ const pt = {
       {
         step: "04",
         title: "Publicação e cuidado",
-        text: "Com a aprovação final, publicamos e entregamos os acessos. Com plano de manutenção, seguimos acompanhando.",
+        text: "Com a aprovação final, publicamos e entregamos os acessos.",
       },
     ],
   },
@@ -317,7 +317,6 @@ const pt = {
         "Capacidade à escolha",
         "SEO e dados estruturados",
         "Rodadas de ajuste",
-        "Primeiro mês de plano",
       ],
       incluido: "Incluído",
       naoIncluido: "Não incluído",
@@ -413,7 +412,6 @@ const pt = {
           "Uma capacidade à escolha: outro idioma, catálogo com filtros, um painel para você mesmo trocar textos e fotos, ou ligação com um sistema que você já usa",
           "O site preparado para busca: ajustes técnicos e os dados do negócio no formato que o Google lê",
           "2 rodadas de ajustes",
-          "Primeiro mês do plano Presença incluído",
         ],
       },
     ],
@@ -424,45 +422,6 @@ const pt = {
       { title: "Publicação e domínio configurados", text: "Deixamos o site no ar, com endereço e certificado funcionando." },
       { title: "Garantia de 30 dias", text: "Defeito de funcionamento depois da publicação é corrigido sem custo." },
       { title: "O site é seu", text: "Domínio, contas e código ficam no nome da sua empresa desde o primeiro dia." },
-    ],
-  },
-
-  manutencao: {
-    indice: "Depois da publicação",
-    tituloAntes: "Seu site pode continuar",
-    tituloDestaque: "bem cuidado.",
-    resumo: "Planos opcionais para manter o site no ar, atualizado e seguro, e para mudar o conteúdo sempre que o negócio mudar.",
-    porMes: "/mês",
-    cta: "Quero um plano de manutenção",
-    nota1: "O tempo mensal não é acumulativo. O pagamento é antecipado e o cancelamento requer aviso prévio de 30 dias.",
-    nota2: "Para demandas pontuais sem plano, a manutenção avulsa custa R$ 190 por hora, cobrada em blocos de 30 minutos. Dentro dos planos, a hora sai sempre mais barata.",
-    planos: [
-      {
-        name: "Cuidado",
-        price: "119",
-        featured: false,
-        summary: "O site sempre no ar e em dia.",
-        items: [
-          "Monitoramento, com correção se o site sair do ar",
-          "Backup e certificado sempre válidos",
-          "Atualizações técnicas e de segurança",
-          "Retorno em até 3 dias úteis",
-        ],
-      },
-      {
-        name: "Presença",
-        price: "279",
-        featured: true,
-        summary: "O conteúdo acompanhando o negócio.",
-        items: ["Tudo do plano Cuidado", "Até 1 hora por mês de alterações de conteúdo", "Retorno em até 2 dias úteis"],
-      },
-      {
-        name: "Prioridade",
-        price: "519",
-        featured: false,
-        summary: "Para quem mexe no site com frequência.",
-        items: ["Tudo do plano Presença", "Até 3 horas por mês de alterações", "Retorno no mesmo dia útil"],
-      },
     ],
   },
 
@@ -506,14 +465,22 @@ const pt = {
          úteis são quase duas semanas de diferença, e quem conta o prazo é o
          cliente. */
       abatimento: "Fechando qualquer pacote em até 30 dias corridos, os R$ 390 são descontados do valor do pacote.",
-      nota: "Vale para quem ainda não é cliente. Para quem já é, o mesmo trabalho entra na manutenção.",
+      nota: "Vale para quem ainda não é cliente. Para quem já é, o mesmo trabalho entra como alteração avulsa.",
     },
+    /* OS CARDS DOS EXTRAS, desde 13/09/2026. `arte` é o identificador da
+       ilustração em `app/extras-arte.tsx`, igual nos três idiomas, e é por ele
+       (não pela posição) que o card acha o desenho. `prefixo` e `unidade` ficam
+       vazios quando não se aplicam, e existem nos três por causa do contrato de
+       tipo. O antigo "Manutenção avulsa" virou "Alterações avulsas" quando a
+       manutenção mensal saiu do site: depois da publicação, o que se vende é
+       alteração paga pelo tempo. */
+    pedir: "Falar sobre ",
     lista: [
-      { name: "Página adicional", price: "R$ 390" },
-      { name: "Redação completa", price: "R$ 220/página" },
-      { name: "Integração além das padrão", price: "a partir de R$ 390" },
-      { name: "Rodada adicional de ajustes", price: "R$ 320" },
-      { name: "Manutenção avulsa", price: "R$ 190/hora" },
+      { arte: "pagina", name: "Página adicional", prefixo: "", valor: "R$ 390", unidade: "", descricao: "Uma página a mais além das que o pacote inclui, desenhada no mesmo padrão do resto do site." },
+      { arte: "redacao", name: "Redação completa", prefixo: "", valor: "R$ 220", unidade: "por página", descricao: "Os textos da página escritos do zero, e não só ajustados a partir do material que você já tem." },
+      { arte: "integracao", name: "Integração além das padrão", prefixo: "a partir de", valor: "R$ 390", unidade: "", descricao: "Ligação do site com um sistema que não está entre as integrações padrão, como o CRM que a sua empresa já usa. O valor final fecha depois de avaliar o sistema." },
+      { arte: "rodada", name: "Rodada adicional de ajustes", prefixo: "", valor: "R$ 320", unidade: "", descricao: "Mais uma volta de ajustes além das que o pacote inclui, com os pedidos reunidos numa lista só." },
+      { arte: "avulsa", name: "Alterações avulsas", prefixo: "", valor: "R$ 190", unidade: "por hora", descricao: "Mudança pontual no site já publicado, cobrada pelo tempo usado, em blocos de 30 minutos." },
     ],
   },
 
@@ -537,7 +504,7 @@ const pt = {
       {
         question: "E se der problema depois que o site estiver no ar?",
         answer:
-          "Todo projeto tem 30 dias de garantia: defeito de funcionamento é corrigido sem custo. Depois desse prazo, correções entram por manutenção avulsa ou por plano mensal, que também monitora o site e avisa antes de você perceber.",
+          "Todo projeto tem 30 dias de garantia: defeito de funcionamento é corrigido sem custo. Depois desse prazo, correções entram como alteração avulsa, cobrada pelo tempo usado.",
       },
       {
         question: "De quem é o site depois de pronto?",
@@ -552,7 +519,7 @@ const pt = {
       {
         question: "Posso pedir mudanças depois de publicado?",
         answer:
-          "Sim. Alterações pontuais entram por manutenção avulsa ou pelo plano mensal. Páginas novas, funcionalidades e mudanças de escopo recebem orçamento próprio antes da execução, nunca durante.",
+          "Sim. Alterações pontuais entram como alteração avulsa, cobrada por hora. Páginas novas, funcionalidades e mudanças de escopo recebem orçamento próprio antes da execução, nunca durante.",
       },
       {
         question: "Vocês atendem fora do Brasil?",

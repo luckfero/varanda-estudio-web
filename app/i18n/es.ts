@@ -8,7 +8,7 @@ import type { Dicionario } from "./index";
  *
  * Los precios **no son una conversión** de la tabla en reales: están anclados
  * en el mercado catalán (landing 500–1.500 €, corporativa freelance
- * 600–2.500 €, microagencia 1.800–5.000 €, mantenimiento 30–80 € y 100–300 €).
+ * 600–2.500 €, microagencia 1.800–5.000 €).
  * Convertir la tabla brasileña daría unos 250 €, por debajo del suelo de
  * credibilidad de ese mercado, donde menos de 600–700 € no se lee como barato
  * sino como arriesgado.
@@ -41,7 +41,7 @@ const es: Dicionario = {
     privacyDescription: "Cómo trata Varanda Estúdio Web los datos enviados desde el formulario de contacto.",
     /* Ver la nota en `pt.ts`: solo las usa el JSON-LD. */
     areaAtendida: "Brasil, Europa y América del Norte",
-    servicos: ["Diseño de webs", "Web corporativa", "Desarrollo web", "Mantenimiento de webs"],
+    servicos: ["Diseño de webs", "Web corporativa", "Desarrollo web"],
   },
 
   nav: {
@@ -209,7 +209,7 @@ const es: Dicionario = {
       {
         step: "04",
         title: "Publicación y cuidado",
-        text: "Con la aprobación final publicamos y entregamos los accesos. Con plan de mantenimiento, seguimos acompañando.",
+        text: "Con la aprobación final publicamos y entregamos los accesos.",
       },
     ],
   },
@@ -295,7 +295,6 @@ const es: Dicionario = {
         "Capacidad a elegir",
         "SEO y datos estructurados",
         "Rondas de ajustes",
-        "Primer mes de plan",
       ],
       incluido: "Incluido",
       naoIncluido: "No incluido",
@@ -368,7 +367,6 @@ const es: Dicionario = {
           "Una capacidad a elegir: otro idioma, catálogo con filtros, un panel para que tú mismo cambies textos y fotos, o conexión con un sistema que ya usas",
           "La web preparada para la búsqueda: ajustes técnicos y los datos del negocio en el formato que lee Google",
           "2 rondas de ajustes",
-          "Primer mes del plan Presencia incluido",
         ],
       },
     ],
@@ -379,45 +377,6 @@ const es: Dicionario = {
       { title: "Publicación y dominio configurados", text: "Dejamos la web publicada, con dirección y certificado funcionando." },
       { title: "Garantía de 30 días", text: "Cualquier fallo de funcionamiento tras la publicación se corrige sin coste." },
       { title: "La web es tuya", text: "Dominio, cuentas y código quedan a nombre de tu empresa desde el primer día." },
-    ],
-  },
-
-  manutencao: {
-    indice: "Después de publicar",
-    tituloAntes: "Tu web puede seguir",
-    tituloDestaque: "bien cuidada.",
-    resumo: "Planes opcionales para mantener la web publicada, actualizada y segura, y para cambiar el contenido siempre que el negocio cambie.",
-    porMes: "/mes",
-    cta: "Quiero un plan de mantenimiento",
-    nota1: "El tiempo mensual no se acumula. El pago es por adelantado y la baja requiere un aviso previo de 30 días.",
-    nota2: "Para necesidades puntuales sin plan, el mantenimiento suelto cuesta 59 € por hora, facturado en bloques de 30 minutos. Dentro de los planes, la hora sale siempre más barata.",
-    planos: [
-      {
-        name: "Cuidado",
-        price: "39",
-        featured: false,
-        summary: "La web siempre publicada y al día.",
-        items: [
-          "Monitorización, con corrección si la web se cae",
-          "Copias de seguridad y certificado siempre válidos",
-          "Actualizaciones técnicas y de seguridad",
-          "Respuesta en hasta 3 días laborables",
-        ],
-      },
-      {
-        name: "Presencia",
-        price: "79",
-        featured: true,
-        summary: "El contenido siguiendo al negocio.",
-        items: ["Todo el plan Cuidado", "Hasta 1 hora al mes de cambios de contenido", "Respuesta en hasta 2 días laborables"],
-      },
-      {
-        name: "Prioridad",
-        price: "149",
-        featured: false,
-        summary: "Para quien toca la web a menudo.",
-        items: ["Todo el plan Presencia", "Hasta 3 horas al mes de cambios", "Respuesta el mismo día laborable"],
-      },
     ],
   },
 
@@ -453,12 +412,20 @@ const es: Dicionario = {
       abatimento: "",
       nota: "",
     },
+    /* OS CARDS DOS EXTRAS, desde 13/09/2026. `arte` é o identificador da
+       ilustração em `app/extras-arte.tsx`, igual nos três idiomas, e é por ele
+       (não pela posição) que o card acha o desenho. `prefixo` e `unidade` ficam
+       vazios quando não se aplicam, e existem nos três por causa do contrato de
+       tipo. O antigo "Manutenção avulsa" virou "Alterações avulsas" quando a
+       manutenção mensal saiu do site: depois da publicação, o que se vende é
+       alteração paga pelo tempo. */
+    pedir: "Hablar de ",
     lista: [
-      { name: "Página adicional", price: "250 €" },
-      { name: "Redacción completa", price: "150 €/página" },
-      { name: "Integración fuera de las estándar", price: "desde 250 €" },
-      { name: "Ronda adicional de ajustes", price: "199 €" },
-      { name: "Mantenimiento suelto", price: "59 €/hora" },
+      { arte: "pagina", name: "Página adicional", prefixo: "", valor: "250 €", unidade: "", descricao: "Una página más de las que incluye el paquete, diseñada con el mismo criterio que el resto de la web." },
+      { arte: "redacao", name: "Redacción completa", prefixo: "", valor: "150 €", unidade: "por página", descricao: "Los textos de la página escritos desde cero, no solo ajustados a partir del material que ya tienes." },
+      { arte: "integracao", name: "Integración fuera de las estándar", prefixo: "desde", valor: "250 €", unidade: "", descricao: "Conexión de la web con un sistema que no está entre las integraciones estándar, como el CRM que ya usa tu empresa. El precio final se cierra después de valorar el sistema." },
+      { arte: "rodada", name: "Ronda adicional de ajustes", prefixo: "", valor: "199 €", unidade: "", descricao: "Una vuelta más de ajustes además de las que incluye el paquete, con los cambios reunidos en una sola lista." },
+      { arte: "avulsa", name: "Cambios sueltos", prefixo: "", valor: "59 €", unidade: "por hora", descricao: "Un cambio puntual en la web ya publicada, cobrado por el tiempo empleado, en bloques de 30 minutos." },
     ],
   },
 
@@ -482,7 +449,7 @@ const es: Dicionario = {
       {
         question: "¿Y si algo falla después de publicar?",
         answer:
-          "Todo proyecto tiene 30 días de garantía: cualquier fallo de funcionamiento se corrige sin coste. Pasado ese plazo, las correcciones entran por mantenimiento suelto o por plan mensual, que además monitoriza la web y avisa antes de que tú lo notes.",
+          "Todo proyecto tiene 30 días de garantía: cualquier fallo de funcionamiento se corrige sin coste. Pasado ese plazo, las correcciones entran como cambio suelto, cobrado por el tiempo empleado.",
       },
       {
         question: "¿De quién es la web una vez terminada?",
@@ -497,7 +464,7 @@ const es: Dicionario = {
       {
         question: "¿Puedo pedir cambios después de publicar?",
         answer:
-          "Sí. Los cambios puntuales entran por mantenimiento suelto o por el plan mensual. Páginas nuevas, funcionalidades y cambios de alcance reciben presupuesto propio antes de ejecutarse, nunca durante.",
+          "Sí. Los cambios puntuales entran como cambio suelto, cobrado por hora. Páginas nuevas, funcionalidades y cambios de alcance reciben presupuesto propio antes de ejecutarse, nunca durante.",
       },
       {
         question: "Estáis en Brasil. ¿Trabajáis con empresas en España?",

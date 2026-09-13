@@ -30,7 +30,7 @@ const en: Dicionario = {
     privacyDescription: "How Varanda Estúdio Web handles the data sent through the contact form.",
     /* See the note in `pt.ts`: only the JSON-LD reads these. */
     areaAtendida: "Brazil, Europe and North America",
-    servicos: ["Website design", "Business website", "Web development", "Website maintenance"],
+    servicos: ["Website design", "Business website", "Web development"],
   },
 
   nav: {
@@ -198,7 +198,7 @@ const en: Dicionario = {
       {
         step: "04",
         title: "Launch and care",
-        text: "Once you approve, we publish and hand over the accounts. With a maintenance plan, we keep looking after it.",
+        text: "Once you approve, we publish and hand over the accounts.",
       },
     ],
   },
@@ -284,7 +284,6 @@ const en: Dicionario = {
         "Capability of your choice",
         "SEO and structured data",
         "Revision rounds",
-        "First month of a plan",
       ],
       incluido: "Included",
       naoIncluido: "Not included",
@@ -357,7 +356,6 @@ const en: Dicionario = {
           "One capability of your choice: another language, a filterable catalogue, a panel where you change text and photos yourself, or a link to a system you already use",
           "The site set up for search: technical work plus your business details in the format Google reads",
           "2 revision rounds",
-          "First month of the Presence plan included",
         ],
       },
     ],
@@ -368,45 +366,6 @@ const en: Dicionario = {
       { title: "Launch and domain set up", text: "We leave the site live, with the address and certificate working." },
       { title: "30-day warranty", text: "Any fault after launch is fixed at no cost." },
       { title: "The site is yours", text: "Domain, accounts and code stay in your company's name from day one." },
-    ],
-  },
-
-  manutencao: {
-    indice: "After launch",
-    tituloAntes: "Your site can stay",
-    tituloDestaque: "well looked after.",
-    resumo: "Optional plans to keep the site live, updated and secure, and to change the content whenever the business changes.",
-    porMes: "/month",
-    cta: "I want a maintenance plan",
-    nota1: "Monthly time does not roll over. Payment is in advance and cancellation requires 30 days' notice.",
-    nota2: "For one-off needs without a plan, ad-hoc maintenance costs US$ 69 per hour, billed in 30-minute blocks. Inside the plans, the hour always works out cheaper.",
-    planos: [
-      {
-        name: "Care",
-        price: "45",
-        featured: false,
-        summary: "The site always live and up to date.",
-        items: [
-          "Monitoring, with a fix if the site goes down",
-          "Backups and certificate always valid",
-          "Technical and security updates",
-          "Reply within 3 business days",
-        ],
-      },
-      {
-        name: "Presence",
-        price: "89",
-        featured: true,
-        summary: "Content keeping up with the business.",
-        items: ["Everything in the Care plan", "Up to 1 hour a month of content changes", "Reply within 2 business days"],
-      },
-      {
-        name: "Priority",
-        price: "169",
-        featured: false,
-        summary: "For those who change the site often.",
-        items: ["Everything in the Presence plan", "Up to 3 hours a month of changes", "Reply the same business day"],
-      },
     ],
   },
 
@@ -442,12 +401,20 @@ const en: Dicionario = {
       abatimento: "",
       nota: "",
     },
+    /* OS CARDS DOS EXTRAS, desde 13/09/2026. `arte` é o identificador da
+       ilustração em `app/extras-arte.tsx`, igual nos três idiomas, e é por ele
+       (não pela posição) que o card acha o desenho. `prefixo` e `unidade` ficam
+       vazios quando não se aplicam, e existem nos três por causa do contrato de
+       tipo. O antigo "Manutenção avulsa" virou "Alterações avulsas" quando a
+       manutenção mensal saiu do site: depois da publicação, o que se vende é
+       alteração paga pelo tempo. */
+    pedir: "Ask about ",
     lista: [
-      { name: "Extra page", price: "US$ 290" },
-      { name: "Full copywriting", price: "US$ 170/page" },
-      { name: "Integration beyond the standard set", price: "from US$ 290" },
-      { name: "Extra revision round", price: "US$ 230" },
-      { name: "Ad-hoc maintenance", price: "US$ 69/hour" },
+      { arte: "pagina", name: "Extra page", prefixo: "", valor: "US$ 290", unidade: "", descricao: "One more page on top of what the package includes, designed to the same standard as the rest of the site." },
+      { arte: "redacao", name: "Full copywriting", prefixo: "", valor: "US$ 170", unidade: "per page", descricao: "The page copy written from scratch, not just adjusted from the material you already have." },
+      { arte: "integracao", name: "Integration beyond the standard set", prefixo: "from", valor: "US$ 290", unidade: "", descricao: "Connecting the site to a system outside the standard integrations, such as the CRM your business already uses. The final price is set once we have assessed the system." },
+      { arte: "rodada", name: "Extra revision round", prefixo: "", valor: "US$ 230", unidade: "", descricao: "One more round of adjustments beyond those in the package, with the requests gathered in a single list." },
+      { arte: "avulsa", name: "One-off changes", prefixo: "", valor: "US$ 69", unidade: "per hour", descricao: "A specific change to the live site, billed by the time it takes, in 30-minute blocks." },
     ],
   },
 
@@ -471,7 +438,7 @@ const en: Dicionario = {
       {
         question: "What if something breaks after launch?",
         answer:
-          "Every project comes with a 30-day warranty: any fault is fixed at no cost. After that, fixes go through ad-hoc maintenance or a monthly plan, which also monitors the site and tells you before you notice.",
+          "Every project comes with a 30-day warranty: any fault is fixed at no cost. After that, fixes are billed as one-off changes, by the time they take.",
       },
       {
         question: "Who owns the site once it's done?",
@@ -486,7 +453,7 @@ const en: Dicionario = {
       {
         question: "Can I ask for changes after launch?",
         answer:
-          "Yes. One-off changes go through ad-hoc maintenance or the monthly plan. New pages, new features and changes of scope get their own quote before any work happens, never during.",
+          "Yes. One-off changes are billed by the hour. New pages, new features and changes of scope get their own quote before any work happens, never during.",
       },
       {
         question: "You're in Brazil. Do you work with clients abroad?",

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" aria-hidden="true" focusable="false">
+  <defs>
+    <clipPath id="ex-reparo-vao">
+      <path clip-rule="evenodd" d="M0 0H480V300H0Z M60 36H116V136H222L235 150L228 161L243 173L252 184H116V264H60Z M282 136H400A24 24 0 0 1 400 184H252L264 172L260 161L273 149Z"/>
+    </clipPath>
+    <radialGradient id="ex-reparo-luz" cx="252" cy="160" r="124" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f4b862" stop-opacity="0.5"/>
+      <stop offset="0.55" stop-color="#e8a33c" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#e8a33c" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <g fill="none" stroke-width="1.1">
+    <path class="ex-calc" style="--d: 0ms" d="M24 160H456" stroke="var(--tinta)" stroke-opacity="0.22" stroke-dasharray="7 7"/>
+    <path class="ex-calc" style="--d: 30ms" d="M116 24V276" stroke="var(--tinta)" stroke-opacity="0.22" stroke-dasharray="7 7"/>
+    <path class="ex-calc" style="--d: 60ms" d="M282 136H456" stroke="var(--terracota)" stroke-opacity="0.45" stroke-dasharray="7 7"/>
+    <path class="ex-calc" style="--d: 90ms" d="M252 24V276" stroke="var(--terracota)" stroke-opacity="0.45" stroke-dasharray="7 7"/>
+    <circle class="ex-calc" style="--d: 110ms" cx="252" cy="160" r="52" stroke="var(--terracota)" stroke-opacity="0.45" stroke-dasharray="5 5"/>
+  </g>
+  <g class="ex-calc" style="--d: 140ms" fill="var(--terracota)">
+    <rect x="113" y="133" width="6" height="6"/>
+    <rect x="113" y="181" width="6" height="6"/>
+    <rect x="249" y="181" width="6" height="6"/>
+    <rect x="219" y="133" width="6" height="6"/>
+    <rect x="279" y="133" width="6" height="6"/>
+    <rect x="397" y="157" width="6" height="6"/>
+  </g>
+  <g class="ex-calc" style="--d: 160ms">
+    <path d="M116 222H252M110 228l12-12M246 228l12-12" fill="none" stroke="var(--acento)" stroke-opacity="0.6" stroke-width="1.1"/>
+    <text x="184" y="244" text-anchor="middle">136</text>
+  </g>
+
+  <path class="ex-traco" style="--d: 280ms; --dur: 900ms" pathLength="100" d="M60 36H116V136H222L235 150L228 161L243 173L252 184H116V264H60Z" fill="none" stroke="var(--tinta)" stroke-opacity="0.5" stroke-width="1.7" stroke-linejoin="round"/>
+  <path class="ex-massa" style="--d: 1200ms" fill="var(--tinta)" fill-opacity="0.09" d="M60 36H116V136H222L235 150L228 161L243 173L252 184H116V264H60Z"/>
+
+  <g class="ex-reparo-gesto" style="--d: 880ms">
+    <path class="ex-traco" style="--d: 520ms; --dur: 700ms" pathLength="100" d="M282 136H400A24 24 0 0 1 400 184H252L264 172L260 161L273 149Z" fill="none" stroke="var(--tinta)" stroke-opacity="0.5" stroke-width="1.7" stroke-linejoin="round"/>
+    <path class="ex-massa" style="--d: 1260ms" fill="var(--tinta)" fill-opacity="0.09" d="M282 136H400A24 24 0 0 1 400 184H252L264 172L260 161L273 149Z"/>
+  </g>
+
+  <g clip-path="url(#ex-reparo-vao)">
+    <rect class="ex-massa" style="--d: 1420ms" x="0" y="0" width="480" height="300" fill="url(#ex-reparo-luz)"/>
+  </g>
+
+  <path class="ex-acento" style="--d: 1580ms" fill="var(--acento)" d="M222 136L235 150L228 161L243 173L252 184L264 172L260 161L273 149L282 136Z"/>
+</svg>

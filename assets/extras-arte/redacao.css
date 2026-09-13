@@ -1,0 +1,16 @@
+/* Redação completa: a pena termina a linha que está escrevendo.
+   O cabo e o bico deslizam 16 unidades ao longo da linha de base e param
+   exatamente onde o desenho em repouso os deixa: a ponta no fim da linha. */
+@keyframes ex-redacao-gesto {
+  from { transform: translate(-16px, 0); }
+  to   { transform: translate(0, 0); }
+}
+.extra-arte.is-visible .ex-redacao-gesto {
+  animation: ex-redacao-gesto 1000ms var(--ease-in-out) both;
+  animation-delay: calc(var(--d, 0ms) + var(--offset, 0ms));
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@media (prefers-reduced-motion: reduce) {
+  .extra-arte.is-visible .ex-redacao-gesto { animation: none; }
+}

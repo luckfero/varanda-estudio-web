@@ -1,0 +1,19 @@
+/* Rodada adicional de ajustes: a peça ajustada nasce no lugar antigo
+   (o fantasma tracejado) e desliza até o lugar marcado pela nuvem de
+   revisão. Termina em translate(0, 0), que é o repouso do SVG. */
+@keyframes ex-rodada-gesto {
+  from { transform: translate(160px, 0); }
+  to   { transform: translate(0, 0); }
+}
+
+.extra-arte.is-visible .ex-rodada-gesto {
+  animation: ex-rodada-gesto 800ms var(--ease-in-out) both;
+  animation-delay: calc(var(--d, 0ms) + var(--offset, 0ms));
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Sem deslocamento: a peça só surge já no lugar certo. */
+  .extra-arte.is-visible .ex-rodada-gesto { animation: none; }
+}

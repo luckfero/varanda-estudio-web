@@ -1,0 +1,17 @@
+/* Alterações avulsas: o trecho novo da página entra no lugar do antigo.
+   Só transform; termina em translate(0), que é o repouso do SVG. */
+@keyframes ex-avulsa-gesto {
+  from { transform: translate(34px, 0); }
+  to { transform: translate(0, 0); }
+}
+
+.extra-arte.is-visible .ex-avulsa-gesto {
+  animation: ex-avulsa-gesto 920ms var(--ease-in-out) both;
+  animation-delay: calc(var(--d, 0ms) + var(--offset, 0ms));
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .extra-arte.is-visible .ex-avulsa-gesto { animation: none; }
+}

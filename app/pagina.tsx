@@ -4,6 +4,7 @@ import { WhatsappIcon } from "./icons";
 import Reveal from "./reveal";
 import SectionAbertura from "./section-abertura";
 import SectionContato from "./section-contato";
+import SectionExtras from "./section-extras";
 import SectionOferta from "./section-oferta";
 import SectionPortfolio from "./section-portfolio";
 import SectionSobre from "./section-sobre";
@@ -49,11 +50,14 @@ export default function Pagina({ locale }: { locale: Locale }) {
         <SectionOferta
           processo={t.processo}
           investimento={t.investimento}
-          manutencao={t.manutencao}
           moeda={t.moeda}
           moedaAposValor={t.moedaAposValor}
         />
-        <SectionSobre sobre={t.sobre} extras={t.extras} faq={t.faq} />
+        {/* Os extras vêm logo depois do investimento desde 13/09/2026: quem
+            acabou de ler o preço dos pacotes pergunta o que custa o que não
+            está neles. O lugar era o da manutenção mensal, que saiu do site. */}
+        <SectionExtras extras={t.extras} />
+        <SectionSobre sobre={t.sobre} faq={t.faq} />
         <SectionContato contato={t.contato} privacyPath={t.privacyPath} />
       </main>
 
