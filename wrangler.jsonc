@@ -37,14 +37,13 @@
   ],
   // Com "0", `/briefing`, `/es/briefing`, `/en/briefing` e `/api/briefing`
   // respondem 404 como qualquer endereço inexistente, e o painel nem é
-  // chamado. A ordem de publicação é esta, e só esta:
-  //   1. o painel publica a classe e a migração, e é conferido;
-  //   2. este site vai ao ar com "0" (as seis páginas de sempre, o
-  //      questionário ainda em 404);
-  //   3. um segundo commit troca para "1", depois de o painel conferido.
-  // Não virar "1" antes do passo 1: sem o painel, todo link responderia 503.
+  // chamado. Foi publicado assim, em dois passos, em 25/09/2026: o painel
+  // primeiro (classe e migração, conferidos no ar), este site com "0", e
+  // este "1" depois. Voltar a "0" é o jeito de tirar o questionário do ar
+  // sem tocar no painel: os links param de abrir e nada se perde, porque as
+  // respostas moram lá.
   "vars": {
-    "BRIEFING_ATIVO": "0"
+    "BRIEFING_ATIVO": "1"
   },
   "compatibility_date": "2026-05-15",
   "compatibility_flags": ["nodejs_compat"],

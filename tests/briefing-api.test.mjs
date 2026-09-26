@@ -995,11 +995,12 @@ test("fonte: nenhum arquivo de app/ importa cloudflare:workers, e as rotas do qu
   }
 });
 
-test("fonte: o build liga o binding do painel e nasce com o questionário desligado", async () => {
+test("fonte: o build liga o binding do painel e o questionário", async () => {
   /* Lido do `wrangler.json` que o build gera, que é o que o deploy manda.
-     O segundo commit da publicação (ESPEC 8, passo 4) troca "0" por "1" e
-     muda esta linha junto, de propósito: virar "1" nunca é por acidente. */
+     O primeiro commit da publicação saiu com "0" e o segundo trocou para
+     "1" junto com esta linha, de propósito: mudar o valor nunca é por
+     acidente, e desligar o questionário também passa por aqui. */
   const gerado = JSON.parse(await readFile(new URL("../dist/server/wrangler.json", import.meta.url), "utf8"));
   assert.deepEqual(gerado.services, [{ binding: "BRIEFING", service: "painel-varanda", entrypoint: "BriefingPublico" }]);
-  assert.equal(gerado.vars?.BRIEFING_ATIVO, "0");
+  assert.equal(gerado.vars?.BRIEFING_ATIVO, "1");
 });
