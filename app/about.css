@@ -38,6 +38,14 @@
    venceria `.rotulo` por especificidade e a etiqueta perderia a cor. */
 .sobre-texto p:not(.mono):not(.rotulo) { color: var(--tinta-media); max-width: 56ch; }
 
+/* Título e texto a `--e7` (48px). As outras seções dão `--e5` (24px) entre o
+   h2 e o texto de baixo, e foi o primeiro valor tentado aqui em 25/09/2026;
+   o Lucca não viu diferença e pediu mais. Aqui o título tem três linhas e o
+   texto é corpo miúdo, então o vão maior é o que separa os dois. A grade põe
+   `--e4` entre todos os itens, e a margem soma o que falta só neste par; os
+   outros vãos da coluna ficam como estão. */
+.sobre-texto > h2 + p { margin-top: calc(var(--e7) - var(--e4)); }
+
 /* O painel embaixo do desenho. Ele é o que faz a planta ler como PRANCHA
    sobre a mesa, e não como desenho solto no escuro: o `--nivel-1` sobe um
    degrau em relação ao chão e a borda fecha a folha. */
