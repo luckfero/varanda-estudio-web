@@ -244,7 +244,6 @@ export default function SectionSobre({
                 classes que ela mirava. */}
             <div className="sobre-texto" data-reveal style={{ "--atraso": "100ms" } as CSSProperties}>
               <p className="rotulo"><b>08</b><i aria-hidden="true" />{t.sobre.indice}</p>
-              <p className="sobrancelha">{t.sobre.eyebrow}</p>
               <h2 className="titulo-secao titulo-secao--largo" id="titulo-sobre">{t.sobre.titulo}</h2>
               <p>{t.sobre.paragrafo1}</p>
               <p>{t.sobre.paragrafo2}</p>

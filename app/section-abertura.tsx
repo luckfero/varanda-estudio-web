@@ -219,8 +219,8 @@ export default function SectionAbertura({
               nenhum número mágico no CSS.
 
               SAIU DAQUI a `.sobrancelha` com `intro.eyebrow` ("Um site não
-              precisa parecer complicado"), a pedido. A classe continua
-              existindo porque a seção "sobre" ainda a usa. */}
+              precisa parecer complicado"), a pedido. A da seção "sobre" saiu
+              em 25/09/2026, também a pedido, e a classe saiu junto. */}
           <div className="apresentacao-grade">
             <p className="rotulo" data-reveal>
               <b>02</b>

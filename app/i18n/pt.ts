@@ -386,7 +386,6 @@ const pt = {
 
   sobre: {
     indice: "Quem está na Varanda",
-    eyebrow: "Um estúdio pequeno, de propósito.",
     titulo: "Tecnologia boa é a que aproxima, não a que complica.",
     paragrafo1: "A Varanda Estúdio Web existe para ajudar comércios, profissionais e empresas a construírem uma presença digital clara, profissional e confiável.",
     paragrafo2: "Cada projeto é acompanhado de perto, da organização das ideias ao desenvolvimento, com conversa franca, processo documentado e atenção aos detalhes. Poucos projetos por vez, e nenhum tratado como encomenda de esteira.",

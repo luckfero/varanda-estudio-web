@@ -357,7 +357,6 @@ const es: Dicionario = {
 
   sobre: {
     indice: "Quién está en Varanda",
-    eyebrow: "Un estudio pequeño, a propósito.",
     titulo: "La buena tecnología es la que acerca, no la que complica.",
     paragrafo1: "Varanda Estúdio Web existe para ayudar a comercios, profesionales y empresas a construir una presencia digital clara, profesional y fiable.",
     paragrafo2: "Cada proyecto se acompaña de cerca, desde la organización de las ideas hasta el desarrollo, con conversación franca, proceso documentado y atención al detalle. Pocos proyectos a la vez, y ninguno tratado como encargo en serie.",

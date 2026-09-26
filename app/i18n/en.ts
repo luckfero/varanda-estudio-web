@@ -346,7 +346,6 @@ const en: Dicionario = {
 
   sobre: {
     indice: "Who's at Varanda",
-    eyebrow: "A small studio, on purpose.",
     titulo: "Good technology is the kind that brings people closer, not the kind that complicates.",
     paragrafo1: "Varanda Estúdio Web exists to help shops, professionals and companies build a presence online that is clear, professional and trustworthy.",
     paragrafo2: "Every project is followed closely, from organising the ideas through to development, with straight talk, a documented process and attention to detail. Few projects at a time, and none treated as an item on a conveyor belt.",

@@ -431,7 +431,6 @@ h3, .titulo-bloco {
    (`.campo input`, `.abrir-menu i`, `.janela-barra span`, `.rotulo b`) e não
    seção sobre componente, que é o caso que a 9.24 descreve. */
 
-.sobrancelha { font-size: var(--c-apoio); font-weight: 600; color: var(--tinta-media); margin-bottom: var(--e3); }
 .lead { font-size: var(--c-lead); line-height: 1.6; color: var(--tinta-media); max-width: 56ch; }
 .corpo { color: var(--tinta-media); max-width: 64ch; }
 .apoio { font-size: var(--c-apoio); color: var(--tinta-fraca); max-width: 76ch; }
