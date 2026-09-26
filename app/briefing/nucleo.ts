@@ -454,9 +454,112 @@ export function etapasVisiveis(respostas: unknown, ctx: Contexto): Etapa[] {
   return ETAPAS.filter((e) => e.perguntas.some((p) => visivel(p, respostas, ctx)));
 }
 
-/** Ids das obrigatórias visíveis e em branco, na ordem do formulário. */
+/**
+ * A opção MARCADA que abre campo ("Outro", com o "Qual?") e ficou com o
+ * campo vazio: devolve o id dela (a primeira, na ordem do esquema), ou null.
+ * Espaço em branco não conta como texto. Serve a qualquer pergunta, mas só
+ * trava nas obrigatórias (ver `obrigatoriasEmBranco`).
+ */
+export function abertaVazia(p: Pergunta, respostas: unknown, ctx: Contexto): string | null {
+  const valor = valorDe(p, respostas, ctx);
+  if (valor === null) return null;
+  const marcadas = Array.isArray(valor) ? valor : [valor];
+  for (const o of opcoesDisponiveis(p, ctx)) {
+    if (!o.abre || !marcadas.includes(o.id)) continue;
+    const texto = ler(respostas, chaveAberta(p.id, o.id));
+    if (typeof texto !== "string" || texto.trim() === "") return o.id;
+  }
+  return null;
+}
+
+/**
+ * Ids das obrigatórias visíveis e em branco, na ordem do formulário.
+ *
+ * **"Outro" sem o "Qual?" conta como em branco, só aqui** (decisão de
+ * 26/09/2026). Numa obrigatória, a opção marcada que abre campo com o campo
+ * vazio não diz nada que eu possa usar: "Para que o site precisa servir?
+ * Outro." Então ela trava o Continuar da etapa, aparece no Revisar e o
+ * servidor recusa o envio, pela mesma régua. Vale mesmo com outras opções
+ * marcadas junto: o "Outro" marcado é uma resposta pela metade.
+ *
+ * `estadoDaResposta` NÃO muda, de propósito: para a leitura e para o
+ * exportador a pergunta está respondida (as opções marcadas estão lá, e o
+ * campo aberto vazio sai como vazio). A regra é da trava, não do estado.
+ * Pergunta que não é obrigatória, com "Outro" vazio, não trava nada.
+ */
 export function obrigatoriasEmBranco(respostas: unknown, ctx: Contexto): string[] {
-  return PERGUNTAS.filter((p) => p.obrigatoria && estadoDaResposta(p, respostas, ctx) === "em_branco").map((p) => p.id);
+  return PERGUNTAS.filter((p) => {
+    if (!p.obrigatoria) return false;
+    const estado = estadoDaResposta(p, respostas, ctx);
+    return estado === "em_branco" || (estado === "respondida" && abertaVazia(p, respostas, ctx) !== null);
+  }).map((p) => p.id);
+}
+
+/**
+ * Onde a resposta de uma obrigatória em branco falta: a chave do campo aberto
+ * vazio ("objetivo.servir.outro") quando é o caso do "Outro" sem o "Qual?",
+ * ou o próprio id da pergunta. É o alvo do foco da trava, dos links do
+ * Revisar e da lista do envio sem JavaScript recusado.
+ */
+export function chaveDoQueFalta(id: string, respostas: unknown, ctx: Contexto): string {
+  const p = perguntaPorId(id);
+  const opcao = p ? abertaVazia(p, respostas, ctx) : null;
+  return opcao ? chaveAberta(id, opcao) : id;
+}
+
+/** A chave é a de um campo aberto que o esquema conhece ("pergunta.opcao")? */
+export function ehChaveAberta(chave: string): boolean {
+  const i = chave.lastIndexOf(".");
+  if (i <= 0) return false;
+  const p = perguntaPorId(chave.slice(0, i));
+  const opcao = chave.slice(i + 1);
+  return !!p?.opcoes?.some((o) => o.abre && o.id === opcao);
+}
+
+/**
+ * As obrigatórias em branco de UMA etapa: é a trava do Continuar e do
+ * Revisar (pedido de 26/09/2026, "proíba de avançar caso o cliente
+ * não responda as opções obrigatórias"). A régua é a mesma do Revisar e do
+ * servidor, `obrigatoriasEmBranco`, recortada pela etapa, e por isso valem as
+ * mesmas quatro coisas: "Não sei" conta como resposta, a condicional só conta
+ * quando aparece, a opção travada do pacote conta como marcada, e "Outro"
+ * marcado sem o "Qual?" conta como em branco.
+ */
+export function obrigatoriasEmBrancoDaEtapa(etapaId: string, respostas: unknown, ctx: Contexto): string[] {
+  const etapa = ETAPAS.find((e) => e.id === etapaId);
+  if (!etapa) return [];
+  const daEtapa = new Set(etapa.perguntas.map((p) => p.id));
+  return obrigatoriasEmBranco(respostas, ctx).filter((id) => daEtapa.has(id));
+}
+
+/* As perguntas que uma condição cita, em qualquer profundidade. */
+function perguntasCitadas(c: Condicao): string[] {
+  if ("todas" in c) return c.todas.flatMap(perguntasCitadas);
+  if ("alguma" in c) return c.alguma.flatMap(perguntasCitadas);
+  return [c.pergunta];
+}
+
+/**
+ * As obrigatórias que só aparecem conforme a resposta de `id`, em cadeia
+ * (passando também por condicional que não é obrigatória), na ordem do
+ * questionário. É para a lista do envio sem JavaScript recusado: ali as
+ * obrigatórias que faltam vêm do rascunho, e as que a resposta vai ABRIR
+ * ainda não contam. Sem avisar, quem respondia "Vocês têm fotos?" voltava
+ * recusado uma segunda vez, agora por "Quem fez as fotos?" (revisão de
+ * 26/09/2026, 16 de 16 combinações).
+ */
+export function obrigatoriasQueDependemDe(id: string): string[] {
+  const vistas = new Set([id]);
+  const fila = [id];
+  while (fila.length) {
+    const atual = fila.shift() as string;
+    for (const p of PERGUNTAS) {
+      if (vistas.has(p.id) || !p.mostrarSe || !perguntasCitadas(p.mostrarSe).includes(atual)) continue;
+      vistas.add(p.id);
+      fila.push(p.id);
+    }
+  }
+  return PERGUNTAS.filter((p) => p.id !== id && vistas.has(p.id) && p.obrigatoria && !p.obsoleta).map((p) => p.id);
 }
 
 /* ---------- Saneamento ---------- */
@@ -775,6 +878,45 @@ export function valorInicial(p: Pergunta, ctx: Contexto, inicial: unknown): Valo
   if (bruto === null) return null;
   const r = sanearCampo(p.id, bruto, ctx);
   return "valor" in r ? r.valor : null;
+}
+
+/**
+ * O pré-preenchimento que o HTML do SERVIDOR pode trazer, para a página
+ * funcionar sem JavaScript (26/09/2026: com a trava, o nome da empresa, que
+ * sem JavaScript nascia vazio, passou a obrigar a digitar o que o cadastro
+ * já sabe).
+ *
+ * **Só o que vem do CONTEXTO do link**, que já está na página: o nome da
+ * empresa (`ctx.empresa`, que a abertura mostra no topo) e os idiomas do site
+ * (`ctx.idiomas_site`). Nenhum dado de `inicial` entra aqui: e-mail,
+ * telefone, CNPJ, responsável, Instagram, site e cidade chegam só pelo `GET`
+ * da API, que só o JavaScript faz, e assim não ficam no HTML que a prévia de
+ * link do WhatsApp busca (ver o comentário da `pagina.tsx`).
+ *
+ * O valor passa pelo mesmo saneamento do resto; devolve null quando a
+ * pergunta não pré-preenche do contexto ou o contexto não tem o dado.
+ */
+export function valorDoContexto(p: Pergunta, ctx: Contexto): ValorResposta | null {
+  if (p.obsoleta || !cabeNoContexto(p, ctx)) return null;
+  const bruto = p.prefill === "empresa" ? ctx.empresa : p.prefill === "idiomas_site" ? ctx.idiomas_site : null;
+  if (bruto === null) return null;
+  const r = sanearCampo(p.id, bruto, ctx);
+  if (!("valor" in r) || r.valor === null) return null;
+  return Array.isArray(r.valor) && r.valor.length === 0 ? null : r.valor;
+}
+
+/**
+ * As perguntas que o HTML do servidor pode trazer preenchidas com
+ * `valorDoContexto`, dado o rascunho: só as que o rascunho NÃO tem e que
+ * aparecem com ele. É o mesmo critério do pré-preenchimento com JavaScript,
+ * e é o que protege o envio sem JavaScript: ali campo com valor é enviado e
+ * vence o rascunho, então o nome que o cliente já corrigiu (chave presente
+ * no rascunho) nunca volta a nascer com o valor do cadastro por cima.
+ */
+export function prefillDoServidor(respostas: unknown, ctx: Contexto): string[] {
+  return PERGUNTAS.filter(
+    (p) => ler(respostas, p.id) === undefined && valorDoContexto(p, ctx) !== null && visivel(p, respostas, ctx),
+  ).map((p) => p.id);
 }
 
 /* ---------- Leitura ---------- */

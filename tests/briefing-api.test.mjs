@@ -26,7 +26,10 @@ workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}-briefing`);
 const { default: worker } = await import(workerUrl.href);
 
 const { CABECALHO_BRIEFING, codificarCabecalho } = await import(new URL("../app/briefing/contexto.ts", import.meta.url).href);
-const { PERGUNTAS } = await import(new URL("../app/briefing/nucleo.ts", import.meta.url).href);
+const { PERGUNTAS, condicaoParaQuemResponde, normalizarContexto, obrigatoriasEmBranco, opcoesDisponiveis, perguntaPorId, textoDaPergunta } = await import(
+  new URL("../app/briefing/nucleo.ts", import.meta.url).href
+);
+const { TEXTOS } = await import(new URL("../app/briefing/textos.ts", import.meta.url).href);
 const { VERSAO } = await import(new URL("../app/briefing/perguntas.ts", import.meta.url).href);
 
 const ORIGEM = "https://varanda-estudio-web.test";
@@ -182,6 +185,29 @@ function criarPainel() {
     },
   };
   return painel;
+}
+
+/**
+ * Todas as obrigatórias respondidas, pela régua do próprio núcleo (as
+ * condicionais que a resposta abre entram na volta seguinte).
+ *
+ * Desde 26/09/2026 o envio final recusa obrigatória visível em branco. Os
+ * testes que medem OUTRA coisa no envio (junção, leitura, conflito, 503)
+ * partem deste rascunho, para a recusa não esconder o que eles medem.
+ */
+function obrigatoriasRespondidas(contexto = CONTEXTO) {
+  const c = normalizarContexto(contexto);
+  const respostas = {};
+  for (let volta = 0; volta < 5; volta++) {
+    const faltam = obrigatoriasEmBranco(respostas, c);
+    if (faltam.length === 0) return respostas;
+    for (const id of faltam) {
+      const p = perguntaPorId(id);
+      const concreta = opcoesDisponiveis(p, c).find((o) => !o.exclusiva && o.id !== "nao_sei");
+      respostas[id] = p.tipo === "unica" ? concreta.id : p.tipo === "multipla" ? [concreta.id] : "Resposta de teste";
+    }
+  }
+  throw new Error("as obrigatórias não fecharam em cinco voltas");
 }
 
 function ambiente(painel) {
@@ -747,10 +773,56 @@ test("api: 422 para texto acima do limite e telefone inválido, sem cortar nada"
   assert.equal(painel.chamadas.filter((c) => c.metodo === "salvar").length, 0, "nada é gravado cortado");
 });
 
+/* Mutações vistas falhando (26/09/2026): o `if (final)` da recusa tirado de
+   `gravarJson` (o POST parcial passa, 200); a condição trocada por
+   `!final` (o PUT parcial passa a dar 422, e caem junto os testes que gravam
+   rascunho parcial). */
+test("api: o envio final recusa obrigatória visível em branco com 422 e a lista; o rascunho aceita resposta parcial", async () => {
+  const painel = criarPainel();
+  const env = ambiente(painel);
+  const salvos = () => painel.chamadas.filter((c) => c.metodo === "salvar");
+
+  /* O rascunho parcial passa: é assim que se para no meio e volta depois. */
+  const put = await api(env, "PUT", { k: K.aberto, corpo: { respostas: { "empresa.nome": "Exemplo Varanda" }, revisao_base: 0 } });
+  assert.equal(put.status, 200, "PUT parcial foi recusado");
+  assert.equal(salvos().length, 1);
+
+  /* O envio parcial, não: 422 com as obrigatórias em branco, na ordem do
+     formulário, e nada chega ao painel. */
+  const parcial = await api(env, "POST", { k: K.aberto, corpo: { respostas: { "empresa.nome": "Exemplo Varanda" }, revisao_base: 1 } });
+  assert.equal(parcial.status, 422);
+  assert.deepEqual(await parcial.json(), {
+    erro: "faltam",
+    ids: ["empresa.o_que_faz", "empresa.como_compra", "aprovacao.responsavel", "objetivo.servir", "objetivo.acao", "oferta.itens", "fotos.tem"],
+  });
+  assert.equal(salvos().length, 1, "envio recusado chegou ao painel");
+
+  /* A condicional só conta quando aparece: com fotos, as duas perguntas das
+     fotos passam a faltar; e "Não sei" é resposta. */
+  const base = obrigatoriasRespondidas();
+  const comFoto = { ...base, "fotos.tem": "algumas" };
+  delete comFoto["fotos.autor"];
+  delete comFoto["fotos.pessoas"];
+  const semAutor = await api(env, "POST", { k: K.aberto, corpo: { respostas: comFoto, revisao_base: 1 } });
+  assert.equal(semAutor.status, 422);
+  assert.deepEqual((await semAutor.json()).ids, ["fotos.autor", "fotos.pessoas"]);
+  const semFoto = { ...comFoto, "fotos.tem": "nenhuma" };
+  const naoSei = { ...comFoto, "fotos.autor": ["nao_sei"], "fotos.pessoas": "nao_sei" };
+  for (const [nome, respostas] of [["sem foto, as condicionais não contam", semFoto], ["'Não sei' conta como resposta", naoSei]]) {
+    const painelDeCada = criarPainel();
+    const resposta = await api(ambiente(painelDeCada), "POST", { k: K.aberto, corpo: { respostas, revisao_base: 0 } });
+    assert.equal(resposta.status, 200, nome);
+    assert.equal(painelDeCada.linhas.get(K.aberto).estado, "enviado", nome);
+  }
+});
+
 test("api: PUT grava rascunho e POST envia, com a resposta saneada e a leitura completa", async () => {
   const painel = criarPainel();
   const env = ambiente(painel);
+  /* As obrigatórias vão respondidas porque o POST é envio final (ver
+     `obrigatoriasRespondidas`); o que este teste confere são as chaves abaixo. */
   const respostas = {
+    ...obrigatoriasRespondidas(),
     "empresa.nome": "  Exemplo Varanda  ",
     "empresa.como_compra": ["vem", "orcamento", "inventada"],
     "chave.que.nao.existe": "some",
@@ -819,7 +891,10 @@ test("api: 503 com Retry-After quando o painel cai, responde fora do contrato ou
     else painel.falhar = caso;
     const metodos = caso === "salvar" ? ["PUT", "POST"] : ["GET", "PUT", "POST"];
     for (const metodo of metodos) {
-      const resposta = await calando(() => api(env, metodo, { k: K.aberto, corpo: metodo === "GET" ? undefined : { respostas: {}, revisao_base: 0 } }));
+      /* Com as obrigatórias respondidas: senão o POST pararia no 422 antes
+         de chegar ao painel que caiu. */
+      const corpo = metodo === "GET" ? undefined : { respostas: obrigatoriasRespondidas(), revisao_base: 0 };
+      const resposta = await calando(() => api(env, metodo, { k: K.aberto, corpo }));
       assert.equal(resposta.status, 503, `${caso} ${metodo}`);
       assert.equal(resposta.headers.get("retry-after"), "300", `${caso} ${metodo}: Retry-After`);
       assert.deepEqual(await resposta.json(), { erro: "indisponivel" });
@@ -840,7 +915,8 @@ const NATIVO = { origin: "null", "sec-fetch-site": "same-origin" };
 test("sem JavaScript: múltipla repetida, campo vazio que não apaga, envio final e 303 para a página do idioma", async () => {
   const painel = criarPainel();
   const env = ambiente(painel);
-  painel.linhas.get(K.aberto).respostas = { "empresa.nome": "Exemplo Varanda", "empresa.desde": "1998", _etapa: 4 };
+  /* O rascunho já tem as outras obrigatórias: aqui o assunto é a junção. */
+  painel.linhas.get(K.aberto).respostas = { ...obrigatoriasRespondidas(), "empresa.nome": "Exemplo Varanda", "empresa.desde": "1998", _etapa: 4 };
   painel.linhas.get(K.aberto).revisao = 3;
 
   const corpo = new URLSearchParams();
@@ -876,7 +952,7 @@ test("sem JavaScript: múltipla repetida, campo vazio que não apaga, envio fina
 test("sem JavaScript: a leitura enviada tem todas as perguntas, montada sobre o rascunho juntado", async () => {
   const painel = criarPainel();
   const env = ambiente(painel);
-  painel.linhas.get(K.aberto).respostas = { "empresa.nome": "Exemplo Varanda" };
+  painel.linhas.get(K.aberto).respostas = { ...obrigatoriasRespondidas(), "empresa.nome": "Exemplo Varanda" };
   const resposta = await api(env, "POST", { k: K.aberto, corpo: "objetivo.servir=orcamento&objetivo.servir=google", tipo: FORM, headers: NATIVO });
   assert.equal(resposta.status, 303);
   assert.equal(resposta.headers.get("location"), `/briefing?chave=${K.aberto}&enviado=1`, "sem ?idioma=, volta para o idioma do link");
@@ -894,9 +970,10 @@ test("sem JavaScript: a leitura enviada tem todas as perguntas, montada sobre o 
 test("sem JavaScript: se outro aparelho grava no meio, junta de novo sobre a versão nova", async () => {
   const painel = criarPainel();
   const env = ambiente(painel);
+  painel.linhas.get(K.aberto).respostas = obrigatoriasRespondidas();
   painel.antesDeSalvar = (l) => {
     l.revisao = 9;
-    l.respostas = { "empresa.desde": "2001" };
+    l.respostas = { ...l.respostas, "empresa.desde": "2001" };
   };
   const resposta = await api(env, "POST", { k: K.aberto, corpo: "empresa.nome=Exemplo%20Varanda", tipo: FORM, headers: NATIVO });
   assert.equal(resposta.status, 303);
@@ -906,6 +983,205 @@ test("sem JavaScript: se outro aparelho grava no meio, junta de novo sobre a ver
   assert.equal(salvos[1].respostas["empresa.desde"], "2001", "o que o outro aparelho gravou sumiu");
   assert.equal(salvos[1].respostas["empresa.nome"], "Exemplo Varanda");
   assert.equal(painel.linhas.get(K.aberto).estado, "enviado");
+});
+
+/* Mutações vistas falhando (26/09/2026): o `final` calculado trocado por
+   `true` em `enviarSemJavaScript` (o parcial é enviado e vai ao recebido);
+   o `?faltam=1` ignorado em `atenderPagina` (a página volta sem a lista);
+   a lista tirada do `Formulario` (o aviso some do HTML). */
+test("sem JavaScript: obrigatória em branco não envia, guarda o que chegou como rascunho e volta à página com a lista", async () => {
+  const painel = criarPainel();
+  const env = ambiente(painel);
+  painel.linhas.get(K.aberto).respostas = { "empresa.desde": "1998" };
+
+  const resposta = await api(env, "POST", {
+    k: K.aberto,
+    corpo: "empresa.nome=Exemplo%20Varanda&empresa.o_que_faz=&objetivo.servir=orcamento",
+    tipo: FORM,
+    headers: NATIVO,
+    idioma: "es",
+  });
+  assert.equal(resposta.status, 303, "a recusa sem JavaScript tem de ser página, e não JSON");
+  assert.equal(resposta.headers.get("location"), `/es/briefing?chave=${K.aberto}&faltam=1`);
+
+  /* Nada se perde: o que chegou foi gravado, juntado com o rascunho, como
+     RASCUNHO, e o briefing continua aberto. */
+  const salvos = painel.chamadas.filter((c) => c.metodo === "salvar").map((c) => c.dados);
+  assert.equal(salvos.length, 1);
+  assert.equal(salvos[0].final, false, "envio com obrigatória em branco foi como final");
+  assert.equal(salvos[0].respostas["empresa.nome"], "Exemplo Varanda");
+  assert.equal(salvos[0].respostas["empresa.desde"], "1998", "o rascunho que já estava salvo sumiu");
+  assert.deepEqual(salvos[0].respostas["objetivo.servir"], ["orcamento"]);
+  assert.equal(painel.linhas.get(K.aberto).estado, "aberto");
+
+  /* A volta: o formulário no idioma da página, com o aviso e um link para
+     cada obrigatória que falta, e sem as que já foram respondidas. */
+  const pagina = await pedir(env, resposta.headers.get("location"));
+  assert.equal(pagina.status, 200);
+  const html = await pagina.text();
+  assert.deepEqual(marcadorDe(html), { estado: "aberto", tela: "formulario" });
+  const semScripts = html.replace(/<script\b[\s\S]*?<\/script>/g, "");
+  const inicio = semScripts.indexOf('class="bf-faltam bf-faltam-semjs"');
+  assert.ok(inicio > 0, "a página não mostra o aviso do que falta");
+  const aviso = semScripts.slice(inicio, semScripts.indexOf("</section>", inicio));
+  const t = TEXTOS.es;
+  assert.ok(aviso.includes(t.faltamTitulo), "o título do aviso não está em espanhol");
+  assert.ok(aviso.includes(t.faltamSemJs.replace(/'/g, "&#x27;")), "o texto do aviso não está em espanhol");
+  /* As obrigatórias em branco do rascunho, na ordem, e depois de "Vocês têm
+     fotos?" as duas obrigatórias que a resposta dela abre, com a condição
+     escrita: sem elas, quem seguia a lista voltava recusado uma segunda vez
+     (revisão de 26/09/2026). */
+  const faltam = ["empresa.o_que_faz", "empresa.como_compra", "aprovacao.responsavel", "objetivo.acao", "oferta.itens", "fotos.tem"];
+  const abertas = ["fotos.autor", "fotos.pessoas"];
+  const esperadas = [...faltam, ...abertas];
+  const links = [...aviso.matchAll(/<a href="#([^"]+)">([\s\S]*?)<\/a>/g)].map((m) => [m[1], m[2]]);
+  const ctxEs = normalizarContexto(CONTEXTO);
+  const decodificar = (x) => x.replace(/<[^>]+>/g, "").replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, "&");
+  /* O link da pergunta de TEXTO vai para o bloco dela, com o título, e não
+     para a caixa: com o id na caixa, o salto deixava o título embaixo da
+     barra presa. Na de escolha o id do campo já é o do fieldset. */
+  const alvo = (id) => {
+    const base = `c-${id.replace(/[^a-z0-9_]/gi, "-")}`;
+    return ["unica", "multipla"].includes(perguntaPorId(id).tipo) ? base : `${base}-bloco`;
+  };
+  assert.deepEqual(
+    links.map(([href]) => href),
+    esperadas.map(alvo),
+    "os links não são os das obrigatórias em branco, na ordem, seguidas das que a resposta abre",
+  );
+  for (const [i, [, conteudo]] of links.entries()) {
+    const esperado = textoDaPergunta(perguntaPorId(esperadas[i]), ctxEs, "es").rotulo;
+    const texto = decodificar(conteudo);
+    if (i < faltam.length) assert.equal(texto, esperado);
+    else {
+      const condicao = condicaoParaQuemResponde(perguntaPorId(esperadas[i]), ctxEs, "es");
+      assert.ok(condicao, `${esperadas[i]} deveria ter condição`);
+      assert.equal(texto, `${esperado} (${condicao})`, `${esperadas[i]} sem a condição escrita`);
+    }
+  }
+  /* Cada link leva a um elemento que existe na página, e o de texto leva ao
+     bloco que CONTÉM o título da pergunta. */
+  for (const [href] of links) assert.ok(semScripts.includes(`id="${href}"`), `o link #${href} não leva a lugar nenhum`);
+  const bloco = semScripts.match(/<div class="bf-pergunta campo[^"]*"[^>]*id="c-empresa-o_que_faz-bloco"[^>]*>([\s\S]*?)<\/label>/);
+  assert.ok(bloco && bloco[1].includes('class="bf-rotulo"'), "o bloco da pergunta de texto não tem o título dentro");
+
+  /* Sem o pedido, nada de aviso; e com o rascunho completo, também não. */
+  const normal = await (await pedir(env, `/es/briefing?chave=${K.aberto}`)).text();
+  assert.ok(!normal.includes("bf-faltam-semjs"), "o aviso aparece sem ter havido recusa");
+  painel.linhas.get(K.aberto).respostas = obrigatoriasRespondidas();
+  const completo = await (await pedir(env, `/es/briefing?chave=${K.aberto}&faltam=1`)).text();
+  assert.ok(!completo.includes("bf-faltam-semjs"), "o aviso aparece com o rascunho completo");
+  assert.ok(!aviso.includes(t.faltamSemJsReenvio.replace(/'/g, "&#x27;")), "quem nunca enviou lê o aviso de reenvio");
+});
+
+/* Mutação vista falhando (26/09/2026): `jaEnviado` fixo em `false` na
+   `pagina.tsx` (a página volta dizendo "ainda não recebi" a quem já tinha
+   enviado). */
+test("sem JavaScript: quem já tinha enviado e reenvia com obrigatória em branco não lê que nada chegou", async () => {
+  const painel = criarPainel();
+  const env = ambiente(painel);
+  const resposta = await api(env, "POST", { k: K.enviado, corpo: "empresa.desde=1990", tipo: FORM, headers: NATIVO });
+  assert.equal(resposta.status, 303);
+  assert.equal(resposta.headers.get("location"), `/briefing?chave=${K.enviado}&faltam=1`);
+  assert.equal(painel.linhas.get(K.enviado).estado, "enviado", "o envio anterior deixou de valer");
+  const html = (await (await pedir(env, resposta.headers.get("location"))).text()).replace(/<script\b[\s\S]*?<\/script>/g, "");
+  const inicio = html.indexOf('class="bf-faltam bf-faltam-semjs"');
+  assert.ok(inicio > 0, "a página não mostra o aviso do que falta");
+  const aviso = html.slice(inicio, html.indexOf("</section>", inicio));
+  assert.ok(aviso.includes(TEXTOS.pt.faltamSemJsReenvio), "o aviso não diz que o envio anterior continua valendo");
+  assert.ok(!aviso.includes(TEXTOS.pt.faltamSemJs), "o aviso diz a quem já enviou que nada chegou");
+});
+
+/* "Outro" sem o "Qual?" numa obrigatória (26/09/2026). Mutações vistas
+   falhando: a cláusula do campo aberto tirada de `obrigatoriasEmBranco`
+   (o envio passa, 200 e 303 para o recebido); o `chaveDoQueFalta` tirado
+   do `atenderPagina` (o link da lista vai para as opções e não para o
+   campo); o filtro de `lerCabecalho` sem `ehChaveAberta` (o item some da
+   lista); o id `-bloco` tirado do campo aberto (o link não leva a nada). */
+test("api e sem JavaScript: 'Outro' sem o 'Qual?' numa obrigatória não envia, e a lista leva ao campo aberto", async () => {
+  const painel = criarPainel();
+  const env = ambiente(painel);
+  const base = obrigatoriasRespondidas();
+
+  /* Com JavaScript (a rede do Revisar): 422 com a pergunta na lista. */
+  const semQual = await api(env, "POST", { k: K.aberto, corpo: { respostas: { ...base, "objetivo.servir": ["whatsapp", "outro"] }, revisao_base: 0 } });
+  assert.equal(semQual.status, 422);
+  assert.deepEqual(await semQual.json(), { erro: "faltam", ids: ["objetivo.servir"] });
+  const comQual = await api(ambiente(criarPainel()), "POST", {
+    k: K.aberto,
+    corpo: { respostas: { ...base, "objetivo.servir": ["whatsapp", "outro"], "objetivo.servir.outro": "Vender na feira" }, revisao_base: 0 },
+  });
+  assert.equal(comQual.status, 200, "com o 'Qual?' escrito o envio foi recusado");
+  /* Não obrigatória com "Outro" vazio continua enviando. */
+  const naoObrigatoria = await api(ambiente(criarPainel()), "POST", { k: K.aberto, corpo: { respostas: { ...base, "objetivo.canais_hoje": ["outro"] }, revisao_base: 0 } });
+  assert.equal(naoObrigatoria.status, 200, "pergunta não obrigatória com 'Outro' vazio barrou o envio");
+
+  /* Sem JavaScript: o rascunho tem o resto, o envio marca "Outro" e deixa o
+     "Qual?" vazio. Vai como rascunho e volta com a lista. */
+  painel.linhas.get(K.aberto).respostas = { ...base };
+  const resposta = await api(env, "POST", { k: K.aberto, corpo: "objetivo.servir=outro&objetivo.servir.outro=", tipo: FORM, headers: NATIVO });
+  assert.equal(resposta.status, 303);
+  assert.equal(resposta.headers.get("location"), `/briefing?chave=${K.aberto}&faltam=1`);
+  assert.equal(painel.linhas.get(K.aberto).estado, "aberto", "o envio com 'Outro' vazio foi como final");
+
+  const html = (await (await pedir(env, resposta.headers.get("location"))).text()).replace(/<script\b[\s\S]*?<\/script>/g, "");
+  const inicio = html.indexOf('class="bf-faltam bf-faltam-semjs"');
+  assert.ok(inicio > 0, "a página não mostra o aviso do que falta");
+  const aviso = html.slice(inicio, html.indexOf("</section>", inicio));
+  const links = [...aviso.matchAll(/<a href="#([^"]+)">([\s\S]*?)<\/a>/g)].map((m) => [m[1], m[2].replace(/<[^>]+>/g, "").replace(/&quot;/g, '"')]);
+  assert.deepEqual(links.map(([href]) => href), ["c-objetivo-servir-outro-bloco"], "o link não leva ao campo aberto");
+  const c = normalizarContexto(CONTEXTO);
+  const rotulo = textoDaPergunta(perguntaPorId("objetivo.servir"), c, "pt").rotulo;
+  assert.equal(links[0][1], `${rotulo} (${TEXTOS.pt.faltaQual("Outro")})`, "a linha não diz o que falta");
+  /* O alvo existe e é o bloco que contém o rótulo e o campo do "Qual?". */
+  const bloco = html.match(/<div class="bf-abre campo[^"]*" id="c-objetivo-servir-outro-bloco">([\s\S]*?)<\/div>/);
+  assert.ok(bloco, "o bloco do campo aberto não tem o id do link");
+  assert.ok(bloco[1].includes('class="bf-rotulo-abre"') && bloco[1].includes('name="objetivo.servir.outro"'), "o bloco não tem o rótulo e o campo");
+});
+
+/* O nome da empresa sem JavaScript (26/09/2026): com a trava, o campo que
+   nascia vazio obrigava a digitar o que o cadastro já sabe. Mutações vistas
+   falhando: `prefillSemJs` tirado da `pagina.tsx` (o campo volta a nascer
+   vazio); o `ler(...) === undefined` tirado de `prefillDoServidor` (o nome
+   corrigido no rascunho volta a nascer com o do contexto por cima, e o
+   envio sem JavaScript o apagaria); a semente tirada da `Loja` (o HTML
+   deixa de trazer o valor). */
+test("sem JavaScript: o nome da empresa nasce com o do contexto quando o rascunho não tem, nunca por cima do rascunho, e nada do cadastro vai junto", async () => {
+  const painel = criarPainel();
+  const env = ambiente(painel);
+  const campo = (html, nome) => html.match(new RegExp(`<input[^>]*name="${nome.replace(".", "\\.")}"[^>]*>`))?.[0] ?? null;
+  /* O React escreve `checked` antes de `value`: a tag é lida inteira. */
+  const marcado = (html, nome, valor) =>
+    [...html.matchAll(/<input\b[^>]*>/g)].some(([tag]) => tag.includes(`name="${nome}"`) && tag.includes(`value="${valor}"`) && /\schecked(=""|[\s/>])/.test(tag));
+
+  /* Rascunho sem o nome: nasce com o do contexto, e os idiomas do link marcados.
+     O cadastro com valores que não existem em texto nenhum da página ("Santo
+     André" é exemplo de uma pergunta), para a busca abaixo não achar por
+     coincidência. */
+  const cadastro = { ...INICIAL, responsavel: "Fulana Cadastrada", email: "cadastro@inventado.test", telefone: "11 97777-1234", cnpj: "12.345.678/0001-90", instagram: "@perfilinventado", site: "https://site-inventado.test", cidade: "Cidade Inventada" };
+  painel.linhas.get(K.aberto).inicial = cadastro;
+  painel.linhas.get(K.aberto).respostas = { "empresa.desde": "1998" };
+  const html = await (await pedir(env, `/briefing?chave=${K.aberto}`)).text();
+  const semScripts = html.replace(/<script\b[\s\S]*?<\/script>/g, "");
+  assert.match(campo(semScripts, "empresa.nome") ?? "", /value="Exemplo Varanda"/, "o nome da empresa não nasce preenchido no HTML");
+  assert.ok(marcado(semScripts, "conteudo.idiomas", "pt_br"), "os idiomas do link não nascem marcados");
+  /* Nada de `inicial`, em lugar nenhum do documento (nem no payload). */
+  for (const valor of [cadastro.responsavel, cadastro.email, cadastro.telefone, cadastro.cnpj, cadastro.instagram, cadastro.site, cadastro.cidade]) {
+    assert.ok(!html.includes(valor), `"${valor}" do cadastro no HTML`);
+  }
+
+  /* E o envio sem JavaScript da página como ela veio leva o nome. */
+  const envio = await api(env, "POST", { k: K.aberto, corpo: "empresa.nome=Exemplo%20Varanda&conteudo.idiomas=pt_br", tipo: FORM, headers: NATIVO });
+  assert.equal(envio.status, 303);
+  assert.equal(painel.linhas.get(K.aberto).respostas["empresa.nome"], "Exemplo Varanda");
+  assert.ok(!obrigatoriasEmBranco(painel.linhas.get(K.aberto).respostas, normalizarContexto(CONTEXTO)).includes("empresa.nome"), "o nome continua faltando");
+
+  /* Rascunho com o nome corrigido: o campo nasce vazio ("não mexi"), e nem
+     o do contexto nem o do rascunho vão para o valor do campo. */
+  painel.linhas.get(K.aberto).respostas = { "empresa.nome": "Exemplo Varanda Ltda", "conteudo.idiomas": ["en"] };
+  const corrigido = (await (await pedir(env, `/briefing?chave=${K.aberto}`)).text()).replace(/<script\b[\s\S]*?<\/script>/g, "");
+  assert.doesNotMatch(campo(corrigido, "empresa.nome") ?? "", /value="[^"]/, "o nome nasce por cima do que o rascunho tem");
+  assert.ok(!marcado(corrigido, "conteudo.idiomas", "pt_br"), "os idiomas nascem por cima do que o rascunho tem");
 });
 
 test("sem JavaScript: os erros seguem o mesmo contrato da API", async () => {

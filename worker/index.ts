@@ -14,6 +14,9 @@ import {
   montarLeitura,
   normalizarContexto,
   normalizarInicial,
+  chaveDoQueFalta,
+  obrigatoriasEmBranco,
+  prefillDoServidor,
   sanear,
   sanearUrlencoded,
   type Contexto,
@@ -506,20 +509,38 @@ async function atenderPagina(request: Request, url: URL, locale: Locale, env: En
         env,
         ctx,
       );
-    default:
+    default: {
+      const contexto = normalizarContexto(aberto.contexto);
+      const rascunho = comoObjeto(aberto.respostas);
+      /* A volta do envio sem JavaScript recusado (ver `enviarSemJavaScript`).
+         A lista sai do rascunho que o painel acabou de devolver, com a mesma
+         régua do envio; o `?faltam=1` só pede para mostrar, e quem monta a
+         URL à mão vê no máximo a verdade sobre o próprio rascunho. O "Outro"
+         sem o "Qual?" vai como a chave do campo aberto, para o link levar a
+         ele e não às opções. */
+      const faltam =
+        url.searchParams.get("faltam") === "1" ? obrigatoriasEmBranco(rascunho, contexto).map((id) => chaveDoQueFalta(id, rascunho, contexto)) : null;
+      /* O que o HTML pode trazer preenchido do contexto (o nome da empresa):
+         só as perguntas que o rascunho ainda não tem. Com a chave no
+         rascunho o campo nasce vazio, que no envio sem JavaScript quer dizer
+         "não mexi", e o valor salvo fica. */
+      const prefill = prefillDoServidor(rascunho, contexto);
       return renderizarComEstado(
         request,
         {
           estado: aberto.estado as "aberto" | "enviado",
           chave,
-          contexto: normalizarContexto(aberto.contexto),
+          contexto,
           inicial: normalizarInicial(aberto.inicial),
           enviado_em: textoOuNulo(aberto.enviado_em),
+          ...(faltam?.length ? { faltam } : {}),
+          ...(prefill.length ? { prefill } : {}),
         },
         200,
         env,
         ctx,
       );
+    }
   }
 }
 
@@ -719,6 +740,16 @@ async function gravarJson(env: Env, chave: string, texto: string, final: boolean
   const saneado = sanear(corpo.respostas, contexto);
   if ("erro" in saneado) return erroDeSaneamento(saneado);
 
+  /* O envio final não sai com obrigatória visível em branco (26/09/2026),
+     pela mesma régua do Revisar e da trava de cada etapa. O rascunho (PUT)
+     continua aceitando resposta parcial: é assim que se para no meio e volta
+     depois. Com JavaScript isto é rede, porque o Revisar já trava o Enviar;
+     o formulário leva a lista para lá. */
+  if (final) {
+    const ids = obrigatoriasEmBranco(saneado.respostas, contexto);
+    if (ids.length) return respostaJson(422, { erro: "faltam", ids });
+  }
+
   const leitura = montarLeitura(saneado.respostas, contexto, aberto.inicial, idiomaDaPagina(url, contexto));
   /* Os dois tetos do painel, medidos aqui antes da chamada: sem isso o painel
      recusaria depois do clique em Enviar. */
@@ -766,14 +797,22 @@ async function enviarSemJavaScript(env: Env, chave: string, texto: string, url: 
     const leitura = montarLeitura(respostas, contexto, aberto.inicial, locale);
     if (excedeTeto(respostas, leitura)) return respostaJson(413, { erro: "tamanho" });
 
-    const resultado = await salvarNoPainel(env, chave, { respostas, leitura, versao: VERSAO, final: true, revisao_base: revisao });
+    /* Obrigatória em branco DEPOIS de juntar com o rascunho (o que já estava
+       salvo conta): o envio é recusado, mas o que chegou não se perde. Vai
+       como RASCUNHO, e o 303 volta para a página com `?faltam=1`, que
+       mostra a lista do que falta no idioma da página, com um link para cada
+       pergunta. Antes disto, erro sem JavaScript era JSON cru numa página em
+       branco; o `required` nativo foi considerado e recusado (ver o
+       comentário do `<form>` em `formulario.tsx`). */
+    const final = obrigatoriasEmBranco(respostas, contexto).length === 0;
+    const resultado = await salvarNoPainel(env, chave, { respostas, leitura, versao: VERSAO, final, revisao_base: revisao });
     if (resultado?.ok === true) {
       /* 303 para a página, que troca o POST por GET: recarregar a tela de
          recebido não reenvia. A tela sai do `enviado_em` do servidor; o
          `enviado=1` sozinho não mostra nada (ver `decidirTela`). */
       return new Response(null, {
         status: 303,
-        headers: { Location: `${enderecoDaPagina(locale)}?chave=${chave}&enviado=1` },
+        headers: { Location: `${enderecoDaPagina(locale)}?chave=${chave}&${final ? "enviado" : "faltam"}=1` },
       });
     }
     if (resultado?.motivo === "conflito" && typeof resultado.revisao === "number" && Number.isInteger(resultado.revisao)) {

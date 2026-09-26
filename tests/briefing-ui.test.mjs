@@ -20,11 +20,15 @@ import { readFile } from "node:fs/promises";
  *   (`chavesAceitas` e `opcoesDisponiveis`), a mesma do `sanear` do Worker.
  * - As condicionais TODAS, com "(se respondeu X)": sem JavaScript não há como
  *   esconder uma pergunta conforme a resposta de outra.
- * - Nenhum valor. Nem o rascunho, nem o pré-preenchimento do cadastro: os dois
- *   chegam pelo `GET` da API, que só o JavaScript faz. Assim o envio sem
- *   JavaScript nunca manda o valor do cadastro por cima do que o cliente
- *   corrigiu, e e-mail, telefone e nome de quem recebeu o link não ficam no
- *   HTML. A única marca que nasce feita é a opção travada do Profissional.
+ * - Nenhum valor do rascunho nem do cadastro (`inicial`): os dois chegam
+ *   pelo `GET` da API, que só o JavaScript faz, e assim e-mail, telefone e
+ *   nome de quem recebeu o link não ficam no HTML. As marcas que nascem
+ *   feitas são a opção travada do Profissional e, desde 26/09/2026, o
+ *   pré-preenchimento que sai do CONTEXTO do link (o nome da empresa e os
+ *   idiomas do site), só nas perguntas que o rascunho não tem: com a chave
+ *   no rascunho o campo nasce vazio, que no envio sem JavaScript quer dizer
+ *   "não mexi", e o valor do contexto nunca vai por cima do que o cliente
+ *   corrigiu. O caso do nome é conferido em `briefing-api.test.mjs`.
  *
  * **Todo teste daqui foi visto falhando** com o código quebrado de propósito
  * (regra 9.32). A mutação de cada grupo está no comentário dele.
@@ -330,19 +334,27 @@ test("contexto: as condicionais aparecem todas, com a condição escrita para qu
   assert.match(textoVisivel(es), /\(si has respondido «/, "a condição em espanhol");
 });
 
-test("contexto: no Profissional a capacidade combinada nasce marcada e travada, e é a única marca do servidor", async () => {
+/* Desde 26/09/2026 os idiomas do site nascem marcados também (o rascunho
+   deste painel falso não os tem), e continuam sendo as duas únicas marcas. */
+test("contexto: no Profissional a capacidade combinada nasce marcada e travada, e só ela e os idiomas do contexto nascem marcados", async () => {
   for (const nome of ["profissionalBR", "profissionalES", "profissionalUS"]) {
     const { html } = await pagina(nome);
     const c = normalizarContexto(contextoDo(nome));
     const travada = opcoesTravadas(perguntaPorId("funcoes.extras"), c);
     assert.equal(travada.length, 1, `${nome}: uma capacidade travada`);
     const marcados = campos(formulario(html).miolo).filter((x) => "checked" in x.at);
+    const idiomas = opcoesDisponiveis(perguntaPorId("conteudo.idiomas"), c)
+      .map((o) => o.id)
+      .filter((id) => c.idiomas_site.includes(id));
+    assert.ok(idiomas.length > 0, `${nome}: o link não tem idioma para marcar`);
     assert.deepEqual(
-      marcados.map((x) => `${x.at.name}=${x.at.value}`),
-      [`funcoes.extras=${travada[0]}`],
-      `${nome}: só a capacidade vem marcada`,
+      marcados.map((x) => `${x.at.name}=${x.at.value}`).sort(),
+      [`funcoes.extras=${travada[0]}`, ...idiomas.map((id) => `conteudo.idiomas=${id}`)].sort(),
+      `${nome}: só a capacidade e os idiomas do link vêm marcados`,
     );
-    assert.ok("disabled" in marcados[0].at, `${nome}: a capacidade vem travada`);
+    const capacidade = marcados.find((x) => x.at.name === "funcoes.extras");
+    assert.ok("disabled" in capacidade.at, `${nome}: a capacidade vem travada`);
+    assert.ok(marcados.filter((x) => x.at.name === "conteudo.idiomas").every((x) => !("disabled" in x.at)), `${nome}: os idiomas vêm travados`);
   }
 });
 
@@ -439,7 +451,7 @@ test("texto: a abertura, o aviso sem JavaScript e o aviso do Revisar são os da 
   for (const frase of semJs) assert.ok(!/salva sozinh|já estão salvas|desde a primeira resposta/.test(frase), `sem JavaScript prometendo gravação: "${frase}"`);
   const texto = textoVisivel(html).replace(/[ \t]+/g, " ");
   for (const frase of [
-    "Eu organizo e escrevo o texto do site: aqui eu preciso da informação, não da redação. Se não souber alguma coisa, deixe em branco.",
+    "Eu organizo e escrevo o texto do site: aqui eu preciso da informação, não da redação. Se não souber alguma coisa, deixe em branco. Só as perguntas marcadas como obrigatórias precisam de resposta para seguir.",
     "política de privacidade. Nunca escreva senha aqui.",
     "Sem JavaScript, esta página não salva sozinha e não mostra o que você já salvou: o que você escrever só chega à Varanda quando você apertar Enviar, no fim. Pode enviar assim mesmo: o que ficar em branco não apaga o que você já tinha mandado.",
     "Elas servem só para fazer o site de vocês e são apagadas depois que a garantia acaba, como explica a política de privacidade.",
@@ -462,6 +474,18 @@ test("texto: a abertura, o aviso sem JavaScript e o aviso do Revisar são os da 
   /* Catalão só na Espanha. */
   assert.ok(textoVisivel((await pagina("negocioES")).html).includes("Puedes responder en castellano o en catalán."));
   assert.ok(!textoVisivel((await pagina("negocioES", "en")).html).includes("catalán"));
+  /* "Deixe em branco" sem mais nada contradizia a trava das obrigatórias
+     (26/09/2026). A frase nova usa a palavra do rótulo da tela (t.obrigatoria),
+     no plural, nos três idiomas. Mutação vista falhando: a frase antiga de
+     volta em `textos.ts`. */
+  for (const [nome, locale, frase] of [
+    ["negocioBR", "pt", "Se não souber alguma coisa, deixe em branco. Só as perguntas marcadas como obrigatórias precisam de resposta para seguir."],
+    ["negocioES", "es", "Si no sabes algo, déjalo en blanco. Solo las preguntas marcadas como obligatorias necesitan respuesta para seguir."],
+    ["negocioUS", "en", "If you don't know something, leave it blank. Only the questions marked as required need an answer before you move on."],
+  ]) {
+    assert.ok(textoVisivel((await pagina(nome, locale)).html).replace(/[ \t]+/g, " ").includes(frase), `${locale}: a abertura ainda manda deixar em branco sem ressalva`);
+    assert.ok(frase.includes(TEXTOS[locale].obrigatoria), `${locale}: a frase não usa a palavra do rótulo "${TEXTOS[locale].obrigatoria}"`);
+  }
 });
 
 test("texto: o link da política aponta para a seção do questionário, no idioma da página", async () => {
@@ -565,6 +589,127 @@ test("acessibilidade: sem hidratação, Continuar e Voltar continuam âncoras pa
   const continuar = tags(html, "a").filter((a) => a.at.class === "botao botao--acento" && /^#etapa-/.test(a.at.href ?? ""));
   assert.equal(continuar.length, 9, "um Continuar por etapa");
   assert.ok(tags(html, "a").some((a) => a.at.class === "botao botao--fantasma" && /^#etapa-/.test(a.at.href ?? "")), "Voltar como âncora");
+});
+
+/* ---------- espaço e trava ---------- */
+/* O pedido de 26/09/2026: título mais afastado das respostas, em todas as
+   perguntas, e Continuar travado com obrigatória em branco. A MEDIDA do
+   espaço é do navegador (getBoundingClientRect, Chromium e WebKit, 390 e
+   1440); o Node não desenha, então aqui fica a conta que a folha promete,
+   lida das regras e dos tokens de verdade.
+   Mutações vistas falhando: o recuo de `legend + .bf-fichas` trocado por
+   `margin-top` (é a margem que a folga do float engole, e o título volta a
+   colar); o `margin-top` da caixa de texto tirado (volta aos 8px); o recuo
+   entre perguntas de volta a --e5 (empata com o vão de dentro); a região viva
+   tirada da etapa. */
+
+/** As regras de fora de `@media`, seletor por seletor, com os tokens resolvidos. */
+async function regrasDaFolha() {
+  const base = await readFile(new URL("../app/base.css", import.meta.url), "utf8");
+  const tokens = Object.fromEntries([...base.matchAll(/(--e\d):\s*(\d+)px/g)].map((m) => [m[1], Number(m[2])]));
+  const folha = (await readFile(new URL("../app/briefing/briefing.css", import.meta.url), "utf8"))
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/@media[^{]*\{(?:[^{}]*\{[^}]*\})*[^{}]*\}/g, "");
+  const regras = new Map();
+  for (const m of folha.matchAll(/([^{}]+)\{([^}]*)\}/g)) {
+    const declaracoes = Object.fromEntries(
+      m[2]
+        .split(";")
+        .map((d) => d.split(":"))
+        .filter((d) => d.length >= 2)
+        .map(([k, ...v]) => [k.trim(), v.join(":").trim()]),
+    );
+    /* A vírgula dentro de `:is(...)` não separa seletor. */
+    for (const bruto of m[1].split(/,(?![^(]*\))/)) {
+      const seletor = bruto.trim().replace(/\s+/g, " ");
+      regras.set(seletor, { ...regras.get(seletor), ...declaracoes });
+    }
+  }
+  /* var(--eN), e calc de soma e subtração entre eles. */
+  const px = (valor) => {
+    assert.ok(valor, "a regra esperada não existe na folha");
+    const conta = valor.replace(/^calc\((.*)\)$/, "$1").replace(/var\((--e\d)\)/g, (_, t) => String(tokens[t]));
+    assert.match(conta, /^[\d\s+-]+$/, `valor fora da escala: ${valor}`);
+    return conta.split(/\s+(?=[+-])/).reduce((soma, parte) => soma + Number(parte.replace(/\s+/g, "")), 0);
+  };
+  return { regras, px, tokens };
+}
+
+test("espaço: a resposta nasce a --e5 do título ou da dica, em todos os tipos, e a pergunta seguinte fica mais longe que isso", async () => {
+  const { regras, px, tokens } = await regrasDaFolha();
+  const r = (seletor) => regras.get(seletor) ?? {};
+
+  /* Campo de texto, parágrafo, e-mail, telefone, endereço e data: grade com
+     `gap` e a caixa com margem somada. */
+  const gap = px(r(".bf-pergunta.campo").gap);
+  assert.equal(gap, tokens["--e2"], "título -> dica no campo de texto");
+  assert.equal(gap + px(r(".bf-pergunta.campo > :is(input, textarea)")["margin-top"]), tokens["--e5"], "título ou dica -> caixa de texto");
+
+  /* Escolha única e múltipla: a legend flutua e quem vem logo depois tem
+     `clear`. Ali a margem é engolida pela folga, então o espaço TEM de ser
+     recuo (padding) de quem vem depois, e não margem. */
+  assert.equal(r("fieldset.bf-pergunta > legend").float, "left");
+  assert.equal(r("fieldset.bf-pergunta > legend + *").clear, "both");
+  assert.equal(px(r("fieldset.bf-pergunta > legend + .bf-fichas")["padding-top"]), tokens["--e5"], "título -> fichas");
+  assert.equal(px(r("fieldset.bf-pergunta > legend + .bf-dica")["padding-top"]), tokens["--e2"], "título -> dica na escolha");
+  assert.equal(px(r("fieldset.bf-pergunta > .bf-dica + .bf-fichas")["margin-top"]), tokens["--e5"], "dica -> fichas");
+  for (const [seletor, decl] of regras) {
+    if (/legend \+/.test(seletor)) {
+      assert.ok(!("margin-top" in decl) && !("margin-block-start" in decl), `${seletor}: margem logo depois da legend é engolida pela folga do float`);
+    }
+  }
+
+  /* O vão entre uma pergunta e a próxima continua maior que o de dentro. */
+  assert.ok(px(r(".bf-pergunta")["padding-block"]) > tokens["--e5"], "o recuo entre perguntas empatou com o vão entre o título e a resposta");
+});
+
+/* Revisão de 26/09/2026. Mutações vistas falhando: a regra
+   `.bf-fichas + .bf-erro` tirada (a frase volta a 12 das fichas); a margem
+   de baixo da região viva tirada (a frase encosta no fio); o contorno do
+   foco do campo inválido tirado (com e sem foco a caixa fica igual); o
+   recuo fixo dos links da lista tirado (o ritmo volta a variar). */
+test("espaço: a frase de erro fica a --e2 da resposta nos dois tipos, a região viva não encosta no fio, e o foco do campo inválido se distingue", async () => {
+  const { regras, px, tokens } = await regrasDaFolha();
+  const r = (seletor) => regras.get(seletor) ?? {};
+  assert.equal(px(r(".bf-pergunta.campo").gap), tokens["--e2"], "caixa de texto -> erro");
+  assert.equal(px(r("fieldset.bf-pergunta > .bf-fichas + .bf-erro")["margin-top"]), tokens["--e2"], "fichas -> erro");
+
+  /* Da frase ao fio, o mesmo que do fio ao botão. */
+  const [cima, baixo] = (r(".bf-trava:not(:empty)")["margin-block"] ?? "").split(/\s+(?=var)/).map(px);
+  assert.equal(cima, tokens["--e5"], "resposta -> frase da trava");
+  assert.equal(baixo + px(r(".bf-navegacao")["margin-top"]), px(r(".bf-navegacao")["padding-top"]), "frase -> fio diferente de fio -> botão");
+
+  /* O campo inválido tem a borda âmbar que o foco usa: o foco dele precisa
+     de um sinal que o erro não tem. */
+  assert.match(r('.bf-pergunta [aria-invalid="true"]:focus').outline ?? "", /^2px solid var\(--acento\)$/, "foco do campo inválido sem contorno");
+
+  /* Os links da lista do que falta: recuo fixo que leva uma linha aos 44px. */
+  assert.match(r(".bf-faltam :is(a, button)")["padding-block"] ?? "", /^calc\(\(var\(--alvo-toque\) - 1lh\) \/ 2\)$/, "links da lista sem recuo fixo");
+});
+
+test("trava: cada etapa tem a região viva da contagem, vazia no servidor, e nenhum campo leva required", async () => {
+  for (const nome of ["negocioBR", "negocioES", "negocioUS"]) {
+    const { html } = await pagina(nome);
+    const limpo = semScripts(html);
+    const etapas = [...limpo.matchAll(/<section[^>]*class="bf-etapa formulario[^"]*"[^>]*>/g)].length;
+    const regioes = [...limpo.matchAll(/<p class="bf-trava bf-so-js" role="status">([\s\S]*?)<\/p>/g)].map((m) => m[1].replace(/<!--[\s\S]*?-->/g, ""));
+    assert.equal(etapas, 9, `${nome}: nove etapas`);
+    assert.equal(regioes.length, 9, `${nome}: uma região viva por etapa`);
+    for (const texto of regioes) assert.equal(texto, "", `${nome}: a região nasce vazia`);
+    /* Ver o comentário do <form>: required nativo prenderia quem está sem
+       JavaScript (rascunho que a página não mostra, condicionais todas à
+       mostra) e falharia calado numa etapa escondida pelo :target. */
+    for (const c of campos(formulario(html).miolo)) assert.ok(!("required" in c.at), `${nome}: ${c.at.name ?? c.tipo} com required`);
+  }
+  /* E os três idiomas têm a frase do erro e a contagem, com plural certo. */
+  const PLURAL = /\b(perguntas|preguntas|questions)\b/;
+  for (const locale of ["pt", "es", "en"]) {
+    const t = TEXTOS[locale];
+    assert.ok(t.erros.obrigatoria.length > 10, `${locale}: frase do erro`);
+    assert.doesNotMatch(t.faltamNaEtapa(1), PLURAL, `${locale}: singular com palavra do plural`);
+    assert.match(t.faltamNaEtapa(3), PLURAL, `${locale}: plural`);
+    assert.notEqual(t.faltamNaEtapa(2), t.faltamNaEtapa(3), `${locale}: a contagem não muda com o número`);
+  }
 });
 
 /* ---------- pacote ---------- */

@@ -22,7 +22,7 @@
  *
  * Puro, como o núcleo: roda no Worker, na página e nos testes do Node.
  */
-import { normalizarContexto, normalizarInicial } from "./nucleo.ts";
+import { ehChaveAberta, normalizarContexto, normalizarInicial, perguntaPorId } from "./nucleo.ts";
 import type { Contexto, Inicial } from "./nucleo.ts";
 import type { Locale } from "./perguntas.ts";
 
@@ -50,6 +50,22 @@ export interface DadosDaPagina {
   inicial: Inicial | null;
   /** Para a tela de recebido, que sai do estado do servidor e nunca só da URL. */
   enviado_em: string | null;
+  /**
+   * As obrigatórias em branco no rascunho, só quando a página volta de um
+   * envio sem JavaScript recusado (`?faltam=1`). O Worker calcula do que o
+   * painel guardou, e não da URL: a URL só pede para mostrar. Ausente nos
+   * outros casos. Cada item é o id da pergunta ou, no caso do "Outro" sem
+   * o "Qual?", a chave do campo aberto vazio (`chaveDoQueFalta`), que é para
+   * onde o link da lista leva.
+   */
+  faltam?: string[];
+  /**
+   * As perguntas que o HTML do servidor traz pré-preenchidas com o valor do
+   * CONTEXTO (`prefillDoServidor`): as que o rascunho não tem. Só os ids; o
+   * valor a página tira do próprio contexto, então nada que não esteja na
+   * página entra por aqui. Ausente quando não há nenhuma.
+   */
+  prefill?: string[];
 }
 
 /** A tela que a página desenha. */
@@ -126,6 +142,12 @@ export function lerCabecalho(valor: string | null | undefined): DadosDaPagina | 
     contexto: editavel || estado === "fechado" ? normalizarContexto(b.contexto) : null,
     inicial: editavel ? normalizarInicial(b.inicial) : null,
     enviado_em: typeof b.enviado_em === "string" ? b.enviado_em : null,
+    ...(editavel && Array.isArray(b.faltam)
+      ? { faltam: b.faltam.filter((id): id is string => typeof id === "string" && (perguntaPorId(id) !== undefined || ehChaveAberta(id))) }
+      : {}),
+    ...(editavel && Array.isArray(b.prefill)
+      ? { prefill: b.prefill.filter((id): id is string => typeof id === "string" && perguntaPorId(id)?.prefill !== undefined) }
+      : {}),
   };
 }
 

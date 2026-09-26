@@ -32,6 +32,7 @@ const {
   estadoDaResposta,
   etapasVisiveis,
   obrigatoriasEmBranco,
+  obrigatoriasEmBrancoDaEtapa,
   opcoesDisponiveis,
   opcoesTravadas,
   textoDaPergunta,
@@ -196,6 +197,127 @@ test("visibilidade: etapas visíveis e obrigatórias em branco", () => {
   const comFoto = obrigatoriasEmBranco({ "fotos.tem": "algumas" }, BR);
   assert.ok(comFoto.includes("fotos.autor") && comFoto.includes("fotos.pessoas"));
   assert.ok(!obrigatoriasEmBranco({ "fotos.tem": "nenhuma" }, BR).includes("fotos.autor"));
+});
+
+/* A régua da trava do Continuar (26/09/2026). O comportamento na tela (a
+   etapa não muda, o erro aparece, o foco vai para a primeira) é conferido no
+   navegador; aqui fica a decisão de QUAIS perguntas travam cada etapa.
+   Mutações vistas falhando: o recorte pela etapa tirado (a etapa 1 travaria
+   pelas obrigatórias das outras); a régua trocada por "obrigatória da etapa
+   com `valorDe === null`", sem olhar visibilidade (a condicional escondida
+   das fotos passa a travar). */
+test("trava: cada etapa trava só pelas próprias obrigatórias em branco e visíveis", () => {
+  assert.deepEqual(obrigatoriasEmBrancoDaEtapa("empresa", {}, BR), ["empresa.nome", "empresa.o_que_faz", "empresa.como_compra"]);
+  assert.deepEqual(obrigatoriasEmBrancoDaEtapa("contato", {}, BR), ["aprovacao.responsavel"], "a etapa 2 travou pelas da etapa 1");
+  assert.deepEqual(obrigatoriasEmBrancoDaEtapa("publico", {}, BR), [], "etapa sem obrigatória nunca trava");
+  assert.deepEqual(obrigatoriasEmBrancoDaEtapa("nao-existe", {}, BR), []);
+
+  /* Respondeu, libera; espaço em branco não é resposta. */
+  const empresa = { "empresa.nome": "Casa", "empresa.o_que_faz": "   ", "empresa.como_compra": ["vem"] };
+  assert.deepEqual(obrigatoriasEmBrancoDaEtapa("empresa", empresa, BR), ["empresa.o_que_faz"]);
+  assert.deepEqual(obrigatoriasEmBrancoDaEtapa("empresa", { ...empresa, "empresa.o_que_faz": "Pães" }, BR), []);
+
+  /* A condicional só trava quando aparece. */
+  assert.deepEqual(obrigatoriasEmBrancoDaEtapa("arquivos", {}, BR), ["fotos.tem"]);
+  assert.deepEqual(obrigatoriasEmBrancoDaEtapa("arquivos", { "fotos.tem": "nenhuma" }, BR), []);
+  assert.deepEqual(obrigatoriasEmBrancoDaEtapa("arquivos", { "fotos.tem": "algumas" }, BR), ["fotos.autor", "fotos.pessoas"]);
+
+  /* "Não sei" libera, na única e na múltipla só com ele marcado. */
+  assert.deepEqual(obrigatoriasEmBrancoDaEtapa("arquivos", { "fotos.tem": "algumas", "fotos.autor": ["nao_sei"], "fotos.pessoas": "nao_sei" }, BR), []);
+
+  /* Opção que o link não mostra não conta como resposta. */
+  assert.deepEqual(obrigatoriasEmBrancoDaEtapa("empresa", { ...empresa, "empresa.o_que_faz": "Pães", "empresa.como_compra": ["inventada"] }, BR), ["empresa.como_compra"]);
+});
+
+/* "Outro" sem o "Qual?" numa obrigatória (decisão de 26/09/2026): conta como
+   em branco na régua da trava, do Revisar e do servidor, e o alvo do que
+   falta é o campo aberto. O estado da resposta NÃO muda (a leitura e o
+   exportador dependem dele). Mutações vistas falhando: a cláusula do campo
+   aberto tirada de `obrigatoriasEmBranco` (o "Outro" vazio passa); a regra
+   aplicada também às não obrigatórias (`objetivo.canais_hoje` passa a
+   faltar); o `trim` tirado de `abertaVazia` (o "Qual?" só com espaço passa);
+   `chaveDoQueFalta` devolvendo sempre o id (o alvo deixa de ser o campo). */
+test("trava: 'Outro' marcado sem o 'Qual?' é obrigatória em branco, só nas obrigatórias, e o alvo é o campo aberto", () => {
+  const { abertaVazia, chaveDoQueFalta, ehChaveAberta } = nucleo;
+  const servir = perguntaPorId("objetivo.servir");
+  const acao = perguntaPorId("objetivo.acao");
+  const canais = perguntaPorId("objetivo.canais_hoje");
+  assert.ok(servir.obrigatoria && acao.obrigatoria && !canais.obrigatoria, "o esquema mudou: os três casos deixam de medir o que medem");
+
+  /* Múltipla obrigatória: sozinho, junto de outra, e com o texto só de espaço. */
+  for (const [nome, respostas] of [
+    ["sozinho", { "objetivo.servir": ["outro"] }],
+    ["junto de outra", { "objetivo.servir": ["whatsapp", "outro"] }],
+    ["com espaço", { "objetivo.servir": ["outro"], "objetivo.servir.outro": "   " }],
+  ]) {
+    assert.ok(obrigatoriasEmBrancoDaEtapa("objetivo", respostas, BR).includes("objetivo.servir"), `múltipla, ${nome}: não travou`);
+    assert.ok(obrigatoriasEmBranco(respostas, BR).includes("objetivo.servir"), `múltipla, ${nome}: o servidor deixaria enviar`);
+    assert.equal(estadoDaResposta(servir, respostas, BR), "respondida", `múltipla, ${nome}: o estado da leitura mudou`);
+    assert.equal(abertaVazia(servir, respostas, BR), "outro");
+    assert.equal(chaveDoQueFalta("objetivo.servir", respostas, BR), "objetivo.servir.outro", `múltipla, ${nome}: o alvo não é o campo aberto`);
+  }
+  /* Com o texto, libera; sem o "Outro" marcado, o campo não importa. */
+  assert.ok(!obrigatoriasEmBranco({ "objetivo.servir": ["outro"], "objetivo.servir.outro": "Feira de bairro" }, BR).includes("objetivo.servir"));
+  assert.ok(!obrigatoriasEmBranco({ "objetivo.servir": ["whatsapp"] }, BR).includes("objetivo.servir"));
+  assert.equal(chaveDoQueFalta("objetivo.servir", {}, BR), "objetivo.servir", "em branco de verdade: o alvo é a pergunta");
+
+  /* Única obrigatória. */
+  assert.ok(obrigatoriasEmBranco({ "objetivo.acao": "outro" }, BR).includes("objetivo.acao"), "única: não travou");
+  assert.equal(chaveDoQueFalta("objetivo.acao", { "objetivo.acao": "outro" }, BR), "objetivo.acao.outro");
+  assert.ok(!obrigatoriasEmBranco({ "objetivo.acao": "outro", "objetivo.acao.outro": "Mandar áudio" }, BR).includes("objetivo.acao"));
+
+  /* Não obrigatória com "Outro" vazio: não trava nada. */
+  const semTexto = { "objetivo.canais_hoje": ["outro"] };
+  assert.equal(abertaVazia(canais, semTexto, BR), "outro", "a função vale para qualquer pergunta");
+  assert.ok(!obrigatoriasEmBranco(semTexto, BR).includes("objetivo.canais_hoje"), "pergunta não obrigatória travou pelo 'Outro' vazio");
+
+  /* A chave do campo aberto é reconhecida; outras não. */
+  assert.ok(ehChaveAberta("objetivo.servir.outro"));
+  assert.ok(!ehChaveAberta("objetivo.servir") && !ehChaveAberta("objetivo.servir.whatsapp") && !ehChaveAberta("inventada.outro"));
+});
+
+/* O pré-preenchimento que o HTML do servidor pode trazer (26/09/2026): só
+   do contexto, só o que o rascunho não tem. Mutações vistas falhando: o
+   `ler(...) === undefined` tirado de `prefillDoServidor` (o nome corrigido
+   no rascunho voltaria a nascer com o do cadastro por cima); o `responsavel`
+   do cadastro aceito em `valorDoContexto` (dado de `inicial` no HTML). */
+test("prefill do servidor: só nome da empresa e idiomas, do contexto, e só o que o rascunho não tem", () => {
+  const { prefillDoServidor, valorDoContexto } = nucleo;
+  const c = ctx({ empresa: "Padaria Teste", idiomas_site: ["pt_br"], pacote: "negocio" });
+  assert.deepEqual(prefillDoServidor({}, c), ["empresa.nome", "conteudo.idiomas"]);
+  assert.equal(valorDoContexto(perguntaPorId("empresa.nome"), c), "Padaria Teste");
+  assert.deepEqual(valorDoContexto(perguntaPorId("conteudo.idiomas"), c), ["pt_br"]);
+  /* Nada que venha de `inicial`: e-mail, CNPJ, responsável, Instagram, site, cidade. */
+  for (const id of ["contato.email", "empresa.id_fiscal", "preenchimento.quem", "contato.redes", "site_atual.endereco", "empresa.regioes"]) {
+    assert.equal(valorDoContexto(perguntaPorId(id), c), null, `${id} pré-preenche no servidor`);
+  }
+  /* Chave no rascunho, mesmo com outro valor: não volta. */
+  assert.deepEqual(prefillDoServidor({ "empresa.nome": "Padaria Teste Ltda" }, c), ["conteudo.idiomas"]);
+  /* Sem o dado no contexto, nada. */
+  assert.deepEqual(prefillDoServidor({}, ctx({ empresa: null, idiomas_site: [] })), []);
+});
+
+/* A lista do envio sem JavaScript recusado avisa das obrigatórias que a
+   resposta vai abrir (revisão de 26/09/2026). Mutações vistas falhando: o
+   filtro de obrigatória tirado, e a comparação com a pergunta citada
+   quebrada. A cadeia (obrigatória que depende de condicional que depende
+   da resposta) não tem caso nas perguntas de hoje, e por isso não é
+   afirmada aqui. */
+test("trava: as obrigatórias que dependem de uma resposta, na ordem do questionário", () => {
+  assert.deepEqual(nucleo.obrigatoriasQueDependemDe("fotos.tem"), ["fotos.autor", "fotos.pessoas"]);
+  assert.deepEqual(nucleo.obrigatoriasQueDependemDe("empresa.nome"), [], "pergunta sem dependente");
+  /* Cada uma que ela devolve é obrigatória, some com a resposta em branco e
+     aparece com alguma resposta: é o que torna o aviso verdadeiro. */
+  for (const id of nucleo.obrigatoriasQueDependemDe("fotos.tem")) {
+    const p = nucleo.perguntaPorId(id);
+    assert.ok(p.obrigatoria, `${id} não é obrigatória`);
+    assert.equal(nucleo.visivel(p, {}, BR), false, `${id} já aparece com a resposta em branco`);
+    assert.equal(nucleo.visivel(p, { "fotos.tem": "algumas" }, BR), true, `${id} não aparece com a resposta dada`);
+  }
+  /* Nenhuma obrigatória de cadeia fica de fora: toda obrigatória condicional
+     aparece como dependente de alguma pergunta. */
+  const todas = new Set(nucleo.PERGUNTAS.flatMap((p) => nucleo.obrigatoriasQueDependemDe(p.id)));
+  for (const p of nucleo.PERGUNTAS) if (p.obrigatoria && p.mostrarSe && !p.obsoleta) assert.ok(todas.has(p.id), `${p.id} ficou fora`);
 });
 
 /* ================================================================

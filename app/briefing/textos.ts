@@ -101,6 +101,10 @@ export interface TextosDoBriefing {
     url: string;
     data: string;
     email: string;
+    /** A obrigatória em branco, ao lado dela, quando o Continuar trava. */
+    obrigatoria: string;
+    /** O caso dela em que a opção que abre campo ("Outro") está marcada e o campo ("Qual?") vazio: aponta para o campo, que vem logo abaixo. */
+    aberta: string;
   };
   contador: (n: string, limite: string) => string;
   obrigatoria: string;
@@ -110,12 +114,16 @@ export interface TextosDoBriefing {
   seMarcar: (opcao: string) => string;
   /** A mesma condição no meio da frase, entre parênteses: minúscula e sem dois-pontos. */
   seMarcarMeio: (opcao: string) => string;
+  /** Nas listas do que falta (Revisar e página sem JavaScript), entre parênteses depois da pergunta: a opção marcada sem o texto do campo que ela abre. */
+  faltaQual: (opcao: string) => string;
   exemplo: string;
   maxAviso: (n: number) => string;
 
   /* Navegação e reabertura */
   voltar: string;
   continuar: string;
+  /** A região viva ao lado do Continuar travado: quantas obrigatórias faltam NESTA etapa. */
+  faltamNaEtapa: (n: number) => string;
   retomar: string;
   continuarDaqui: string;
   verDoComeco: string;
@@ -128,6 +136,12 @@ export interface TextosDoBriefing {
   emBranco: string;
   faltamTitulo: string;
   motivoFaltam: string;
+  /** O servidor recusou o envio por obrigatória em branco (com JavaScript o Revisar já trava; é a rede). */
+  erroFaltam: string;
+  /** A página que volta do envio sem JavaScript recusado: o que houve e o que fazer. */
+  faltamSemJs: string;
+  /** O mesmo aviso, para quem já tinha enviado antes: o envio anterior chegou e continua valendo. */
+  faltamSemJsReenvio: string;
   ajustesTitulo: string;
   motivoAjuste: string;
   motivoCarregando: string;
@@ -178,7 +192,7 @@ const pt: TextosDoBriefing = {
     `Estas perguntas são o ponto de partida do ${empresa ? `site da ${empresa}` : "site de vocês"}. Leva uns ${minutos} minutos, salva sozinho, e dá para parar e voltar pelo mesmo link, no celular ou no computador. Se alguém da equipe for ajudar, pode usar o mesmo link.`,
   abertura1SemJs: (empresa, minutos) =>
     `Estas perguntas são o ponto de partida do ${empresa ? `site da ${empresa}` : "site de vocês"}. Leva uns ${minutos} minutos. Nesta página nada fica salvo antes do envio, então responda de uma vez e envie no fim.`,
-  abertura2: "Eu organizo e escrevo o texto do site: aqui eu preciso da informação, não da redação. Se não souber alguma coisa, deixe em branco.",
+  abertura2: "Eu organizo e escrevo o texto do site: aqui eu preciso da informação, não da redação. Se não souber alguma coisa, deixe em branco. Só as perguntas marcadas como obrigatórias precisam de resposta para seguir.",
   aberturaCatalao: "",
   abertura3: {
     comJs: "O que você escreve fica salvo com a Varanda desde a primeira resposta, e só quem tem este link consegue abrir. Como a Varanda cuida disso está na ",
@@ -224,6 +238,8 @@ const pt: TextosDoBriefing = {
     url: "Confira o endereço.",
     data: "Confira a data.",
     email: "Confira o e-mail.",
+    obrigatoria: "Responda esta pergunta para continuar.",
+    aberta: "Escreva qual é, no campo logo abaixo.",
   },
   contador: (n, limite) => `${n} de ${limite} caracteres`,
   obrigatoria: "obrigatória",
@@ -232,12 +248,14 @@ const pt: TextosDoBriefing = {
   usarNumero: "Usar este número",
   seMarcar: (opcao) => `Se marcar “${opcao}”:`,
   seMarcarMeio: (opcao) => `se marcar “${opcao}”`,
+  faltaQual: (opcao) => `você marcou “${opcao}”: falta escrever qual`,
   exemplo: "Exemplo:",
   /* ESPEC 3.4: "Até três. Desmarque uma para trocar." */
   maxAviso: (n) => `Até ${extenso("pt", n)}. Desmarque uma para trocar.`,
 
   voltar: "Voltar",
   continuar: "Continuar",
+  faltamNaEtapa: (n) => (n === 1 ? "Falta uma pergunta obrigatória nesta etapa." : `Faltam ${extenso("pt", n)} perguntas obrigatórias nesta etapa.`),
   retomar: "Você parou em",
   continuarDaqui: "Continuar daqui",
   verDoComeco: "Ver do começo",
@@ -249,6 +267,11 @@ const pt: TextosDoBriefing = {
   emBranco: "Em branco",
   faltamTitulo: "Faltam respostas obrigatórias",
   motivoFaltam: "Para enviar, responda as obrigatórias da lista acima.",
+  erroFaltam: "Ainda faltam respostas obrigatórias. Elas estão na lista acima.",
+  faltamSemJs:
+    "Ainda não recebi o questionário, porque faltam as respostas obrigatórias abaixo. O resto do que você escreveu ficou guardado com a Varanda. Responda estas perguntas e aperte Enviar de novo, no fim da página.",
+  faltamSemJsReenvio:
+    "O envio anterior continua comigo, mas esta versão nova ainda não chegou, porque faltam as respostas obrigatórias abaixo. O que você mudou ficou guardado com a Varanda. Responda estas perguntas e aperte Enviar de novo, no fim da página.",
   ajustesTitulo: "Estas respostas precisam de ajuste antes de enviar",
   motivoAjuste: "Para enviar, ajuste as respostas da lista acima.",
   motivoCarregando: "Para enviar, espere carregar o que você já salvou.",
@@ -306,7 +329,7 @@ const es: TextosDoBriefing = {
     `Estas preguntas son el punto de partida de ${empresa ? `la web de ${empresa}` : "vuestra web"}. Se tarda unos ${minutos} minutos, se guarda solo y puedes parar y volver con el mismo enlace, desde el móvil o desde el ordenador. Si alguien del equipo os va a ayudar, puede usar el mismo enlace.`,
   abertura1SemJs: (empresa, minutos) =>
     `Estas preguntas son el punto de partida de ${empresa ? `la web de ${empresa}` : "vuestra web"}. Se tarda unos ${minutos} minutos. En esta página no se guarda nada hasta que la envías, así que respóndela de una vez y envíala al final.`,
-  abertura2: "Yo organizo y escribo los textos de la web: aquí necesito la información, no la redacción. Si no sabes algo, déjalo en blanco.",
+  abertura2: "Yo organizo y escribo los textos de la web: aquí necesito la información, no la redacción. Si no sabes algo, déjalo en blanco. Solo las preguntas marcadas como obligatorias necesitan respuesta para seguir.",
   /* ESPEC 3.6: acrescentado quando o país do link é ES. */
   aberturaCatalao: "Puedes responder en castellano o en catalán.",
   abertura3: {
@@ -354,6 +377,8 @@ const es: TextosDoBriefing = {
     url: "Revisa la dirección.",
     data: "Revisa la fecha.",
     email: "Revisa el correo.",
+    obrigatoria: "Responde a esta pregunta para continuar.",
+    aberta: "Escribe cuál es, en el campo de abajo.",
   },
   contador: (n, limite) => `${n} de ${limite} caracteres`,
   obrigatoria: "obligatoria",
@@ -362,11 +387,13 @@ const es: TextosDoBriefing = {
   usarNumero: "Usar este número",
   seMarcar: (opcao) => `Si eliges «${opcao}»:`,
   seMarcarMeio: (opcao) => `si eliges «${opcao}»`,
+  faltaQual: (opcao) => `has marcado «${opcao}»: falta escribir cuál`,
   exemplo: "Por ejemplo:",
   maxAviso: (n) => `Hasta ${extenso("es", n)}. Desmarca una para cambiarla.`,
 
   voltar: "Atrás",
   continuar: "Continuar",
+  faltamNaEtapa: (n) => (n === 1 ? "Falta una pregunta obligatoria en este paso." : `Faltan ${extenso("es", n)} preguntas obligatorias en este paso.`),
   retomar: "Lo dejaste en",
   continuarDaqui: "Seguir desde aquí",
   verDoComeco: "Ver desde el principio",
@@ -378,6 +405,11 @@ const es: TextosDoBriefing = {
   emBranco: "En blanco",
   faltamTitulo: "Faltan respuestas obligatorias",
   motivoFaltam: "Para enviarlo, responde las obligatorias de la lista de arriba.",
+  erroFaltam: "Aún faltan respuestas obligatorias. Están en la lista de arriba.",
+  faltamSemJs:
+    "Todavía no me ha llegado el cuestionario, porque faltan las respuestas obligatorias de abajo. Lo demás que has escrito ha quedado guardado en Varanda. Responde a estas preguntas y vuelve a pulsar Enviar, al final de la página.",
+  faltamSemJsReenvio:
+    "El envío anterior sigue conmigo, pero esta versión nueva todavía no me ha llegado, porque faltan las respuestas obligatorias de abajo. Lo que has cambiado ha quedado guardado en Varanda. Responde a estas preguntas y vuelve a pulsar Enviar, al final de la página.",
   ajustesTitulo: "Estas respuestas necesitan un ajuste antes de enviarlas",
   motivoAjuste: "Para enviarlo, ajusta las respuestas de la lista de arriba.",
   motivoCarregando: "Para enviarlo, espera a que cargue lo que ya has guardado.",
@@ -434,7 +466,7 @@ const en: TextosDoBriefing = {
     `These questions are the starting point for ${empresa ? `${empresa}'s website` : "your website"}. It takes about ${minutos} minutes, saves as you go, and you can stop and come back with the same link, on your phone or your computer. If someone on your team is going to help, they can use the same link.`,
   abertura1SemJs: (empresa, minutos) =>
     `These questions are the starting point for ${empresa ? `${empresa}'s website` : "your website"}. It takes about ${minutos} minutes. Nothing on this page is saved until you send it, so answer it in one go and send it at the end.`,
-  abertura2: "I organise and write the website copy: here I need the facts, not the wording. If you don't know something, leave it blank.",
+  abertura2: "I organise and write the website copy: here I need the facts, not the wording. If you don't know something, leave it blank. Only the questions marked as required need an answer before you move on.",
   aberturaCatalao: "",
   abertura3: {
     comJs: "What you write is saved with Varanda from the first answer, and only someone with this link can open it. How Varanda looks after it is set out in the ",
@@ -481,6 +513,8 @@ const en: TextosDoBriefing = {
     url: "Please check the address.",
     data: "Please check the date.",
     email: "Please check the email address.",
+    obrigatoria: "Please answer this question to continue.",
+    aberta: "Tell me which one, in the box just below.",
   },
   contador: (n, limite) => `${n} of ${limite} characters`,
   obrigatoria: "required",
@@ -489,11 +523,13 @@ const en: TextosDoBriefing = {
   usarNumero: "Use this number",
   seMarcar: (opcao) => `If you choose ‘${opcao}’:`,
   seMarcarMeio: (opcao) => `if you choose ‘${opcao}’`,
+  faltaQual: (opcao) => `you ticked ‘${opcao}’: tell me which one`,
   exemplo: "For example:",
   maxAviso: (n) => `Up to ${extenso("en", n)}. Untick one to swap.`,
 
   voltar: "Back",
   continuar: "Continue",
+  faltamNaEtapa: (n) => (n === 1 ? "One required question left on this step." : `${extenso("en", n).replace(/^./, (c) => c.toUpperCase())} required questions left on this step.`),
   retomar: "You stopped at",
   continuarDaqui: "Carry on from here",
   verDoComeco: "Start from the beginning",
@@ -505,6 +541,11 @@ const en: TextosDoBriefing = {
   emBranco: "Blank",
   faltamTitulo: "Some required answers are missing",
   motivoFaltam: "To send it, answer the required questions listed above.",
+  erroFaltam: "Some required answers are still missing. They're listed above.",
+  faltamSemJs:
+    "I haven't received the questionnaire yet, because the required answers below are missing. Everything else you wrote has been saved with Varanda. Answer these questions and press Send again at the bottom of the page.",
+  faltamSemJsReenvio:
+    "I still have your earlier submission, but this new version hasn't reached me yet, because the required answers below are missing. What you changed has been saved with Varanda. Answer these questions and press Send again at the bottom of the page.",
   ajustesTitulo: "These answers need fixing before you send",
   motivoAjuste: "To send it, fix the answers listed above.",
   motivoCarregando: "To send it, wait for your saved answers to load.",

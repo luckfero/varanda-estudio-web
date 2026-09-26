@@ -7,8 +7,10 @@ import { ArcoMark } from "../icons";
 import { enderecoDaApi } from "./contexto.ts";
 import {
   PERGUNTAS,
+  abertaVazia,
   avisosDaEtapa,
   chaveAberta,
+  chaveDoQueFalta,
   chavesAceitas,
   condicaoParaQuemResponde,
   contextoPadrao,
@@ -19,6 +21,8 @@ import {
   normalizarContexto,
   normalizarInicial,
   obrigatoriasEmBranco,
+  obrigatoriasEmBrancoDaEtapa,
+  obrigatoriasQueDependemDe,
   opcoesDisponiveis,
   opcoesTravadas,
   paisDe,
@@ -30,6 +34,7 @@ import {
   sugestaoDeTelefone,
   textoDaOpcao,
   textoDaPergunta,
+  valorDoContexto,
   valorInicial,
   visivel,
 } from "./nucleo.ts";
@@ -110,7 +115,8 @@ interface Retrato {
 
 type ResultadoDoEnvio =
   | { ok: true }
-  | { ok: false; motivo: "campo" | "tamanho" | "fim" | "rede" | "conflito" };
+  | { ok: false; motivo: "campo" | "tamanho" | "fim" | "rede" | "conflito" }
+  | { ok: false; motivo: "faltam"; ids: string[] };
 
 interface Ganchos {
   aoCarregar: (etapaSalva: number | null) => void;
@@ -265,13 +271,22 @@ class Loja {
   private readonly ctx: Contexto;
   private readonly aceitas: string[];
 
-  constructor(chave: string, locale: Locale, ctx: Contexto) {
+  /**
+   * `semente` é o pré-preenchimento que o HTML do servidor já trouxe (o nome
+   * da empresa, ver `prefillDoServidor`). Ela entra como valor da tela e não
+   * como suja, igual ao pré-preenchimento da carga: o servidor por baixo, e
+   * como o Worker só manda a semente das chaves que o rascunho não tem, a
+   * primeira carga a mantém (ver `juntarValores`) e ela sobe na próxima
+   * gravação. Nascer com ela, e não esperar o `GET`, é o que evita o campo
+   * aparecer preenchido no HTML, esvaziar na hidratação e encher de novo.
+   */
+  constructor(chave: string, locale: Locale, ctx: Contexto, semente: Respostas = {}) {
     this.api = enderecoDaApi(chave, locale);
     this.chave = chave;
     this.ctx = ctx;
     this.aceitas = chavesAceitas(ctx);
     this.retrato = {
-      valores: {},
+      valores: { ...semente },
       indicador: { tipo: "carregando" },
       salvando: false,
       carregado: false,
@@ -429,6 +444,19 @@ class Loja {
       });
       if (mudou) this.publicar({ conflito: this.retrato.conflito + 1 });
     }
+  }
+
+  /**
+   * A trava do Continuar segurou. Com algo por gravar, sobe agora, e o 409
+   * de um outro aparelho traz a junção. Sem nada por gravar, o PUT não sai e
+   * nada se renovava: a tela travava por resposta que o celular já tinha
+   * dado (revisão de 26/09/2026). Aí busca o servidor, que junta só o que
+   * não foi mexido aqui, e a trava se desfaz sozinha se a resposta chegou.
+   */
+  conferirNoServidor(): void {
+    if (this.parado || !this.retrato.carregado) return;
+    if (this.sujas.size > 0 || this.emVoo) void this.gravar("agora");
+    else void this.carregar(false);
   }
 
   private falhouAoCarregar(primeira: boolean, segundos: number) {
@@ -768,6 +796,16 @@ class Loja {
         if (this.juntar(servidor, confirmadoAntes)) this.publicar({ conflito: this.retrato.conflito + 1 });
         continue;
       }
+      if (resposta.status === 422 && corpo.erro === "faltam") {
+        /* O servidor recusou por obrigatória em branco. Com JavaScript isto
+           não deveria acontecer (o Revisar já trava o Enviar); acontece se o
+           servidor enxerga outra coisa, como uma resposta que o saneamento
+           descartou. Nada do que está aqui se perde: o que ainda não subiu
+           sai agora como rascunho, e a tela mostra a lista. */
+        void this.gravar("agora");
+        const ids = Array.isArray(corpo.ids) ? corpo.ids.filter((x): x is string => typeof x === "string") : [];
+        return { ok: false, motivo: "faltam", ids };
+      }
       if (resposta.status === 422) {
         const campo = typeof corpo.campo === "string" ? corpo.campo : "";
         this.publicar({ errosDoServidor: { ...this.retrato.errosDoServidor, [campo]: corpo.erro as ErroCampo } });
@@ -813,7 +851,25 @@ function useHidratado(): boolean {
 
 const idDoCampo = (chave: string) => `c-${chave.replace(/[^a-z0-9_]/gi, "-")}`;
 const idDaOpcao = (pergunta: string, opcao: string) => `${idDoCampo(pergunta)}--${opcao}`;
+/* O alvo de um link para a PERGUNTA (o aviso sem JavaScript): o bloco
+   inteiro, com o título, e não o controle. Na escolha o id do campo já é o
+   do fieldset. No texto o id do campo mora na caixa, e o salto deixava o
+   título embaixo da barra presa (revisão de 26/09/2026: 4 dos 8 links do
+   negocioBR); o bloco ganha id próprio. */
+const idDoBloco = (p: Pergunta) => (p.tipo === "unica" || p.tipo === "multipla" ? idDoCampo(p.id) : `${idDoCampo(p.id)}-bloco`);
 const idDaEtapa = (id: string) => `etapa-${id}`;
+
+/* O pré-preenchimento que o HTML do servidor traz (ver `prefillDoServidor`):
+   os ids vêm do Worker, e o valor sai do contexto, aqui. */
+function sementeDoServidor(ids: string[] | null | undefined, ctx: Contexto): Respostas {
+  const saida: Respostas = {};
+  for (const id of ids ?? []) {
+    const p = perguntaPorId(id);
+    const v = p ? valorDoContexto(p, ctx) : null;
+    if (v !== null) saida[id] = v;
+  }
+  return saida;
+}
 const idDoTitulo = (id: string) => `titulo-${id}`;
 
 function lista(valor: Respostas[string] | undefined): string[] {
@@ -970,7 +1026,10 @@ function textoDaCopia(dados: Respostas, ctx: Contexto, locale: Locale): string {
    Os campos
    ====================================================================== */
 
-type ErroMostrado = ErroCampo | "email";
+/* "obrigatoria" é a obrigatória em branco quando o Continuar trava; "aberta"
+   é o caso dela em que a opção que abre campo ("Outro") está marcada e o
+   campo ("Qual?") está vazio (ver `obrigatoriasEmBranco`). */
+type ErroMostrado = ErroCampo | "email" | "obrigatoria" | "aberta";
 
 interface PropsDaPergunta {
   p: Pergunta;
@@ -1042,7 +1101,7 @@ const PerguntaDeTexto = memo(function PerguntaDeTexto({ p, ctx, locale, valores,
   const tipoDoInput = p.tipo === "email" ? "email" : p.tipo === "telefone" ? "tel" : p.tipo === "data" ? "date" : "text";
 
   return (
-    <div className={`bf-pergunta campo${visivelAgora ? "" : " oculta"}`} data-pergunta={p.id}>
+    <div className={`bf-pergunta campo${visivelAgora ? "" : " oculta"}${erro === "obrigatoria" ? " em-falta" : ""}`} data-pergunta={p.id} id={idDoBloco(p)}>
       <label className="bf-rotulo" htmlFor={id}>
         <Rotulo p={p} ctx={ctx} locale={locale} t={t} />
       </label>
@@ -1138,6 +1197,8 @@ function formatoNativo(p: Pergunta, pais: string, t: TextosDoBriefing): { patter
 }
 
 function mensagemDeErro(erro: ErroMostrado, t: TextosDoBriefing, ctx: Contexto, limite: number): string {
+  if (erro === "obrigatoria") return t.erros.obrigatoria;
+  if (erro === "aberta") return t.erros.aberta;
   if (erro === "longo") return t.erros.longo(formatarNumero(t.intl, limite));
   if (erro === "telefone") return t.erros.telefone(paisDe(ctx.pais));
   if (erro === "url") return t.erros.url;
@@ -1145,7 +1206,7 @@ function mensagemDeErro(erro: ErroMostrado, t: TextosDoBriefing, ctx: Contexto, 
   return t.erros.email;
 }
 
-const PerguntaDeEscolha = memo(function PerguntaDeEscolha({ p, ctx, locale, valores, visivelAgora, maxAviso, definir, avisarMax }: PropsDaPergunta) {
+const PerguntaDeEscolha = memo(function PerguntaDeEscolha({ p, ctx, locale, valores, visivelAgora, erro, maxAviso, definir, avisarMax }: PropsDaPergunta) {
   const t = TEXTOS[locale];
   const textos = textoDaPergunta(p, ctx, locale);
   const id = idDoCampo(p.id);
@@ -1155,7 +1216,7 @@ const PerguntaDeEscolha = memo(function PerguntaDeEscolha({ p, ctx, locale, valo
   const multipla = p.tipo === "multipla";
   const marcadas = lista(valores[p.id]).filter((x) => !travadas.includes(x));
   const exclusivas = opcoes.filter((o) => o.exclusiva).map((o) => o.id);
-  const ids = { dica: textos.dica ? `${id}-dica` : null, exemplo: textos.exemplo ? `${id}-exemplo` : null };
+  const ids = { dica: textos.dica ? `${id}-dica` : null, exemplo: textos.exemplo ? `${id}-exemplo` : null, erro: erro ? `${id}-erro` : null };
 
   function alternar(o: Opcao, marcar: boolean) {
     if (!multipla) {
@@ -1183,10 +1244,10 @@ const PerguntaDeEscolha = memo(function PerguntaDeEscolha({ p, ctx, locale, valo
   const dicasVistas = new Set<string>();
   return (
     <fieldset
-      className={`bf-pergunta bf-escolha${visivelAgora ? "" : " oculta"}`}
+      className={`bf-pergunta bf-escolha${visivelAgora ? "" : " oculta"}${erro ? " em-falta" : ""}`}
       data-pergunta={p.id}
       id={id}
-      aria-describedby={[ids.dica, ids.exemplo].filter(Boolean).join(" ") || undefined}
+      aria-describedby={[ids.dica, ids.exemplo, ids.erro].filter(Boolean).join(" ") || undefined}
     >
       <legend className="bf-rotulo">
         <Rotulo p={p} ctx={ctx} locale={locale} t={t} />
@@ -1215,7 +1276,10 @@ const PerguntaDeEscolha = memo(function PerguntaDeEscolha({ p, ctx, locale, valo
                    navega por Tab ouve o aviso ao chegar na opção, antes de
                    marcar. Sem isto a dica aparecia calada (revisão de
                    25/09/2026: 11 por página, nenhuma ligada). */
-                aria-describedby={textosDasOpcoes.get(o.id)?.dica ? `${idDaOpcao(p.id, o.id)}-dica` : undefined}
+                /* O erro vai também em cada opção, e não só no grupo: o
+                   VoiceOver não lê a descrição do fieldset ao chegar numa
+                   opção, e o foco da trava cai justamente numa opção. */
+                aria-describedby={[textosDasOpcoes.get(o.id)?.dica ? `${idDaOpcao(p.id, o.id)}-dica` : null, ids.erro].filter(Boolean).join(" ") || undefined}
                 onChange={(e) => alternar(o, e.target.checked)}
               />
               <span>
@@ -1226,6 +1290,11 @@ const PerguntaDeEscolha = memo(function PerguntaDeEscolha({ p, ctx, locale, valo
           );
         })}
       </div>
+      {erro ? (
+        <p className="bf-erro" id={ids.erro ?? undefined}>
+          {mensagemDeErro(erro, t, ctx, 0)}
+        </p>
+      ) : null}
       {textos.exemplo ? (
         <p className="bf-exemplo" id={ids.exemplo ?? undefined}>
           {t.exemplo} {textos.exemplo}
@@ -1244,8 +1313,13 @@ const PerguntaDeEscolha = memo(function PerguntaDeEscolha({ p, ctx, locale, valo
         const chave = chaveAberta(p.id, o.id);
         const marcada = marcadas.includes(o.id) || travadas.includes(o.id);
         const campo = idDoCampo(chave);
+        /* O "Outro" marcado com o "Qual?" vazio, numa obrigatória, trava o
+           Continuar: a frase âmbar fica logo acima deste campo, o foco vem
+           para ele, e ele acende e se descreve pela frase, como o campo de
+           texto em branco. */
+        const emFalta = erro === "aberta" && abertaVazia(p, valores, ctx) === o.id;
         return (
-          <div key={chave} className={`bf-abre campo${marcada ? " visivel" : ""}`}>
+          <div key={chave} className={`bf-abre campo${marcada ? " visivel" : ""}`} id={`${campo}-bloco`}>
             <label className="bf-rotulo-abre" htmlFor={campo}>
               {textosDasOpcoes.get(o.id)?.abre}
               {/* Sem JavaScript todos os campos abertos aparecem; a frase diz de
@@ -1258,6 +1332,8 @@ const PerguntaDeEscolha = memo(function PerguntaDeEscolha({ p, ctx, locale, valo
               name={chave}
               type="text"
               maxLength={LIMITES.curto}
+              aria-invalid={emFalta ? true : undefined}
+              aria-describedby={emFalta ? (ids.erro ?? undefined) : undefined}
               autoComplete="off"
               value={textoDe(valores[chave])}
               onChange={(e) => definir(chave, e.target.value)}
@@ -1372,15 +1448,34 @@ export interface PropsDoFormulario {
   privacidade: string;
   /** O endereço da página, para o "Voltar ao formulário" da confirmação. */
   enderecoDoFormulario: string;
+  /**
+   * As obrigatórias que faltavam quando o envio SEM JavaScript foi recusado
+   * (o Worker volta com `?faltam=1` e calcula a lista do rascunho). Só
+   * aparece antes da hidratação: com JavaScript quem mostra é a trava de
+   * cada etapa e o Revisar.
+   */
+  faltamSemJs?: string[] | null;
+  /**
+   * As perguntas que o HTML do servidor traz pré-preenchidas com o valor do
+   * contexto (o nome da empresa): o Worker manda só os ids das que o rascunho
+   * não tem, e o valor sai daqui mesmo, de `valorDoContexto`.
+   */
+  prefillSemJs?: string[] | null;
+  /**
+   * O link já tinha sido enviado antes (estado "enviado"). A recusa do
+   * reenvio sem JavaScript não pode dizer "ainda não recebi": o envio
+   * anterior chegou e continua valendo.
+   */
+  jaEnviado?: boolean;
 }
 
 type TelaDoCliente = "formulario" | "recebido" | "fechado" | "encerrado";
 
 const REVISAR = "revisar";
 
-export default function Formulario({ locale, chave, contexto: ctx, pacote, privacidade, enderecoDoFormulario }: PropsDoFormulario) {
+export default function Formulario({ locale, chave, contexto: ctx, pacote, privacidade, enderecoDoFormulario, faltamSemJs, prefillSemJs, jaEnviado }: PropsDoFormulario) {
   const t = TEXTOS[locale];
-  const [loja] = useState(() => new Loja(chave, locale, ctx));
+  const [loja] = useState(() => new Loja(chave, locale, ctx, sementeDoServidor(prefillSemJs, ctx)));
   const retrato = useSyncExternalStore(loja.assinar, loja.retratar, loja.retratar);
   const hidratado = useHidratado();
   const { valores } = retrato;
@@ -1395,6 +1490,15 @@ export default function Formulario({ locale, chave, contexto: ctx, pacote, priva
   const [enviando, setEnviando] = useState(false);
   const [erroEnvio, setErroEnvio] = useState<string | null>(null);
   const [conflitoVisto, setConflitoVisto] = useState(0);
+  /* A etapa em que o Continuar travou, e as obrigatórias que estavam em
+     branco NAQUELE clique. As frases de erro e a região viva valem só para
+     elas, e só até sair da etapa: quem volta e avança de novo não encontra
+     erro antes de apertar Continuar. A lista é a do clique, e não a de agora,
+     de propósito: a condicional que aparece porque a pessoa acabou de
+     responder (as fotos) nasce limpa, e só trava no Continuar seguinte. */
+  const [travada, setTravada] = useState<{ etapa: string; ids: string[] } | null>(null);
+  /* A lista que o SERVIDOR devolveu ao recusar um envio (422 "faltam"). */
+  const [faltamDoServidor, setFaltamDoServidor] = useState<string[]>([]);
   /* Para onde levar o foco depois do próximo render: o título da etapa ou um
      campo. Escrito em manipulador de evento e lido em efeito, que é onde ref
      pode ser mexida. O contador é o que dispara o efeito: o "Continuar daqui"
@@ -1410,6 +1514,27 @@ export default function Formulario({ locale, chave, contexto: ctx, pacote, priva
   const etapasDoLink = useMemo(() => ETAPAS.filter((e) => e.perguntas.some((p) => !p.obsoleta && existentes.has(p.id))), [existentes]);
   const visiveis = useMemo(() => etapasVisiveis(valores, ctx), [valores, ctx]);
   const faltam = useMemo(() => obrigatoriasEmBranco(valores, ctx), [valores, ctx]);
+  /* Das que travaram, as que continuam em branco, recalculadas a cada
+     resposta: a frase de uma pergunta some assim que ela é respondida, e a
+     contagem da região viva acompanha até sumir. */
+  const emFalta = useMemo(() => {
+    if (!travada) return [];
+    const agora = new Set(obrigatoriasEmBrancoDaEtapa(travada.etapa, valores, ctx));
+    return travada.ids.filter((id) => agora.has(id));
+  }, [travada, valores, ctx]);
+  /* O Revisar mostra as da conta daqui e, como rede, as que o servidor disse
+     que faltam (visíveis aqui) e que a conta daqui dá como respondidas: é o
+     caso de uma resposta que o saneamento do servidor descartou. Essas
+     aparecem na lista para a pessoa conferir, mas NÃO travam o Enviar: a
+     lista do servidor só se renova num envio novo, e travar por ela seria
+     prender a pessoa sem saída. */
+  const faltamNoRevisar = useMemo(() => {
+    const extra = faltamDoServidor.filter((id) => {
+      const p = perguntaPorId(id);
+      return !!p && !faltam.includes(id) && visivel(p, valores, ctx);
+    });
+    return [...faltam, ...extra];
+  }, [faltam, faltamDoServidor, valores, ctx]);
   /* As respostas visíveis com formato que o servidor recusaria. Sem esta
      lista o Revisar dava um WhatsApp "123" como certo, o Enviar passava e o
      painel recebia o campo em branco (o `payload` manda o último valor
@@ -1489,9 +1614,18 @@ export default function Formulario({ locale, chave, contexto: ctx, pacote, priva
        segundo inteiro atravessando a página, bem acima dos 300ms da regra
        9.20. O movimento que ajuda a entender é a entrada da etapa, e ela
        acontece onde o olho já está. Um campo (o link de uma obrigatória
-       que falta) vai para o meio da tela, pelo mesmo motivo. */
+       que falta) vai para o meio da tela, pelo mesmo motivo.
+       MENOS a pergunta de escolha que, centralizada, teria o topo embaixo da
+       barra (o `scroll-padding-top`): o meio dela ia para o meio da tela e a
+       primeira opção, que é onde o foco cai, subia para baixo da barra ou
+       para fora da tela (revisão de 26/09/2026: `objetivo.servir`, com
+       882px, em 375x667, 360x640, 320x568 e deitado). Essa sobe pelo topo,
+       como a etapa: o título logo abaixo da barra e a primeira opção logo
+       abaixo dele. */
+    const barra = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+    const alta = elemento.matches("fieldset") && (innerHeight - elemento.getBoundingClientRect().height) / 2 < barra;
     if (secao && elemento.id.startsWith("titulo-")) secao.scrollIntoView({ block: "start", behavior: "instant" });
-    else elemento.scrollIntoView({ block: "center", behavior: "instant" });
+    else elemento.scrollIntoView({ block: alta ? "start" : "center", behavior: "instant" });
     (campo ?? elemento).focus({ preventScroll: true });
   }, [pedidoDeFoco]);
 
@@ -1502,6 +1636,7 @@ export default function Formulario({ locale, chave, contexto: ctx, pacote, priva
   }
 
   function irPara(id: string, foco?: string) {
+    setTravada(null);
     setPasso(id);
     setComecou(true);
     setTrocou(true);
@@ -1511,6 +1646,34 @@ export default function Formulario({ locale, chave, contexto: ctx, pacote, priva
     focoRef.current = foco ?? (id === REVISAR ? idDoTitulo(REVISAR) : idDoTitulo(id));
     setPedidoDeFoco((n) => n + 1);
     loja.definirEtapa(numeroDaEtapa(id === REVISAR ? ETAPAS[ETAPAS.length - 1].id : id));
+  }
+
+  /* A TRAVA DO CONTINUAR (e do Revisar, que é o Continuar da última etapa).
+     Só para a frente: Voltar, os links do Revisar, "Editar", "Continuar
+     daqui" e "Ver do começo" chamam `irPara` direto e nunca travam.
+     Travada, a etapa não muda: cada obrigatória em branco ganha a frase ao
+     lado, a região viva diz quantas faltam, e o foco vai para o primeiro
+     controle da primeira em branco (ou para o campo aberto vazio, no "Outro"
+     sem o "Qual?"), no meio da tela e sem rolagem suave
+     (o mesmo caminho dos links do Revisar, ver o efeito de foco).
+     A gravação sai na hora, como sairia na troca de etapa: travar a tela não
+     pode travar o rascunho, e o que a pessoa escreveu antes de apertar
+     Continuar vai para o servidor do mesmo jeito. Sem nada por gravar, a
+     loja busca o servidor: a resposta que falta pode ter sido dada em outro
+     aparelho (ver `conferirNoServidor`). */
+  function avancar(de: string, destino: string) {
+    const emBranco = obrigatoriasEmBrancoDaEtapa(de, loja.retratar().valores, ctx);
+    if (emBranco.length === 0) {
+      irPara(destino);
+      return;
+    }
+    setTravada({ etapa: de, ids: emBranco });
+    setMaxAviso(null);
+    /* No "Outro" sem o "Qual?", o foco vai para o campo aberto vazio, e não
+       para a primeira opção: a opção já está marcada, o que falta é o texto. */
+    focoRef.current = idDoCampo(chaveDoQueFalta(emBranco[0], loja.retratar().valores, ctx));
+    setPedidoDeFoco((n) => n + 1);
+    loja.conferirNoServidor();
   }
 
   function proximaDe(id: string): string {
@@ -1530,6 +1693,7 @@ export default function Formulario({ locale, chave, contexto: ctx, pacote, priva
     if (passoValido !== REVISAR || !retrato.carregado || faltam.length > 0 || invalidas.length > 0 || enviando) return;
     setEnviando(true);
     setErroEnvio(null);
+    setFaltamDoServidor([]);
     const resultado = await loja.enviar();
     setEnviando(false);
     if (resultado.ok) {
@@ -1537,6 +1701,11 @@ export default function Formulario({ locale, chave, contexto: ctx, pacote, priva
       return;
     }
     if (resultado.motivo === "fim") return;
+    if (resultado.motivo === "faltam") {
+      setFaltamDoServidor(resultado.ids);
+      setErroEnvio(t.erroFaltam);
+      return;
+    }
     setErroEnvio(resultado.motivo === "tamanho" ? t.tamanho : resultado.motivo === "campo" ? t.ajuste : t.erroEnvio);
   }
 
@@ -1557,8 +1726,14 @@ export default function Formulario({ locale, chave, contexto: ctx, pacote, priva
       if ("erro" in r) saida[k] = r.erro;
       else if (perguntaPorId(k)?.tipo === "email" && typeof v === "string" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())) saida[k] = "email";
     }
+    /* Em branco não tem erro de formato, então as duas listas não disputam
+       a mesma pergunta. */
+    for (const id of emFalta) {
+      const p = perguntaPorId(id);
+      saida[id] ??= p && abertaVazia(p, valores, ctx) ? "aberta" : "obrigatoria";
+    }
     return saida;
-  }, [existentes, retrato.errosDoServidor, tocados, valores, ctx]);
+  }, [existentes, retrato.errosDoServidor, tocados, valores, ctx, emFalta]);
 
   if (tela !== "formulario") {
     return (
@@ -1675,6 +1850,45 @@ export default function Formulario({ locale, chave, contexto: ctx, pacote, priva
               </p>
             ) : null}
             <h1>{t.titulo}</h1>
+            {/* O envio sem JavaScript voltou recusado: faltam obrigatórias.
+                Logo abaixo do título, que é onde o olho chega depois do 303
+                (a página nasce no topo), com a lista do que falta e um link
+                para cada pergunta. Os links vão para a PERGUNTA, e a folha
+                mostra a etapa dela mesmo com `tem-js` e sem React. */}
+            {!hidratado && faltamSemJs?.length ? (
+              <section className="bf-faltam bf-faltam-semjs" aria-labelledby="bf-faltam-semjs-titulo">
+                <h2 className="titulo-item" id="bf-faltam-semjs-titulo">
+                  {t.faltamTitulo}
+                </h2>
+                <p>{jaEnviado ? t.faltamSemJsReenvio : t.faltamSemJs}</p>
+                <ul>
+                  {/* Depois de cada uma, as obrigatórias que a resposta dela
+                      pode abrir, com a condição escrita como no rótulo da
+                      página: sem isto, quem seguia a lista voltava recusado
+                      uma segunda vez (as fotos). */}
+                  {/* O item é o id da pergunta ou, no "Outro" sem o "Qual?",
+                      a chave do campo aberto: o link leva ao campo, com o
+                      rótulo dele, e a linha diz o que falta. */}
+                  {[...new Set(faltamSemJs.flatMap((chave) => [chave, ...obrigatoriasQueDependemDe(perguntaDaChave(chave)?.id ?? chave)]))].map((chave) => {
+                    const p = perguntaDaChave(chave);
+                    if (!p || !existentes.has(p.id)) return null;
+                    const condicao = faltamSemJs.includes(chave) ? null : condicaoParaQuemResponde(p, ctx, locale);
+                    const aberta = chave !== p.id ? opcoesDisponiveis(p, ctx).find((o) => chaveAberta(p.id, o.id) === chave) : undefined;
+                    return (
+                      <li key={chave}>
+                        <a href={`#${aberta ? `${idDoCampo(chave)}-bloco` : idDoBloco(p)}`}>
+                          <span>
+                            {textoDaPergunta(p, ctx, locale).rotulo}
+                            {condicao ? <span className="bf-condicao"> ({condicao})</span> : null}
+                            {aberta ? <span className="bf-condicao"> ({t.faltaQual(textoDaOpcao(aberta, ctx, locale).rotulo)})</span> : null}
+                          </span>
+                        </a>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </section>
+            ) : null}
             {/* A abertura da ESPEC 3.6, em três parágrafos na ordem de lá. Some
                 depois de começar, com JavaScript; sem ele fica no topo. */}
             {/* O que promete gravação ("salva sozinho", "fica salvo desde a
@@ -1755,10 +1969,20 @@ export default function Formulario({ locale, chave, contexto: ctx, pacote, priva
             </div>
           ) : null}
 
-          {/* SEM `required` nos campos: sem JavaScript o envio junta com o
-              rascunho, e um obrigatório já salvo não pode barrar quem só quer
-              mudar outra coisa. As obrigatórias são conferidas no Revisar, com
-              o motivo escrito.
+          {/* SEM `required` nos campos, nem antes da hidratação, e foi decidido
+              de novo em 26/09/2026, quando a trava das obrigatórias entrou.
+              Três motivos, cada um suficiente: (1) sem JavaScript a página
+              nasce vazia e o envio junta com o rascunho, então uma obrigatória
+              já salva apareceria em branco e barraria quem só quer mudar outra
+              coisa; (2) sem JavaScript as condicionais aparecem todas, e uma
+              obrigatória que não vale para a pessoa (as fotos, para quem não
+              tem foto) barraria o envio sem saída; (3) com `tem-js` e sem
+              React, a obrigatória mora numa etapa escondida pelo `:target`, e
+              o balão nativo não tem onde aparecer: o envio falharia calado.
+              Quem confere é o servidor, com o rascunho juntado: recusa, grava
+              o que chegou como rascunho e volta para esta página com a lista
+              (`faltamSemJs`). Com JavaScript, a trava de cada etapa e o
+              Revisar.
               `noValidate` só depois da hidratação. Sem JavaScript o navegador
               confere tipo, tamanho e formato antes de mandar (ver
               `formatoNativo`), porque o erro do Worker ali seria JSON cru. Com
@@ -1824,6 +2048,11 @@ export default function Formulario({ locale, chave, contexto: ctx, pacote, priva
                       };
                       return p.tipo === "unica" || p.tipo === "multipla" ? <PerguntaDeEscolha key={p.id} {...props} /> : <PerguntaDeTexto key={p.id} {...props} />;
                     })}
+                    {/* Nasce vazia e no fluxo (ver a folha): quantas obrigatórias
+                        faltam nesta etapa, depois de o Continuar travar. */}
+                    <p className="bf-trava bf-so-js" role="status">
+                      {travada?.etapa === etapa.id && emFalta.length ? t.faltamNaEtapa(emFalta.length) : ""}
+                    </p>
                     <div className="bf-navegacao bf-so-js">
                       {anterior ? (
                         <AcaoDeEtapa hidratado={hidratado} className="botao botao--fantasma" destino={anterior} ir={() => irPara(anterior)}>
@@ -1833,7 +2062,7 @@ export default function Formulario({ locale, chave, contexto: ctx, pacote, priva
                       ) : (
                         <span />
                       )}
-                      <AcaoDeEtapa hidratado={hidratado} className="botao botao--acento" destino={proxima} ir={() => irPara(proxima)}>
+                      <AcaoDeEtapa hidratado={hidratado} className="botao botao--acento" destino={proxima} ir={() => avancar(etapa.id, proxima)}>
                         {proxima === REVISAR ? t.revisar : t.continuar}
                         <Seta />
                       </AcaoDeEtapa>
@@ -1850,7 +2079,8 @@ export default function Formulario({ locale, chave, contexto: ctx, pacote, priva
               ctx={ctx}
               valores={valores}
               visiveis={visiveis}
-              faltam={faltam}
+              faltam={faltamNoRevisar}
+              travamOEnvio={faltam.length > 0}
               invalidas={invalidas}
               hidratado={hidratado}
               carregado={retrato.carregado}
@@ -1883,6 +2113,8 @@ interface PropsDoRevisar {
   valores: Respostas;
   visiveis: Etapa[];
   faltam: string[];
+  /** As obrigatórias em branco pela conta daqui: só elas travam o Enviar (ver `faltamNoRevisar`). */
+  travamOEnvio: boolean;
   invalidas: { chave: string; erro: ErroCampo }[];
   hidratado: boolean;
   carregado: boolean;
@@ -1915,12 +2147,12 @@ function perguntaDaChave(chave: string): Pergunta | undefined {
    Editar) só existem com o rascunho carregado, e portanto só depois da
    hidratação: nascem `<button type="button">`, que o Tab do Safari alcança
    (revisão de 25/09/2026). Não mudam o endereço: são ação. */
-function Revisar({ atual, t, locale, ctx, valores, visiveis, faltam, invalidas, hidratado, carregado, enviando, erroEnvio, envios, enviadoEm, privacidade, anterior, definir, tocar, irPara }: PropsDoRevisar) {
+function Revisar({ atual, t, locale, ctx, valores, visiveis, faltam, travamOEnvio, invalidas, hidratado, carregado, enviando, erroEnvio, envios, enviadoEm, privacidade, anterior, definir, tocar, irPara }: PropsDoRevisar) {
   /* Aria-disabled, e não `disabled`: botão desligado sai da ordem do Tab, e
      aí o motivo escrito ao lado nunca é lido por quem navega por teclado. O
      envio confere de novo no manipulador. Sem JavaScript nada disto se
      aplica: o botão envia sempre, e quem confere é o servidor. */
-  const motivo = !hidratado ? null : enviando ? null : !carregado ? t.motivoCarregando : invalidas.length ? t.motivoAjuste : faltam.length ? t.motivoFaltam : null;
+  const motivo = !hidratado ? null : enviando ? null : !carregado ? t.motivoCarregando : invalidas.length ? t.motivoAjuste : travamOEnvio ? t.motivoFaltam : null;
   const bloqueado = hidratado && (motivo !== null || enviando);
   const ultimo = envios > 0 ? dataHoraLocal(enviadoEm, t.intl) : null;
   const linhasNoSite = NO_SITE.map((linha) => ({ ...linha, p: perguntaPorId(linha.id) })).filter(
@@ -1982,10 +2214,15 @@ function Revisar({ atual, t, locale, ctx, valores, visiveis, faltam, invalidas, 
                   {faltam.map((id) => {
                     const p = perguntaPorId(id);
                     if (!p || !etapaDaPergunta(id)) return null;
+                    /* No "Outro" sem o "Qual?", o botão leva ao campo aberto
+                       e a linha diz o que falta nele. */
+                    const alvo = chaveDoQueFalta(id, valores, ctx);
+                    const aberta = alvo !== id ? opcoesDisponiveis(p, ctx).find((o) => chaveAberta(id, o.id) === alvo) : undefined;
                     return (
                       <li key={id}>
-                        <button type="button" onClick={() => irAoCampo(id)}>
+                        <button type="button" onClick={() => irAoCampo(alvo)}>
                           {textoDaPergunta(p, ctx, locale).rotulo}
+                          {aberta ? ` (${t.faltaQual(textoDaOpcao(aberta, ctx, locale).rotulo)})` : null}
                         </button>
                       </li>
                     );

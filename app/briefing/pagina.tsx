@@ -39,6 +39,11 @@ import { tituloDoBriefing } from "./textos.ts";
  * da pessoa física. E `inicial` (e-mail, telefone e CNPJ do cadastro) NÃO vai:
  * o formulário recebe pelo `GET`, que só o JavaScript da página faz, e assim
  * esses dados não ficam no HTML que a prévia de link do WhatsApp busca.
+ * O único pré-preenchimento que o HTML traz é o que sai do CONTEXTO, que já
+ * está na página (o nome da empresa, que a abertura mostra, e os idiomas do
+ * site), e só nas perguntas que o rascunho não tem (`dados.prefill`, desde
+ * 26/09/2026): sem isso, a página sem JavaScript obrigava a digitar o nome
+ * da empresa para passar da trava das obrigatórias.
  */
 
 /**
@@ -92,6 +97,9 @@ export default async function PaginaBriefing({ locale, searchParams }: { locale:
         pacote={{ nome: cartao.name, itens: [...cartao.items] }}
         privacidade={privacidade}
         enderecoDoFormulario={enderecoDoFormulario ?? enderecoDaPagina(locale)}
+        faltamSemJs={dados.faltam ?? null}
+        prefillSemJs={dados.prefill ?? null}
+        jaEnviado={dados.estado === "enviado"}
       />
     );
   } else {

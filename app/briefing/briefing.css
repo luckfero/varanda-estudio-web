@@ -179,6 +179,14 @@ html:not(.tem-js) .bf-so-js { display: none !important; }
 .tem-js .bf-etapa:not(.atual) { display: none; }
 .tem-js .bf-etapa:target { display: grid; }
 .tem-js .bf-form:has(.bf-etapa:target) .bf-etapa.atual:not(:target) { display: none; }
+/* Os links do aviso de obrigatórias que faltam (a página que volta do envio
+   sem JavaScript recusado) apontam para a PERGUNTA, e não para a etapa. Com
+   `tem-js` e sem React, a pergunta pedida pode morar numa etapa escondida:
+   a etapa que a contém aparece, e a atual sai, como no `:target` da etapa. */
+.tem-js .bf-etapa:has(:target) { display: grid; }
+.tem-js .bf-form:has(.bf-etapa :target) .bf-etapa.atual:not(:has(:target)) { display: none; }
+.tem-js fieldset.bf-pergunta.oculta:target { display: block; }
+.tem-js .bf-pergunta.campo.oculta:target { display: grid; }
 
 /* A troca de etapa: opacidade e 8px, na curva de saída da casa e abaixo de
    300ms (regra 9.20). Só depois do primeiro clique (`.trocou`): na carga da
@@ -216,17 +224,54 @@ html:not(.tem-js) .bf-so-js { display: none !important; }
 /* ---------------------------------------------------------------------
    AS PERGUNTAS
    --------------------------------------------------------------------- */
-.bf-pergunta { padding-block: var(--e5); border-top: 1px solid var(--fio); min-width: 0; }
+/* O ESPAÇO DA PERGUNTA (pedido de 26/09/2026: "o título mais
+   espaçado das opções e inputs, em todos"). Dois blocos: a pergunta (título
+   e, se houver, a dica logo abaixo, a --e2) e a resposta (fichas ou campo),
+   que nasce a --e5 do que vier antes dela. O que vem DEPOIS da resposta
+   (exemplo, contador, erro, "até três", o campo que a opção abre) continua
+   colado nela, como antes.
+   Medido antes, no Chromium e no WebKit, em 390 e 1440: campo de texto com
+   8px do título à caixa, e escolha com ZERO (ver o fieldset abaixo).
+   Entre uma pergunta e a próxima o recuo subiu um degrau, de --e5 para --e6:
+   com 24px dos dois lados, o título ficava à mesma distância do fio de cima
+   e das respostas de baixo, e lia solto entre os dois. Com 32 contra 24 ele
+   gruda na resposta dele, que é o que o pedido quer dizer. */
+.bf-pergunta { padding-block: var(--e6); border-top: 1px solid var(--fio); min-width: 0; }
 .tem-js .bf-pergunta.oculta { display: none; }
 .bf-pergunta.campo { gap: var(--e2); }
+/* O `gap` da grade dá 8 entre todas as peças; a caixa soma 16 de margem e
+   fica a 24 do título ou da dica. */
+.bf-pergunta.campo > :is(input, textarea) { margin-top: calc(var(--e5) - var(--e2)); }
 
 /* `fieldset` com `legend` precisa de caixa em bloco: a `legend` não vira item
    de grade, ela mora na borda do conjunto, e o `gap` não a alcançaria. O
-   espaço entre as peças sai da margem de cada uma. */
+   espaço entre as peças sai da margem de cada uma.
+   **Com uma exceção, e era ela que colava o título nas fichas.** A `legend`
+   flutua, e quem vem logo depois dela tem `clear`. Margem de caixa com
+   folga de `clear` é ENGOLIDA: a borda de cima da caixa vai para o pé da
+   flutuação, com ou sem margem. Os 12px de `* + *` nunca existiram ali;
+   medido, o título ficava a 0px das fichas e da dica, nos dois motores. O
+   espaço logo abaixo da `legend` é RECUO de quem vem depois, que a folga não
+   come. */
 fieldset.bf-pergunta { display: block; margin: 0; padding-inline: 0; border-inline: 0; border-bottom: 0; min-inline-size: 0; }
 fieldset.bf-pergunta > legend { float: left; width: 100%; padding: 0; }
 fieldset.bf-pergunta > legend + * { clear: both; }
 fieldset.bf-pergunta > * + * { margin-top: var(--e3); }
+fieldset.bf-pergunta > legend + .bf-dica { padding-top: var(--e2); }
+fieldset.bf-pergunta > legend + .bf-fichas { padding-top: var(--e5); }
+fieldset.bf-pergunta > .bf-dica + .bf-fichas { margin-top: var(--e5); }
+/* A frase de erro da trava fica a --e2 da resposta nos dois tipos: no campo
+   de texto é o `gap` da grade, aqui é esta margem. Pelo `* + *` ela ficava a
+   12 das fichas e a 8 da caixa (revisão de 26/09/2026). As fichas não vêm
+   logo depois da `legend`, então a margem não é engolida pelo `clear`. */
+fieldset.bf-pergunta > .bf-fichas + .bf-erro { margin-top: var(--e2); }
+
+/* A obrigatória em branco quando o Continuar trava: o fio de cima da
+   pergunta acende, junto com a frase âmbar logo depois da resposta. No campo
+   de texto a caixa acende também, pelo `aria-invalid` (regra abaixo). As
+   fichas ficam como estão de propósito: borda âmbar nelas é o desenho de
+   MARCADA, e acender todas diria o contrário do erro. */
+.bf-pergunta.em-falta { border-top-color: var(--acento); box-shadow: inset 0 1px 0 var(--acento); }
 
 .bf-rotulo {
   font-size: var(--t-item);
@@ -255,6 +300,11 @@ fieldset.bf-pergunta > * + * { margin-top: var(--e3); }
    `aria-describedby`. */
 .bf-erro { font-size: var(--c-apoio); font-weight: 600; color: var(--acento); }
 .bf-pergunta [aria-invalid="true"] { border-color: var(--acento); }
+/* O campo inválido já tem a borda âmbar que o foco usa, e o brilho do foco
+   (`contact.css`) mede 1,47:1 contra o fundo: com e sem foco a caixa ficava
+   igual (revisão de 26/09/2026). O foco dele ganha o contorno da casa
+   (`:focus-visible` de `base.css`, 8:1), que o erro não usa. */
+.bf-pergunta [aria-invalid="true"]:focus { outline: 2px solid var(--acento); outline-offset: 3px; }
 
 .bf-sugestao { display: flex; flex-wrap: wrap; align-items: center; gap: var(--e2) var(--e3); font-size: var(--c-apoio); color: var(--tinta-media); }
 
@@ -295,6 +345,12 @@ fieldset.bf-pergunta > * + * { margin-top: var(--e3); }
    marcada, e a frase de qual opção vira texto de leitor de tela. */
 .bf-abre { gap: var(--e2); }
 .tem-js .bf-abre:not(.visivel) { display: none; }
+/* O link do "Outro" sem o "Qual?" na página que volta do envio sem
+   JavaScript recusado aponta para este bloco. Com `tem-js` e sem React ele
+   estaria escondido (a opção salva não vem marcada no HTML), e o salto não
+   teria onde cair; a etapa dele aparece pelas regras de `:target` acima. */
+.tem-js .bf-abre:target { display: grid; }
+.tem-js fieldset.bf-pergunta.oculta:has(> .bf-abre:target) { display: block; }
 .bf-rotulo-abre { font-size: var(--c-apoio); font-weight: 600; color: var(--tinta-media); }
 .bf-condicao-abre { font-weight: 400; color: var(--tinta-fraca); }
 .tem-js .bf-condicao-abre {
@@ -332,6 +388,17 @@ fieldset.bf-pergunta > .bf-max:empty { margin-top: 0; }
 }
 .bf-navegacao .botao--acento { flex: 1 1 12rem; }
 
+/* "Faltam duas perguntas obrigatórias nesta etapa." Região viva que nasce
+   vazia e no fluxo, logo acima dos botões: vazia, não ocupa nada (o corpo da
+   etapa tem `gap: 0`). Não é `display: none` quando vazia de propósito: região
+   que entra na árvore junto com o texto muitas vezes não é anunciada. */
+.bf-trava { font-size: var(--c-apoio); font-weight: 600; color: var(--acento); }
+/* Embaixo, --e4 até o fio da navegação: só com a margem do fio (8px) a
+   frase encostava nele e lia como rodapé solto da etapa, a 56px da resposta
+   de cima e a 8px do fio que a separa do Continuar (revisão de 26/09/2026).
+   Com 24px de cada lado do fio, frase, fio e botões leem como um bloco. */
+.bf-trava:not(:empty) { margin-block: var(--e5) var(--e4); }
+
 /* ---------------------------------------------------------------------
    REVISAR E ENVIAR
    --------------------------------------------------------------------- */
@@ -347,6 +414,9 @@ fieldset.bf-pergunta > .bf-max:empty { margin-top: 0; }
 /* O vão separa um link do outro: no celular a pergunta quebra em duas linhas,
    e sem ele dois itens seguidos liam como uma frase só. */
 .bf-faltam ul { display: grid; gap: var(--e2); margin-top: var(--e2); }
+/* O aviso da página que volta do envio sem JavaScript recusado: o título, a
+   frase do que houve e a lista, cada um a --e2 do anterior, como a lista. */
+.bf-faltam-semjs > p { margin-top: var(--e2); }
 /* Item de lista, fora de frase: alvo de toque inteiro, 44px. É `<button>`
    (só existe depois da hidratação, e o Tab do Safari não para em link), com
    o desenho de link sublinhado de antes; o `:is` guarda o desenho se algum
@@ -355,6 +425,13 @@ fieldset.bf-pergunta > .bf-max:empty { margin-top: 0; }
   appearance: none; background: none; border: 0; padding: 0; margin: 0;
   font: inherit; text-align: start; cursor: pointer;
   display: inline-flex; align-items: center; min-height: var(--alvo-toque);
+  /* Recuo fixo, e não só a altura mínima centralizada: com ela o item de uma
+     linha ganhava 10px em cima e embaixo e o de duas linhas nenhum, e o
+     espaço de texto a texto variava de 15 a 34px (revisão de 26/09/2026).
+     O recuo leva uma linha exatamente aos 44px, e a de duas cresce sem
+     mudar o ritmo. Os 10px antes são a rede para o navegador sem `lh`. */
+  padding-block: 10px;
+  padding-block: calc((var(--alvo-toque) - 1lh) / 2);
   color: var(--acento); font-size: var(--c-apoio); text-decoration: underline; text-underline-offset: 3px;
 }
 
