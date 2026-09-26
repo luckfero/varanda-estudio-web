@@ -1,0 +1,455 @@
+/**
+ * O QUESTIONÁRIO DE PROJETO (`app/briefing/formulario.tsx`).
+ *
+ * Não declara token: consome os de `app/base.css`, como o resto da folha. O
+ * que se reaproveita de propósito mantém o nome do site e o desenho de lá:
+ * o painel `.formulario` com `.formulario-topo` e `.formulario-corpo`, os
+ * campos `.campo`, os `.botao`, o `.rotulo`, a `.consentimento`, os `.canais`
+ * e a `.estado-formulario` do contato. Aqui mora só o que o questionário tem
+ * e o contato não.
+ *
+ * **O prefixo `bf-` não é enfeite.** `.etapa` é a linha do tempo do processo
+ * (com dois pseudo-elementos desenhando fio e ponto), `.topo` é o cabeçalho,
+ * `.abertura` é a hero e `.aviso` é do portfólio. Sem prefixo, a cascata
+ * juntaria os dois desenhos sem erro em lugar nenhum, que é a regra 9.24.
+ *
+ * Celular primeiro: a regra base é a do telefone, e o que muda na tela larga
+ * está no bloco de 761px para cima, no fim.
+ */
+
+/* ---------------------------------------------------------------------
+   COM E SEM JAVASCRIPT
+   A classe `tem-js` entra no `<html>` antes da primeira pintura (ver
+   `app/raiz.tsx`). O `!important` é porque estas duas regras precisam vencer
+   o `display` de qualquer componente em que caiam: são um interruptor, não
+   um estilo.
+   --------------------------------------------------------------------- */
+html:not(.tem-js) .bf-so-js { display: none !important; }
+.tem-js .bf-sem-js { display: none !important; }
+
+/* ---------------------------------------------------------------------
+   A PÁGINA
+   --------------------------------------------------------------------- */
+.secao.briefing { min-height: 100svh; }
+/* `.secao > .caixa` dá 4 a 7,5rem de recuo vertical, medido para seção de
+   vitrine. Aqui são três faixas seguidas (marca, barra, conteúdo), e o recuo
+   de vitrine em cada uma afastaria a pergunta da tela. */
+.secao.briefing > .caixa.bf-cabeca { padding-block: var(--e4); }
+.secao.briefing > .caixa.bf-caixa { padding-block: var(--e6) var(--e9); }
+
+.bf-cabeca { display: flex; align-items: center; }
+.bf-marca { margin-right: 0; }
+
+/* A coluna de leitura. 46rem é a medida de uma pergunta longa em uma ou duas
+   linhas no desktop; mais larga que isso, o olho perde a linha de volta. */
+.bf-coluna { max-width: 46rem; margin-inline: auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--e6); }
+
+/* O `h1` da casa é `--t-hero`, que é o degrau SÓ do título da home. Aqui ele
+   é título de página de serviço, e o degrau é o de seção. */
+.secao.briefing h1 { font-size: var(--t-secao); line-height: var(--lh-titulo); letter-spacing: var(--ls-titulo); max-width: 20ch; }
+.secao.briefing h1:focus, .bf-titulo-etapa:focus { outline: none; }
+
+/* ---------------------------------------------------------------------
+   A BARRA PRESA NO TOPO
+   Etapa, gravação e o botão de dúvida; embaixo, o progresso. A marca fica
+   de fora e rola com a página: ela não ajuda a responder, e no celular cada
+   linha presa no topo custa altura de tela.
+   --------------------------------------------------------------------- */
+.bf-barra {
+  position: sticky; top: 0; z-index: 30;
+  /* Opaca: o conteúdo passa por baixo dela, e fundo translúcido deixaria a
+     pergunta de baixo manchando o texto da barra. */
+  background: var(--chao);
+  border-block: 1px solid var(--fio);
+}
+.bf-barra-linha { display: flex; align-items: center; gap: var(--e2) var(--e3); min-height: 60px; padding-block: var(--e2); }
+.bf-passo { flex: 0 0 auto; font-size: var(--c-apoio); font-weight: 650; color: var(--tinta); white-space: nowrap; }
+.bf-passo-titulo { font-weight: 500; color: var(--tinta-media); }
+.bf-gravacao { flex: 1 1 auto; min-width: 0; display: flex; align-items: center; gap: var(--e2); font-size: var(--c-apoio); line-height: 1.35; color: var(--tinta-fraca); }
+.bf-duvida { flex: none; margin-left: auto; gap: var(--e2); }
+.bf-duvida svg { width: 18px; height: 18px; }
+
+/* O ponto da gravação: aceso quando o último envio ao servidor deu certo,
+   pulsando enquanto grava, apagado quando o que vale é a cópia do aparelho. */
+.bf-ponto { width: 8px; height: 8px; border-radius: 50%; background: var(--acento); flex: none; }
+.bf-ponto.parado { background: var(--tinta-fraca); }
+
+.bf-progresso { height: 3px; background: var(--fio); overflow: hidden; }
+.bf-progresso > span {
+  display: block; height: 100%;
+  background: var(--acento);
+  transform-origin: left center;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+/* No celular a barra comporta "Etapa 3 de 9", a primeira frase do indicador
+   e "Dúvida?". O resto continua no documento como texto de leitor de tela,
+   e não some: o nome acessível do botão continua sendo a frase inteira, que
+   começa pelo que está escrito nele (critério 2.5.3). */
+.bf-passo-titulo { display: none; }
+.bf-gravacao-resto,
+.bf-duvida-resto {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+/* De 320 a 374px a coluna que sobra para o indicador, entre a etapa (que não
+   quebra) e o "Dúvida?" (que não encolhe), é mais estreita que a palavra
+   "Guardado": o texto passava por cima da borda do botão, até 44px no
+   Revisar em espanhol (revisão de 25/09/2026, critério 1.4.10). Ali o
+   indicador desce para uma linha própria, e a barra mais alta que isso cria
+   é descontada pelo `scroll-padding-top` que o formulário mede dela. */
+@media (max-width: 374px) {
+  .bf-barra-linha { flex-wrap: wrap; }
+  .bf-gravacao { order: 3; flex: 1 0 100%; }
+}
+
+/* ---------------------------------------------------------------------
+   APRESENTAÇÃO: título, abertura e o que foi contratado
+   --------------------------------------------------------------------- */
+.bf-sem-js-aviso {
+  padding: var(--e4) var(--e5);
+  border: 1px solid var(--fio-acento);
+  border-radius: var(--raio-peca);
+  background: var(--nivel-2);
+  font-size: var(--c-apoio);
+  color: var(--tinta);
+}
+
+.bf-apresentacao { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--e5); }
+.bf-apresentacao .rotulo { margin-bottom: 0; }
+.bf-abertura { display: grid; gap: var(--e4); }
+.bf-abertura p { color: var(--tinta-media); max-width: 62ch; }
+.bf-abertura .lead { color: var(--tinta); }
+.bf-abertura a,
+.bf-privacidade a { color: var(--acento); text-decoration: underline; text-underline-offset: 3px; }
+
+/* A abertura "some depois de começar" (ESPEC 3.4). O `h1` fica, só que para
+   leitor de tela: a página continua tendo título, e visualmente quem manda
+   dali em diante é o título da etapa. */
+.tem-js .bf-apresentacao.encerrada > :not(h1) { display: none; }
+.tem-js .bf-apresentacao.encerrada h1 {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.bf-contratado {
+  display: grid; gap: var(--e3);
+  padding: var(--e5);
+  background: var(--nivel-1);
+  border: 1px solid var(--fio);
+  border-radius: var(--raio-cartao);
+}
+.bf-contratado-pacote { font-size: var(--t-item); font-weight: 600; line-height: 1.3; }
+/* O marcador é o quadrado de 5px das listas da casa (rodada 6): o visto não
+   existe em nenhuma das fontes, e o traço desenharia um travessão. */
+.bf-contratado-itens { display: grid; gap: var(--e2); }
+.bf-contratado-itens li {
+  display: grid; grid-template-columns: 5px minmax(0, 1fr); gap: var(--e3); align-items: baseline;
+  font-size: var(--c-apoio); color: var(--tinta-media);
+}
+.bf-contratado-itens li::before { content: ""; width: 5px; height: 5px; background: var(--acento); transform: translateY(-2px); }
+.bf-contratado-extra { display: grid; gap: var(--e2); padding-top: var(--e3); border-top: 1px solid var(--fio); }
+.bf-contratado-extra > div { display: flex; flex-wrap: wrap; gap: var(--e1) var(--e3); font-size: var(--c-apoio); }
+.bf-contratado-extra dt { color: var(--tinta-fraca); }
+.bf-contratado-extra dd { margin: 0; color: var(--tinta); font-weight: 600; }
+
+.bf-retomar {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: var(--e3);
+  padding: var(--e4) var(--e5);
+  background: var(--nivel-2);
+  border: 1px solid var(--fio-acento);
+  border-radius: var(--raio-cartao);
+}
+.bf-retomar-acoes { display: flex; flex-wrap: wrap; gap: var(--e2); }
+
+/* ---------------------------------------------------------------------
+   AS ETAPAS
+   --------------------------------------------------------------------- */
+.bf-form { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--e6); }
+
+/* UMA ETAPA POR VEZ, desde a primeira pintura (ESPEC 3.4).
+   As duas regras de `:target` são a rede para o JavaScript da página que
+   não carrega: `tem-js` já entrou, então as etapas estão escondidas, e sem
+   React os botões de navegação seriam mortos. Como eles são âncoras de
+   verdade (`#etapa-x`), o `:target` mostra a etapa pedida e esconde a atual.
+   Sem suporte a `:has`, as duas ficam visíveis, que é o pior caso certo. */
+.tem-js .bf-etapa:not(.atual) { display: none; }
+.tem-js .bf-etapa:target { display: grid; }
+.tem-js .bf-form:has(.bf-etapa:target) .bf-etapa.atual:not(:target) { display: none; }
+
+/* A troca de etapa: opacidade e 8px, na curva de saída da casa e abaixo de
+   300ms (regra 9.20). Só depois do primeiro clique (`.trocou`): na carga da
+   página não há o que entender, e animar ali seria enfeite.
+   Sem `fill-mode`, de propósito: com `both`, uma aba que não pinta quadro
+   (em segundo plano) deixaria a etapa presa em opacidade zero. */
+.bf-form.trocou .bf-etapa.atual { animation: bf-entrar 240ms var(--ease-out); }
+@keyframes bf-entrar {
+  from { opacity: 0; transform: translateY(8px); }
+}
+
+.bf-etapa .formulario-corpo { gap: 0; }
+.bf-titulo-etapa {
+  font-family: var(--fonte-display);
+  font-size: var(--t-bloco);
+  font-weight: 500;
+  line-height: var(--lh-bloco);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--e4);
+}
+
+/* Aviso da etapa (provas, fotos, pacote, acessos). */
+.bf-nota {
+  margin-block: var(--e2);
+  padding: var(--e4) var(--e5);
+  background: var(--nivel-2);
+  border: 1px solid var(--fio);
+  border-radius: var(--raio-peca);
+  font-size: var(--c-apoio);
+  line-height: 1.6;
+  color: var(--tinta-media);
+}
+.bf-conflito { border-color: var(--fio-acento); color: var(--tinta); }
+
+/* ---------------------------------------------------------------------
+   AS PERGUNTAS
+   --------------------------------------------------------------------- */
+.bf-pergunta { padding-block: var(--e5); border-top: 1px solid var(--fio); min-width: 0; }
+.tem-js .bf-pergunta.oculta { display: none; }
+.bf-pergunta.campo { gap: var(--e2); }
+
+/* `fieldset` com `legend` precisa de caixa em bloco: a `legend` não vira item
+   de grade, ela mora na borda do conjunto, e o `gap` não a alcançaria. O
+   espaço entre as peças sai da margem de cada uma. */
+fieldset.bf-pergunta { display: block; margin: 0; padding-inline: 0; border-inline: 0; border-bottom: 0; min-inline-size: 0; }
+fieldset.bf-pergunta > legend { float: left; width: 100%; padding: 0; }
+fieldset.bf-pergunta > legend + * { clear: both; }
+fieldset.bf-pergunta > * + * { margin-top: var(--e3); }
+
+.bf-rotulo {
+  font-size: var(--t-item);
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--tinta);
+}
+.bf-obrigatoria {
+  font-family: var(--fonte-mono);
+  font-size: var(--c-mono);
+  font-weight: 500;
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--acento);
+  white-space: nowrap;
+}
+.bf-condicao { font-size: var(--c-apoio); font-weight: 400; color: var(--tinta-fraca); letter-spacing: 0; }
+.bf-dica { font-size: var(--c-apoio); line-height: 1.55; color: var(--tinta-media); }
+.bf-exemplo { font-size: var(--c-apoio); line-height: 1.55; color: var(--tinta-fraca); }
+.bf-contador { font-size: var(--c-apoio); color: var(--tinta-fraca); text-align: right; font-variant-numeric: tabular-nums; }
+
+/* O erro de campo é ÂMBAR, e não vermelho: a casa não tem vermelho, e o
+   terracota mede 4,18:1 sobre o painel, abaixo do mínimo. O que diz "erro"
+   é a frase e a borda do campo, ligadas por `aria-invalid` e
+   `aria-describedby`. */
+.bf-erro { font-size: var(--c-apoio); font-weight: 600; color: var(--acento); }
+.bf-pergunta [aria-invalid="true"] { border-color: var(--acento); }
+
+.bf-sugestao { display: flex; flex-wrap: wrap; align-items: center; gap: var(--e2) var(--e3); font-size: var(--c-apoio); color: var(--tinta-media); }
+
+/* AS FICHAS. A caixa de marcar e o botão de rádio continuam os do navegador,
+   de verdade e visíveis, porque são eles que carregam o foco, o teclado e o
+   anúncio de "marcado" sem nenhuma linha de script. A ficha é o alvo de toque
+   em volta deles: 44px de altura mínima, o rótulo inteiro clicável. A forma
+   do controle (quadrado ou círculo) é o que diz se a pergunta aceita uma ou
+   várias respostas. */
+.bf-fichas { display: flex; flex-wrap: wrap; gap: var(--e2); }
+.bf-ficha {
+  display: inline-flex; align-items: flex-start; gap: var(--e3);
+  min-height: var(--alvo-toque); max-width: 100%;
+  padding: 11px var(--e4) 11px var(--e3);
+  background: var(--chao);
+  border: 1px solid var(--fio-controle);
+  border-radius: var(--raio-peca);
+  color: var(--tinta);
+  font-size: var(--c-base);
+  line-height: 1.35;
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out), transform var(--dur-press) var(--ease-out);
+}
+.bf-ficha input { width: 20px; height: 20px; margin: 0; flex: none; accent-color: var(--acento); cursor: pointer; }
+/* `.marcada` vem do React; o `:has` é o mesmo desenho para quem está sem
+   JavaScript, em que a classe não acompanha o clique. */
+.bf-ficha.marcada,
+.bf-ficha:has(input:checked) { border-color: var(--acento); background: rgba(232, 163, 60, 0.12); }
+.bf-ficha.travada { cursor: default; }
+.bf-travada { font-size: var(--c-apoio); color: var(--tinta-media); }
+@media (hover: hover) {
+  .bf-ficha:not(.travada):hover { border-color: var(--tinta-fraca); }
+  .bf-ficha.marcada:hover { border-color: var(--acento-hover); }
+}
+
+/* O campo que uma opção abre ("Outro: qual?"). Sem JavaScript todos
+   aparecem, cada um dizendo de qual opção é; com JavaScript só o da opção
+   marcada, e a frase de qual opção vira texto de leitor de tela. */
+.bf-abre { gap: var(--e2); }
+.tem-js .bf-abre:not(.visivel) { display: none; }
+.bf-rotulo-abre { font-size: var(--c-apoio); font-weight: 600; color: var(--tinta-media); }
+.bf-condicao-abre { font-weight: 400; color: var(--tinta-fraca); }
+.tem-js .bf-condicao-abre {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* A dica que aparece com a opção marcada. Sem JavaScript todas aparecem,
+   precedidas de "Se marcar X:". */
+.bf-dica-opcao {
+  padding: var(--e3) var(--e4);
+  border-left: 2px solid var(--fio-acento);
+  background: rgba(232, 163, 60, 0.06);
+  font-size: var(--c-apoio);
+  line-height: 1.55;
+  color: var(--tinta-media);
+}
+.tem-js .bf-dica-opcao:not(.visivel) { display: none; }
+
+/* "Até três. Desmarque uma para trocar." É região viva e nasce vazia e no
+   fluxo; vazia, não ocupa nada. */
+.bf-max { font-size: var(--c-apoio); font-weight: 600; color: var(--acento); }
+fieldset.bf-pergunta > .bf-max:empty { margin-top: 0; }
+
+/* ---------------------------------------------------------------------
+   NAVEGAÇÃO ENTRE ETAPAS
+   --------------------------------------------------------------------- */
+.bf-navegacao {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: var(--e3);
+  margin-top: var(--e2);
+  padding-top: var(--e5);
+  border-top: 1px solid var(--fio);
+}
+.bf-navegacao .botao--acento { flex: 1 1 12rem; }
+
+/* ---------------------------------------------------------------------
+   REVISAR E ENVIAR
+   --------------------------------------------------------------------- */
+.bf-revisar .formulario-corpo > * + * { margin-top: var(--e5); }
+.bf-revisar .bf-titulo-etapa { margin-bottom: 0; }
+
+.bf-faltam {
+  padding: var(--e4) var(--e5);
+  background: rgba(232, 163, 60, 0.08);
+  border: 1px solid var(--fio-acento);
+  border-radius: var(--raio-peca);
+}
+/* O vão separa um link do outro: no celular a pergunta quebra em duas linhas,
+   e sem ele dois itens seguidos liam como uma frase só. */
+.bf-faltam ul { display: grid; gap: var(--e2); margin-top: var(--e2); }
+/* Item de lista, fora de frase: alvo de toque inteiro, 44px. É `<button>`
+   (só existe depois da hidratação, e o Tab do Safari não para em link), com
+   o desenho de link sublinhado de antes; o `:is` guarda o desenho se algum
+   voltar a ser âncora. */
+.bf-faltam :is(a, button) {
+  appearance: none; background: none; border: 0; padding: 0; margin: 0;
+  font: inherit; text-align: start; cursor: pointer;
+  display: inline-flex; align-items: center; min-height: var(--alvo-toque);
+  color: var(--acento); font-size: var(--c-apoio); text-decoration: underline; text-underline-offset: 3px;
+}
+
+.bf-resumo { border-top: 1px solid var(--fio); }
+.bf-resumo-etapa { display: grid; gap: var(--e1); padding-block: var(--e3); border-bottom: 1px solid var(--fio); }
+.bf-resumo-cabeca { display: flex; align-items: center; justify-content: space-between; gap: var(--e3); }
+.bf-resumo-conta { font-size: var(--c-apoio); color: var(--tinta-fraca); }
+/* `<button>` desenhado como link (ver `.bf-faltam`). O alvo tem 44px nos DOIS
+   sentidos: na largura da palavra ele ficava com 40px ("Editar") e 26px
+   ("Edit"), abaixo da regra da casa em base.css. */
+.bf-editar {
+  appearance: none; background: none; border: 0; padding: 0; margin: 0;
+  font: inherit; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: var(--alvo-toque); min-width: var(--alvo-toque); flex: none;
+  color: var(--acento); font-size: var(--c-apoio); font-weight: 600;
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.bf-resumo-detalhe summary {
+  display: flex; align-items: center; min-height: var(--alvo-toque); width: max-content; max-width: 100%;
+  font-size: var(--c-apoio); color: var(--tinta-media); cursor: pointer;
+}
+.bf-resumo-detalhe dl { display: grid; gap: var(--e3); padding-block: var(--e2) var(--e3); }
+.bf-resumo-detalhe dt { font-size: var(--c-apoio); color: var(--tinta-fraca); }
+.bf-resumo-detalhe dd { margin: 0; color: var(--tinta); white-space: pre-line; overflow-wrap: anywhere; }
+
+.bf-no-site {
+  display: grid; gap: var(--e3);
+  padding: var(--e5);
+  background: var(--nivel-2);
+  border: 1px solid var(--fio);
+  border-radius: var(--raio-cartao);
+}
+.bf-no-site dl { display: grid; }
+.bf-no-site dl > div { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--e1); padding-block: var(--e2); border-bottom: 1px solid var(--fio); }
+.bf-no-site dt { font-size: var(--c-apoio); color: var(--tinta-fraca); }
+.bf-no-site dd { margin: 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--e1) var(--e3); color: var(--tinta); overflow-wrap: anywhere; }
+.bf-em-branco { color: var(--tinta-fraca); }
+
+.bf-privacidade { font-size: var(--c-apoio); line-height: 1.6; color: var(--tinta-media); }
+
+.bf-enviar { display: grid; gap: var(--e3); }
+/* `aria-disabled` e não `disabled` (ver o componente): o desenho é de
+   desligado, o foco continua alcançando o botão e o motivo escrito é lido. */
+.bf-enviar .botao[aria-disabled="true"] { background: var(--nivel-3); color: var(--tinta-media); cursor: not-allowed; }
+.bf-motivo { font-size: var(--c-apoio); color: var(--tinta-media); }
+/* A margem negativa da `.estado-formulario:empty` do contato cancela o vão
+   de lá (16px); aqui o vão é de 12px. */
+.bf-enviar .estado-formulario:empty { margin-top: calc(var(--e3) * -1); }
+
+/* ---------------------------------------------------------------------
+   AS TELAS DE ESTADO
+   --------------------------------------------------------------------- */
+.bf-tela { gap: var(--e5); padding-top: var(--e6); }
+.bf-tela .rotulo { margin-bottom: 0; }
+.bf-tela .lead { max-width: 58ch; }
+.bf-tela-acoes { display: flex; flex-wrap: wrap; gap: var(--e3); }
+.bf-tela-acoes .botao svg { width: 18px; height: 18px; }
+.bf-arquivos { display: grid; gap: var(--e3); }
+.bf-arquivos .canais { margin-top: 0; }
+.bf-copia { display: grid; gap: var(--e3); }
+.bf-copia textarea { min-height: 220px; font-size: var(--c-apoio); line-height: 1.55; }
+.bf-copia .botao { justify-self: start; }
+
+/* ---------------------------------------------------------------------
+   TELA LARGA
+   --------------------------------------------------------------------- */
+@media (min-width: 761px) {
+  .bf-passo-titulo { display: inline; }
+  .bf-gravacao-resto,
+  .bf-duvida-resto {
+    position: static; width: auto; height: auto;
+    margin: 0; overflow: visible; clip: auto; white-space: normal;
+  }
+  .bf-no-site dl > div { grid-template-columns: minmax(8rem, 12rem) minmax(0, 1fr); gap: var(--e3); align-items: center; }
+  .bf-navegacao .botao--acento { flex: 0 0 auto; }
+}
+
+/* ---------------------------------------------------------------------
+   MOVIMENTO
+   Reduz, e não zera (regra 9.20). A troca de etapa continua acontecendo,
+   só sem deslocamento; o progresso anda mais rápido; o ponto de gravação
+   para de pulsar e fica aceso.
+   --------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  .bf-ponto.vivo { animation: bf-pulsar 700ms var(--ease-out) infinite alternate; }
+  .bf-ficha:not(.travada):active { transform: scale(0.985); }
+}
+@keyframes bf-pulsar {
+  to { opacity: 0.3; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bf-form.trocou .bf-etapa.atual { animation: bf-surgir 160ms var(--ease-out); }
+  .bf-progresso > span { transition-duration: 120ms; }
+}
+@keyframes bf-surgir {
+  from { opacity: 0; }
+}

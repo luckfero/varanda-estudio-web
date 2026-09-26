@@ -28,7 +28,8 @@ const pt = {
       "Estúdio de criação de sites. Estratégia, direção visual autoral e desenvolvimento para negócios que querem uma presença digital clara e confiável.",
     ogDescription: "Sites que dão espaço para o seu negócio crescer.",
     privacyTitle: "Política de Privacidade",
-    privacyDescription: "Como a Varanda Estúdio Web trata os dados enviados pelo formulário de contato.",
+    privacyDescription:
+      "Como a Varanda Estúdio Web trata os dados do formulário de contato e do questionário de quem contrata um site.",
     /* Só o dado estruturado (JSON-LD) usa as duas chaves abaixo. Elas vivem
        aqui, e não em `structured-data.tsx`, porque a página declara
        `inLanguage` do próprio idioma: texto em português numa página em
@@ -564,37 +565,80 @@ const pt = {
   privacidade: {
     kicker: "Informação e transparência",
     titulo: "Política de Privacidade",
-    atualizacao: "Última atualização: 10 de agosto de 2026.",
+    /* A data da versão, escrita à mão nos três idiomas. Tem que ser a data em
+       que o texto vai ao ar, não a data em que foi escrito: se a publicação
+       escorregar, as três mudam juntas. */
+    atualizacao: "Última atualização: 25 de setembro de 2026.",
     voltar: "← Voltar ao site",
     voltarAria: "Voltar para a página inicial da Varanda Estúdio Web",
+    /* Nove seções, na mesma ordem nos três idiomas. Cada uma é um parágrafo só,
+       porque `politica.tsx` desenha `texto` num `<p>` e cola o e-mail no fim da
+       PRIMEIRA: por isso a seção 1 termina em "escreva para", e a 8 manda os
+       pedidos para "o e-mail da seção 1" em vez de repetir o endereço.
+
+       O texto nasceu da revisão de LGPD do questionário de projeto, com duas
+       correções: o banco foi medido nos Estados Unidos (região ENAM),
+       e a frase sobre treino de inteligência artificial entrou no fim da seção
+       5, nos três idiomas, depois de conferido em 25/09/2026 que o uso
+       das conversas para treino está desligado na conta (ESPEC 3.5); se isso
+       mudar, a frase sai no mesmo dia, nos três idiomas. Cada afirmação aqui
+       tem que continuar verdadeira sobre o sistema. Antes do primeiro envio o
+       estúdio vê a abertura do link, o último salvamento e a etapa em que o
+       rascunho parou (o painel e o /briefing usam isso para a cobrança), e as
+       respostas só depois do envio: se o painel passar a mostrar o conteúdo
+       do rascunho, a seção 3 muda. "Fica só enquanto a aba estiver aberta" só
+       vale enquanto a cópia do rascunho for `sessionStorage`. E a seção 5
+       conta o Web Analytics da Cloudflare, que o Worker deixa passar de
+       propósito também na página do questionário. Mudou o sistema, muda
+       aqui. */
     secoes: [
       {
         titulo: "1. Quem trata os dados",
         texto:
-          "Varanda Estúdio Web é o nome comercial sob o qual Lucca Oliveira, pessoa física, presta serviços, e é o responsável pelo tratamento dos dados recebidos por esta página. Para assuntos de privacidade, escreva para",
+          "Varanda Estúdio Web é o nome comercial sob o qual Lucca Oliveira, pessoa física, presta serviços. Ele é o responsável pelos dados recebidos por este site: os do formulário de contato e os do questionário de projeto, que quem contrata um site recebe por um link próprio. Para qualquer assunto de privacidade, escreva para",
       },
       {
-        titulo: "2. Dados utilizados",
+        titulo: "2. O formulário de contato",
         texto:
-          "O formulário solicita nome, nome do negócio, e-mail, WhatsApp, tipo de site procurado e uma descrição do projeto. Esses dados são usados somente para analisar a solicitação, iniciar o atendimento e responder ao contato.",
+          "O formulário de contato pede nome, nome do negócio, e-mail, WhatsApp, tipo de site e uma descrição do projeto. Ao selecionar “Continuar no WhatsApp”, o site monta uma mensagem com essas informações e abre o aplicativo. Este formulário não grava nada em banco de dados: a mensagem só chega à Varanda se você enviar pelo WhatsApp, que a trata pelas regras dele. Os dados servem para responder ao contato e preparar uma proposta.",
       },
       {
-        titulo: "3. Como o formulário funciona",
+        titulo: "3. O questionário de projeto",
+        /* Vira `id` da `<section>`. O formulário do questionário aponta para
+           `/privacidade#questionario`, `/es/privacidad#questionario` e
+           `/en/privacy#questionario`: o id é o mesmo nos três idiomas para o
+           link ser montado do mesmo jeito. Não traduzir. */
+        ancora: "questionario",
         texto:
-          "Ao selecionar “Continuar no WhatsApp”, o site prepara uma mensagem com as informações preenchidas e abre o aplicativo. Os dados não são gravados em um banco de dados deste site. O tratamento realizado pelo WhatsApp segue as regras e políticas da própria plataforma.",
+          "Depois de pagar a entrada, quem contratou um site recebe um link só seu para responder o questionário de projeto, que é o ponto de partida do site. Ele pede dados da empresa, os contatos que vão aparecer no site, o nome de quem aprova o projeto e informações sobre fotos, textos, domínio e prazo. Às vezes uma resposta traz dado de outra pessoa, como o nome de quem deu um depoimento. Ao contrário do formulário de contato, o questionário grava: o que você escreve é salvo sozinho enquanto você preenche, mesmo antes de enviar. Antes do primeiro envio, a Varanda vê quando o link foi aberto, quando algo foi salvo pela última vez e em que etapa o preenchimento parou, para saber a hora de oferecer ajuda. As respostas em si, ela só lê depois do envio. Quem tiver o link consegue ver e alterar as respostas, então mande só para quem for ajudar a preencher. Nunca escreva senha nele.",
       },
       {
-        titulo: "4. Compartilhamento e retenção",
+        titulo: "4. Para que servem as respostas",
         texto:
-          "A Varanda não vende dados pessoais. As informações recebidas podem permanecer no histórico do WhatsApp ou do e-mail pelo tempo necessário ao atendimento, ao cumprimento de obrigações ou ao exercício regular de direitos.",
+          "As respostas servem para fazer o site contratado. Elas viram a ficha do projeto, que guia a estrutura, o desenho, os textos e a publicação. Não são usadas em propaganda e não entram em outro projeto. Para quem contratou em nome próprio, a base legal é a execução do contrato (Lei 13.709/2018, art. 7º, inciso V). Para quem responde em nome de uma empresa, e para toda pessoa citada nas respostas, a base é o legítimo interesse de fazer o site que a empresa pediu (art. 7º, inciso IX), e só entra o necessário para isso.",
       },
       {
-        titulo: "5. Seus direitos",
+        titulo: "5. Onde os dados ficam",
         texto:
-          "Você pode solicitar confirmação, acesso, correção ou eliminação dos dados tratados, observadas as hipóteses legais de conservação. Para isso, entre em contato pelo e-mail informado acima.",
+          "As respostas ficam no sistema interno da Varanda, um banco de dados na Cloudflare. Para ler as respostas e montar a ficha do projeto, a Varanda usa o Claude, um assistente de inteligência artificial da Anthropic. A ficha e os arquivos de trabalho ficam no OneDrive, da Microsoft. As três empresas guardam ou processam os dados fora do Brasil, nos Estados Unidos. Essa transferência é necessária para cumprir o contrato (art. 33, inciso IX). A conta da Varanda na Anthropic está configurada para que as conversas não sejam usadas para treinar inteligência artificial. O site conta visitas com o Web Analytics da Cloudflare, sem cookie: ele registra a página aberta, sem a chave do link, de onde a pessoa veio, o país e o tipo de aparelho.",
       },
       {
-        titulo: "6. Atualizações",
+        titulo: "6. Por quanto tempo",
+        texto:
+          "A Varanda não vende dados pessoais. As mensagens do formulário de contato ficam no histórico do WhatsApp ou do e-mail pelo tempo do atendimento, e depois só pelo necessário para cumprir obrigações ou defender direitos. As respostas do questionário ficam guardadas enquanto o site é feito e durante os 30 dias de garantia depois da publicação. Em até 60 dias depois do fim da garantia, elas são apagadas do sistema e dos arquivos de trabalho. Se o contrato terminar antes da publicação, os 60 dias contam do fim do contrato. As cópias de segurança guardam o que foi apagado por até 90 dias, e depois são descartadas. O que vira conteúdo do site, como textos e fotos aprovados, passa a fazer parte do site, que é da empresa. Nome, e-mail e telefone de quem contratou ficam com o contrato e os recibos por cinco anos, contados do fim do ano do último pagamento, que é o prazo das obrigações fiscais.",
+      },
+      {
+        titulo: "7. O rascunho no seu aparelho",
+        texto:
+          "Se uma gravação falhar enquanto você preenche o questionário, por exemplo porque a conexão caiu, o navegador guarda no próprio aparelho uma cópia do que ainda não chegou à Varanda, para nada se perder. Essa cópia fica só enquanto a aba estiver aberta e é apagada assim que a Varanda confirma o recebimento. Ela não é cookie e não é usada para acompanhar a sua navegação.",
+      },
+      {
+        titulo: "8. Seus direitos",
+        texto:
+          "Você pode pedir para saber quais dados seus a Varanda tem, receber uma cópia, corrigir o que estiver errado, se opor a um uso e pedir que seja apagado o que não for mais necessário. Enquanto o link do questionário estiver aberto, dá para ver e corrigir as respostas nele mesmo. Os pedidos vão para o e-mail da seção 1 e recebem resposta em até 15 dias. Se um dado ainda for necessário para terminar o site ou cumprir o contrato, a resposta diz qual e até quando ele fica. Quem foi citado nas respostas, como o autor de um depoimento, tem os mesmos direitos e pode escrever para o mesmo e-mail. Você também pode reclamar à Autoridade Nacional de Proteção de Dados (ANPD).",
+      },
+      {
+        titulo: "9. Atualizações",
         texto:
           "Esta política pode ser atualizada para refletir mudanças no site ou no processo de atendimento. A data da versão vigente será sempre indicada no início da página.",
       },

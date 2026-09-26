@@ -83,6 +83,16 @@ function assertSecurityHeaders(response) {
   assert.equal(response.headers.get("referrer-policy"), "strict-origin-when-cross-origin");
   assert.equal(response.headers.get("permissions-policy"), "camera=(), geolocation=(), microphone=()");
   assert.equal(response.headers.get("strict-transport-security"), "max-age=31536000");
+  /* A política de conteúdo vale desde 25/09/2026, e o site não pode voltar ao
+     modo relatório por engano. Conferir as diretivas que carregam o peso:
+     própria origem por padrão, o beacon da borda liberado (sem ele a
+     analítica morre em silêncio) e nada de objeto nem moldura de fora. */
+  const politica = response.headers.get("content-security-policy") ?? "";
+  assert.match(politica, /default-src 'self'/);
+  assert.match(politica, /script-src [^;]*https:\/\/static\.cloudflareinsights\.com/);
+  assert.match(politica, /frame-ancestors 'none'/);
+  assert.match(politica, /object-src 'none'/);
+  assert.equal(response.headers.get("content-security-policy-report-only"), null);
 }
 
 for (const idioma of IDIOMAS) {

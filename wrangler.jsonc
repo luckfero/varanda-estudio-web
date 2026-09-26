@@ -18,6 +18,34 @@
       "custom_domain": true
     }
   ],
+  // O QUESTIONÁRIO DE PROJETO fala com o painel por Service Binding, e não
+  // pelo D1, de propósito. Este Worker é público e o repositório também; o
+  // banco do painel guarda dinheiro, clientes e prospecção. Com o binding, o
+  // site nunca recebe acesso ao banco: recebe só as duas chamadas que o painel
+  // expõe na classe `BriefingPublico` (`abrir` e `salvar`), e cada uma confere
+  // a chave do link antes de tocar em qualquer linha.
+  //
+  // `painel-varanda` é o nome do Worker do painel. A classe precisa existir
+  // lá ANTES de este site chamar por ela, e o deploy daqui não confere isso:
+  // o erro só aparece na hora da chamada.
+  "services": [
+    {
+      "binding": "BRIEFING",
+      "service": "painel-varanda",
+      "entrypoint": "BriefingPublico"
+    }
+  ],
+  // Com "0", `/briefing`, `/es/briefing`, `/en/briefing` e `/api/briefing`
+  // respondem 404 como qualquer endereço inexistente, e o painel nem é
+  // chamado. A ordem de publicação é esta, e só esta:
+  //   1. o painel publica a classe e a migração, e é conferido;
+  //   2. este site vai ao ar com "0" (as seis páginas de sempre, o
+  //      questionário ainda em 404);
+  //   3. um segundo commit troca para "1", depois de o painel conferido.
+  // Não virar "1" antes do passo 1: sem o painel, todo link responderia 503.
+  "vars": {
+    "BRIEFING_ATIVO": "0"
+  },
   "compatibility_date": "2026-05-15",
   "compatibility_flags": ["nodejs_compat"],
   "observability": {

@@ -38,7 +38,8 @@ const es: Dicionario = {
       "Estudio de diseño y desarrollo web. Estrategia, dirección visual propia y desarrollo para negocios que quieren una presencia digital clara y fiable.",
     ogDescription: "Webs que dan espacio para que tu negocio crezca.",
     privacyTitle: "Política de Privacidad",
-    privacyDescription: "Cómo trata Varanda Estúdio Web los datos enviados desde el formulario de contacto.",
+    privacyDescription:
+      "Cómo trata Varanda Estúdio Web los datos del formulario de contacto y del cuestionario de quien contrata una web.",
     /* Ver la nota en `pt.ts`: solo las usa el JSON-LD. */
     areaAtendida: "Brasil, Europa y América del Norte",
     servicos: ["Diseño de webs", "Web corporativa", "Desarrollo web"],
@@ -520,37 +521,63 @@ const es: Dicionario = {
   privacidade: {
     kicker: "Información y transparencia",
     titulo: "Política de Privacidad",
-    atualizacao: "Última actualización: 10 de agosto de 2026.",
+    /* Mesma data do `pt.ts`: a das três versões muda junto. */
+    atualizacao: "Última actualización: 25 de septiembre de 2026.",
     voltar: "← Volver a la web",
     voltarAria: "Volver a la página de inicio de Varanda Estúdio Web",
+    /* As mesmas nove seções do `pt.ts`, na mesma ordem (ver a nota de lá), e
+       não uma tradução só. Quem responde daqui está sob o RGPD, que pede o que
+       a LGPD não pede na mesma forma: base legal por finalidade (6.1.b para
+       quem contratou em nome próprio, 6.1.f para quem responde por uma
+       empresa e para quem é citado), a base de cada transferência, a
+       reclamação à AEPD com o nome escrito e, no rascunho do aparelho, a
+       exceção de armazenamento estritamente necessário da LSSI (art. 22.2),
+       que é o que dispensa pedir consentimento para ele. */
     secoes: [
       {
         titulo: "1. Quién trata los datos",
         texto:
-          "Varanda Estúdio Web es el nombre comercial bajo el que Lucca Oliveira, persona física, presta servicios, y es el responsable del tratamiento de los datos recibidos por esta página. Para asuntos de privacidad, escribe a",
+          "Varanda Estúdio Web es el nombre comercial bajo el que Lucca Oliveira, persona física, presta servicios desde Brasil. Él es el responsable del tratamiento de los datos que recibe esta web: los del formulario de contacto y los del cuestionario de proyecto, que quien contrata una web recibe por un enlace propio. Para cualquier asunto de privacidad, escribe a",
       },
       {
-        titulo: "2. Datos utilizados",
+        titulo: "2. El formulario de contacto",
         texto:
-          "El formulario solicita nombre, nombre del negocio, correo electrónico, WhatsApp, tipo de web buscada y una descripción del proyecto. Estos datos se usan únicamente para analizar la solicitud, iniciar la atención y responder al contacto.",
+          "El formulario de contacto pide nombre, nombre del negocio, correo electrónico, WhatsApp, tipo de web y una descripción del proyecto. Al pulsar “Continuar en WhatsApp”, la web prepara un mensaje con esa información y abre la aplicación. Este formulario no guarda nada en ninguna base de datos: el mensaje solo llega a Varanda si lo envías por WhatsApp, que lo trata según sus propias normas. Los datos sirven para responder al contacto y preparar una propuesta. La base legal es atender tu petición antes de un posible contrato (art. 6.1.b del RGPD) o, si escribes en nombre de una empresa, el interés legítimo en responderle (art. 6.1.f del RGPD).",
       },
       {
-        titulo: "3. Cómo funciona el formulario",
+        titulo: "3. El cuestionario de proyecto",
+        /* Mesmo id nos três idiomas: ver a nota no `pt.ts`. Não traduzir. */
+        ancora: "questionario",
         texto:
-          "Al pulsar “Continuar en WhatsApp”, la web prepara un mensaje con la información rellenada y abre la aplicación. Los datos no se guardan en ninguna base de datos de esta web. El tratamiento que realiza WhatsApp sigue las reglas y políticas de la propia plataforma.",
+          "Tras el pago inicial, quien ha contratado una web recibe un enlace propio para responder al cuestionario de proyecto, que es el punto de partida de la web. Pide datos de la empresa, los contactos que aparecerán en la web, el nombre de quien aprueba el proyecto e información sobre fotos, textos, dominio y plazos. A veces una respuesta incluye datos de otra persona, como el nombre de quien firma un testimonio. A diferencia del formulario de contacto, el cuestionario sí guarda datos: lo que escribes se graba automáticamente mientras lo rellenas, incluso antes de enviarlo. Antes del primer envío, Varanda ve cuándo se ha abierto el enlace, cuándo se ha guardado algo por última vez y en qué paso se ha quedado el cuestionario, para saber cuándo ofrecer ayuda. Las respuestas en sí solo las lee después del envío. Quien tenga el enlace puede ver y cambiar las respuestas, así que compártelo solo con quien vaya a ayudarte a rellenarlo. Nunca escribas contraseñas en él.",
       },
       {
-        titulo: "4. Comunicación y conservación",
+        titulo: "4. Para qué sirven las respuestas",
         texto:
-          "Varanda no vende datos personales. La información recibida puede permanecer en el historial de WhatsApp o del correo durante el tiempo necesario para la atención, el cumplimiento de obligaciones o el ejercicio regular de derechos.",
+          "Las respuestas sirven para hacer la web contratada. Con ellas se prepara la ficha del proyecto, que guía la estructura, el diseño, los textos y la publicación. No se usan en publicidad ni entran en otro proyecto. Si has contratado en tu propio nombre, como autónomo o profesional, la base legal es la ejecución del contrato (art. 6.1.b del RGPD). Si respondes en nombre de una empresa, y para cualquier persona citada en las respuestas, la base es el interés legítimo en hacer la web que la empresa encargó (art. 6.1.f del RGPD), y solo entra lo necesario para eso.",
       },
       {
-        titulo: "5. Tus derechos",
+        titulo: "5. Dónde están los datos",
         texto:
-          "Puedes solicitar confirmación, acceso, rectificación, supresión, limitación, portabilidad u oposición respecto a los datos tratados, con las excepciones legales de conservación, y presentar una reclamación ante la autoridad de control de tu país. Para ejercerlos, escribe al correo indicado arriba.",
+          "Las respuestas se guardan en el sistema interno de Varanda, una base de datos en Cloudflare. Para leerlas y preparar la ficha del proyecto, Varanda usa Claude, un asistente de inteligencia artificial de Anthropic. La ficha y los archivos de trabajo están en OneDrive, de Microsoft. Las tres empresas guardan o tratan los datos en Estados Unidos. Los datos que salen de la Unión Europea hacia Brasil se amparan en la decisión de adecuación entre la Unión Europea y Brasil del 27 de enero de 2026. Hacia Cloudflare, Microsoft y Anthropic, en Estados Unidos, la garantía es el Data Privacy Framework o cláusulas contractuales tipo, según el proveedor. La cuenta de Varanda en Anthropic está configurada para que las conversaciones no se usen para entrenar inteligencia artificial. La web cuenta las visitas con Web Analytics de Cloudflare, sin cookies: registra la página abierta, sin la clave del enlace, de dónde viene la persona, el país y el tipo de dispositivo.",
       },
       {
-        titulo: "6. Actualizaciones",
+        titulo: "6. Cuánto tiempo se conservan",
+        texto:
+          "Varanda no vende datos personales. Los mensajes del formulario de contacto quedan en el historial de WhatsApp o del correo mientras dura la atención, y después solo lo necesario para cumplir obligaciones o defender derechos. Las respuestas del cuestionario se conservan mientras se hace la web y durante los 30 días de garantía tras la publicación. En un plazo de 60 días desde el fin de la garantía, se borran del sistema y de los archivos de trabajo. Si el contrato termina antes de la publicación, los 60 días cuentan desde el fin del contrato. Las copias de seguridad conservan lo borrado hasta 90 días y después se eliminan. Lo que pasa a ser contenido de la web, como textos y fotos aprobados, queda como parte de la web, que es de la empresa. El nombre, el correo y el teléfono de quien ha contratado se conservan con el contrato y los recibos durante cinco años, contados desde el final del año del último pago, que es el plazo de las obligaciones fiscales.",
+      },
+      {
+        titulo: "7. El borrador en tu dispositivo",
+        texto:
+          "Si no se puede guardar lo que escribes mientras rellenas el cuestionario, por ejemplo porque se ha caído la conexión, el navegador conserva en el propio dispositivo una copia de lo que aún no ha llegado a Varanda, para que no se pierda nada. Esa copia solo existe mientras la pestaña esté abierta y se borra en cuanto Varanda confirma la recepción. No es una cookie ni sirve para seguir tu navegación. Es un almacenamiento estrictamente necesario para el servicio que has pedido, así que no necesita tu consentimiento (art. 22.2 de la LSSI).",
+      },
+      {
+        titulo: "8. Tus derechos",
+        texto:
+          "Puedes pedir acceso a tus datos y una copia en un formato de uso común, rectificar lo que esté mal, limitar su uso u oponerte a él, y pedir que se borre lo que ya no sea necesario. Mientras el enlace del cuestionario esté abierto, puedes ver y corregir las respuestas en el propio enlace. Las solicitudes van al correo del apartado 1 y reciben respuesta en un plazo máximo de 15 días. Si algún dato todavía hace falta para terminar la web o cumplir el contrato, la respuesta dice cuál y hasta cuándo se conserva. Quien aparezca citado en las respuestas, como el autor de un testimonio, tiene los mismos derechos y puede escribir al mismo correo. También puedes reclamar ante la Agencia Española de Protección de Datos (aepd.es) o ante la autoridad de protección de datos de tu país.",
+      },
+      {
+        titulo: "9. Actualizaciones",
         texto:
           "Esta política puede actualizarse para reflejar cambios en la web o en el proceso de atención. La fecha de la versión vigente se indicará siempre al principio de la página.",
       },

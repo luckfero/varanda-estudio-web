@@ -42,7 +42,13 @@ export default function Politica({ locale }: { locale: Locale }) {
           <p className="legal-updated">{t.privacidade.atualizacao}</p>
 
           {t.privacidade.secoes.map((secao, index) => (
-            <section key={secao.titulo}>
+            /* `ancora` é opcional e vira o `id` da seção, para outra página
+               apontar direto para ela: o formulário do questionário de projeto
+               leva a `#questionario`. Seção sem âncora sai sem `id`, porque
+               `undefined` não gera atributo. O valor vem do dicionário e não
+               de um índice fixo aqui: se uma seção entrar antes dela, o link
+               continua caindo na certa. */
+            <section key={secao.titulo} id={secao.ancora}>
               <h2>{secao.titulo}</h2>
               <p>
                 {secao.texto}

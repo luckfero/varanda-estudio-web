@@ -27,7 +27,8 @@ const en: Dicionario = {
       "A web design and development studio. Strategy, original visual direction and development for businesses that want a clear, trustworthy presence online.",
     ogDescription: "Websites that make room for your business to grow.",
     privacyTitle: "Privacy Policy",
-    privacyDescription: "How Varanda Estúdio Web handles the data sent through the contact form.",
+    privacyDescription:
+      "How Varanda Estúdio Web handles data from the contact form and from the project questionnaire for clients who commission a website.",
     /* See the note in `pt.ts`: only the JSON-LD reads these. */
     areaAtendida: "Brazil, Europe and North America",
     servicos: ["Website design", "Business website", "Web development"],
@@ -509,37 +510,62 @@ const en: Dicionario = {
   privacidade: {
     kicker: "Information and transparency",
     titulo: "Privacy Policy",
-    atualizacao: "Last updated: 10 August 2026.",
+    /* Mesma data do `pt.ts`: a das três versões muda junto. */
+    atualizacao: "Last updated: 25 September 2026.",
     voltar: "← Back to the site",
     voltarAria: "Back to the Varanda Estúdio Web home page",
+    /* Segue a versão em espanhol, e não a portuguesa: quem lê em inglês pode
+       estar na União Europeia, e o RGPD pede as mesmas informações (base por
+       finalidade, transferências, prazo de resposta, armazenamento necessário
+       no aparelho). A diferença é a reclamação: em vez da AEPD, "your data
+       protection authority", porque não dá para saber de que país a pessoa
+       escreve. Grafia britânica (fulfil, enquiry), a mesma decidida para o
+       questionário em inglês. */
     secoes: [
       {
         titulo: "1. Who handles the data",
         texto:
-          "Varanda Estúdio Web is the trading name under which Lucca Oliveira, an individual, provides services, and is the controller of the data received through this page. For privacy matters, write to",
+          "Varanda Estúdio Web is the trading name under which Lucca Oliveira, an individual, provides services from Brazil. He is the controller of the data this site receives: from the contact form and from the project questionnaire, which clients who commission a website receive through a private link. For any privacy matter, write to",
       },
       {
-        titulo: "2. Data used",
+        titulo: "2. The contact form",
         texto:
-          "The form asks for your name, business name, email, WhatsApp, the type of site you're looking for and a description of the project. This data is used only to review the request, begin the conversation and reply to you.",
+          "The contact form asks for your name, business name, email, WhatsApp, the type of site and a description of the project. When you select “Continue on WhatsApp”, the site puts together a message with these details and opens the app. This form does not save anything to a database: the message only reaches Varanda if you send it on WhatsApp, which handles it under its own rules. The data is used to reply to you and prepare a proposal. The legal basis is taking steps at your request before a possible contract (Article 6(1)(b) GDPR) or, if you write on behalf of a company, the legitimate interest in replying to it (Article 6(1)(f) GDPR).",
       },
       {
-        titulo: "3. How the form works",
+        titulo: "3. The project questionnaire",
+        /* Mesmo id nos três idiomas: ver a nota no `pt.ts`. Não traduzir. */
+        ancora: "questionario",
         texto:
-          "When you select “Continue on WhatsApp”, the site prepares a message with the details you filled in and opens the app. The data is not written to any database on this site. WhatsApp's own handling follows that platform's rules and policies.",
+          "After the first payment, clients who commission a website receive a private link to the project questionnaire, which is the starting point for the site. It asks for company details, the contact details that will appear on the site, the name of the person who approves the project and information about photos, text, domain and deadlines. Sometimes an answer includes someone else's data, such as the name of a person who gave a testimonial. Unlike the contact form, the questionnaire does store data: what you write is saved automatically as you go, even before you submit it. Before the first submission, Varanda sees when the link was opened, when something was last saved and which step the questionnaire stopped at, so it knows when to offer help. The answers themselves are only read after you submit. Anyone with the link can see and change the answers, so share it only with people who are helping you fill it in. Never write a password in it.",
       },
       {
-        titulo: "4. Sharing and retention",
+        titulo: "4. What the answers are for",
         texto:
-          "Varanda does not sell personal data. Information received may remain in the WhatsApp or email history for as long as needed to reply, to meet legal obligations or to exercise rights.",
+          "The answers are used to build the website you commissioned. They become the project brief, which guides the structure, design, text and launch. They are not used for advertising and do not go into any other project. If you signed the contract in your own name, as a sole trader or freelancer, the legal basis is performance of the contract (Article 6(1)(b) GDPR). If you are answering on behalf of a company, and for anyone mentioned in the answers, the basis is the legitimate interest in building the website the company ordered (Article 6(1)(f) GDPR), and only what is needed for that goes in.",
       },
       {
-        titulo: "5. Your rights",
+        titulo: "5. Where the data is kept",
         texto:
-          "You may request confirmation, access, correction, deletion, restriction, portability or object to the processing of your data, subject to legal retention rules, and lodge a complaint with the supervisory authority in your country. To do so, write to the address above.",
+          "The answers are kept in Varanda's internal system, a database on Cloudflare. To read the answers and put together the project brief, Varanda uses Claude, an artificial intelligence assistant made by Anthropic. The brief and the working files are kept on OneDrive, from Microsoft. All three companies store or process the data in the United States. Data leaving the European Union for Brazil is covered by the adequacy decision between the European Union and Brazil of 27 January 2026. For Cloudflare, Microsoft and Anthropic, in the United States, the safeguard is the Data Privacy Framework or standard contractual clauses, depending on the provider. Varanda's Anthropic account is set so that conversations are not used to train artificial intelligence. The site counts visits with Cloudflare Web Analytics, without cookies: it records the page opened, without the link's key, where the visitor came from, the country and the type of device.",
       },
       {
-        titulo: "6. Updates",
+        titulo: "6. How long it is kept",
+        texto:
+          "Varanda does not sell personal data. Messages from the contact form stay in the WhatsApp or email history while the enquiry is being handled, and after that only for as long as needed to meet legal obligations or defend legal claims. Questionnaire answers are kept while the site is being built and during the 30-day warranty after launch. Within 60 days of the end of the warranty, they are deleted from the system and from the working files. If the contract ends before launch, the 60 days run from the end of the contract. Backups keep what was deleted for up to 90 days and are then discarded. Anything that turns into site content, such as approved text and photos, becomes part of the site, which belongs to the company. The client's name, email and phone number are kept with the contract and receipts for five years, counted from the end of the year of the last payment, which is the period for tax obligations.",
+      },
+      {
+        titulo: "7. The draft on your device",
+        texto:
+          "If something you write cannot be saved while you are filling in the questionnaire, for example because the connection dropped, your browser keeps a copy on your device of whatever has not yet reached Varanda, so nothing is lost. That copy only exists while the tab is open and is deleted as soon as Varanda confirms receipt. It is not a cookie and is not used to track your browsing. It is strictly necessary for the service you asked for, so under the EU ePrivacy rules it does not need your consent.",
+      },
+      {
+        titulo: "8. Your rights",
+        texto:
+          "You can ask for access to your data and a copy in a commonly used format, correct anything that is wrong, restrict or object to a use, and ask for anything no longer needed to be deleted. While the questionnaire link is open, you can see and correct the answers there yourself. Requests go to the email address in section 1 and are answered within 15 days. If some data is still needed to finish the site or fulfil the contract, the reply says which data and until when it is kept. Anyone mentioned in the answers, such as the author of a testimonial, has the same rights and can write to the same address. You can also lodge a complaint with your data protection authority.",
+      },
+      {
+        titulo: "9. Updates",
         texto:
           "This policy may be updated to reflect changes to the site or to how enquiries are handled. The date of the current version is always shown at the top of the page.",
       },

@@ -9,5 +9,9 @@ export const siteDescription =
 /* Alimenta o `lastmod` do sitemap. **Atualizar a cada publicação que mude
    conteúdo**: data parada diz ao buscador que não há motivo para voltar, e
    foi parte do motivo de o resultado de busca ficar quatro dias com o título
-   antigo em agosto de 2026. */
-export const siteLastUpdated = new Date("2026-09-13T00:00:00.000Z");
+   antigo em agosto de 2026.
+
+   A data de agora é a da política de privacidade nova, que entra no sitemap
+   com esta mesma data. Se a publicação cair em outro dia, muda aqui e em
+   `privacidade.atualizacao` dos três dicionários, juntos. */
+export const siteLastUpdated = new Date("2026-09-25T00:00:00.000Z");
